@@ -1,0 +1,9 @@
+content  autopager 				jar:chrome/autopager.jar!/content/
+locale	 autopager	en-US		jar:chrome/autopager.jar!/locale/en-US/
+skin	 autopager	classic/1.0	jar:chrome/autopager.jar!/skin/
+
+#content autopager 					content/
+#locale	autopager	en-US			locale/en-US/
+#skin	autopager	classic/1.0		skin/
+
+overlay	chrome://browser/content/browser.xul	chrome://autopager/content/statusbar.xul

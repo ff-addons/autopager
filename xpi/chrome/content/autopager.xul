@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd">
+
+<dialog id="autopager" 
+		title="&setting.title;"
+		buttons="accept,cancel"
+	    ondialogaccept="return handleOkButton()"
+		orient="vertical"
+    	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
+	<script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+	<script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+    <script type="application/x-javascript">
+    <![CDATA[
+    autoSites = loadConfig();
+	
+    var sites = cloneSites(autoSites);
+    var listbox, urlPattern, description, chkEnabled, chkEnableJS,btnAdd,btnCopy, btnDelete;
+    var btnAddPath,btnEditPath,btnDeletePath;
+        
+    var selectedSite;
+    var contentXPath;
+	var xpath="";
+    
+    window.addEventListener("load", function(ev) {
+        loadControls();
+		if (sites.length >= 0) {
+            populateChooser();
+            chooseSite(0);
+        }
+    }, false);
+
+	function cloneSites(sites)
+	{
+		var newSites = new Array();
+		for (var i=0;i<sites.length;++i)
+		{
+			var site = newSite(sites[i].urlPattern,sites[i].desc,
+	    			sites[i].linkXPath,sites[i].contentXPath);
+			site.enabled = sites[i].enabled;
+			site.enableJS = sites[i].enableJS;
+			newSites.push(site);
+		}
+		return newSites;
+	}
+
+    function handleOkButton() {
+       	saveConfig(sites);
+		autoSites = loadConfig();
+        return true;
+    }
+    function loadControls() {
+        listbox = document.getElementById("lstSites");
+        urlPattern = document.getElementById("urlPattern");
+        description = document.getElementById("desc");
+        btnAdd = document.getElementById("btnAdd");
+        btnCopy = document.getElementById("btnCopy");
+        btnDelete = document.getElementById("btnDelete");
+        btnAddPath = document.getElementById("btnAddPath");
+        btnEditPath = document.getElementById("btnEditPath");
+        btnDeletePath = document.getElementById("btnDeletePath");
+        contentXPath = document.getElementById("lstContentXPath");
+        chkEnabled = document.getElementById("chkEnabled");
+        chkEnableJS = document.getElementById("chkEnableJS");
+        linkXPath  = document.getElementById("linkXPath");
+        
+        listbox.addEventListener("select", updateDetails, false);
+        btnAdd.addEventListener("command", handleAddSiteButton, false);
+        btnCopy.addEventListener("command", handleCopySiteButton, false);
+        btnDelete.addEventListener("command", handleDeleteSiteButton, false);
+        chkEnabled.addEventListener("command", function() {
+           if (selectedSite) {
+             selectedSite.enabled = chkEnabled.checked;
+             if (selectedSite.enabled) {
+                 listbox.selectedItem.style.color = '';
+             } else {
+                 listbox.selectedItem.style.color = 'gray';
+             }
+           }
+        }, false);
+        chkEnableJS.addEventListener("command", function() {
+           if (selectedSite) {
+             selectedSite.enableJS = chkEnableJS.checked;
+           }
+        }, false);
+        linkXPath.addEventListener("change", function() {
+           if (selectedSite) {
+             selectedSite.linkXPath = linkXPath.value;
+           }
+        }, false);
+        description.addEventListener("change", function() {
+           if (selectedSite) {
+             selectedSite.desc = description.value;
+           }
+        }, false);
+        urlPattern.addEventListener("change", function() {
+           if (selectedSite) {
+             selectedSite.urlPattern = urlPattern.value;
+             listbox.childNodes[listbox.selectedIndex].label 
+             		= selectedSite.urlPattern;
+           }
+        }, false);
+        contentXPath.addEventListener("change", function() {
+           if (selectedSite) {
+           	 onPathChange();
+           }
+        }, false);
+		
+		//var btnAddPath,btnEditPath,btnDeletePath;
+        btnAddPath.addEventListener("command", function() {
+           xpath = prompt("Please input the xpath:",xpath);
+           if (xpath!=null && xpath.length>0)
+           {
+           		addContentXPath(xpath);
+           		onPathChange();
+           }
+        }, false);
+        btnEditPath.addEventListener("command", function() {
+			if (contentXPath.selectedCount > 0) {
+            	listitm = contentXPath.getSelectedItem(0);
+	    		xpath = listitm.label;
+        		xpath = prompt("Please input the xpath:",xpath);
+           		if (xpath!=null && xpath.length>0)
+           		{
+           			listitm.label = (xpath);
+           			onPathChange();
+           		}
+           	}
+        }, false);
+        btnDeletePath.addEventListener("command", function() {
+			if (contentXPath.selectedCount > 0) {
+				contentXPath.removeChild(contentXPath.childNodes[contentXPath.selectedIndex]);
+				onPathChange();
+           	}
+        }, false);
+
+    }
+    function onPathChange()
+    {
+		if (selectedSite) {
+           	 selectedSite.contentXPath = new Array();
+           	 for(var i =0;i<contentXPath.childNodes.length;++i)
+           	 {
+             	selectedSite.contentXPath.push(contentXPath.childNodes[i].label);
+           	 }
+           }    	
+    }
+	function updateDetails() {
+    	if (listbox.selectedCount == 0) {
+            selectedSite = null;
+            urlPattern.textContent = " ";
+            description.textContent = " ";
+            chkEnabled.checked = true;
+            chkEnableJS.checked = true;
+        }
+        else {
+        	selectedSite = listbox.getSelectedItem(0).site;
+			
+            urlPattern.value = selectedSite.urlPattern;
+            description.value = selectedSite.desc;
+            chkEnabled.checked = selectedSite.enabled;
+            chkEnableJS.checked = selectedSite.enableJS;
+            
+            populateXPath(selectedSite.contentXPath);
+            linkXPath.value    = selectedSite.linkXPath;
+        }
+    }
+	function populateXPath(paths)
+	{
+		//clear
+		while (contentXPath.hasChildNodes()) {
+        	contentXPath.removeChild(contentXPath.childNodes[0]);
+        }
+		for (var i = 0, path = null; (path = paths[i]); i++) {
+	        addContentXPath( path);
+		}
+	}
+	function addContentXPath(path)
+	{
+	    var listitem = document.createElement("listitem");
+	    listitem.setAttribute("label", path);
+	    contentXPath.appendChild(listitem);
+	}
+    function handleAddSiteButton() {
+      var site = newSite("http://<your host>/<your path>*","your desc"
+  				,"//a[contains(.//text(),'Next')]","//table[tbody/tr/td/@class='f']");
+		sites.push(site);
+		addSite(site);    
+		chooseSite(sites.length-1);
+	}
+    function handleCopySiteButton() {
+    	if (listbox.selectedCount > 0) {
+            selectedSite = listbox.getSelectedItem(0).site;
+	    	var site = newSite(selectedSite.urlPattern,selectedSite.desc,
+	    			selectedSite.linkXPath,selectedSite.contentXPath);
+			sites.push(site);
+			addSite(site);    
+			chooseSite(sites.length-1);
+		}
+    }
+	
+
+    function handleDeleteSiteButton() {
+        if (listbox.selectedCount > 0) {
+        	var index = listbox.selectedIndex;
+            selectedSite = listbox.getSelectedItem(0).site;
+	    	//alert(index);
+        	removeFromArray(sites,index);
+        	listbox.removeChild(listbox.childNodes[index]);
+
+        	if (listbox.childNodes.length > 0) {
+            	chooseSite(Math.max(Math.min(index, listbox.childNodes.length - 1), 0));
+        	}
+        }
+    }
+
+    function populateChooser() {
+        for (var i = 0, site = null; (site = sites[i]); i++) {
+        	addSite(site);    
+        }
+    }
+    function addSite(site)
+    {
+    	selectedSite = null;
+		var listitem = document.createElement("listitem");
+
+        listitem.setAttribute("label", site.urlPattern);
+        listitem.setAttribute("crop", "end");
+        listitem.site = site;
+        if (!site.enabled) {
+            listitem.style.color = 'gray';
+        }
+        listbox.appendChild(listitem);    	
+    }
+
+    function chooseSite(index) {
+        listbox.selectedIndex = index;
+        listbox.focus();
+    }
+
+    function toggleScript(index, enableFlag) {
+        var listitem = listbox.childNodes[index];
+        if (enableFlag) {
+            listitem.site.enabled = true;
+            listitem.style.color = '';
+        } else {
+            listitem.site.enabled = false;
+            listitem.style.color = 'gray';
+        }
+    }
+
+    ]]>
+    </script>
+    
+      <hbox flex="1">
+        <vbox flex="1" orient="vertical">
+          <listbox id="lstSites" flex="1"/>
+          <hbox>
+	           <button id="btnAdd" label="&setting.button.add;" />
+	           <button id="btnCopy" label="&setting.button.copy;" />
+	           <button id="btnDelete" label="&setting.button.remove;" />
+          </hbox>
+        </vbox>
+        <vbox flex="1">
+          	<hbox></hbox>
+            <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
+          	<hbox>
+		        <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+				<textbox id="urlPattern" flex="1"/>
+			</hbox>
+            <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="true" />
+			<vbox id="auto-xpath" flex="1">
+		        <groupbox id="grpContentXPath" orient="vertical" flex="1">
+		            <caption label="&setting.label.grpContentXPath;" />
+		            <hbox style="margin-bottom:.5em;" flex="1">
+		                <listbox id="lstContentXPath" flex="1" />
+		                <vbox>
+		                    <button id="btnAddPath" label="&setting.button.add;" />
+		                    <button id="btnEditPath" label="&setting.button.edit;" />
+		                    <button id="btnDeletePath" label="&setting.button.remove;"/>
+		                    <spacer flex="1"/>
+		                </vbox>
+		            </hbox>
+		        </groupbox>
+		
+		        <hbox>
+				    <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
+					<textbox id="linkXPath" flex="1"/>
+					<button label="&setting.button.pick;" />		                    
+				</hbox>
+		     </vbox>
+		    <hbox flex="2">
+			    <label control="desc" value="&setting.label.lblDesc;"/>
+				<textbox multiline="true" id="desc" flex="1"/>
+			</hbox>
+          </vbox>
+
+      </hbox>
+    
+</dialog>

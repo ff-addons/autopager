@@ -1,0 +1,1 @@
+pref("autopager.enabled", true);

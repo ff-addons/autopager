@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://autopager/locale/autopager.dtd">
+
+<overlay id="autopagestatus" 
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
+<script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+<script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+
+<statusbar id="status-bar">
+ 	<!--  onclick="enableSelector(_content.document);" -->
+  <statusbarpanel id="autopager_status"
+  		context='autopager-popup'
+    	onclick="statusClicked(event);"
+    	hidden="false"
+    	insertafter="livemark-button">
+		<tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
+			<label value="auto pager"></label>
+		</tooltip>    	
+  	<image id="autopager_image" width="16" height="16" style="margin:0 5px"
+    	onclick="if (!event.button) statusClicked(event);"
+    	src="chrome://autopager/skin/autopager-small.off.gif"
+    	tooltip="autopager_tip"/>
+    <popup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
+    	<menuitem
+          label="Manage Setting"
+          tooltiptext="auto pager setting."
+          oncommand="openSetting();"
+        />
+   		<menuseparator class="autipager-sep-global"/>
+       <menuitem 
+        label="Import from URL"
+        tooltiptext="Import Settings from URL."
+        oncommand="importFromURL();"
+        />
+       <menuitem 
+        label="Import from File"
+        tooltiptext="Import Settings from File."
+        oncommand="importFromFile();"
+        />
+       <menuitem 
+        label="Export Setting"
+        tooltiptext="test xpath on the last selected document."
+        oncommand="exportSetting();"
+        />
+       	<menuseparator class="autipager-sep-global"/>
+        <menuitem id="autoPagerCreateXPath"
+          label="Create XPath"
+          tooltiptext="Create XPath by select a node."
+          type="checkbox"
+          autocheck="false" 
+          oncommand="enableSelector(_content.document,true);"
+        /> 
+       <menuitem 
+        label="Test XPath"
+        tooltiptext="test xpath on the last selected document."
+        oncommand="xPathTest();"
+        />
+        <menuseparator class="autipager-sep-global"/>
+       <menuitem id="autopager-enabled"
+        label="Enabled"
+        type="checkbox"
+        autocheck="false" 
+        tooltiptext="Auto Pager Extensions Enabled or Not."
+        oncommand="onEnable();"
+        />
+        <!--
+        <menuseparator class="autipager-sep-global"/>
+        <menuitem class="menuitem-iconic" />
+        <menuseparator class="autipager-sep-global"/>
+        <menuitem class="menuitem-iconic" />
+        <menu id="autopager-menu" class="autopager-menu-class" 
+          onpopupshowing="event.stopPropagation()" label="hello">
+         <menupopup id="autopager-menupopup">
+         </menupopup>
+       </menu>
+       -->
+    </popup>
+  </statusbarpanel>
+  </statusbar>
+</overlay>

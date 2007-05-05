@@ -1,0 +1,14 @@
+<!ENTITY appname "Auto Pager">
+<!ENTITY setting.title "Auto Pager Setting">
+<!ENTITY setting.button.add "Add...">
+<!ENTITY setting.button.edit "Edit...">
+<!ENTITY setting.button.pick "Pick...">
+<!ENTITY setting.button.remove "Remove">
+<!ENTITY setting.button.copy "Copy">
+<!ENTITY setting.label.lblURLPattern "URL Pattern:">
+<!ENTITY setting.label.lblDesc "Desciption:">
+<!ENTITY setting.label.grpContentXPath "Content XPath:">
+<!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.btnEdit "Edit">
+<!ENTITY setting.label.chkEnabled "Enabled">
+<!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
