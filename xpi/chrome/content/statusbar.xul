@@ -6,7 +6,7 @@
 <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
 <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
 <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
-
+        
 <statusbar id="status-bar">
  	<!--  onclick="enableSelector(_content.document);" -->
   <statusbarpanel id="autopager_status"
@@ -18,7 +18,7 @@
 			<label value="auto pager"></label>
 		</tooltip>    	
   	<image id="autopager_image" width="16" height="16" style="margin:0 5px"
-    	onclick="if (!event.button) statusClicked(event);"
+    	onclick="statusClicked(event);"
     	src="chrome://autopager/skin/autopager-small.off.gif"
     	tooltip="autopager_tip"/>
     <popup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
@@ -26,6 +26,11 @@
           label="Manage Setting"
           tooltiptext="auto pager setting."
           oncommand="openSetting();"
+        />
+    	<menuitem
+          label="Update Setting Online"
+          tooltiptext="update settings online."
+          oncommand="UpdateSetting(false);"
         />
    		<menuseparator class="autipager-sep-global"/>
        <menuitem 
@@ -55,6 +60,12 @@
         label="Test XPath"
         tooltiptext="test xpath on the last selected document."
         oncommand="xPathTest();"
+        />
+        <menuseparator class="autipager-sep-global"/>
+       <menuitem id="autopager-myname"
+        label="My Name:"
+        tooltiptext="Your Name, it will be added to the config your created."
+        oncommand="changeMyName();"
         />
         <menuseparator class="autipager-sep-global"/>
        <menuitem id="autopager-enabled"

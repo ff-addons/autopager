@@ -41,7 +41,7 @@ function getConfigDir() {
 	  }
   }catch(e)
   {
-  	alert(e);
+  	//alert(e);
   }
   return file;
   
@@ -100,7 +100,7 @@ function importFromURL()
 	if (!url && url.length >0)
 	{
 		var sites = loadConfigFromUrl(url);
-		mergeSetting(sites);
+		mergeSetting(sites,false);
 	}
 }
 function importFromFile()
@@ -112,7 +112,7 @@ function importFromFile()
 	                   .newFileURI(file);
 		var configContents = getContents(fileURI);
 		sites =  loadConfigFromStr(configContents,false);
-		mergeSetting(sites);
+		mergeSetting(sites,false);
 	}catch(e)
 	{
 		alert(e);
@@ -121,7 +121,7 @@ function importFromFile()
 function exportSetting()
 {
 	var file = selectFile("Please choose a file name:",Components.interfaces.nsIFilePicker.modeSave);
-	saveConfigToFile(autoSites,file);
+	saveConfigToFile(autoSites,file,false);
 }
 
 function selectFile  (title,mode) {
@@ -141,14 +141,52 @@ function selectFile  (title,mode) {
         return null;
 }
 
-function mergeSetting(sites)
+function getSiteIndex(sites,site)
+{
+	for (var i=0;i<sites.length;i++)
+	{
+		if (sites[i].urlPattern == site.urlPattern)
+			return i;
+	}
+	return -1;
+}
+function mergeSetting(sites,silient)
 {
 	autoSites = loadConfig();
-	for (var i=0;i<sites.length;i++)
-		autoSites.push(sites[i]);
+	mergeArray(autoSites,sites,silient);
 	saveConfig(autoSites);
 	autoSites = loadConfig();
-	alert("import done with " + sites.length + " sites.");
+			
+}
+function mergeArray(autoSites,sites,silient)
+{
+	
+	var insertCount=0;
+	var updatedCount=0;
+	for (var i=0;i<sites.length;i++)
+	{
+		var siteIndex = getSiteIndex(autoSites,sites[i]);
+		if (siteIndex == -1)
+		{
+			autoSites.push(sites[i]);
+			insertCount ++;
+		}
+		else
+		{
+			if (!(autoSites[siteIndex].changedByYou 
+				|| autoSites[siteIndex].createdByYou))
+			{
+				updatedCount++;
+				autoSites[siteIndex] = sites[i];
+			}
+		}
+	}
+	if (!silient)
+	{
+		alert("import done with " + insertCount + " new sites and " + updatedCount +  " updated.");
+	}
+	logInfo("Merge configuration done with " + insertCount + " new sites and " + updatedCount +  " updated.",
+		"Merge configuration done with " + insertCount + " new sites and " + updatedCount +  " updated.");
 }
 function loadConfigFromUrl(url) {
   try{
@@ -160,6 +198,13 @@ function loadConfigFromUrl(url) {
     	alert(e);
     }
  }
+ function getValue(node)
+ {
+ 	if (!node.firstChild)
+ 		return "";
+ 	else
+ 		return node.firstChild.nodeValue;
+ }
 function loadConfigFromStr(configContents,remote) {
   var sites = new Array();
   try{
@@ -168,7 +213,7 @@ function loadConfigFromStr(configContents,remote) {
 		  //alert(configFile);
 		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
 		  var doc = domParser.parseFromString(configContents, "text/xml");
-		  var nodes = doc.evaluate("/autopager/site", doc, null, 0, null);
+		  var nodes = doc.evaluate("//site", doc, null, 0, null);
 		
 		
 		  for (var node = null; (node = nodes.iterateNext()); ) {
@@ -176,22 +221,31 @@ function loadConfigFromStr(configContents,remote) {
 		
 		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
 		      if (childNode.nodeName == "urlPattern") {
-					site.urlPattern = (childNode.firstChild.nodeValue);
+					site.urlPattern = getValue(childNode);
 		      }
 		      else if (childNode.nodeName == "desc") {
-					site.desc	= (childNode.firstChild.nodeValue);
+					site.desc	= getValue(childNode);
 		      }
 		      else if (childNode.nodeName == "linkXPath") {
-					site.linkXPath	= (childNode.firstChild.nodeValue);
+					site.linkXPath	= getValue(childNode);
 		      }
 		      else if (childNode.nodeName == "contentXPath") {
-					site.contentXPath.push(childNode.firstChild.nodeValue);
+					site.contentXPath.push(getValue(childNode));
 		      }
 		      else if (childNode.nodeName == "enabled") {
-					site.enabled	= (childNode.firstChild.nodeValue == 'true');
+					site.enabled	= (getValue(childNode) == 'true');
 		      }
 		      else if (childNode.nodeName == "enableJS") {
-					site.enableJS	= (childNode.firstChild.nodeValue == 'true');
+					site.enableJS	= (getValue(childNode) == 'true');
+					//alert(site.enableJS + " " + childNode.firstChild.nodeValue);
+		      }
+		      else if (childNode.nodeName == "createdByYou") {
+					site.createdByYou	= (getValue(childNode) == 'true');
+		      }
+		      else if (childNode.nodeName == "changedByYou") {
+					site.changedByYou	= (getValue(childNode) == 'true');
+		      }else if (childNode.nodeName == "owner") {
+					site.owner	= getValue(childNode) ;
 		      }
 		    }
 			sites.push(site);
@@ -223,9 +277,16 @@ function newSite(urlPattern,desc,linkXPath,contentXPath)
 	return site;
 }
 function saveConfig(sites) {
-	saveConfigToFile(sites,configFile);
+	saveConfigToFile(sites,configFile,true);
 }
-function saveConfigToFile(sites,saveFile) {
+function createNode(siteNode,name,value)
+{
+	var doc = siteNode.ownerDocument;
+	var node = doc.createElement(name);
+	node.appendChild(doc.createTextNode(value));
+	siteNode.appendChild(node);
+}
+function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	try{
 	  var doc = document.implementation.createDocument("", "autopager", null);
 	  doc.firstChild.appendChild(doc.createTextNode("\n"))
@@ -233,39 +294,30 @@ function saveConfigToFile(sites,saveFile) {
 	  for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
 	    var siteNode = doc.createElement("site");
 	
-	    var urlPattern = doc.createElement("urlPattern");
-	    urlPattern.appendChild(doc.createTextNode(siteObj.urlPattern));
-	    siteNode.appendChild(urlPattern);
+	    createNode(siteNode,"urlPattern",siteObj.urlPattern);
+	    createNode(siteNode,"enabled",siteObj.enabled);
+	    createNode(siteNode,"enableJS",siteObj.enableJS);
+	    createNode(siteNode,"owner",siteObj.owner);
 	
-		var enabled = doc.createElement("enabled");
-	    enabled.appendChild(doc.createTextNode(siteObj.enabled));
-	    siteNode.appendChild(enabled);
-
-		var enableJS = doc.createElement("enableJS");
-	    enableJS.appendChild(doc.createTextNode(siteObj.enableJS));
-	    siteNode.appendChild(enableJS);
 
 	    var x=0;
 	    for(x=0;x<siteObj.contentXPath.length;++x)
 	    {
-	    	var contentXPath = doc.createElement("contentXPath");
-	    	contentXPath.appendChild(doc.createTextNode(siteObj.contentXPath[x]));
-		    siteNode.appendChild(contentXPath);
+		    createNode(siteNode,"contentXPath",siteObj.contentXPath[x]);
 		}
 	    
-	    var linkXPath = doc.createElement("linkXPath");
-	    linkXPath.appendChild(doc.createTextNode(siteObj.linkXPath));
-	    siteNode.appendChild(linkXPath);
-	    
-	    var desc = doc.createElement("desc");
-	    desc.appendChild(doc.createTextNode(siteObj.desc));
-	    siteNode.appendChild(desc);
+	    createNode(siteNode,"linkXPath",siteObj.linkXPath);
+	    createNode(siteNode,"desc",siteObj.desc);
 	
-	    siteNode.appendChild(doc.createTextNode("\n"));
+		if (includeChangeInfo)
+	    {
+		    createNode(siteNode,"createdByYou",siteObj.createdByYou);
+		    createNode(siteNode,"changedByYou",siteObj.changedByYou);
+	    }
+	    	    
 	    doc.firstChild.appendChild(siteNode);
+	  	doc.firstChild.appendChild(doc.createTextNode("\n"));
 	  }
-	
-	  doc.firstChild.appendChild(doc.createTextNode("\n"))
 	
 	  var configStream = getWriteStream(saveFile);
 	  new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
@@ -288,11 +340,70 @@ function Site()
 	this.urlPattern  = null;
 	this.enabled  = true;
 	this.enableJS  = false;
+	this.createdByYou  = false;
+	this.changedByYou  = false;
+	this.owner  = "";
 	this.contentXPath = [];//["//div[@class='g']"];
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
 	this.desc = null;
+	this.oldSite = null;
 }
-function removeFromArray(array,index) {
+function cloneSite(site)
+{
+	var newSite = new Site();
+	newSite.urlPattern  = site.urlPattern;
+	newSite.enabled  = site.enabled;
+	newSite.enableJS  = site.enableJS;
+	newSite.createdByYou  = site.createdByYou;
+	newSite.changedByYou  = site.changedByYou;
+	newSite.owner  = site.owner;
+	for(var i=0;i<site.contentXPath.length;++i)
+			newSite.contentXPath[i] = site.contentXPath[i];
+	
+	newSite.linkXPath = site.linkXPath;
+	newSite.desc = site.desc;
+	newSite.oldSite = site;
+	
+	return newSite;
+}
+	function isChanged(site)
+	{
+		if (site.oldSite == null)
+			return true;
+		else
+		{
+			var oldSite = site.oldSite;
+			if (oldSite.urlPattern  != site.urlPattern 
+						|| oldSite.enabled  != site.enabled
+						|| oldSite.enableJS  != site.enableJS
+						|| oldSite.owner  != site.owner
+						|| oldSite.linkXPath != site.linkXPath
+						|| oldSite.desc != site.desc
+						|| oldSite.contentXPath.length != site.contentXPath.length)
+						{
+							return true;
+						}
+			for(var i=0;i<site.contentXPath.length;++i)
+			{
+				if (oldSite.contentXPath[i] != site.contentXPath[i])
+					return true;
+			}				
+		}
+		return false;
+	}
+
+	function cloneSites(sites)
+	{
+		var newSites = new Array();
+		for (var i=0;i<sites.length;++i)
+		{
+			var site = cloneSite(sites[i]);
+			newSites.push(site);
+		}
+		return newSites;
+	}
+
+	function removeFromArray(array,index) {
 		if (index < array.length)
 		{
 			for(var i = index;i<array.length -1;++i)
@@ -303,3 +414,77 @@ function removeFromArray(array,index) {
 			array.pop();
 		}
 	}
+	
+function getUpdateFrame(doc)
+{
+	var divName = "autoPagerUpdateDiv";
+	var frameName = divName + "ifr";
+	
+	var frame = doc.getElementById(frameName);
+	if (frame == null || !frame)
+	{
+		var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px; '>" +
+				"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
+		//var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 600px; display: block; z-index: 90; left: 0px; top: 0px; height: 600px; '>" +
+		//		"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
+		frame = doc.getElementById(frameName);
+	}
+	return frame;
+};
+	
+var updateUrl="http://blogs.sun.com/wind/entry/autopager_site_config#comments";
+var commentPath="//div[@class='comment even' or @class='comment odd']";
+//var commentPath="//div";
+function UpdateSetting(silence)
+{
+	var url = updateUrl;
+	var xmlhttp=null;
+	try{
+	      try{
+	        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	      }catch(e){
+	        xmlhttp = new XMLHttpRequest();
+	      }
+		//xmlhttp.overrideMimeType("text/xml,charset=UTF-8");
+        xmlhttp.onreadystatechange = function (aEvt) {
+        if(xmlhttp.readyState == 4) 
+        {
+        	if(xmlhttp.status == 200)
+        	{
+        		var frame = getSelectorLoadFrame(_content.document);
+        		frame.autoPagerInited = false;
+        		frame.contentDocument.clear();
+        		//alert(xmlhttp.responseText);
+				frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,false));
+				frame.contentDocument.close();
+				var doc = frame.contentDocument;
+        		
+        		
+				var nodes =doc.evaluate(commentPath, doc, null, 0, null);
+				var allSites = new Array();
+				for (var node = null; (node = nodes.iterateNext()); ) {
+		  
+					//alert(node.textContent);
+					var sites = loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
+					mergeArray(allSites,sites,true);
+				}
+				mergeSetting(allSites,silence);
+        	}
+        	else
+        	{
+        		if (!silence)
+        			alert("Error loading page:" + url);
+		      logInfo("Error loading page:" + url,"Error loading page:" + url);
+        	}
+        }
+      };
+      xmlhttp.open("GET", url, true);
+      logInfo("loading ... " + url,"loading ... " + url);
+      xmlhttp.send(null);
+
+    }catch (e){
+    	if (!silence)
+        		alert("unable to load url:" + url);
+      logInfo("unable to load url:" + url,"unable to load url:" + url);
+    }
+}

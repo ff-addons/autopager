@@ -5,7 +5,7 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:name>AutoPager</em:name>
-		<em:version>0.1.0.1</em:version>
+		<em:version>0.1.0.2</em:version>
 		<em:description>AutoPager is a firefox extensions to autoloading next page.It's configuration is base on XPath. You can find there is a built in function to create a XPath by click on the page.</em:description>
 		<em:creator>Wind Li</em:creator>
 		<em:id>autopager@mozilla.org</em:id>

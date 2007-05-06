@@ -34,10 +34,11 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
-var autopager_aplabel = null;
-var autopager_status= null;
+var debug=false;
 autopagerOnLoad();
-
+var prefs = Components.classes["@mozilla.org/preferences-service;1"].
+      getService(Components.interfaces.nsIPrefService);
+    
 function autopagerOnLoad() {
 	// listen for tab switches
 	window.addEventListener("load", onPageLoad, true);
@@ -236,7 +237,8 @@ function init_autopager(doc)
 		      var remain = sh - sc - wh;
 		      // window.status = remain;
 		      count++;
-       		  //logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain, "Auto pager remain: " + remain + ".\nremain < 600 will auto page.");
+		      if (debug)
+       		  	logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain, "Auto pager remain: " + remain + ".\nremain < 600 will auto page.");
 
 	//	      alert(total);
 		      if(remain < wh ){
@@ -701,16 +703,21 @@ function parserUrlXMLHttpRequest(doc,url){
 // thanks wanderingstan at morethanwarm dot mail dot com for the
 // initial work.
 function evaluateXPath(aNode, aExpr) {
-  var xpe = new XPathEvaluator();
-  var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
-    aNode.documentElement : aNode.ownerDocument.documentElement);
-  var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-  var found = new Array();
-  var res;
-  while (res = result.iterateNext())
-    found.push(res);
-  
-  return found;
+	var found = new Array();
+	try{
+	  var xpe = new XPathEvaluator();
+	  var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
+	    aNode.documentElement : aNode.ownerDocument.documentElement);
+	  var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+	  var res;
+	  while (res = result.iterateNext())
+	    found.push(res);
+	  
+  	}catch(e)
+	{
+		alert("Unable to evaluator xpath:" + aExpr + ".\n" +e);
+	}
+	return found;
 };
 var xpath="//table[tbody/tr/td/@class='f']";
 ////a[contains(font/text(),'Next')]
@@ -887,7 +894,10 @@ function xPathTest()
 }
 function xTestXPath(doc,path)
 {
-	xpath = xpath = prompt("Please input the xpath:",path);
+	newpath = prompt("Please input the xpath:",path);
+	if (!newpath || newpath.length==0)
+		return;
+	xpath = newpath;
 	var found = evaluateXPath(doc,xpath);
 	if (found==null || found.length ==0)
 	{
@@ -913,6 +923,8 @@ function xTestXPath(doc,path)
 }
 
   function showAutoPagerMenu() {
+  	showMyName();
+  
     var popup = document.getElementById("autopager-popup");
     popup.addEventListener("popuphidden", function(ev) {
             if(ev.currentTarget != ev.target) return;
@@ -972,16 +984,28 @@ function getGlobalEnabled()
   }
   function saveEnableStat(enabled)
   {
-  	var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-      getService(Components.interfaces.nsIPrefService);
   	prefs.setBoolPref("autopager.enabled", enabled); // set a pref
   }
   function loadEnableStat()
   {
-  	var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-      getService(Components.interfaces.nsIPrefService);
-    return prefs.getBoolPref("autopager.enabled"); // get a pref
+  	return prefs.getBoolPref("autopager.enabled"); // get a pref
   }
+  function saveMyName(myname)
+  {
+  	prefs.setCharPref("autopager.myname", myname); // set a pref
+  }
+  function loadMyName()
+  {
+  	try{
+  	 
+    return prefs.getCharPref("autopager.myname"); // get a pref
+  	}catch(e)
+  	{
+  		alert(e);
+  	}
+  	return "";
+  }
+
   function setGlobalEnabled(enabled)
   {
   	if (document.autoPagerEnabled != enabled)
@@ -1021,3 +1045,24 @@ function getGlobalEnabled()
 	window.open("chrome://autopager/content/autopager.xul", "autopager",
     	"chrome,resizable,centerscreen");
   }
+  
+  function showMyName(){
+  	 try{
+    	var myname = document.getElementById("autopager-myname");
+	  	myname.label = "My Name:" + loadMyName();
+  	 }catch(e)
+  	 {
+  	 	
+  	 }
+    }
+    function changeMyName()
+    {
+    	var name = prompt("Please input your name, it will be added to the config your created."
+    		,loadMyName());
+    	if (name!=null && name.length>0)
+    	{
+    		saveMyName(name);
+    		showMyName();
+    	}
+    	return name;
+    }
