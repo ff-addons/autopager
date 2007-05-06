@@ -445,7 +445,7 @@ function UpdateSetting(silence)
 	      }catch(e){
 	        xmlhttp = new XMLHttpRequest();
 	      }
-		//xmlhttp.overrideMimeType("text/xml,charset=UTF-8");
+		xmlhttp.overrideMimeType("text/html; charset=utf-8");
         xmlhttp.onreadystatechange = function (aEvt) {
         if(xmlhttp.readyState == 4) 
         {
@@ -466,6 +466,7 @@ function UpdateSetting(silence)
 		  
 					//alert(node.textContent);
 					var sites = loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
+					//alert(sites.length);
 					mergeArray(allSites,sites,true);
 				}
 				mergeSetting(allSites,silence);

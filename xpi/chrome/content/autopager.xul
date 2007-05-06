@@ -207,8 +207,8 @@
     	if (myname==null || myname.length == 0)
     		return;
     		
-        var site = newSite("http://<your host>/<your path>*","your desc"
-  				,"//a[contains(.//text(),'Next')]","//table[tbody/tr/td/@class='f']");
+        var site = newSite("http://yourhost/*","your desc"
+  				,"//a[contains(.//text(),'Next')]","//body/*[position() != last()]");
 		site.createdByYou = true;
 		site.owner = myname;
 		sites.push(site);

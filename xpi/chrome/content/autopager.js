@@ -34,10 +34,10 @@
  *
  * ***** END LICENSE BLOCK ***** */
  
-var debug=false;
 autopagerOnLoad();
 var prefs = Components.classes["@mozilla.org/preferences-service;1"].
       getService(Components.interfaces.nsIPrefService);
+var debug=prefs.getBoolPref("autopager.debug");
     
 function autopagerOnLoad() {
 	// listen for tab switches
@@ -182,11 +182,11 @@ function onInitDoc(doc) {
 function onSelect(event) {
 	if (!_content.document.pagerInited)
 	{
-	  	window.eventCount = window.eventCount +1;
-		docurl = _content.document.URL;
-			    
-	    _content.document.pagerInited=true;
-	    //init_autopager(_content.document);
+	  	if (_content.document.autopagerEnabledDoc.length >0)
+	  	{
+	  		scrollWatcher();
+	  	}
+	  	document.getElementById("autoPagerCreateXPath").setAttribute ("checked", doc.autoPagerSelectorEnabled);
 	}    
 };
 function init_autopager(doc)
@@ -219,6 +219,8 @@ function init_autopager(doc)
   function  scrollWatcher()
   {
   	var i =0;
+  	if (debug)
+  		logInfo(count,"Enter scrollWatcher");
   	for(i=0;i<_content.document.autopagerEnabledDoc.length;i++)
   	{
   		doc = content.document.autopagerEnabledDoc[i];
@@ -238,7 +240,7 @@ function init_autopager(doc)
 		      // window.status = remain;
 		      count++;
 		      if (debug)
-       		  	logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain, "Auto pager remain: " + remain + ".\nremain < 600 will auto page.");
+       		  	logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain, "Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
 
 	//	      alert(total);
 		      if(remain < wh ){
@@ -250,9 +252,9 @@ function init_autopager(doc)
 		    }
 		}
 	}
-   	var self = arguments.callee;
+	var self = arguments.callee;
 	setTimeout(self,1000);
-		
+	
 };
 
 function onXPathMouseOver(event) {
@@ -311,8 +313,22 @@ function getSelectorLoadFrame(doc)
 		frame = doc.getElementById(frameName);
 		frame.addEventListener("load", onframeLoad, false);
 		frame.autoPagerInited = false;
+		//create a empty div in target
+		getLastDiv(doc);
 	}
 	return frame;
+};
+
+function getLastDiv(doc)
+{
+	var divName = "autoPagerLastDiv";
+	var div = doc.getElementById(divName);
+	if (div == null || !div)
+	{
+		var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'>" +
+				"</div>");
+	}
+	return div;
 };
 
 function enableClickOnNode(node,enabled)
@@ -448,6 +464,17 @@ function getXIdetify(node,dir)
 			if (node.getAttribute("name") != null && node.getAttribute("name").length >0)
 			{
 				xi = appendCondition(xi,dir + "@name='" + node.getAttribute("name") + "'");
+			}
+		}
+		else if(node.tagName == "IMG")
+		{
+			if (node.getAttribute("src") != null && node.getAttribute("src").length >0)
+			{
+				xi = appendCondition(xi,dir + "@src='" + node.getAttribute("src") + "'");
+			}
+			if (node.getAttribute("alt") != null && node.getAttribute("alt").length >0)
+			{
+				xi = appendCondition(xi,dir + "@alt='" + node.getAttribute("alt") + "'");
 			}
 		}
 	}catch(e)
@@ -624,6 +651,8 @@ function getHtmlInnerHTML(html,enableJS)
 	{
 		
 		var headEnd = s.indexOf("</head>");
+		if (headEnd == -1)
+			headEnd = s.toLowerCase().indexOf("</head>");
 		if (headEnd >0)
 			s = "<html>" + s.slice(headEnd + "</head>".length +1);
 		s = s.replace(/\<script/g,"\<\!\-\- script");
@@ -734,6 +763,7 @@ function scrollWindow(container,doc)
 		
 		var xpath = container.contentXPath;
 		var nodes = findNodeInDoc(doc,xpath);
+		//alert(nodes);
 		var i=0;
 		var divStyle = "'clear:both; line-height:20px; background:#E6E6E6; text-align:center;'";
 		var div= createDiv(container,"<div style=" + divStyle 
