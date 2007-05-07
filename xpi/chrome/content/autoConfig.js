@@ -1,7 +1,37 @@
 var configFile = getConfigFile("autopager.xml");
 var autoSites = null;
-	
 
+var strbundle=null;
+
+
+
+function getString(name)
+{
+	try{
+		
+		if (strbundle == null)
+			strbundle = document.getElementById("autopagerStrings");
+		return strbundle.getString(name);
+	}catch(e)
+	{
+		alert(name + " " + e);
+		return "";
+	}
+}
+function formatString(name,parms)
+{
+	
+	
+	try{
+		if (strbundle == null)
+			strbundle = document.getElementById("autopagerStrings");
+		return strbundle.getFormattedString(name, parms);
+	}catch(e)
+	{
+		alert(name + " " + e);
+		return "";
+	}
+}
 function getConfigFileURI(fileName) {
 	try{
   return Components.classes["@mozilla.org/network/io-service;1"]
@@ -95,7 +125,7 @@ function loadConfig() {
  }
 function importFromURL()
 {
-	var url = prompt("Please input the url to import settings:",
+	var url = prompt(getString("inputurl"),
 		"http://blogs.sun.com/wind/resource/autopager.xml");
 	if (!url && url.length >0)
 	{
@@ -106,7 +136,7 @@ function importFromURL()
 function importFromFile()
 {
 	try{
-		var file = selectFile("Please select auto pager setting file:",Components.interfaces.nsIFilePicker.modeOpen);
+		var file = selectFile(getString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
 		var fileURI = Components.classes["@mozilla.org/network/io-service;1"]
 	                   .getService(Components.interfaces.nsIIOService)
 	                   .newFileURI(file);
@@ -120,8 +150,9 @@ function importFromFile()
 }
 function exportSetting()
 {
-	var file = selectFile("Please choose a file name:",Components.interfaces.nsIFilePicker.modeSave);
-	saveConfigToFile(autoSites,file,false);
+	var file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+	if (file)
+		saveConfigToFile(autoSites,file,false);
 }
 
 function selectFile  (title,mode) {
@@ -181,12 +212,14 @@ function mergeArray(autoSites,sites,silient)
 			}
 		}
 	}
+	var msg = formatString("importdone",[insertCount,updatedCount]);
 	if (!silient)
 	{
-		alert("import done with " + insertCount + " new sites and " + updatedCount +  " updated.");
+		alert(msg);
+		//alert("import done with " + insertCount + " new sites and " + updatedCount +  " updated.");
 	}
-	logInfo("Merge configuration done with " + insertCount + " new sites and " + updatedCount +  " updated.",
-		"Merge configuration done with " + insertCount + " new sites and " + updatedCount +  " updated.");
+	
+	logInfo(msg,msg);
 }
 function loadConfigFromUrl(url) {
   try{
@@ -215,13 +248,17 @@ function loadConfigFromStr(configContents,remote) {
 		  var doc = domParser.parseFromString(configContents, "text/xml");
 		  var nodes = doc.evaluate("//site", doc, null, 0, null);
 		
-		
 		  for (var node = null; (node = nodes.iterateNext()); ) {
 		    var site = new Site();
 		
 		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
 		      if (childNode.nodeName == "urlPattern") {
 					site.urlPattern = getValue(childNode);
+		      }
+		      else if (childNode.nodeName == "margin") {
+		      		var val = getValue(childNode);
+					if (isNumeric(val))
+						site.margin = val;
 		      }
 		      else if (childNode.nodeName == "desc") {
 					site.desc	= getValue(childNode);
@@ -285,6 +322,7 @@ function createNode(siteNode,name,value)
 	var node = doc.createElement(name);
 	node.appendChild(doc.createTextNode(value));
 	siteNode.appendChild(node);
+	siteNode.appendChild(doc.createTextNode("\n"));
 }
 function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	try{
@@ -295,6 +333,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	    var siteNode = doc.createElement("site");
 	
 	    createNode(siteNode,"urlPattern",siteObj.urlPattern);
+	    createNode(siteNode,"margin",siteObj.margin);
 	    createNode(siteNode,"enabled",siteObj.enabled);
 	    createNode(siteNode,"enableJS",siteObj.enableJS);
 	    createNode(siteNode,"owner",siteObj.owner);
@@ -347,11 +386,13 @@ function Site()
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
 	this.desc = null;
 	this.oldSite = null;
+	this.margin = 1.5;
 }
 function cloneSite(site)
 {
 	var newSite = new Site();
 	newSite.urlPattern  = site.urlPattern;
+	newSite.margin  = site.margin;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
 	newSite.createdByYou  = site.createdByYou;
@@ -374,6 +415,7 @@ function cloneSite(site)
 		{
 			var oldSite = site.oldSite;
 			if (oldSite.urlPattern  != site.urlPattern 
+						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
 						|| oldSite.owner  != site.owner
@@ -451,7 +493,7 @@ function UpdateSetting(silence)
         {
         	if(xmlhttp.status == 200)
         	{
-        		var frame = getSelectorLoadFrame(_content.document);
+        		var frame = getUpdateFrame(_content.document);
         		frame.autoPagerInited = false;
         		frame.contentDocument.clear();
         		//alert(xmlhttp.responseText);
@@ -474,18 +516,23 @@ function UpdateSetting(silence)
         	else
         	{
         		if (!silence)
-        			alert("Error loading page:" + url);
-		      logInfo("Error loading page:" + url,"Error loading page:" + url);
+        			alert(getString("errorload") + url);
+		      logInfo(getString("errorload") + url,getString("errorload") + url);
         	}
         }
       };
       xmlhttp.open("GET", url, true);
-      logInfo("loading ... " + url,"loading ... " + url);
+      logInfo(getString("loading") + url,getString("loading") + url);
       xmlhttp.send(null);
 
     }catch (e){
     	if (!silence)
-        		alert("unable to load url:" + url);
-      logInfo("unable to load url:" + url,"unable to load url:" + url);
+        		alert(getString("unableload") + url);
+      logInfo(getString("unableload") + url,getString("unableload") + url);
     }
 }
+function  isNumeric(strNumber)
+{  
+		var  newPar=/^(\+)?\d+(\.\d+)?$/  
+        return  newPar.test(strNumber);  
+} 

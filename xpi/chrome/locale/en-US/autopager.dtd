@@ -13,3 +13,28 @@
 <!ENTITY setting.label.btnEdit "Edit">
 <!ENTITY setting.label.chkEnabled "Enabled">
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
+<!ENTITY setting.label.margin "Paging when space less then">
+<!ENTITY setting.label.marginEnd "window hight">
+
+
+<!ENTITY autopager.status.setting "Manage Setting">
+<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
+<!ENTITY autopager.status.update "Update Setting Online">
+<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.importurl "Import from URL">
+<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
+<!ENTITY autopager.status.importfile "Import from File">
+<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
+<!ENTITY autopager.status.export "Export Setting">
+<!ENTITY autopager.status.exportTip "Export Auto Pager Settings to a File.">
+
+<!ENTITY autopager.status.createXPath "Create XPath">
+<!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
+<!ENTITY autopager.status.testXPath "Test XPath">
+<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
+
+<!ENTITY autopager.status.enabled "Enabled">
+<!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
+
+<!ENTITY autopager.status.myname "My Name:">
+<!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">

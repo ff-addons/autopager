@@ -33,21 +33,15 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
- 
+var easy = false;
 autopagerOnLoad();
-var prefs = Components.classes["@mozilla.org/preferences-service;1"].
-      getService(Components.interfaces.nsIPrefService);
-var debug=prefs.getBoolPref("autopager.debug");
-    
+var autopagerPrefs = null;
+var debug= false;
 function autopagerOnLoad() {
 	// listen for tab switches
 	window.addEventListener("load", onPageLoad, true);
 	window.addEventListener("select", onSelect, false);
 	
-	//record each page's insert pos
-	window.pagerInfo = new Array();
-	window.autopagerEnabled = new Array();
-	window.eventCount = 0;
 };
 function enableSelector(doc,setMenuStatus)
 {
@@ -90,6 +84,8 @@ function onPageLoad(event) {
 	{
 		document.autoPagerInited = true;
 		setGlobalEnabled(loadEnableStat());
+
+			
 	}
 	setGlobalImageByStatus(getGlobalEnabled());
 	document.getElementById("autoPagerCreateXPath").setAttribute ("checked", false);	
@@ -121,18 +117,57 @@ function onPageLoad(event) {
 	}
 }
 
+function getPrefs()
+{
+	if (autopagerPrefs == null)
+	{
+		autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
+      		getService(Components.interfaces.nsIPrefService).getBranch("autopager");
+		
+	}
+	return autopagerPrefs;
+}
+
 function onInitDoc(doc) {
+	try{
+		debug=getPrefs().getBoolPref(".debug");
+	}catch(e)
+	{
+		alert(e);
+	}
+	if(doc.body.attachEvent){
+      doc.body.attachEvent(
+        'ondblclick',function(){
+        	setGlobalEnabled(!getGlobalEnabled());
+        }
+      );
+    }else{
+      doc.body.addEventListener(
+        'dblclick',function(){
+        	setGlobalEnabled(!getGlobalEnabled());
+        },true
+      );
+    }	
 	var url = doc.location.href;
 	var i=0;
 	for(i=0;i<autoSites.length;++i)
 	{
 		var pattern = convert2RegExp(autoSites[i].urlPattern);
       	if (pattern.test(url)) {
-      		//alert(url);
-      		logInfo("Enable auto pager on " + url, "Enable auto pager on " + url
-      						+ "\nlinkXPath=" + autoSites[i].linkXPath  
-							+ "\ncontentXPath=" + autoSites[i].contentXPath);
-
+      		var msg="";
+      		var info = "";
+      		if (getGlobalEnabled())
+      		{
+	      		msg = formatString("enableurl",[ url ]);
+	      		info = formatString("enableinfo",[url,autoSites[i].linkXPath,autoSites[i].contentXPath]);
+      		}
+      		else
+      		{
+      			msg = formatString("globaldisabled",[url]);
+      			info = msg;
+      		}
+      		logInfo(msg, info);
+			
 		    if (!doc.autoPagerRunning)
 		    {
 		    	var insertPoint = null;
@@ -140,13 +175,19 @@ function onInitDoc(doc) {
 
 				doc.autoPagerRunning = true;
 				var oldNodes = findNodeInDoc(doc.documentElement,autoSites[i].contentXPath);
+				if (debug)
+					logInfo(oldNodes, "go");
 				doc.contentXPath = autoSites[i].contentXPath;
+				doc.margin = autoSites[i].margin;
 				doc.linkXPath = autoSites[i].linkXPath;
 				doc.enabled = autoSites[i].enabled;
 				doc.enableJS = autoSites[i].enableJS;
+				
 				if (oldNodes!= null && oldNodes.length >0)
 					insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
 				//alert(oldNodes[oldNodes.length - 1]);
+				if (debug)
+					logInfo(oldNodes[oldNodes.length - 1], "go");
 				var urlNodes = findNodeInDoc(doc.documentElement,doc.linkXPath);
 			  	//alert(urlNodes);
 				if (urlNodes != null && urlNodes.length >0)
@@ -242,7 +283,13 @@ function init_autopager(doc)
 		      if (debug)
        		  	logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain, "Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
 
-	//	      alert(total);
+		      //alert(wh);
+       		  	if (debug)
+       		  		wh = wh * (doc.margin*1 + 1.5);
+       		  	else
+       		  		wh = wh * (doc.margin * 1);
+       		  //alert(wh);
+       		  	
 		      if(remain < wh ){
 		        doc.autopagerEnabled = false;
 		        do_request(doc)
@@ -273,8 +320,7 @@ function onXPathMouseOver(event) {
 	if (target.tagName != 'A' && target.parentNode.tagName == 'A')
 		target = target.parentNode;
 	
-	var str = "Mouse over a " + target.tagName 
-			+ ", XPath for object is:" + getXPathForObject(target);
+	var str = formatString("moveover",[target.tagName,getXPathForObject(target)]);
 	logInfo(str,str);
 
     //event.target.addEventListener("click",onXPathClick,true);
@@ -306,10 +352,18 @@ function getSelectorLoadFrame(doc)
 	var frame = doc.getElementById(frameName);
 	if (frame == null || !frame)
 	{
-		var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px; '>" +
+		var div = null;
+		if (debug)
+		{
+			div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS' " +
 				"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
-		//var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 600px; display: block; z-index: 90; left: 0px; top: 0px; height: 600px; '>" +
-		//		"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
+		}
+		else
+		{	
+			div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px; '>" +
+				"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
+		}
+				
 		frame = doc.getElementById(frameName);
 		frame.addEventListener("load", onframeLoad, false);
 		frame.autoPagerInited = false;
@@ -319,15 +373,17 @@ function getSelectorLoadFrame(doc)
 	return frame;
 };
 
+
 function getLastDiv(doc)
 {
 	var divName = "autoPagerLastDiv";
 	var div = doc.getElementById(divName);
 	if (div == null || !div)
 	{
-		var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'>" +
-				"</div>");
+		var div = createDiv(doc,"<div class='autoPagerS'  style='border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px;'><div id='" + divName + "'></div></div>");
+		div = doc.getElementById(divName);
 	}
+
 	return div;
 };
 
@@ -619,19 +675,37 @@ function parserResponse(xmlhttp)
 };
 function onframeLoad(event)
 {
+	//alert(event.currentTarget);
+	//alert(event.target);
+	//alert(event.originalTarget);
 
+	var target = null;
+	if (event.originalTarget != null)
+		target = event.originalTarget;
+	else if (event.target != null)
+		target = event.target;
+	else
+		target = event.currentTarget;
+	//alert(target);
+	var frame=null;
+	try{
+		frame = getSelectorLoadFrame(target);
+	}catch(e)
+	{
+		frame = target;
+	}
 	if (!frame.autoPagerInited)
 	{
-		alert("onframeLoad");
-		alert(event.originalTarget);
-		var frame = getSelectorLoadFrame(event.originalTarget);
+		//alert("onframeLoad");
+		
 		frame.autoPagerInited = true;
 		var doc = frame.contentDocument;
 		try{
 			doc = doc.documentElement;
+		
 		}catch(e)
 		{alert(e);}
-		scrollWindow(event.originalTarget,doc);
+		scrollWindow(frame.ownerDocument,doc);
 	}
 };
 
@@ -644,19 +718,46 @@ function parserUrl(doc,url)
 	var frame = getSelectorLoadFrame(doc);
 	frame.src = url;
 };
-function getHtmlInnerHTML(html,enableJS)
+function getHtmlInnerHTML(html,enableJS,url)
 {
 	var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
 	if (!enableJS)
 	{
+		//<base href="http://bbs.chinaunix.net/forumdisplay.php?fid=46">
 		
 		var headEnd = s.indexOf("</head>");
 		if (headEnd == -1)
 			headEnd = s.toLowerCase().indexOf("</head>");
 		if (headEnd >0)
-			s = "<html>" + s.slice(headEnd + "</head>".length +1);
-		s = s.replace(/\<script/g,"\<\!\-\- script");
-		s = s.replace(/\<\/script\>/g,"\<\/script \-\-\>");
+			s = "<html><head><base href='" + url +
+					"'></head> "+ s.slice(headEnd + "</head>".length);
+		//s = s.replace(/<script/g,"<!-- script");
+		s = s.replace(/<[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]/g,"<! -- script");
+		s = s.replace(/ -- script/g,"-- script");
+		
+		s = s.replace(/<[ ]*\/[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]>/g,"<\/script -->");
+	}
+	//alert(s);
+	return s;
+}
+function getHtmlBody(html,enableJS)
+{
+	var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
+	if (!enableJS)
+	{
+		
+		var bodyStart = s.indexOf("<body");
+		if (bodyStart == -1)
+			bodyStart = s.toLowerCase().indexOf("<body");
+		if (bodyStart >0)
+			s = "<div" +  s.slice(bodyStart + "<body".length);
+		var bodyEnd = s.indexOf("body>");
+		if (bodyEnd == -1)
+			bodyEnd = s.toLowerCase().indexOf("body>");
+		if (bodyEnd >0)
+			s = s.slice(0,bodyEnd) + "div>";
+		
+		
 	}
 	//alert(s);
 	return s;
@@ -679,6 +780,7 @@ function getContentType(doc)
 }
 function parserUrlXMLHttpRequest(doc,url){
 	var xmlhttp=null;
+	        		//alert(doc.location.href);
 	try{
 	      try{
 	        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
@@ -686,29 +788,53 @@ function parserUrlXMLHttpRequest(doc,url){
 	        xmlhttp = new XMLHttpRequest();
 	      }
 	    xmlhttp.overrideMimeType(getContentType(doc));
-       xmlhttp.onreadystatechange = function (aEvt) {
+	   xmlhttp.onreadystatechange = function (aEvt) {
+       	if (debug)
+       		logInfo(xmlhttp.readyState + " " + xmlhttp.status,
+       				xmlhttp.readyState + " " + xmlhttp.status);
         if(xmlhttp.readyState == 4) 
         {
         	if(xmlhttp.status == 200)
         	{
-        		var frame = getSelectorLoadFrame(doc);
-        		frame.autoPagerInited = false;
-        		frame.contentDocument.clear();
-        		//alert(xmlhttp.responseText);
-				frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.enableJS));
-				frame.contentDocument.close();
-				if (!frame.autoPagerInited)
-				{
-					
-					var newDoc = frame.contentDocument;
-					//alert(newDoc);
-					try{
-						newDoc = newDoc.documentElement;
-					}catch(e)
-					{alert(e);}
-	        		frame.autoPagerInited = true;
-					scrollWindow(doc,newDoc);
-				}
+        		
+			if (easy)
+			{			
+				var body = getHtmlBody(xmlhttp.responseText,doc.enableJS);
+	        		var div = getLastDiv(doc);
+	        		div.innerHTML = "";
+	        		div.innerHTML = "<div>" + body + "</div>";
+	        		alert(doc.location.href);
+				scrollWindow(doc,div);
+			}
+			else
+			{
+				var frame = getSelectorLoadFrame(doc);
+        			frame.autoPagerInited = false;
+        			frame.contentDocument.clear();
+        			//alert(xmlhttp.responseText);
+					frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.enableJS,url));
+					frame.contentDocument.close();
+        		setTimeout(function (){
+					if (!frame.autoPagerInited)
+				    {
+						var newDoc = frame.contentDocument;
+						//alert(newDoc);
+						try{
+							newDoc = newDoc.documentElement;
+						}catch(e)
+						{alert(e);}
+		        		frame.autoPagerInited = true;
+						scrollWindow(doc,newDoc);
+					}
+        		}
+        		,6000);
+			}
+			
+			//alert(div.childNodes.length);
+        		//frame.contentDocument.ownerDocument.baseURI = url;
+        		//frame.contentDocument.ownerDocument.setAttribute("baseURI") = url;
+        	
+        		//
 				//var doc=parserResponse(xmlhttp );
         		//doc = doc.documentElement;
 				//openInNewWindow(doc);
@@ -718,7 +844,7 @@ function parserUrlXMLHttpRequest(doc,url){
         }
       };
       xmlhttp.open("GET", url, true);
-      window.status = "loading ... " + url;
+      window.content.status = "loading ... " + url;
       xmlhttp.send(null);
 
     }catch (e){
@@ -734,17 +860,22 @@ function parserUrlXMLHttpRequest(doc,url){
 function evaluateXPath(aNode, aExpr) {
 	var found = new Array();
 	try{
+		//var doc = aNode.ownerDocument == null ?
+		//		aNode.documentElement : aNode.ownerDocument.documentElement;
+		//var result = doc.evaluate(aExpr, aNode, null, 0, null);
+		
 	  var xpe = new XPathEvaluator();
 	  var nsResolver = xpe.createNSResolver(aNode.ownerDocument == null ?
-	    aNode.documentElement : aNode.ownerDocument.documentElement);
+	  aNode.documentElement : aNode.ownerDocument.documentElement);
 	  var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+	  
 	  var res;
 	  while (res = result.iterateNext())
 	    found.push(res);
-	  
+	  //alert(found.length);
   	}catch(e)
 	{
-		alert("Unable to evaluator xpath:" + aExpr + ".\n" +e);
+		alert(formatString("unableevaluator",[aExpr,e]));
 	}
 	return found;
 };
@@ -758,17 +889,23 @@ var tagName   = "DIV";
 function scrollWindow(container,doc)
 {
 	try{
-		//alert("scrollWindow");
+		if (debug)
+			logInfo("scrollWindow","scrollWindow");
 		var nextUrl=container.autopagernextUrl;
-		
+		if (nextUrl == null || nextUrl.length == 0)
+			return;
 		var xpath = container.contentXPath;
+		//alert(doc);
+		//alert(doc.innerHTML);
+		
 		var nodes = findNodeInDoc(doc,xpath);
+		if (debug)
+			logInfo(nodes.toString(),nodes.toString());
 		//alert(nodes);
 		var i=0;
 		var divStyle = "'clear:both; line-height:20px; background:#E6E6E6; text-align:center;'";
 		var div= createDiv(container,"<div style=" + divStyle 
-				+ "> <span>Page break inserted by auto pager.Page(<a href='" + nextUrl + "'>" 
-				+ (++container.autoPagerPage) + "</a>).</span></div>")
+				+ "> <span>" + formatString("pagebreak",[nextUrl,++container.autoPagerPage]) + "</span></div>")
 		var insertPoint =	container.autopagerinsertPoint;
 				
 		insertPoint.parentNode.insertBefore(div,insertPoint);
@@ -792,9 +929,12 @@ function scrollWindow(container,doc)
 		//alert(nextUrl);
 		container.autopagernextUrl = nextUrl;
 		container.close();
-  		var frame = getSelectorLoadFrame(container);
-  		frame.contentDocument.clear();
-		frame.contentDocument.close();
+		if (!easy)
+		{
+	  		var frame = getSelectorLoadFrame(container);
+	  		frame.contentDocument.clear();
+			frame.contentDocument.close();
+		}
 		container.close();
 		
 	}catch(e)
@@ -808,17 +948,23 @@ function scrollWindow(container,doc)
 function onStartPaging(doc)
 {
 	doc.autoPagerPaging = true;
-	logInfo("Auto paging " + doc.location.href,
-		"Auto paging on " +doc.location.href +  ".\nPlease wait for a while or click to stop.");
-	
+	try{
+		logInfo(formatString("autopaging",[ doc.location.href]),
+			formatString("autopaging",[ doc.location.href]));
+	}catch(e)
+	{		
+	}
 	if (!document.pagingWatcherRunning)
 		pagingWatcher();
 }
 function onStopPaging(doc)
 {
-	logInfo("Auto page done on " + doc.location.href,
-		"Auto page done on  " +doc.location.href +  ".\nClick to disable auto pager.");
-	
+	try{
+		logInfo(formatString("autopageOn",[doc.location.href]),
+		formatString("autopageOnTip",[doc.location.href]));
+	}catch(e)
+	{		
+	}
 	doc.autoPagerPaging = false;
 }
 function  pagingWatcher()
@@ -863,7 +1009,7 @@ function fixUrl(doc,url)
 }
 function openInNewWindow(doc)
 {
-	xpath = prompt("Please input the xpath:",xpath);
+	xpath = prompt(getString("inputxpath"),xpath);
 	var nodes = findNodeInDoc(doc,xpath);
 	var i=0;
 	var oldNodes = findNodeInDoc(_content.document.documentElement,xpath);
@@ -1014,21 +1160,21 @@ function getGlobalEnabled()
   }
   function saveEnableStat(enabled)
   {
-  	prefs.setBoolPref("autopager.enabled", enabled); // set a pref
+  	getPrefs().setBoolPref(".enabled", enabled); // set a pref
   }
   function loadEnableStat()
   {
-  	return prefs.getBoolPref("autopager.enabled"); // get a pref
+  	return getPrefs().getBoolPref(".enabled"); // get a pref
   }
   function saveMyName(myname)
   {
-  	prefs.setCharPref("autopager.myname", myname); // set a pref
+  	getPrefs().setCharPref(".myname", myname); // set a pref
   }
   function loadMyName()
   {
   	try{
   	 
-    return prefs.getCharPref("autopager.myname"); // get a pref
+    return getPrefs().getCharPref(".myname"); // get a pref
   	}catch(e)
   	{
   		alert(e);
@@ -1038,6 +1184,7 @@ function getGlobalEnabled()
 
   function setGlobalEnabled(enabled)
   {
+  	  
   	if (document.autoPagerEnabled != enabled)
   	{
   		saveEnableStat(enabled);
@@ -1045,12 +1192,10 @@ function getGlobalEnabled()
  	  document.autoPagerEnabled = enabled;
 	  setGlobalImageByStatus(enabled);
 	  if (enabled)
-		logInfo("Auto page enabled.",
-			"Auto page enabled.\nClick to disable auto pager.");
+		logInfo(getString("autopageenabled"),getString("autopageenabledTip"));
 	  else
-	  	logInfo("Auto page disabled.",
-			"Auto page disabled.\nClick to enable auto pager.");
-	  var enableMenuItem = document.getElementById("autopager-enabled");
+		logInfo(getString("autopagedisabled"),getString("autopagedisabledTip"));
+	 var enableMenuItem = document.getElementById("autopager-enabled");
 	  enableMenuItem.setAttribute("checked",enabled);	  		  
   }
   function logInfo(status,tip)
@@ -1079,7 +1224,7 @@ function getGlobalEnabled()
   function showMyName(){
   	 try{
     	var myname = document.getElementById("autopager-myname");
-	  	myname.label = "My Name:" + loadMyName();
+	  	myname.label = formatString("myname" ,[loadMyName()]);
   	 }catch(e)
   	 {
   	 	
@@ -1087,7 +1232,7 @@ function getGlobalEnabled()
     }
     function changeMyName()
     {
-    	var name = prompt("Please input your name, it will be added to the config your created."
+    	var name = prompt(getString(inputname)
     		,loadMyName());
     	if (name!=null && name.length>0)
     	{
