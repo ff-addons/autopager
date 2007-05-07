@@ -22,6 +22,17 @@
 	<script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
     
+    
+    <tabbox id="autopager-tabbox">
+	<tabs>
+		<!--<tab label="&setting.label.general;"/>-->
+		<tab label="&setting.label.sites;"/>
+	</tabs>
+	<tabpanels>
+		<!--<tabpanel id="general-setting">
+			
+		</tabpanel>-->
+		<tabpanel id="site-setting">
       <hbox flex="1">
         <vbox flex="1" orient="vertical">
           <listbox id="lstSites" flex="1"/>
@@ -74,5 +85,9 @@
           </vbox>
 
       </hbox>
+			
+		</tabpanel>
+	</tabpanels>
+</tabbox>
     
 </dialog>

@@ -5,10 +5,8 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:name>AutoPager</em:name>
-		<em:version>0.1.0.5</em:version>
-		<em:description>AutoPager is a firefox extensions to autoloading next page.It\\\'s configuration is base on XPath. You can find there is a built in function to create a XPath by click on the page.
-You can import some sample configuration from http://blogs.sun.com/wind/resource/autopager.xml. It includes the settings for google search ,google image search ,yahoo search and addons browser at addons.mozilla.org.It also support update settings from the comments at http://blogs.sun.com/wind/entry/autopager_site_config. If you have new site config please export and post to that page. Thanks.
-You can find XPath tutorials at http://www.w3schools.com/xpath/ and http://www.zvon.org/xxl/XPathTutorial/General/examples.html.</em:description>
+		<em:version>0.1.0.6</em:version>
+		<em:description>AutoPager is a firefox extensions to autoloading next page at backgrand.</em:description>
 		<em:creator>Wind Li</em:creator>
 		<em:id>autopager@mozilla.org</em:id>
  		<em:optionsURL>chrome://autopager/content/autopager.xul</em:optionsURL>		

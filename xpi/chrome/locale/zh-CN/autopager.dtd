@@ -15,7 +15,11 @@
 <!ENTITY setting.label.chkEnableJS "加载下一页时启用Javascript">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
+<!ENTITY setting.label.sites "站点列表">
+<!ENTITY setting.label.general "一般">
 
+<!ENTITY autopager.status.sitewizard "站点向导">
+<!ENTITY autopager.status.sitewizardTip "使用向导创建站点">
 
 <!ENTITY autopager.status.setting "设置">
 <!ENTITY autopager.status.settingTip "设置自动翻页选项.">

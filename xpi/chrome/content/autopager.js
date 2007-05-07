@@ -43,6 +43,20 @@ function autopagerOnLoad() {
 	window.addEventListener("select", onSelect, false);
 	
 };
+
+function sitewizard()
+{
+	alert(getString("selectlinkxpath"));
+	document.autopagerXPathModel = "wizard";
+	var doc = _content.document;
+	if(!doc.autoPagerSelectorEnabled)
+		enableSelector(doc,true);
+}
+function createXpath()
+{
+	document.autopagerXPathModel = "test";
+	enableSelector(_content.document,true);
+}
 function enableSelector(doc,setMenuStatus)
 {
 	//alert(doc);
@@ -175,8 +189,7 @@ function onInitDoc(doc) {
 
 				doc.autoPagerRunning = true;
 				var oldNodes = findNodeInDoc(doc.documentElement,autoSites[i].contentXPath);
-				if (debug)
-					logInfo(oldNodes, "go");
+				
 				doc.contentXPath = autoSites[i].contentXPath;
 				doc.margin = autoSites[i].margin;
 				doc.linkXPath = autoSites[i].linkXPath;
@@ -185,9 +198,11 @@ function onInitDoc(doc) {
 				
 				if (oldNodes!= null && oldNodes.length >0)
 					insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
+				if(insertPoint == null)
+					insertPoint = getLastDiv(doc);
 				//alert(oldNodes[oldNodes.length - 1]);
 				if (debug)
-					logInfo(oldNodes[oldNodes.length - 1], "go");
+					logInfo(insertPoint, "go");
 				var urlNodes = findNodeInDoc(doc.documentElement,doc.linkXPath);
 			  	//alert(urlNodes);
 				if (urlNodes != null && urlNodes.length >0)
@@ -630,7 +645,31 @@ function onXPathClick(event)
 	var path = getXPathForObject(target);
 	_content.document.xTestLastDoc = target.ownerDocument;
 	xTestXPath(target.ownerDocument,path);
-	
+	if (document.autopagerXPathModel == "wizard")
+	{
+		var doc = content.document.xTestLastDoc;
+		if (confirm(getString("xpathconfirm")))
+		{
+			var url = doc.location.href;
+			var site = newSite(url,url
+	  				,path,"//body/*");
+			site.createdByYou = true;
+			site.owner = loadMyName();
+			autoSites.push(site);
+			saveConfig(autoSites);
+			document.autopagerXPathModel = "";
+			openSetting(url);
+			if(doc.autoPagerSelectorEnabled)
+				enableSelector(_content.document,true);
+		}else if(!confirm(getString("tryagain")))
+		{
+			if(doc.autoPagerSelectorEnabled)
+				enableSelector(_content.document,true);
+		}
+		else
+			if(!doc.autoPagerSelectorEnabled)
+				enableSelector(_content.document,true);
+	}
 //	if (target.tagName == 'A')
 //		parserUrl(target.autoPagerHref);
 	
@@ -1215,8 +1254,9 @@ function getGlobalEnabled()
   		tooltip.childNodes[i].value = tips[i];
   }
   
-  function openSetting()
+  function openSetting(url)
   {
+  	window.autopagerSelectUrl=url;
 	window.open("chrome://autopager/content/autopager.xul", "autopager",
     	"chrome,resizable,centerscreen");
   }
@@ -1232,7 +1272,7 @@ function getGlobalEnabled()
     }
     function changeMyName()
     {
-    	var name = prompt(getString(inputname)
+    	var name = prompt(getString("inputname")
     		,loadMyName());
     	if (name!=null && name.length>0)
     	{

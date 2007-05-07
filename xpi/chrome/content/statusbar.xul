@@ -28,7 +28,7 @@
     	<menuitem
           label="&autopager.status.setting;"
           tooltiptext="&autopager.status.settingTip;"
-          oncommand="openSetting();"
+          oncommand="openSetting('');"
         />
     	<menuitem
           label="&autopager.status.update;"
@@ -52,12 +52,18 @@
         oncommand="exportSetting();"
         />
        	<menuseparator class="autipager-sep-global"/>
-        <menuitem id="autoPagerCreateXPath"
+        <menuitem
+          label="&autopager.status.sitewizard;"
+          tooltiptext="&autopager.status.sitewizardTip;"
+          oncommand="sitewizard();"
+        />
+   		<menuseparator class="autipager-sep-global"/>
+    	<menuitem id="autoPagerCreateXPath"
           label="&autopager.status.createXPath;"
           tooltiptext="&autopager.status.createXPathTip;"
           type="checkbox"
           autocheck="false" 
-          oncommand="enableSelector(_content.document,true);"
+          oncommand="createXpath();"
         /> 
        <menuitem 
         label="&autopager.status.testXPath;"

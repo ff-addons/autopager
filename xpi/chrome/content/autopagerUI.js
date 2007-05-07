@@ -14,7 +14,17 @@
         loadControls();
 		if (sites.length >= 0) {
             populateChooser();
-            chooseSite(0);
+            var index=0;
+            var url = window.opener.autopagerSelectUrl;
+	        if (url != null )
+	        {
+	          	for(index=0; index<sites.length && sites[index].urlPattern != url; ++index)
+	           	{
+	           	}
+	           	if(index>=sites.length)
+	           		index =0;
+	        }
+	        chooseSite(index);
         }
     }, false);
 
@@ -91,8 +101,6 @@
            		return;
            	}
              selectedSite.margin = margin.value;
-             listbox.childNodes[listbox.selectedIndex].label 
-             		= selectedSite.margin;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -206,7 +214,7 @@
     		return;
     		
         var site = newSite("http://yourhost/*","your desc"
-  				,"//a[contains(.//text(),'Next')]","//body/*[position() != last()]");
+  				,"//a[contains(.//text(),'Next')]","//body/*");
 		site.createdByYou = true;
 		site.owner = myname;
 		sites.push(site);

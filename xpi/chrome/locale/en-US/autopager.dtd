@@ -15,8 +15,11 @@
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
 <!ENTITY setting.label.margin "Paging when space less then">
 <!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.general "General">
 
-
+<!ENTITY autopager.status.sitewizard "Site Wizard">
+<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
 <!ENTITY autopager.status.setting "Manage Setting">
 <!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
 <!ENTITY autopager.status.update "Update Setting Online">
