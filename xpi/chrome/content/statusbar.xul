@@ -3,9 +3,11 @@
 
 <overlay id="autopagestatus" 
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
 <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
 <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
 <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+
 	         
 <statusbar id="status-bar">
  	<!--  onclick="enableSelector(_content.document);" -->
@@ -28,7 +30,7 @@
     	<menuitem
           label="&autopager.status.setting;"
           tooltiptext="&autopager.status.settingTip;"
-          oncommand="openSetting('');"
+          oncommand="openSetting(content.document.location.href);"
         />
     	<menuitem
           label="&autopager.status.update;"
@@ -76,6 +78,21 @@
         tooltiptext="&autopager.status.mynameTip;"
         oncommand="changeMyName();"
         />
+        <menuseparator class="autipager-sep-global"/>
+        <menu id="autopager-hidden-panel-menu" class="autopager-menu-class" 
+          onpopupshowing="javascript:void();" label="Page Holder"
+          hidden='true'>
+         <menupopup id="autopager-menupopup" >
+         	<menuitem id="autopager-show" 
+		        label="show"
+		        oncommand="splitbrowse.open(content.document,false);"
+		        />
+         	<menuitem id="autopager-hidden" 
+		        label="hidden"
+		        oncommand="splitbrowse.open(content.document,true);"
+		        />
+         </menupopup>	
+       </menu>
         <menuseparator class="autipager-sep-global"/>
        <menuitem id="autopager-enabled"
         label="&autopager.status.enabled;"

@@ -2,7 +2,7 @@
 	
     var sites = cloneSites(autoSites);
     
-    var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,btnAdd,btnCopy, btnDelete;
+    var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
     var slectedListItem = null;;
     var margin;
@@ -22,7 +22,15 @@
 	           	{
 	           	}
 	           	if(index>=sites.length)
-	           		index =0;
+	           	{
+		          	for(index=0; index<sites.length && 
+		          			!(convert2RegExp(sites[index].urlPattern).test(url)); ++index)
+		           	{
+		           	}
+	      	
+	           		if(index>=sites.length)
+	        	   		index =0;
+	           	}
 	        }
 	        chooseSite(index);
         }
@@ -53,6 +61,7 @@
         contentXPath = document.getElementById("lstContentXPath");
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
+        chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
         
         listbox.addEventListener("select", updateDetails, false);
@@ -68,6 +77,12 @@
         chkEnableJS.addEventListener("command", function() {
            if (selectedSite) {
              selectedSite.enableJS = chkEnableJS.checked;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        chkFixOverflow.addEventListener("command", function() {
+           if (selectedSite) {
+             selectedSite.fixOverflow = chkFixOverflow.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -158,7 +173,8 @@
             margin.textContent = "1.5";
             description.textContent = " ";
             chkEnabled.checked = true;
-            chkEnableJS.checked = true;
+            chkEnableJS.checked = false;
+            chkFixOverflow.checked = true;
             lblOwner.value = "";
         }
         else {
@@ -171,6 +187,7 @@
             description.value = selectedSite.desc;
             chkEnabled.checked = selectedSite.enabled;
             chkEnableJS.checked = selectedSite.enableJS;
+            chkFixOverflow.checked = selectedSite.fixOverflow;
             
             populateXPath(selectedSite.contentXPath);
             linkXPath.value    = selectedSite.linkXPath;

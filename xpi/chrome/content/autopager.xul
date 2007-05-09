@@ -23,16 +23,24 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
     
     
-    <tabbox id="autopager-tabbox">
+    <tabbox id="autopager-tabbox" flex="1">
 	<tabs>
 		<!--<tab label="&setting.label.general;"/>-->
 		<tab label="&setting.label.sites;"/>
 	</tabs>
-	<tabpanels>
+	<tabpanels  flex="1">
 		<!--<tabpanel id="general-setting">
 			
 		</tabpanel>-->
-		<tabpanel id="site-setting">
+		<tabpanel id="site-setting"  flex="1">
+			<!--
+<groupbox flex="1">
+  <caption label="Mozilla homepage"/>
+  <notificationbox flex="1">
+  	<browser src="http://www.mozilla.org" flex="2"/>
+  	<browser type="content" src="file:///usr/share/ubuntu-artwork/home/index.html" flex="0"/>
+  </notificationbox>
+</groupbox>		-->	
       <hbox flex="1">
         <vbox flex="1" orient="vertical">
           <listbox id="lstSites" flex="1"/>
@@ -58,6 +66,7 @@
 				<label control="margin" value="&setting.label.marginEnd;"/>
 			</hbox>
             <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="true" />
+			<checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
 			<vbox id="auto-xpath" flex="1">
 		        <groupbox id="grpContentXPath" orient="vertical" flex="1">
 		            <caption label="&setting.label.grpContentXPath;" />

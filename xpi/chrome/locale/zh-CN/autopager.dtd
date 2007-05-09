@@ -13,6 +13,7 @@
 <!ENTITY setting.label.btnEdit "编辑">
 <!ENTITY setting.label.chkEnabled "启用">
 <!ENTITY setting.label.chkEnableJS "加载下一页时启用Javascript">
+<!ENTITY setting.label.chkFixOverflow "取消页面溢出控制">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
 <!ENTITY setting.label.sites "站点列表">

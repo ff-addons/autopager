@@ -276,6 +276,10 @@ function loadConfigFromStr(configContents,remote) {
 					site.enableJS	= (getValue(childNode) == 'true');
 					//alert(site.enableJS + " " + childNode.firstChild.nodeValue);
 		      }
+		      else if (childNode.nodeName == "fixOverflow") {
+					site.fixOverflow	= (getValue(childNode) == 'true');
+					//alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
+		      }
 		      else if (childNode.nodeName == "createdByYou") {
 					site.createdByYou	= (getValue(childNode) == 'true');
 		      }
@@ -336,6 +340,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	    createNode(siteNode,"margin",siteObj.margin);
 	    createNode(siteNode,"enabled",siteObj.enabled);
 	    createNode(siteNode,"enableJS",siteObj.enableJS);
+	    createNode(siteNode,"fixOverflow",siteObj.fixOverflow);
 	    createNode(siteNode,"owner",siteObj.owner);
 	
 
@@ -379,6 +384,7 @@ function Site()
 	this.urlPattern  = null;
 	this.enabled  = true;
 	this.enableJS  = false;
+	this.fixOverflow  = false;
 	this.createdByYou  = false;
 	this.changedByYou  = false;
 	this.owner  = "";
@@ -395,6 +401,7 @@ function cloneSite(site)
 	newSite.margin  = site.margin;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
+	newSite.fixOverflow  = site.fixOverflow;
 	newSite.createdByYou  = site.createdByYou;
 	newSite.changedByYou  = site.changedByYou;
 	newSite.owner  = site.owner;
@@ -418,6 +425,7 @@ function cloneSite(site)
 						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
+						|| oldSite.fixOverflow  != site.fixOverflow
 						|| oldSite.owner  != site.owner
 						|| oldSite.linkXPath != site.linkXPath
 						|| oldSite.desc != site.desc
