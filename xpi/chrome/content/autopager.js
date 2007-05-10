@@ -1151,6 +1151,8 @@ function preparePath(doc,path,enableJS)
 //title
 	
 	var newPath = path;
+	if (newPath.indexOf("%") == -1)
+		return newPath;
 	try{
 		var href = "";
 		var host= "";
