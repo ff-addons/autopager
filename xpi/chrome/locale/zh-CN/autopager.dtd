@@ -19,11 +19,17 @@
 <!ENTITY setting.label.sites "站点列表">
 <!ENTITY setting.label.general "一般">
 
+<!ENTITY setting.label.smartenable "启用智能翻页">
+<!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用'|'分割):">
+<!ENTITY setting.label.grpSmart "智能翻页">
+<!ENTITY setting.label.smartlinks "仅当匹配不多于:">
+<!ENTITY setting.label.smartlinksEnd "链接时才启用翻页。">
+
 <!ENTITY autopager.status.sitewizard "站点向导">
 <!ENTITY autopager.status.sitewizardTip "使用向导创建站点">
 
 <!ENTITY autopager.status.setting "设置">
-<!ENTITY autopager.status.settingTip "设置自动翻页选项.">
+<!ENTITY autopager.status.settingTip "设置自动翻页选项。">
 <!ENTITY autopager.status.update "在线更新">
 <!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
 <!ENTITY autopager.status.importurl "从地址导入">

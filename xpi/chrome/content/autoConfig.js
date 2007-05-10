@@ -392,7 +392,9 @@ function Site()
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
 	this.desc = null;
 	this.oldSite = null;
-	this.margin = 1.5;
+	this.margin = 2;
+	
+	this.maxLinks = -1;
 }
 function cloneSite(site)
 {
@@ -453,7 +455,7 @@ function cloneSite(site)
 		return newSites;
 	}
 
-	function removeFromArray(array,index) {
+	function removeFromArrayByIndex(array,index) {
 		if (index < array.length)
 		{
 			for(var i = index;i<array.length -1;++i)
@@ -462,6 +464,17 @@ function cloneSite(site)
 			}
 			array[array.length-1]=null;
 			array.pop();
+		}
+	}
+	function removeFromArray(array,item) {
+		var index = -1;
+		for(index=0;index<array.length 
+				&& array[index]!=item;index++)
+		{	
+		}
+		if (index>=0 && index <array.length)
+		{
+			removeFromArrayByIndex(array,index);
 		}
 	}
 	

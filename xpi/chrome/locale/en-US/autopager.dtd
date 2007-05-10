@@ -19,6 +19,12 @@
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.general "General">
 
+<!ENTITY setting.label.smartenable "Enable Smart Paging">
+<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by '|'):">
+<!ENTITY setting.label.grpSmart "Smart Paging">
+<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
+<!ENTITY setting.label.smartlinksEnd "meet links.">
+
 <!ENTITY autopager.status.sitewizard "Site Wizard">
 <!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
 <!ENTITY autopager.status.setting "Manage Setting">

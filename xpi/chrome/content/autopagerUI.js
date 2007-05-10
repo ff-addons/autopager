@@ -4,11 +4,13 @@
     
     var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
+    var mynameText,grpSmart,smarttext,smartlinks;
     var slectedListItem = null;;
-    var margin;
+    var margin,smartMargin;
     var selectedSite;
     var contentXPath;
 	var xpath="";
+	var siteSearch;
     
     window.addEventListener("load", function(ev) {
         loadControls();
@@ -18,28 +20,42 @@
             var url = window.opener.autopagerSelectUrl;
 	        if (url != null )
 	        {
-	          	for(index=0; index<sites.length && sites[index].urlPattern != url; ++index)
-	           	{
-	           	}
-	           	if(index>=sites.length)
-	           	{
-		          	for(index=0; index<sites.length && 
-		          			!(convert2RegExp(sites[index].urlPattern).test(url)); ++index)
-		           	{
-		           	}
-	      	
-	           		if(index>=sites.length)
-	        	   		index =0;
-	           	}
+	          	index = getMatchedIndex(url);
 	        }
 	        chooseSite(index);
         }
     }, false);
+    function getMatchedIndex(url)
+    {
+    	var index = -1;
+		for(index=0; index<listbox.childNodes.length && 
+				listbox.childNodes[index].site.urlPattern != url; ++index)
+	    {
+	    }
+	    if(index>=sites.length)
+	    {
+		    for(index=0; index<listbox.childNodes.length && 
+		          !(convert2RegExp(listbox.childNodes[index].site.urlPattern).test(url)); ++index)
+		    {
+		    }
+	      	
+	    }
+        if(index>=listbox.childNodes.length)
+        	 index =0;
+	    return index;
+    }
 
     function handleOkButton() {
        	saveConfig(sites);
 		autoSites = loadConfig();
-        return true;
+
+		saveMyName(mynameText.value);
+        saveBoolPref("smartenable",smartenable.checked);
+		saveUTF8Pref("smarttext",smarttext.value);
+        savePref("smartlinks",smartlinks.value);
+		savePref("smartMargin",smartMargin.value);
+
+		return true;
     }
     function onSiteChange(listitem,site)
     {
@@ -63,43 +79,77 @@
         chkEnableJS = document.getElementById("chkEnableJS");
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
+        siteSearch  = document.getElementById("siteSearch");
+        
+        mynameText = document.getElementById("myname");
+        mynameText.value = loadMyName();
+
+        smartenable = document.getElementById("smartenable");
+        smartenable.checked = loadBoolPref("smartenable");
+
+		grpSmart = document.getElementById("grpSmart");
+		
+		smarttext = document.getElementById("smarttext");
+        smarttext.value = loadUTF8Pref("smarttext");
+        
+        smartlinks = document.getElementById("smartlinks");
+        smartlinks.value = loadPref("smartlinks");
+        
+        smartMargin = document.getElementById("smartMargin");
+        smartMargin.value = loadPref("smartMargin");
+        
+        enableSmartControl(smartenable.checked);
         
         listbox.addEventListener("select", updateDetails, false);
+        listbox.filterIng=false;
+        
         btnAdd.addEventListener("command", handleAddSiteButton, false);
         btnCopy.addEventListener("command", handleCopySiteButton, false);
         btnDelete.addEventListener("command", handleDeleteSiteButton, false);
         chkEnabled.addEventListener("command", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
              selectedSite.enabled = chkEnabled.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
+        
+        smartenable.addEventListener("command", function() {
+           enableSmartControl(smartenable.checked);
+        }, false);
+        
         chkEnableJS.addEventListener("command", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
              selectedSite.enableJS = chkEnableJS.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
         chkFixOverflow.addEventListener("command", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
              selectedSite.fixOverflow = chkFixOverflow.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
         linkXPath.addEventListener("change", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
              selectedSite.linkXPath = linkXPath.value;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
+        siteSearch.addEventListener("change", function() {
+           onSiteFilter(siteSearch.value);
+        }, false);
+        siteSearch.addEventListener("keyup", function() {
+           onSiteFilter(siteSearch.value);
+           siteSearch.focus();
+        }, false);
         description.addEventListener("change", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
              selectedSite.desc = description.value;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
         urlPattern.addEventListener("change", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
            	
              selectedSite.urlPattern = urlPattern.value;
              listbox.childNodes[listbox.selectedIndex].label 
@@ -108,7 +158,7 @@
            }
         }, false);
         margin.addEventListener("change", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
            	if (!isNumeric( margin.value))
            	{
            		alert(getString("inputnumber"));
@@ -120,7 +170,7 @@
            }
         }, false);
         contentXPath.addEventListener("change", function() {
-           if (selectedSite) {
+           if (selectedSite != null) {
            	 onPathChange();
            }
         }, false);
@@ -154,9 +204,16 @@
         }, false);
 
     }
+    function enableSmartControl(enabled)
+    {
+    	grpSmart.disabled = !enabled;
+    	smarttext.disabled = !enabled;
+		smartlinks.disabled = !enabled;
+        smartMargin.disabled = !enabled;
+    }
     function onPathChange()
     {
-		if (selectedSite) {
+		if (selectedSite != null) {
            	 selectedSite.contentXPath = new Array();
            	 for(var i =0;i<contentXPath.childNodes.length;++i)
            	 {
@@ -165,17 +222,23 @@
              onSiteChange(slectedListItem,selectedSite);
            }    	
     }
-	function updateDetails() {
-    	if (listbox.selectedCount == 0) {
-            selectedSite = null;
+    function clearInfo()
+    {
+    	selectedSite = null;
             slectedListItem = null;
-            urlPattern.textContent = " ";
-            margin.textContent = "1.5";
-            description.textContent = " ";
+            urlPattern.value = " ";
+            margin.value = "2";
+            description.value = " ";
             chkEnabled.checked = true;
             chkEnableJS.checked = false;
             chkFixOverflow.checked = true;
             lblOwner.value = "";
+    }
+	function updateDetails() {
+		if(listbox.filterIng)
+			return;
+    	if (listbox.selectedCount == 0) {
+            clearInfo();
         }
         else {
         	slectedListItem = listbox.getSelectedItem(0);
@@ -213,7 +276,7 @@
 	}
 	function checkMyName()
 	{
-		var myname = loadMyName();
+		var myname = mynameText.value;
     	if (myname==null || myname.length == 0)
     	{
     		myname = changeMyName();
@@ -223,6 +286,7 @@
     			return "";
     		}
     	}
+    	mynameText.value = myname;
     	return myname;
 	}
     function handleAddSiteButton() {
@@ -236,7 +300,7 @@
 		site.owner = myname;
 		sites.push(site);
 		addSite(site);    
-		chooseSite(sites.length-1);
+		chooseSite(getMatchedIndex(site.urlPattern));
 	}
     function handleCopySiteButton() {
     	if (listbox.selectedCount > 0) {
@@ -251,7 +315,7 @@
 			site.owner = myname;
 			sites.push(site);
 			addSite(site);    
-			chooseSite(sites.length-1);
+			chooseSite(listbox.childNodes.length-1);
 		}
     }
 	
@@ -261,13 +325,50 @@
         	var index = listbox.selectedIndex;
             selectedSite = listbox.getSelectedItem(0).site;
 	    	//alert(index);
-        	removeFromArray(sites,index);
+        	removeFromArray(sites,selectedSite);
         	listbox.removeChild(listbox.childNodes[index]);
 
         	if (listbox.childNodes.length > 0) {
             	chooseSite(Math.max(Math.min(index, listbox.childNodes.length - 1), 0));
         	}
         }
+    }
+
+    function onSiteFilter(filter)
+    {
+    	listbox.filterIng = true;
+    	var url = urlPattern.value;
+    	while(listbox.childNodes.length>0)
+    	{
+    		//remove from end
+    		listbox.removeChild(listbox.childNodes[listbox.childNodes.length-1]);
+    	}
+    	if (filter.length == 0)
+    	{
+    		populateChooser();
+    	}
+    	else
+    	{
+	    	for (var i = 0; i < sites.length; i++) {
+	        	var site = sites[i];
+	        	if (site.urlPattern.toLowerCase().indexOf(filter) != -1
+	        		|| site.desc.toLowerCase().indexOf(filter) != -1)
+	        	{
+	        		addSite(site);
+	        	}
+	        }
+	    }
+	    listbox.filterIng = false;
+	    var index = getMatchedIndex(url);
+	    //alert(listbox.childNodes.length);
+	    if ( listbox.childNodes.length > 0)
+	    	chooseSite(index);
+	    else
+	    {
+	    	//alert("clear");
+	    	clearInfo();
+	    }
+	    
     }
 
     function populateChooser() {

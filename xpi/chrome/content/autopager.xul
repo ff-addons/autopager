@@ -25,13 +25,10 @@
     
     <tabbox id="autopager-tabbox" flex="1">
 	<tabs>
-		<!--<tab label="&setting.label.general;"/>-->
 		<tab label="&setting.label.sites;"/>
+		<tab label="&setting.label.general;"/>
 	</tabs>
 	<tabpanels  flex="1">
-		<!--<tabpanel id="general-setting">
-			
-		</tabpanel>-->
 		<tabpanel id="site-setting"  flex="1">
 			<!--
 <groupbox flex="1">
@@ -43,7 +40,8 @@
 </groupbox>		-->	
       <hbox flex="1">
         <vbox flex="1" orient="vertical">
-          <listbox id="lstSites" flex="1"/>
+ 		  <textbox id="siteSearch"/>
+          <listbox id="lstSites" flex="10"/>
           <hbox>
 	           <button id="btnAdd" label="&setting.button.add;" />
 	           <button id="btnCopy" label="&setting.button.copy;" />
@@ -95,6 +93,43 @@
 
       </hbox>
 			
+		</tabpanel>
+		<tabpanel id="general-setting">
+			<vbox flex="1">
+				<hbox >
+					<label control="myname" value = "&autopager.status.myname;"/>
+					<textbox id="myname" flex="1"/>
+				</hbox>
+				<vbox flex="1">
+					<hbox >
+						<checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>
+					</hbox>
+					<hbox flex="1">
+						<groupbox id="grpSmart" orient="vertical" flex="1">
+							<caption label="&setting.label.grpSmart;" />
+							<vbox>
+								<hbox>
+									<label control="smarttext" value = "&setting.label.smarttext;" flex="1"/>
+								</hbox>
+								<hbox>
+									<textbox id="smarttext" flex="1"/>
+								</hbox>
+							</vbox>
+							<hbox>
+								<label control="smartlinks" value = "&setting.label.smartlinks;"/>
+								<textbox id="smartlinks" flex="1"/>
+								<label control="smartlinksEnd" value = "&setting.label.smartlinksEnd;"/>
+							</hbox>
+				            <hbox>
+						        <label control="smartMargin" value="&setting.label.margin;"/>
+								<textbox id="smartMargin" flex="1"/>
+								<label control="smartMargin" value="&setting.label.marginEnd;"/>
+							</hbox>
+							
+						</groupbox>
+					</hbox>
+				</vbox>
+			</vbox>
 		</tabpanel>
 	</tabpanels>
 </tabbox>

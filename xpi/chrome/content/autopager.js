@@ -37,6 +37,7 @@ var easy = false;
 autopagerOnLoad();
 var autopagerPrefs = null;
 var debug= false;
+var workingAutoSites=null;
 function autopagerOnLoad() {
 	// listen for tab switches
 	window.addEventListener("load", onPageLoad, true);
@@ -88,7 +89,6 @@ function enableSelector(doc,setMenuStatus)
 
 
 function onPageLoad(event) {
-	autoSites = loadConfig();
 	
 		
 	//var target = event.target;
@@ -179,6 +179,9 @@ function onPageLoad(event) {
 	}
 	//alert(doc.location.href);
 
+	workingAutoSites = loadConfig();
+	loadTempConfig();
+	
 	onInitDoc(doc);
 	if (doc.defaultView.frames != null)
 	{
@@ -191,6 +194,66 @@ function onPageLoad(event) {
 			//doc.defaultView.frames[i].addEventListener("load", onPageLoad, true);
 		}
 	}
+}
+function loadTempConfig()
+{
+	var smartenable = loadBoolPref("smartenable");
+	if (smartenable)
+	{
+		
+		var smarttext = loadUTF8Pref("smarttext");
+		if (smarttext.length>0)
+		{
+			var linkXPath = convertToXpath(smarttext);
+		    var smartlinks = loadPref("smartlinks");
+		    var site = newSite("*","temp site for smart paging"
+	  				,linkXPath,"//body/*");
+	  		site.maxLinks = smartlinks;
+	  		site.enableJS = true;
+	  		site.fixOverflow = true;
+	  		site.margin = loadPref("smartMargin");
+	  		workingAutoSites.push(site);
+	  		//alert(linkXPath);
+		}
+	}
+}
+function convertToXpath(str)
+{
+	var strs = str.split("|");
+	var strCon =  convertStringToXPath(strs,"");
+	var xpath = "//a[" + strCon + "] | //input[" + strCon + "]";
+	return xpath;
+}
+function xpathToLowerCase(str)
+{
+	return "translate(" + str +", 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
+}
+function convertStringToXPath(strs,dir)
+{
+	var xi="";
+	for(var i=0;i<strs.length;++i)
+	{
+		xi = appendOrCondition(xi,  dir + xpathToLowerCase ("text()") + " ='" + strs[i] + "'");
+		xi = appendOrCondition(xi,  dir + xpathToLowerCase ("@id") + "='" + strs[i] + "'");
+		xi = appendOrCondition(xi,  dir + xpathToLowerCase ("@name") + "='" + strs[i] + "'");
+		xi = appendOrCondition(xi,  dir + xpathToLowerCase ("@class") + "='" + strs[i] + "'");
+		xi = appendOrCondition(xi,  dir + xpathToLowerCase ("img/@src") + "='" + strs[i] + "'");
+		xi = appendOrCondition(xi,  dir + 
+									xpathToLowerCase ("substring(img/@src,string-length(img/@src) - " 
+										+ strs[i].length + ")") + "='" + strs[i] + "'");
+	}
+	return xi;
+}
+function appendOrCondition(base,newStr)
+{
+	if (base.length > 0)
+	{
+		if (newStr.length > 0)
+			return base + " or " + newStr;
+		else
+			return base;
+	}
+	return newStr;
 }
 
 function getPrefs()
@@ -241,25 +304,15 @@ function onInitDoc(doc) {
     }	
 	var url = doc.location.href;
 	var i=0;
-	for(i=0;i<autoSites.length;++i)
+	for(i=0;i<workingAutoSites.length;++i)
 	{
-		var pattern = convert2RegExp(autoSites[i].urlPattern);
+		var pattern = convert2RegExp(workingAutoSites[i].urlPattern);
       	if (pattern.test(url)) {
-      		if(autoSites[i].fixOverflow)
+      		if(workingAutoSites[i].fixOverflow)
       			fixOverflow(doc);
       		var msg="";
       		var info = "";
-      		if (getGlobalEnabled())
-      		{
-	      		msg = formatString("enableurl",[ url ]);
-	      		info = formatString("enableinfo",[url,autoSites[i].linkXPath,autoSites[i].contentXPath]);
-      		}
-      		else
-      		{
-      			msg = formatString("globaldisabled",[url]);
-      			info = msg;
-      		}
-      		logInfo(msg, info);
+      		
 			
       		var de = doc.documentElement;
 		    if (!de.autoPagerRunning)
@@ -268,24 +321,15 @@ function onInitDoc(doc) {
 				var nextUrl = null;
 
 				de.autoPagerRunning = true;
-				var oldNodes = findNodeInDoc(de,autoSites[i].contentXPath);
+				var oldNodes = findNodeInDoc(de,workingAutoSites[i].contentXPath);
 				
-				de.contentXPath = autoSites[i].contentXPath;
-				de.margin = autoSites[i].margin;
-				de.linkXPath = autoSites[i].linkXPath;
-				de.enabled = autoSites[i].enabled;
-				//if (autoSites[i].enabled)
+				de.contentXPath = workingAutoSites[i].contentXPath;
+				de.margin = workingAutoSites[i].margin;
+				de.linkXPath = workingAutoSites[i].linkXPath;
+				de.enabled = workingAutoSites[i].enabled;
+				//if (workingAutoSites[i].enabled)
 				de.autopagerSplitDocInited = false;
-				try{
-					if (autoSites[i].enableJS)
-					{
-						var splitbrowser = getSplitBrowserForDoc(doc);
-						splitbrowser.autopagerSplitWinFirstDocloaded = false;
-						splitbrowser.autopagerSplitWinFirstDocSubmited = false;
-					}
-				}catch(e)
-				{}				
-				de.enableJS = autoSites[i].enableJS;
+				de.enableJS = workingAutoSites[i].enableJS;
 				if (!de.autopagerPagingCount)
 					de.autopagerPagingCount = 0;
 				
@@ -296,26 +340,43 @@ function onInitDoc(doc) {
 				//alert(oldNodes[oldNodes.length - 1]);
 				if (debug)
 					logInfo(insertPoint, "go");
-				var urlNodes = findNodeInDoc(de,autoSites[i].linkXPath);
-			  	//alert(urlNodes);
+				var urlNodes = findNodeInDoc(de,workingAutoSites[i].linkXPath);
+			  	
+				var tooManyLinks = false;
+				if (workingAutoSites[i].maxLinks  != -1 && urlNodes != null 
+						&& urlNodes.length > workingAutoSites[i].maxLinks )
+						tooManyLinks = true;
+				
+				//alert(urlNodes);
 				if (urlNodes != null && urlNodes.length >0)
 				{
-					nextUrl = getNextUrl(doc,autoSites[i].enableJS,urlNodes[0]);
+					nextUrl = getNextUrl(doc,workingAutoSites[i].enableJS,urlNodes[0]);
 				}else
 					nextUrl = null;
 				//alert(insertPoint);
 				//alert(nextUrl);
-				var autopagerEnabled =	(insertPoint != null) && (nextUrl != null) && autoSites[i].enabled;
+				var autopagerEnabled =	(insertPoint != null) && (nextUrl != null) 
+								&& workingAutoSites[i].enabled && !(tooManyLinks);
 				de.autopagerEnabled = autopagerEnabled;
 				//alert(doc.autopagerEnabled);
 				de.autoPagerPage = 1;
 				de.autopagerinsertPoint = insertPoint;
-				if (autoSites[i].enableJS)
+				if (workingAutoSites[i].enableJS)
 					de.autopagernextUrl= null;
 				else
 					de.autopagernextUrl = nextUrl;
 				if (autopagerEnabled)
 				{
+					try{
+						if (workingAutoSites[i].enableJS)
+						{
+							var splitbrowser = getSplitBrowserForDoc(doc);
+							splitbrowser.autopagerSplitWinFirstDocloaded = false;
+							splitbrowser.autopagerSplitWinFirstDocSubmited = false;
+						}
+					}catch(e)
+					{}				
+					
 					if (!content.document.documentElement.autopagerEnabledDoc)
 						content.document.documentElement.autopagerEnabledDoc = new Array();
 					content.document.documentElement.autopagerEnabledDoc.push ( doc);
@@ -324,7 +385,16 @@ function onInitDoc(doc) {
 						content.document.documentElement.autopagerWatcherRunning = true;
 						scrollWatcher();
 					}
+		      		msg = formatString("enableurl",[ url ]);
+		      		info = formatString("enableinfo",[url,workingAutoSites[i].linkXPath,workingAutoSites[i].contentXPath]);
 				}
+	      		else if (!getGlobalEnabled())
+	      		{
+	      			msg = formatString("globaldisabled",[url]);
+	      			info = msg;
+	      		}
+	      		if (msg.length>0)
+	      			logInfo(msg, info);				
 	      	  	return true;
 		    }
       	}
@@ -772,8 +842,8 @@ function onXPathClick(event)
 				site.enableJS = false;
 			else
 				site.enableJS = true;
-			autoSites.push(site);
-			saveConfig(autoSites);
+			workingAutoSites.push(site);
+			saveConfig(workingAutoSites);
 			document.autopagerXPathModel = "";
 			openSetting(urlPattern);
 			if(doc.autoPagerSelectorEnabled)
@@ -1173,7 +1243,7 @@ function  pagingWatcher()
 {
 	var de = content.document.documentElement;
 	try{
-	  	if(de.autopagerEnabledDoc!=null)
+	  	if(getGlobalEnabled() && de.autopagerEnabledDoc!=null)
 	  	{
 	
 		  	var i =0;
@@ -1244,8 +1314,9 @@ function openInNewWindow(doc)
 	}
 
 };
-function findNodeInDoc(doc,xpath)
+function findNodeInDoc(doc,path)
 {
+	xpath = path;
 	if (xpath[0].length == 1)
 		return evaluateXPath(doc,xpath);
 	else
@@ -1369,20 +1440,91 @@ function getGlobalEnabled()
   }
   function saveMyName(myname)
   {
-  	getPrefs().setCharPref(".myname", myname); // set a pref
+  	saveUTF8Pref("myname", myname); // set a pref
   }
   function loadMyName()
   {
   	try{
   	 
-    return getPrefs().getCharPref(".myname"); // get a pref
+    return loadUTF8Pref("myname"); // get a pref
   	}catch(e)
   	{
-  		alertErr(e);
+  		//alertErr(e);
   	}
   	return "";
   }
 
+  function loadUTF8Pref(name)
+  {
+	var unicodeConverter = Components
+	    .classes["@mozilla.org/intl/scriptableunicodeconverter"]
+	    .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	  unicodeConverter.charset = "utf-8";
+	  var str = loadPref(name);
+	  try{
+	  	return unicodeConverter.ConvertToUnicode(str);
+	  }catch(e)
+	  {
+	  	return str;
+	  }	  	
+  }
+  function saveUTF8Pref(name,value)
+  {
+	var unicodeConverter = Components
+	    .classes["@mozilla.org/intl/scriptableunicodeconverter"]
+	    .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+	  unicodeConverter.charset = "UTF-8";
+	  try{
+	  	savePref(name,unicodeConverter.ConvertFromUnicode(value));
+	  }catch(e)
+	  {
+	  	savePref(name,value);
+	  }	  	
+  }
+  function loadPref(name)
+  {
+  	try{
+  	 
+    return getPrefs().getCharPref("." +  name); // get a pref
+  	}catch(e)
+  	{
+  		//alertErr(e);
+  	}
+  	return "";
+  }
+  function loadBoolPref(name)
+  {
+  	try{
+  	 
+    return getPrefs().getBoolPref("." +  name); // get a pref
+  	}catch(e)
+  	{
+  		//alertErr(e);
+  	}
+  	return "";
+  }
+  function savePref(name,value)
+  {
+  	try{
+  	 
+    return getPrefs().setCharPref("." +  name,value); // set a pref
+  	}catch(e)
+  	{
+  		//alertErr(e);
+  	}
+  	return "";
+  }
+  function saveBoolPref(name,value)
+  {
+  	try{
+  	 
+    return getPrefs().setBoolPref("." +  name,value); // get a pref
+  	}catch(e)
+  	{
+  		//alertErr(e);
+  	}
+  	return "";
+  }
   function setGlobalEnabled(enabled)
   {
   	  
