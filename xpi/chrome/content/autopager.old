@@ -268,9 +268,9 @@ function getPrefs()
 	}
 	return autopagerPrefs;
 }
-function fixOverflow(doc)
+function fixOverflow(de)
 {
-	var nodes = findNodeInDoc(doc,"//*[contains(@style,'overflow')]",false);
+	var nodes = findNodeInDoc(de.ownerDocument,"//*[contains(@style,'overflow')]",false);
 	if (nodes != null)
 	{
 		for(var i = 0;i<nodes.length;++i)
@@ -532,7 +532,7 @@ function createDiv(doc,divHtml)
 {
 	var div = doc.createElement("div");
     div.innerHTML = divHtml;
-    doc.documentElement.appendChild(div);
+    doc.body.appendChild(div);
     return div;
 };
 function getSelectorDiv(doc,divName)
