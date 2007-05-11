@@ -395,6 +395,8 @@ function Site()
 	this.margin = 2;
 	
 	this.maxLinks = -1;
+        this.isTemp = false;
+        this.tmpPaths = [];
 }
 function cloneSite(site)
 {
@@ -486,8 +488,10 @@ function getUpdateFrame(doc)
 	var frame = doc.getElementById(frameName);
 	if (frame == null || !frame)
 	{
-		var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px; '>" +
-				"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
+		var div = createDiv(doc,divName,
+		"border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px;");
+		div.innerHTML = "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
+		
 		//var div = createDiv(doc,"<div  id='" + divName + "' class='autoPagerS'  style='border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 600px; display: block; z-index: 90; left: 0px; top: 0px; height: 600px; '>" +
 		//		"<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe></div>");
 		frame = doc.getElementById(frameName);
@@ -514,7 +518,7 @@ function UpdateSetting(silence)
         {
         	if(xmlhttp.status == 200)
         	{
-        		var frame = getUpdateFrame(_content.document);
+        		var frame = getUpdateFrame(content.document);
         		frame.autoPagerInited = false;
         		frame.contentDocument.clear();
         		//alert(xmlhttp.responseText);

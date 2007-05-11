@@ -184,17 +184,29 @@ var splitbrowse = {
     
     if (!splitBrowser)
     {
+        
     	var vbox = document.createElement("vbox");
-    	if (browser.nextSibling)
-	    	browser.parentNode.insertBefore(vbox,browser.nextSibling);
-	    else
-	    	browser.parentNode.appendChild(vbox);
-	    
+        var splitBar = document.createElement("splitter");
+    	//if (browser.nextSibling)
+        //    {
+                var node = browser;
+            	browser.parentNode.insertBefore(vbox,node);
+	    	browser.parentNode.insertBefore(splitBar,node);
+        //    }
+	//    else
+        //    {
+	//    	browser.parentNode.appendChild(splitBar);
+        //    	browser.parentNode.appendChild(vbox);
+        //    }
+	    splitBar.setAttribute("id", id + "-splitbar");
+            splitBar.setAttribute("orient", "vertical");            
+            splitBar.className = "chromeclass-extrachrome";
+            
 	    splitBrowser = document.createElement("browser");
     
 	    splitBrowser.setAttribute("id", id);
 	    splitBrowser.setAttribute("name", id);
-
+             
 	    splitBrowser.setAttribute("type", "content");
     	splitBrowser.setAttribute("contextmenu", "contentAreaContextMenu");
 	    //splitBrowser.setAttribute("home", "about:black");
@@ -224,7 +236,8 @@ var splitbrowse = {
   },
   setVisible: function (splitBrowser,hidden)
   {
-  		this.hidden = hidden;
+    this.hidden = hidden;
+    var splitBar = document.getElementById(splitBrowser.id + "-splitbar");           
 	    if (!this.hidden)
 	    {
 	  		splitBrowser.parentNode.setAttribute("flex", "1");
@@ -235,6 +248,7 @@ var splitbrowse = {
 	  		splitBrowser.parentNode.setAttribute("flex", "0");
 	  		splitBrowser.setAttribute("flex", "1");
 	  	}
+    splitBar.hidden = hidden;
   	
   },
   open : function(doc,hidden) 
