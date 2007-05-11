@@ -116,7 +116,6 @@ const XULDOMUtils = {
   }
 };
 
-//this is modified from split panel
 var splitbrowse = {
   prefix : "autopager",
   domUtils: XULDOMUtils,
