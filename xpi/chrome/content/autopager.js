@@ -902,6 +902,8 @@ function onXPathClick(event)
 	var target = event.target;
 	if(target != event.currentTarget)
 		return false;
+	event.preventDefault();
+			
 	if (target.tagName != 'A' && target.parentNode.tagName == 'A')
 		target = target.parentNode;
 	var path = getXPathForObject(target);
@@ -922,7 +924,7 @@ function onXPathClick(event)
 			site.createdByYou = true;
 			site.owner = loadMyName();
 			//general link
-			if (target.tagName == "A" && target.autoPagerHref.toLowerCase().indexOf("javascript") == -1)
+			if (target.tagName == "A" && target.href.toLowerCase().indexOf("javascript") == -1)
 				site.enableJS = false;
 			else
 				site.enableJS = true;
