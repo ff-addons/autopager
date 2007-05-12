@@ -127,7 +127,7 @@ function importFromURL()
 {
 	var url = prompt(getString("inputurl"),
 		"http://blogs.sun.com/wind/resource/autopager.xml");
-	if (!url && url.length >0)
+	if (url!=null && url.length >0)
 	{
 		var sites = loadConfigFromUrl(url);
 		mergeSetting(sites,false);

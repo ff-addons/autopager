@@ -1,5 +1,5 @@
 <autopager>
-<site><urlPattern>http*://www.google.*/search?*</urlPattern><enabled>true</enabled><enableJS>true</enableJS><contentXPath>//div[@id='res']</contentXPath><linkXPath>//a[div/@id='nn']</linkXPath><desc>google search</desc></site>
+<site><urlPattern>http*://www.google.*/search?*</urlPattern><enabled>true</enabled><enableJS>false</enableJS><contentXPath>//div[@id='res']</contentXPath><linkXPath>//a[div/@id='nn']</linkXPath><desc>google search</desc></site>
 <site><urlPattern>http*://images.google.*/images?*</urlPattern><enabled>true</enabled><enableJS>true</enableJS><contentXPath>//div[@id='res']</contentXPath><linkXPath>//a[div/@id='nn']</linkXPath><desc>google image search</desc></site>
 <site><urlPattern>http://search.yahoo.com/search?*</urlPattern><enabled>true</enabled><enableJS>false</enableJS><contentXPath>//div[@id='yschcont' and div/@id='yschpri']</contentXPath><contentXPath>//div[@id='yschpg']</contentXPath><linkXPath>//a[contains(.//text(),'Next')]</linkXPath><desc>yahoo search</desc></site>
 <site><urlPattern>https://addons.mozilla.org/en-US/*/*</urlPattern><enabled>true</enabled><enableJS>false</enableJS><contentXPath>//div[@id='content']</contentXPath><linkXPath>//a[contains(text(),'next »')]</linkXPath><desc>mozilla addons</desc></site>

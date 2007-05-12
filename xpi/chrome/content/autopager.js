@@ -146,13 +146,24 @@ function onPageLoad(event) {
         setGlobalEnabled(loadEnableStat());
     }
     
-    setGlobalImageByStatus(getGlobalEnabled());
-    document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
     var doc = event.originalTarget;
-    var browser = splitbrowse.getBrowserNode(doc);
+    if (!(doc instanceof HTMLDocument))
+        {
+            return;
+        }
+    setGlobalImageByStatus(getGlobalEnabled());
+    try{
+        hiddenDiv(getPagingWatcherDiv(content.document),true);
+        document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
+    }catch(e){}
+    
+    
     //don't handle frames
-    if (browser.contentDocument != doc)
+    if (doc.defaultView != doc.defaultView.top)
         return;
+    var browser = splitbrowse.getBrowserNode(doc);
+    //if (browser.contentDocument != doc)
+    //    return;
     //	alert(event.target + " " 
     //			+ event.currentTarget + " " 
     //			+ event.originalTarget );
@@ -589,11 +600,16 @@ function getSelectorLoadFrame(doc) {
         "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
         
         frame = doc.getElementById(frameName);
-        frame.addEventListener("load", onFrameLoad, false);
         frame.autoPagerInited = false;
         //create a empty div in target
         getLastDiv(doc);
     }
+    //fix for enable to work at restored session
+    try{
+        frame.removeEventListener("load", onFrameLoad, false);
+    }catch(e){}
+    
+    frame.addEventListener("load", onFrameLoad, false);
     return frame;
 };
 
@@ -647,6 +663,7 @@ function hiddenDiv(div,hidden) {
     }else {
         div.style.display = "block";
     }
+	//div.hidden = hidden;
 }
 function createPagerSelectorDivs(doc,target) {
     if (selectedObj) {
@@ -1245,29 +1262,47 @@ function onStopPaging(doc) {
     }
     doc.documentElement.autopagerPagingCount--;
 }
+function getPagingWatcherDiv(doc)
+{
+	var divName = "autoPagerBorderPaging";
+    var div = doc.getElementById(divName);
+    if (!div) {
+    var style = "position: fixed; z-index: 2; font-size: 75%; bottom: 1px; right: 15px;"
+    		+ "padding: 1px; background: green none repeat scroll 0%; display:none "; 
+        div = createDiv(doc,divName,style);
+        div.innerHTML = "<b>Loading ...</b>";
+        
+    }
+    return div;
+	
+}
 function  pagingWatcher() {
-    var de = content.document.documentElement;
+	var de = content.document.documentElement;
     try{
         if(getGlobalEnabled() && de.autopagerEnabledDoc!=null) {
+    	
             
             var i =0;
             var Enable = false;
             for(i=0;!Enable && i<de.autopagerEnabledDoc.length;i++) {
-                doc = de.autopagerEnabledDoc[i];
+                var doc = de.autopagerEnabledDoc[i];
                 Enable = doc.documentElement.autopagerPagingCount>0;
             }
             if (Enable) {
+	            hiddenDiv(getPagingWatcherDiv(content.document),false);
                 document.autoPagerImageShowStatus = !document.autoPagerImageShowStatus;
                 setGlobalImageByStatus(document.autoPagerImageShowStatus);
                 var self = arguments.callee;
-                setTimeout(self, 10 +Math.random()*200);
+                setTimeout(self, 100);//10 +Math.random()*200);
             }
         }
         else {
+            hiddenDiv(getPagingWatcherDiv(content.document),true);
             setGlobalImageByStatus(getGlobalEnabled());
         }
     }catch(e) {
         setGlobalImageByStatus(getGlobalEnabled());
+        hiddenDiv(getPagingWatcherDiv(content.document),true);
     }
     
 };
