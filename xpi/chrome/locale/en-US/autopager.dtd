@@ -20,7 +20,13 @@
 <!ENTITY setting.label.marginEnd "window hight">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.general "General">
-
+<!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.doubleclick "+Double Click">
+<!ENTITY setting.label.loading "loading notification style:">
+  
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by '|'):">
 <!ENTITY setting.label.grpSmart "Smart Paging">

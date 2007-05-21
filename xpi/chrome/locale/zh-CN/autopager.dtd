@@ -20,6 +20,12 @@
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
 <!ENTITY setting.label.sites "站点列表">
 <!ENTITY setting.label.general "一般">
+<!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.doubleclick "+双击">
+<!ENTITY setting.label.loading "'加载中'提示的样式:">
 
 <!ENTITY setting.label.smartenable "启用智能翻页">
 <!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用'|'分割):">

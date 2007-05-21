@@ -55,7 +55,8 @@
           	<hbox>
 		        <label control="lblOwner" value="&setting.label.lblOwner;"/>
 		        <label id="lblOwner" value=""/>
-			</hbox>
+		</hbox>
+
 			<checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
           	<hbox>
 		        <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
@@ -105,6 +106,17 @@
 					<label control="myname" value = "&autopager.status.myname;"/>
 					<textbox id="myname" flex="1"/>
 				</hbox>
+				<hbox >
+					<label control="loading" value = "&setting.label.loading;"/>
+					<textbox id="loading" flex="1"/>
+				</hbox>
+		<hbox>
+		        <label control="chkCtrl" value="&setting.label.hotkeys;"/>
+		        <checkbox id="chkCtrl" label="&setting.label.chkCtrl;" checked="true" />
+		        <checkbox id="chkAlt" label="&setting.label.chkAlt;" checked="false" />
+		        <checkbox id="chkShift" label="&setting.label.chkShift;" checked="false" />
+		        <label value="&setting.label.doubleclick;"/>
+		</hbox>
 				<vbox flex="1">
 					<hbox >
 						<checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>

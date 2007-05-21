@@ -5,9 +5,11 @@
 
 	<Description about="urn:mozilla:install-manifest">
 		<em:name>AutoPager</em:name>
-		<em:version>0.1.2.5</em:version>
+		<em:version>0.1.2.6</em:version>
 		<em:description>AutoPager is a firefox extensions to autoloading next page at backgrand.And you can use it an XPath generator too.</em:description>
 		<em:creator>Wind Li</em:creator>
+                <em:contributor>skylove  at http://bbs.chinaunix.net</em:contributor>
+		<em:contributor>DLSQFLY  at http://forums.mozine.cn</em:contributor>
 		<em:id>autopager@mozilla.org</em:id>
  		<em:optionsURL>chrome://autopager/content/autopager.xul</em:optionsURL>	
  			

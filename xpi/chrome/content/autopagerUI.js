@@ -5,6 +5,9 @@
     var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
+    var chkCtrl,chkAlt,chkShift;
+    var txtLoading;
+
     var mynameText,grpSmart,smarttext,smartlinks;
     var slectedListItem = null;;
     var margin,smartMargin;
@@ -55,7 +58,10 @@
 		saveUTF8Pref("smarttext",smarttext.value);
         savePref("smartlinks",smartlinks.value);
 		savePref("smartMargin",smartMargin.value);
-
+         setCtrlKey(chkCtrl.checked);
+         setAltKey(chkAlt.checked );
+         setShiftKey(chkShift.checked);
+         setLoadingStyle(txtLoading.value);
 		return true;
     }
     function onSiteChange(listitem,site)
@@ -88,7 +94,16 @@
         
         mynameText = document.getElementById("myname");
         mynameText.value = loadMyName();
-
+        txtLoading = document.getElementById("loading");
+        txtLoading.value = getLoadingStyle();
+        //var chkCtrl,chkAlt,chkShift;
+        chkCtrl = document.getElementById("chkCtrl");
+        chkAlt = document.getElementById("chkAlt");
+        chkShift = document.getElementById("chkShift");
+        chkCtrl.checked = getCtrlKey();
+        chkAlt.checked = getAltKey();
+        chkShift.checked = getShiftKey();
+        
         smartenable = document.getElementById("smartenable");
         smartenable.checked = loadBoolPref("smartenable");
 

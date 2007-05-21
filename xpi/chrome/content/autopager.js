@@ -356,6 +356,31 @@ function fixOverflow(doc) {
         }catch(e){ alert(e);}
         */
 }
+function getCtrlKey()
+{
+    return getPrefs().getBoolPref(".enablehotkeys.ctrlkey");
+}
+function setCtrlKey(value)
+{
+    return getPrefs().setBoolPref(".enablehotkeys.ctrlkey",value);
+}
+function getAltKey()
+{
+    return getPrefs().getBoolPref(".enablehotkeys.altkey");
+}
+function setAltKey(value)
+{
+    return getPrefs().setBoolPref(".enablehotkeys.altkey",value);
+}
+function getShiftKey()
+{
+    return getPrefs().getBoolPref(".enablehotkeys.shiftkey");
+}
+function setShiftKey(value)
+{
+    return getPrefs().setBoolPref(".enablehotkeys.shiftkey",value);
+}
+
 function onInitDoc(doc) {
     try{
         debug=getPrefs().getBoolPref(".debug");
@@ -378,7 +403,8 @@ function onInitDoc(doc) {
             event.clientY + 20 < window.innerHeight &&
             event.clientX > 20 &&
             event.clientY > 20) {
-                setGlobalEnabled(!getGlobalEnabled());
+                if (event.ctrlKey == getCtrlKey() && event.altKey == getAltKey() && event.shiftKey == getShiftKey())
+                    setGlobalEnabled(!getGlobalEnabled());
             }
         },true
         );
@@ -1324,10 +1350,10 @@ function getPagingWatcherDiv(doc)
 	var divName = "autoPagerBorderPaging";
     var div = doc.getElementById(divName);
     if (!div) {
-    var style = "position: fixed; z-index: 2; font-size: 75%; bottom: 1px; right: 15px;"
-    		+ "padding: 1px; background: green none repeat scroll 0%; display:none "; 
+        var str = getString("loading");
+    var style = getLoadingStyle();
         div = createDiv(doc,divName,style);
-        div.innerHTML = "<b>Loading ...</b>";
+        div.innerHTML = str;//"<b>Loading ...</b>";
         
     }
     return div;
@@ -1503,7 +1529,25 @@ function loadMyName() {
     }
     return "";
 }
-
+function getLoadingStyle()
+{
+ try{
+        
+        return loadUTF8Pref("loading"); // get a pref
+    }catch(e) {
+        //alertErr(e);
+    }
+    return "";
+}
+function setLoadingStyle(value)
+{
+ try{
+        
+        saveUTF8Pref("loading",value); // get a pref
+    }catch(e) {
+        //alertErr(e);
+    }
+}
 function loadUTF8Pref(name) {
     var unicodeConverter = Components
     .classes["@mozilla.org/intl/scriptableunicodeconverter"]
