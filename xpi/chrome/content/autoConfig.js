@@ -257,6 +257,8 @@ function loadConfigFromStr(configContents,remote) {
 		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
 		      if (childNode.nodeName == "urlPattern") {
 					site.urlPattern = getValue(childNode);
+		      }else if (childNode.nodeName == "urlIsRegex") {
+					site.isRegex	= (getValue(childNode) == 'true');
 		      }
 		      else if (childNode.nodeName == "margin") {
 		      		var val = getValue(childNode);
@@ -340,6 +342,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	    var siteNode = doc.createElement("site");
 	
 	    createNode(siteNode,"urlPattern",siteObj.urlPattern);
+	    createNode(siteNode,"urlIsRegex",siteObj.isRegex);
 	    createNode(siteNode,"margin",siteObj.margin);
 	    createNode(siteNode,"enabled",siteObj.enabled);
 	    createNode(siteNode,"enableJS",siteObj.enableJS);
@@ -385,6 +388,7 @@ function getWriteStream(file) {
 function Site()
 {
 	this.urlPattern  = null;
+        this.isRegex = false;
 	this.enabled  = true;
 	this.enableJS  = false;
 	this.fixOverflow  = false;
@@ -405,6 +409,7 @@ function cloneSite(site)
 {
 	var newSite = new Site();
 	newSite.urlPattern  = site.urlPattern;
+	newSite.isRegex  = site.isRegex;
 	newSite.margin  = site.margin;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
@@ -429,6 +434,7 @@ function cloneSite(site)
 		{
 			var oldSite = site.oldSite;
 			if (oldSite.urlPattern  != site.urlPattern 
+                                                || oldSite.isRegex  != site.isRegex
 						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS

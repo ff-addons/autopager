@@ -9,6 +9,7 @@
 <!ENTITY setting.button.copy "Copy">
 <!ENTITY setting.label.lblOwner "Created By:">
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
+<!ENTITY setting.label.chkIsRegex "Is RegExp?">
 <!ENTITY setting.label.lblDesc "Desciption:">
 <!ENTITY setting.label.grpContentXPath "Content XPath:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">

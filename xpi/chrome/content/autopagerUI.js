@@ -2,7 +2,7 @@
 	
     var sites = cloneSites(autoSites);
     
-    var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
+    var listbox, urlPattern,isRegex, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift;
@@ -39,7 +39,7 @@
 	    if(index>=sites.length)
 	    {
 		    for(index=0; index<listbox.childNodes.length && 
-		          !(convert2RegExp(listbox.childNodes[index].site.urlPattern).test(url)); ++index)
+		          !(getRegExp(listbox.childNodes[index].site).test(url)); ++index)
 		    {
 		    }
 	      	
@@ -72,6 +72,7 @@
     function loadControls() {
         listbox = document.getElementById("lstSites");
         urlPattern = document.getElementById("urlPattern");
+        isRegex = document.getElementById("chkIsRegex");
         margin = document.getElementById("margin");
         lblOwner = document.getElementById("lblOwner");
         description = document.getElementById("desc");
@@ -174,6 +175,13 @@
              selectedSite.urlPattern = urlPattern.value;
              listbox.childNodes[listbox.selectedIndex].label 
              		= selectedSite.urlPattern;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        isRegex.addEventListener("command", function() {
+           if (selectedSite != null) {
+           	
+             selectedSite.isRegex = isRegex.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -320,6 +328,7 @@
         	selectedSite = slectedListItem.site;
 			
             urlPattern.value = selectedSite.urlPattern;
+            isRegex.checked = selectedSite.isRegex;
             margin.value = selectedSite.margin;
             description.value = selectedSite.desc;
             chkEnabled.checked = selectedSite.enabled;
@@ -387,6 +396,7 @@
 	    			selectedSite.linkXPath,selectedSite.contentXPath);
 			site.createdByYou = true;
 			site.owner = myname;
+                        site.isRegex = selectedSite.isRegex;
 			sites.push(site);
 			addSite(site,sites.length -1);    
 			chooseSite(listbox.childNodes.length-1);

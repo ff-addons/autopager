@@ -60,8 +60,9 @@
 			<checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
           	<hbox>
 		        <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+                                <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
 				<textbox id="urlPattern" flex="1"/>
-			</hbox>
+                </hbox>
             <hbox>
 		        <label control="margin" value="&setting.label.margin;"/>
 				<textbox id="margin" flex="1"/>

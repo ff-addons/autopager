@@ -9,6 +9,7 @@
 <!ENTITY setting.button.copy "复制">
 <!ENTITY setting.label.lblOwner "创建人:">
 <!ENTITY setting.label.lblURLPattern "地址通配符:">
+<!ENTITY setting.label.chkIsRegex "使用正则表达式">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.grpContentXPath "内容选择XPath路径:">
 <!ENTITY setting.label.lblLinkXPath "下一页XPath路径:">

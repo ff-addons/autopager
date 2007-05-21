@@ -381,6 +381,13 @@ function setShiftKey(value)
     return getPrefs().setBoolPref(".enablehotkeys.shiftkey",value);
 }
 
+function getRegExp(site)
+{
+    if (site.isRegex)
+        return new RegExp(site.urlPattern);
+    else
+        return convert2RegExp(site.urlPattern);
+}
 function onInitDoc(doc) {
     try{
         debug=getPrefs().getBoolPref(".debug");
@@ -412,7 +419,7 @@ function onInitDoc(doc) {
     var url = doc.location.href;
     var i=0;
     for(i=0;i<workingAutoSites.length;++i) {
-        var pattern = convert2RegExp(workingAutoSites[i].urlPattern);
+        var pattern = getRegExp(workingAutoSites[i]);
         if (pattern.test(url)) {
 
             var msg="";
