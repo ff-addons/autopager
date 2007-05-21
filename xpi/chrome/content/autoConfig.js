@@ -152,7 +152,10 @@ function exportSetting()
 {
 	var file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
 	if (file)
-		saveConfigToFile(autoSites,file,false);
+        {
+            autoSites = loadConfig();
+            saveConfigToFile(autoSites,file,false);
+         }
 }
 
 function selectFile  (title,mode) {

@@ -57,7 +57,7 @@
         <menuitem
           label="&autopager.status.sitewizard;"
           tooltiptext="&autopager.status.sitewizardTip;"
-          oncommand="sitewizard();"
+          oncommand="sitewizard( content.document);"
         />
    		<menuseparator class="autipager-sep-global"/>
     	<menuitem id="autoPagerCreateXPath"
@@ -65,12 +65,12 @@
           tooltiptext="&autopager.status.createXPathTip;"
           type="checkbox"
           autocheck="false" 
-          oncommand="createXpath();"
+          oncommand="createXpath( content.document);"
         /> 
        <menuitem 
         label="&autopager.status.testXPath;"
         tooltiptext="&autopager.status.createXPathTip;"
-        oncommand="xPathTest();"
+        oncommand="xPathTest( content.document);"
         />
         <menuseparator class="autipager-sep-global"/>
        <menuitem id="autopager-myname"

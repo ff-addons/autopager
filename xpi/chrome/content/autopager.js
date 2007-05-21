@@ -45,16 +45,15 @@ function autopagerOnLoad() {
     
 };
 
-function sitewizard() {
+function sitewizard(doc) {
     alert(getString("selectlinkxpath"));
     document.autopagerXPathModel = "wizard";
-    var doc = content.document;
     if(!doc.documentElement.autoPagerSelectorEnabled)
         enableSelector(doc,true);
 }
-function createXpath() {
+function createXpath(doc) {
     document.autopagerXPathModel = "test";
-    enableSelector(content.document,true);
+    enableSelector(doc,true);
 }
 function addStyleSheetToDoc(doc,styleSheet) {
     if(doc.createStyleSheet) {
@@ -153,7 +152,7 @@ function onPageLoad(event) {
         }
     setGlobalImageByStatus(getGlobalEnabled());
     try{
-        hiddenDiv(getPagingWatcherDiv(content.document),true);
+        hiddenDiv(getPagingWatcherDiv(doc),true);
         document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
     }catch(e){}
     
@@ -317,6 +316,45 @@ function fixOverflow(doc) {
             node.style.overflow = "visible";
         }
     }
+    nodes = findNodeInDoc(doc,"//*[contains(@style,'position')]",false);
+    if (nodes != null) {
+        for(var i = 0;i<nodes.length;++i) {
+            var node = nodes[i];
+            if ( node.style.position == "fixed" && node.className != "autoPagerS")
+                node.style.position = "absolute";
+        }
+    }
+    /*
+    try{
+    if (doc.styleSheets.length>0)
+        {
+            for (var i =0;i< doc.styleSheets.length;i++)
+                {
+                    var sheet = doc.styleSheets[i];
+                    for (var j=0;j<sheet.cssRules.length;j++)
+                        {
+                            var rule = sheet.cssRules.item(j);
+                            if (rule!=null)
+                            {
+                                if (rule.style != null)
+                                    {
+                                        if (rule.style.position != null && rule.style.position.toLowerCase().indexOf ("fixed")!= -1 )
+                                            {
+                                                //alert(rule.style.position);
+                                                sheet.deleteRule(j);
+                                                j--;
+                                            //rule.style.position = "absolute ! important";
+                                            }
+                                            else
+                                            rule.style.overflow = "visible";
+                                    }
+                            }
+                            
+                        }
+                }
+        }
+        }catch(e){ alert(e);}
+        */
 }
 function onInitDoc(doc) {
     try{
@@ -350,8 +388,7 @@ function onInitDoc(doc) {
     for(i=0;i<workingAutoSites.length;++i) {
         var pattern = convert2RegExp(workingAutoSites[i].urlPattern);
         if (pattern.test(url)) {
-            if(workingAutoSites[i].fixOverflow)
-                fixOverflow(doc);
+
             var msg="";
             var info = "";
             
@@ -418,6 +455,9 @@ function onInitDoc(doc) {
                 else
                     de.autopagernextUrl = nextUrl;
                 if (autopagerEnabled) {
+                     if(workingAutoSites[i].fixOverflow)
+                        fixOverflow(doc);
+
                     try{
                         if (workingAutoSites[i].enableJS) {
                             var splitbrowser = getSplitBrowserForDoc(doc);
@@ -427,11 +467,12 @@ function onInitDoc(doc) {
                     }catch(e)
                     {}				
                     
-                    if (!content.document.documentElement.autopagerEnabledDoc)
-                        content.document.documentElement.autopagerEnabledDoc = new Array();
-                    content.document.documentElement.autopagerEnabledDoc.push( doc);
-                    if (!content.document.documentElement.autopagerWatcherRunning) {
-                        content.document.documentElement.autopagerWatcherRunning = true;
+                    var topDoc = doc.defaultView.top.document;
+                    if (!topDoc.documentElement.autopagerEnabledDoc)
+                        topDoc.documentElement.autopagerEnabledDoc = new Array();
+                    topDoc.documentElement.autopagerEnabledDoc.push( doc);
+                    if (!topDoc.documentElement.autopagerWatcherRunning) {
+                       topDoc.documentElement.autopagerWatcherRunning = true;
                         scrollWatcher();
                     }
                     msg = formatString("enableurl",[ url ]);
@@ -477,8 +518,11 @@ function do_request(doc){
     if (doc.documentElement.enableJS)
         browser = getSplitBrowserForDoc(doc);
     if (nextUrl != null || (doc.documentElement.enableJS && !browser.autopagerSplitWinFirstDocSubmited)) {
-        onStartPaging(doc);
-        processNextDoc(doc,nextUrl);
+        if (nextUrl == null || (nextUrl instanceof String) || !nextUrl.disabled)
+        {
+            onStartPaging(doc);
+            processNextDoc(doc,nextUrl);
+        }
     }
 };
 
@@ -506,6 +550,8 @@ function  scrollWatcher() {
                 ? scroolDoc.documentElement.scrollTop : scroolDoc.body.scrollTop;
                 var sh = (scroolDoc.documentElement && scroolDoc.documentElement.scrollHeight)
                 ? scroolDoc.documentElement.scrollHeight : scroolDoc.body.scrollHeight;
+                if (scroolDoc.body != null && scroolDoc.body.scrollHeight > sh)
+                    sh = scroolDoc.body.scrollHeight;
                 
                 var wh = window.innerHeight ? window.innerHeight : scroolDoc.documentElement.clientHeight;
                 var remain = sh - sc - wh;
@@ -628,9 +674,9 @@ function getLastDiv(doc) {
 
 function enableClickOnNode(node,enabled) {
     if (enabled) {
-        node.addEventListener("click",onXPathClick,false);
+        node.addEventListener("click",onXPathClick,true);
     }else {
-        node.removeEventListener("click",onXPathClick,false);
+        node.removeEventListener("click",onXPathClick,true);
     }
 };
 function enableClick(node,enabled) {
@@ -746,6 +792,12 @@ function getXIdetify(node,dir) {
             if (node.getAttribute("name") != null && node.getAttribute("name").length >0) {
                 xi = appendCondition(xi,dir + "@name='" + node.getAttribute("name") + "'");
             }
+            if (node.getAttribute("value") != null && node.getAttribute("value").length >0) {
+                xi = appendCondition(xi,dir + "@value='" + node.getAttribute("value") + "'");
+            }
+            if (node.getAttribute("src") != null && node.getAttribute("src").length >0) {
+                xi = appendCondition(xi,dir + "@src='" + node.getAttribute("src") + "'");
+            }
         }
         else if(node.tagName == "IMG") {
             if (node.getAttribute("src") != null && node.getAttribute("src").length >0) {
@@ -829,10 +881,10 @@ function getXPathForObject(target) {
     return path;	
 }
 function onXPathClick(event) {
+    event.preventDefault();
     var target = event.target;
     if(target != event.currentTarget)
         return false;
-    event.preventDefault();
     
     if (target.tagName != 'A' && target.parentNode.tagName == 'A')
         target = target.parentNode;
@@ -901,19 +953,19 @@ function onFrameLoad(event) {
     //alert(event.originalTarget);
     
     var target = null;
-    if (event.originalTarget != null)
-        target = event.originalTarget;
-    else if (event.target != null)
+     if (event.target != null)
         target = event.target;
+    else if (event.originalTarget != null)
+        target = event.originalTarget;
     else
         target = event.currentTarget;
     //alert(target);
-    var frame=null;
-    try{
-        frame = getSelectorLoadFrame(content.document);
-    }catch(e) {
-        frame = target;
-    }
+    var frame=target;
+    //try{
+   //     frame = getSelectorLoadFrame(content.document);
+    //}catch(e) {
+   //     frame = target;
+    //}
     if (frame.contentDocument.documentURI == 'about:black')
         return;
     if (!frame.autoPagerInited) {
@@ -981,7 +1033,7 @@ function getContentType(doc) {
     return type;
 }
 function getSplitBrowserForDoc(doc) {
-    var win = splitbrowse.getSplitBrowser(content.document);
+    var win = splitbrowse.getSplitBrowser(doc);
     if (debug)
         splitbrowse.show(win);
     win.auotpagerContentDoc = doc;
@@ -1261,6 +1313,11 @@ function onStopPaging(doc) {
     }catch(e) {		
     }
     doc.documentElement.autopagerPagingCount--;
+    if (doc.documentElement.autopagerPagingCount == 0)
+    {
+                hiddenDiv(getPagingWatcherDiv(doc),true);
+            setGlobalImageByStatus(getGlobalEnabled());
+    }
 }
 function getPagingWatcherDiv(doc)
 {
@@ -1332,22 +1389,26 @@ function findNodeInDoc(doc,path,enableJS) {
     else {
         var result = evaluateXPath(doc,xpath[0],enableJS);
         for(var i=1;i<xpath.length;i++) {
-            var nodes = evaluateXPath(doc,xpath[1],enableJS);
+            var nodes = evaluateXPath(doc,xpath[i],enableJS);
             for(var k=0;k<nodes.length;++k) {
-                result[result.length] = nodes[k];
+                result.push( nodes[k]);
             }
         }
         return result;
     }
     
 };
-function xPathTest() {
-    if (!content.document.xTestLastDoc)
-        content.document.xTestLastDoc = content.document;
-    xTestXPath(content.document.xTestLastDoc,xpath);
+function xPathTest(doc) {
+    if (!doc.xTestLastDoc)
+        doc.xTestLastDoc = doc;
+    xTestXPath(doc,xpath);
 }
 function xTestXPath(doc,path) {
-    newpath = prompt("Please input the xpath:",path);
+    
+    var newpath = path;//prompt("Please input the xpath:",path);
+    if (document.autopagerXPathModel != "wizard") {
+        newpath =prompt("Please input the xpath:",path);
+        }
     if (!newpath || newpath.length==0)
         return;
     xpath = newpath;

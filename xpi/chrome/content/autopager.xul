@@ -46,6 +46,9 @@
 	           <button id="btnAdd" label="&setting.button.add;" />
 	           <button id="btnCopy" label="&setting.button.copy;" />
 	           <button id="btnDelete" label="&setting.button.remove;" />
+                   <spacer flex="1"/>
+                   <button id="btnSiteUp" label="&setting.button.up;" />
+                   <button id="btnSiteDown" label="&setting.button.down;" />
 	      </hbox>
         </vbox>
         <vbox flex="1">
@@ -75,7 +78,9 @@
 		                    <button id="btnEditPath" label="&setting.button.edit;" />
 		                    <button id="btnDeletePath" label="&setting.button.remove;"/>
 		                    <spacer flex="1"/>
-		                </vbox>
+                                    <button id="btnUp" label="&setting.button.up;" />
+		                    <button id="btnDown" label="&setting.button.down;" />
+		              </vbox>
 		            </hbox>
 		        </groupbox>
 		

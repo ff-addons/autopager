@@ -4,6 +4,7 @@
     
     var listbox, urlPattern, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
+    var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var mynameText,grpSmart,smarttext,smartlinks;
     var slectedListItem = null;;
     var margin,smartMargin;
@@ -73,6 +74,10 @@
         btnDelete = document.getElementById("btnDelete");
         btnAddPath = document.getElementById("btnAddPath");
         btnEditPath = document.getElementById("btnEditPath");
+        btnUp = document.getElementById("btnUp");
+        btnDown = document.getElementById("btnDown");
+        btnSiteUp = document.getElementById("btnSiteUp");
+        btnSiteDown = document.getElementById("btnSiteDown");
         btnDeletePath = document.getElementById("btnDeletePath");
         contentXPath = document.getElementById("lstContentXPath");
         chkEnabled = document.getElementById("chkEnabled");
@@ -182,6 +187,60 @@
            {
            		addContentXPath(xpath);
            		onPathChange();
+           }
+        }, false);
+		//var btnAddPath,btnEditPath,btnDeletePath;
+        btnSiteUp.addEventListener("command", function() {
+           if (listbox.selectedIndex > 0) {
+               var listitm = listbox.getSelectedItem(0);
+               var path = listitm.label;
+               var site = listitm.site;
+               var newitem = listbox.childNodes[listbox.selectedIndex  -1];
+               listitm.label = newitem.label;
+               newitem.label = path;
+               listitm.site = newitem.site;
+               newitem.site = site;
+               sites[listitm.siteIndex ] = sites[newitem.siteIndex];
+               sites[newitem.siteIndex] = site;
+               
+               listbox.selectedIndex = listbox.selectedIndex -1;
+           }
+        }, false);
+        btnSiteDown.addEventListener("command", function() {
+           if (listbox.selectedIndex >= 0 && listbox.selectedIndex <listbox.childNodes.length-1 ) {
+               var listitm = listbox.getSelectedItem(0);
+               var path = listitm.label;
+               var site = listitm.site;
+               var newitem = listbox.childNodes[listbox.selectedIndex  +1];
+               listitm.label = newitem.label;
+               listitm.site = newitem.site;
+               newitem.site = site;
+               newitem.label = path;
+               sites[listitm.siteIndex ] = sites[newitem.siteIndex];
+               sites[newitem.siteIndex] = site;
+               listbox.selectedIndex = listbox.selectedIndex +1;
+           }
+        }, false);
+        btnUp.addEventListener("command", function() {
+           if (contentXPath.selectedIndex > 0) {
+               var listitm = contentXPath.getSelectedItem(0);
+               var path = listitm.label;
+               var newitem = contentXPath.childNodes[contentXPath.selectedIndex  -1];
+               listitm.label = newitem.label;
+               newitem.label = path;
+               contentXPath.selectedIndex = contentXPath.selectedIndex -1;
+               onPathChange();
+           }
+        }, false);
+        btnDown.addEventListener("command", function() {
+           if (contentXPath.selectedIndex >= 0 && contentXPath.selectedIndex <contentXPath.childNodes.length-1 ) {
+               var listitm = contentXPath.getSelectedItem(0);
+               var path = listitm.label;
+               var newitem = contentXPath.childNodes[contentXPath.selectedIndex  +1];
+               listitm.label = newitem.label;
+               newitem.label = path;
+               contentXPath.selectedIndex = contentXPath.selectedIndex +1;
+               onPathChange();
            }
         }, false);
         btnEditPath.addEventListener("command", function() {
@@ -299,7 +358,7 @@
 		site.createdByYou = true;
 		site.owner = myname;
 		sites.push(site);
-		addSite(site);    
+		addSite(site,sites.length -1);    
 		chooseSite(getMatchedIndex(site.urlPattern));
 	}
     function handleCopySiteButton() {
@@ -314,7 +373,7 @@
 			site.createdByYou = true;
 			site.owner = myname;
 			sites.push(site);
-			addSite(site);    
+			addSite(site,sites.length -1);    
 			chooseSite(listbox.childNodes.length-1);
 		}
     }
@@ -354,7 +413,7 @@
 	        	if (site.urlPattern.toLowerCase().indexOf(filter) != -1
 	        		|| site.desc.toLowerCase().indexOf(filter) != -1)
 	        	{
-	        		addSite(site);
+	        		addSite(site,i);
 	        	}
 	        }
 	    }
@@ -375,16 +434,17 @@
 
     	for (var i = 0; i < sites.length; i++) {
         	var site = sites[i];
-        	addSite(site);    
+        	addSite(site,i);    
         }
     }
-    function addSite(site)
+    function addSite(site,siteIndex)
     {
     	selectedSite = null;
 		var listitem = document.createElement("listitem");
 		listitem.setAttribute("label", site.urlPattern);
         listitem.setAttribute("crop", "end");
         listitem.site = site;
+        listitem.siteIndex = siteIndex;
         listitem.style.color = getColor(site);
         listbox.appendChild(listitem);
 		//listitem.setAttribute("tooltiptext", 
