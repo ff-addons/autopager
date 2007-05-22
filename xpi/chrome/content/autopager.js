@@ -41,7 +41,9 @@ var workingAutoSites=null;
 function autopagerOnLoad() {
     // listen for tab switches
     window.addEventListener("load", onPageLoad, true);
+//    window.addEventListener("unload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
+    //window.addEventListener("focus", onSelect, false);
     
 };
 
@@ -130,7 +132,47 @@ function enableSelector(doc,setMenuStatus) {
     }
 };
 
+function onPageUnLoad(event) {
+    
+    
+    if (!document.autoPagerInited) {
+        document.autoPagerInited = true;
+        setGlobalEnabled(loadEnableStat());
+    }
+    
+    var doc = event.originalTarget;
+    if (!(doc instanceof HTMLDocument))
+        {
+            return;
+        }
+    setGlobalImageByStatus(getGlobalEnabled());
+    try{
+        hiddenDiv(getPagingWatcherDiv(doc),true);
+        document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
+    }catch(e){}
+    
+    
+    if (doc == null)
+        return;
+    //don't handle frames
+    if (doc.defaultView != doc.defaultView.top)
+           return;
 
+    var browser = splitbrowse.getBrowserNode(doc);
+    //alert(url);
+    
+    
+    if (browser.getAttribute(splitbrowse.getSplitKey())) {
+        //vbox
+        var parent = browser.parentNode;
+        browser.destroy();
+        //remove the splitter
+	parent.parentNode.removeChild(parent.nextSibling);
+        parent.removeChild(browser);
+        parent.parentNode.removeChild(parent);
+        
+    }
+}
 function onPageLoad(event) {
     
     
@@ -158,8 +200,6 @@ function onPageLoad(event) {
     
     
     //don't handle frames
-    if (doc.defaultView != doc.defaultView.top)
-        return;
     var browser = splitbrowse.getBrowserNode(doc);
     //if (browser.contentDocument != doc)
     //    return;
@@ -181,6 +221,9 @@ function onPageLoad(event) {
     
     
     if (browser.getAttribute(splitbrowse.getSplitKey())) {
+        if (doc.defaultView != doc.defaultView.top)
+            return;
+        
         if (browser.auotpagerContentDoc) {
             //var doc=browser.contentWindow.content.document;
             //alert(browser.auotpagerContentDoc.location + " " + doc.location);
@@ -454,6 +497,7 @@ function onInitDoc(doc) {
                 if (!workingAutoSites[i].isTemp)
                     urlNodes = findNodeInDoc(doc,workingAutoSites[i].linkXPath,workingAutoSites[i].enableJS);
                 else{
+                    workingAutoSites[i].linkXPath = null;
                     for(var t=0;t<workingAutoSites[i].tmpPaths.length; ++t) {
                         urlNodes = findNodeInDoc(doc,workingAutoSites[i].tmpPaths[t],workingAutoSites[i].enableJS);
                         if ( urlNodes != null  && urlNodes.length >0
@@ -550,7 +594,8 @@ function do_request(doc){
     var browser = null;
     if (doc.documentElement.enableJS)
         browser = getSplitBrowserForDoc(doc);
-    if (nextUrl != null || (doc.documentElement.enableJS && !browser.autopagerSplitWinFirstDocSubmited)) {
+    var linkXPath = doc.documentElement.linkXPath;
+    if (nextUrl != null || (linkXPath  != null && doc.documentElement.enableJS && !browser.autopagerSplitWinFirstDocSubmited)) {
         if (nextUrl == null || (nextUrl instanceof String) || !nextUrl.disabled)
         {
             onStartPaging(doc);
@@ -1289,7 +1334,7 @@ function scrollWindow(container,doc) {
             logInfo(nodes.toString(),nodes.toString());
         //alert(nodes);
         var i=0;
-        var divStyle = "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
+        var divStyle = loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
         var div= createDiv(container,"",divStyle); 
         
         div.innerHTML = "<span>" + formatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</span>";
@@ -1348,6 +1393,7 @@ function onStopPaging(doc) {
     doc.documentElement.autopagerPagingCount--;
     if (doc.documentElement.autopagerPagingCount == 0)
     {
+        //.defaultView.top.content.document
                 hiddenDiv(getPagingWatcherDiv(doc),true);
             setGlobalImageByStatus(getGlobalEnabled());
     }
@@ -1367,32 +1413,39 @@ function getPagingWatcherDiv(doc)
 	
 }
 function  pagingWatcher() {
-	var de = content.document.documentElement;
+    var doc = content.document;
+    var de = doc.documentElement;
     try{
         if(getGlobalEnabled() && de.autopagerEnabledDoc!=null) {
     	
             
             var i =0;
             var Enable = false;
-            for(i=0;!Enable && i<de.autopagerEnabledDoc.length;i++) {
-                var doc = de.autopagerEnabledDoc[i];
+            var loading = false;
+            for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+                doc = de.autopagerEnabledDoc[i];
                 Enable = doc.documentElement.autopagerPagingCount>0;
+                if (Enable) {
+                     hiddenDiv(getPagingWatcherDiv(doc),false);
+                    loading = true;
+                }
             }
-            if (Enable) {
-	            hiddenDiv(getPagingWatcherDiv(content.document),false);
-                document.autoPagerImageShowStatus = !document.autoPagerImageShowStatus;
-                setGlobalImageByStatus(document.autoPagerImageShowStatus);
-                var self = arguments.callee;
-                setTimeout(self, 100);//10 +Math.random()*200);
-            }
+            if (loading)
+                {
+                    document.autoPagerImageShowStatus = !document.autoPagerImageShowStatus;
+                    setGlobalImageByStatus(document.autoPagerImageShowStatus);
+                    var self = arguments.callee;
+                    setTimeout(self, 100);//10 +Math.random()*200);                    
+                }
+            
         }
         else {
-            hiddenDiv(getPagingWatcherDiv(content.document),true);
+            hiddenDiv(getPagingWatcherDiv(doc),true);
             setGlobalImageByStatus(getGlobalEnabled());
         }
     }catch(e) {
         setGlobalImageByStatus(getGlobalEnabled());
-        hiddenDiv(getPagingWatcherDiv(content.document),true);
+        hiddenDiv(getPagingWatcherDiv(doc),true);
     }
     
 };
@@ -1447,13 +1500,29 @@ function xTestXPath(doc,path) {
     xpath = newpath;
     var found = evaluateXPath(doc,xpath,false);
     if (found==null || found.length ==0) {
-        alert("xpath return nothing");
-        return;
+        //try on all frame
+         if (document.autopagerXPathModel != "wizard") {
+            if (doc.defaultView.frames != null) {
+                //alert(doc.defaultView.frames.length);
+                var i=0;
+                for(i=0;i<doc.defaultView.frames.length;++i) {
+                    found = evaluateXPath(doc.defaultView.frames[i].document,xpath,false);
+                    if (found!=null && found.length >=0)
+                        break;
+                }
+            }
+
+         }
+         if (found==null || found.length ==0) 
+        {
+                alert(getString("xpathreturnnothing"));
+                return;
+        }
     }
     
     var w=window.open();
     var newDoc = 	w.document;
-    createDiv(newDoc,"","").innerHTML = "<h1>Result for XPath: " + xpath + "</h1><<br/>" ;
+    createDiv(newDoc,"","").innerHTML = "<h1>Result for XPath: " + xpath + "</h1><br/>" ;
     for(var i=0;i<found.length;++i) {
         try{
             //alert(found[i].tagName);

@@ -27,6 +27,8 @@
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.loading "'加载中'提示的样式:">
+<!ENTITY setting.label.pagebreak "分页符样式:">
+<!ENTITY setting.label.timeout "载入超时(秒):">
 
 <!ENTITY setting.label.smartenable "启用智能翻页">
 <!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用'|'分割):">

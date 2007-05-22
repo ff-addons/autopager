@@ -27,6 +27,8 @@
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.doubleclick "+Double Click">
 <!ENTITY setting.label.loading "loading notification style:">
+<!ENTITY setting.label.pagebreak "page break style:">
+<!ENTITY setting.label.timeout "page loading timeout(Seconds):">
   
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by '|'):">

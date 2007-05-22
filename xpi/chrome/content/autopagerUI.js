@@ -6,7 +6,7 @@
     var btnAddPath,btnEditPath,btnDeletePath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift;
-    var txtLoading;
+    var txtLoading,txtPagebreak,txtTimeout;
 
     var mynameText,grpSmart,smarttext,smartlinks;
     var slectedListItem = null;;
@@ -58,10 +58,13 @@
 		saveUTF8Pref("smarttext",smarttext.value);
         savePref("smartlinks",smartlinks.value);
 		savePref("smartMargin",smartMargin.value);
+		//savePref("timeout",txtTimeout.value);
          setCtrlKey(chkCtrl.checked);
          setAltKey(chkAlt.checked );
          setShiftKey(chkShift.checked);
          setLoadingStyle(txtLoading.value);
+         saveUTF8Pref("pagebreak",txtPagebreak.value);
+         
 		return true;
     }
     function onSiteChange(listitem,site)
@@ -97,6 +100,9 @@
         mynameText.value = loadMyName();
         txtLoading = document.getElementById("loading");
         txtLoading.value = getLoadingStyle();
+        txtPagebreak = document.getElementById("pagebreak");
+        txtPagebreak.value = loadUTF8Pref("pagebreak");
+        
         //var chkCtrl,chkAlt,chkShift;
         chkCtrl = document.getElementById("chkCtrl");
         chkAlt = document.getElementById("chkAlt");
@@ -119,6 +125,9 @@
         smartMargin = document.getElementById("smartMargin");
         smartMargin.value = loadPref("smartMargin");
         
+        //txtTimeout = document.getElementById("timeout");
+        //txtTimeout.value = loadPref("timeout");
+
         enableSmartControl(smartenable.checked);
         
         listbox.addEventListener("select", updateDetails, false);

@@ -161,7 +161,7 @@ var splitbrowse = {
   	for(var i=1;i<=document.splitBrowserCount;++i)
   	{
   		var b = document.getElementById(this.prefix + "-split-browser-" + i);
-  		if (b.contentWindow == ctx)
+  		if (b!=null && b.contentWindow == ctx)
   		{
   			return b;
   		}

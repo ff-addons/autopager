@@ -6,31 +6,31 @@
 <!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd">
 
 <dialog id="autopager" 
-		title="&setting.title;"
-		buttons="accept,cancel"
-	    ondialogaccept="return handleOkButton()"
-		orient="vertical"
-    	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
-	 <stringbundleset id="autopagerStringbundleset">
-		<stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
-  	 </stringbundleset>
-
-	
-	<script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
-	<script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
-	<script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+        title="&setting.title;"
+        buttons="accept,cancel"
+        ondialogaccept="return handleOkButton()"
+        orient="vertical"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+    <stringbundleset id="autopagerStringbundleset">
+        <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+    </stringbundleset>
+    
+    
+    <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
     
     
     <tabbox id="autopager-tabbox" flex="1">
-	<tabs>
-		<tab label="&setting.label.sites;"/>
-		<tab label="&setting.label.general;"/>
-	</tabs>
-	<tabpanels  flex="1">
-		<tabpanel id="site-setting"  flex="1">
-			<!--
+        <tabs>
+            <tab label="&setting.label.sites;"/>
+            <tab label="&setting.label.general;"/>
+        </tabs>
+        <tabpanels  flex="1">
+            <tabpanel id="site-setting"  flex="1">
+                <!--
 <groupbox flex="1">
   <caption label="Mozilla homepage"/>
   <notificationbox flex="1">
@@ -38,118 +38,128 @@
   	<browser type="content" src="file:///usr/share/ubuntu-artwork/home/index.html" flex="0"/>
   </notificationbox>
 </groupbox>		-->	
-      <hbox flex="1">
-        <vbox flex="1" orient="vertical">
- 		  <textbox id="siteSearch"/>
-          <listbox id="lstSites" flex="10"/>
-          <hbox>
-	           <button id="btnAdd" label="&setting.button.add;" />
-	           <button id="btnCopy" label="&setting.button.copy;" />
-	           <button id="btnDelete" label="&setting.button.remove;" />
-                   <spacer flex="1"/>
-                   <button id="btnSiteUp" label="&setting.button.up;" />
-                   <button id="btnSiteDown" label="&setting.button.down;" />
-	      </hbox>
-        </vbox>
-        <vbox flex="1">
-          	<hbox>
-		        <label control="lblOwner" value="&setting.label.lblOwner;"/>
-		        <label id="lblOwner" value=""/>
-		</hbox>
-
-			<checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
-          	<hbox>
-		        <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
-                                <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
-				<textbox id="urlPattern" flex="1"/>
+                <hbox flex="1">
+                    <vbox flex="1" orient="vertical">
+                        <textbox id="siteSearch"/>
+                        <listbox id="lstSites" flex="10"/>
+                        <hbox>
+                            <button id="btnAdd" label="&setting.button.add;" />
+                            <button id="btnCopy" label="&setting.button.copy;" />
+                            <button id="btnDelete" label="&setting.button.remove;" />
+                            <spacer flex="1"/>
+                            <button id="btnSiteUp" label="&setting.button.up;" />
+                            <button id="btnSiteDown" label="&setting.button.down;" />
+                        </hbox>
+                    </vbox>
+                    <vbox flex="1">
+                        <hbox>
+                            <label control="lblOwner" value="&setting.label.lblOwner;"/>
+                            <label id="lblOwner" value=""/>
+                        </hbox>
+                        
+                        <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
+                        <hbox>
+                            <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+                            <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
+                            <textbox id="urlPattern" flex="1"/>
+                        </hbox>
+                        <hbox>
+                            <label control="margin" value="&setting.label.margin;"/>
+                            <textbox id="margin" flex="1"/>
+                            <label control="margin" value="&setting.label.marginEnd;"/>
+                        </hbox>
+                        <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="true" />
+                        <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
+                        <vbox id="auto-xpath" flex="1">
+                            <groupbox id="grpContentXPath" orient="vertical" flex="1">
+                                <caption label="&setting.label.grpContentXPath;" />
+                                <hbox style="margin-bottom:.5em;" flex="1">
+                                    <listbox id="lstContentXPath" flex="1" />
+                                    <vbox>
+                                        <button id="btnAddPath" label="&setting.button.add;" />
+                                        <button id="btnEditPath" label="&setting.button.edit;" />
+                                        <button id="btnDeletePath" label="&setting.button.remove;"/>
+                                        <spacer flex="1"/>
+                                        <button id="btnUp" label="&setting.button.up;" />
+                                        <button id="btnDown" label="&setting.button.down;" />
+                                    </vbox>
+                                </hbox>
+                            </groupbox>
+                            
+                            <hbox>
+                                <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
+                                <textbox id="linkXPath" flex="1"/>
+                                <button label="&setting.button.pick;" />		                    
+                            </hbox>
+                        </vbox>
+                        <hbox flex="2">
+                            <label control="desc" value="&setting.label.lblDesc;"/>
+                            <textbox multiline="true" id="desc" flex="1"/>
+                        </hbox>
+                    </vbox>
+                    
                 </hbox>
-            <hbox>
-		        <label control="margin" value="&setting.label.margin;"/>
-				<textbox id="margin" flex="1"/>
-				<label control="margin" value="&setting.label.marginEnd;"/>
-			</hbox>
-            <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="true" />
-			<checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
-			<vbox id="auto-xpath" flex="1">
-		        <groupbox id="grpContentXPath" orient="vertical" flex="1">
-		            <caption label="&setting.label.grpContentXPath;" />
-		            <hbox style="margin-bottom:.5em;" flex="1">
-		                <listbox id="lstContentXPath" flex="1" />
-		                <vbox>
-		                    <button id="btnAddPath" label="&setting.button.add;" />
-		                    <button id="btnEditPath" label="&setting.button.edit;" />
-		                    <button id="btnDeletePath" label="&setting.button.remove;"/>
-		                    <spacer flex="1"/>
-                                    <button id="btnUp" label="&setting.button.up;" />
-		                    <button id="btnDown" label="&setting.button.down;" />
-		              </vbox>
-		            </hbox>
-		        </groupbox>
-		
-		        <hbox>
-				    <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
-					<textbox id="linkXPath" flex="1"/>
-					<button label="&setting.button.pick;" />		                    
-				</hbox>
-		     </vbox>
-		    <hbox flex="2">
-			    <label control="desc" value="&setting.label.lblDesc;"/>
-				<textbox multiline="true" id="desc" flex="1"/>
-			</hbox>
-          </vbox>
-
-      </hbox>
-			
-		</tabpanel>
-		<tabpanel id="general-setting">
-			<vbox flex="1">
-				<hbox >
-					<label control="myname" value = "&autopager.status.myname;"/>
-					<textbox id="myname" flex="1"/>
-				</hbox>
-				<hbox >
-					<label control="loading" value = "&setting.label.loading;"/>
-					<textbox id="loading" flex="1"/>
-				</hbox>
-		<hbox>
-		        <label control="chkCtrl" value="&setting.label.hotkeys;"/>
-		        <checkbox id="chkCtrl" label="&setting.label.chkCtrl;" checked="true" />
-		        <checkbox id="chkAlt" label="&setting.label.chkAlt;" checked="false" />
-		        <checkbox id="chkShift" label="&setting.label.chkShift;" checked="false" />
-		        <label value="&setting.label.doubleclick;"/>
-		</hbox>
-				<vbox flex="1">
-					<hbox >
-						<checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>
-					</hbox>
-					<hbox flex="1">
-						<groupbox id="grpSmart" orient="vertical" flex="1">
-							<caption label="&setting.label.grpSmart;" />
-							<vbox>
-								<hbox>
-									<label control="smarttext" value = "&setting.label.smarttext;" flex="1"/>
-								</hbox>
-								<hbox>
-									<textbox id="smarttext" flex="1"/>
-								</hbox>
-							</vbox>
-							<hbox>
-								<label control="smartlinks" value = "&setting.label.smartlinks;"/>
-								<textbox id="smartlinks" flex="1"/>
-								<label control="smartlinksEnd" value = "&setting.label.smartlinksEnd;"/>
-							</hbox>
-				            <hbox>
-						        <label control="smartMargin" value="&setting.label.margin;"/>
-								<textbox id="smartMargin" flex="1"/>
-								<label control="smartMargin" value="&setting.label.marginEnd;"/>
-							</hbox>
-							
-						</groupbox>
-					</hbox>
-				</vbox>
-			</vbox>
-		</tabpanel>
-	</tabpanels>
-</tabbox>
+                
+            </tabpanel>
+            <tabpanel id="general-setting">
+                <vbox flex="1">
+                    <hbox >
+                        <label control="myname" value = "&autopager.status.myname;"/>
+                        <textbox id="myname" flex="1"/>
+                    </hbox>
+                    <hbox >
+                        <label control="loading" value = "&setting.label.loading;"/>
+                        <textbox id="loading" flex="1"/>
+                    </hbox>
+                    <hbox >
+                        <label control="pagebreak" value = "&setting.label.pagebreak;"/>
+                        <textbox id="pagebreak" flex="1"/>
+                    </hbox>
+                    <!-- 
+                    <hbox >
+                        <label control="timeout" value = "&setting.label.timeout;"/>
+                        <textbox id="timeout" flex="1"/>
+                    </hbox>
+                    -->
+                    <hbox>
+                        <label control="chkCtrl" value="&setting.label.hotkeys;"/>
+                        <checkbox id="chkCtrl" label="&setting.label.chkCtrl;" checked="true" />
+                        <checkbox id="chkAlt" label="&setting.label.chkAlt;" checked="false" />
+                        <checkbox id="chkShift" label="&setting.label.chkShift;" checked="false" />
+                        <label value="&setting.label.doubleclick;"/>
+                    </hbox>
+                    <vbox flex="1">
+                        <hbox >
+                            <checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>
+                        </hbox>
+                        <hbox flex="1">
+                            <groupbox id="grpSmart" orient="vertical" flex="1">
+                                <caption label="&setting.label.grpSmart;" />
+                                <vbox>
+                                    <hbox>
+                                        <label control="smarttext" value = "&setting.label.smarttext;" flex="1"/>
+                                    </hbox>
+                                    <hbox>
+                                        <textbox id="smarttext" flex="1"/>
+                                    </hbox>
+                                </vbox>
+                                <hbox>
+                                    <label control="smartlinks" value = "&setting.label.smartlinks;"/>
+                                    <textbox id="smartlinks" flex="1"/>
+                                    <label control="smartlinksEnd" value = "&setting.label.smartlinksEnd;"/>
+                                </hbox>
+                                <hbox>
+                                    <label control="smartMargin" value="&setting.label.margin;"/>
+                                    <textbox id="smartMargin" flex="1"/>
+                                    <label control="smartMargin" value="&setting.label.marginEnd;"/>
+                                </hbox>
+                                
+                            </groupbox>
+                        </hbox>
+                    </vbox>
+                </vbox>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
     
 </dialog>
