@@ -41,14 +41,43 @@
                 <hbox flex="1">
                     <vbox flex="1" orient="vertical">
                         <textbox id="siteSearch"/>
-                        <listbox id="lstSites" flex="10"/>
-                        <hbox>
-                            <button id="btnAdd" label="&setting.button.add;" />
-                            <button id="btnCopy" label="&setting.button.copy;" />
-                            <button id="btnDelete" label="&setting.button.remove;" />
-                            <spacer flex="1"/>
-                            <button id="btnSiteUp" label="&setting.button.up;" />
-                            <button id="btnSiteDown" label="&setting.button.down;" />
+                        <hbox flex="1">
+                            <hbox flex="1">
+                                <listbox seltype="multiple" id="lstSites"  flex="10"/>
+                            </hbox>
+                            <vbox>
+                                <spacer flex="1"/>
+                                <button id="btnAdd" label="&setting.button.add;" />
+                                <button id="btnCopy" label="&setting.button.copy;" />
+                                <button id="btnDelete" label="&setting.button.remove;" />
+                                <spacer flex="1"/>
+                                <button id="btnImport"  popup="import-settings" label="&setting.button.import;"
+                                        dir="reverse" />
+                                
+                                <popupset>
+                                    <popup id="import-settings" position="before_start">
+                                        <menuitem 
+                                            label="&autopager.status.importurl;"
+                                            tooltiptext="&autopager.status.importurlTip;"
+                                            oncommand="saveConfig(sites);importFromURL();autoSites = loadConfig();sites = cloneSites(autoSites);onSiteFilter(siteSearch.value);"
+                                        />
+                                        <menuitem 
+                                            label="&autopager.status.importfile;"
+                                            tooltiptext="&autopager.status.importfileTip;"
+                                            oncommand="saveConfig(sites);importFromFile();autoSites = loadConfig();sites = cloneSites(autoSites);onSiteFilter(siteSearch.value);"
+                                        />
+                                    </popup>
+                                </popupset>
+                                
+                                <button id="btnExport" label="&setting.button.export;"
+                                        oncommand="exportSelectedSetting();"
+                                        tooltiptext="&setting.button.exportTip;"/>
+                                <spacer flex="1"/>
+                                <button id="btnSiteUp" label="&setting.button.up;" />
+                                <button id="btnSiteDown" label="&setting.button.down;" />
+                                <spacer flex="10"/>
+                                
+                            </vbox>
                         </hbox>
                     </vbox>
                     <vbox flex="1">
@@ -68,7 +97,8 @@
                             <textbox id="margin" flex="1"/>
                             <label control="margin" value="&setting.label.marginEnd;"/>
                         </hbox>
-                        <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="true" />
+                        <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="false" />
+                        <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
                         <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
                         <vbox id="auto-xpath" flex="1">
                             <groupbox id="grpContentXPath" orient="vertical" flex="1">

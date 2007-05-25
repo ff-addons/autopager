@@ -19,7 +19,8 @@ const XULDOMUtils = {
   },
   findContentWindow: function(doc) {
   	var ctx = doc;
-    if(!ctx) return null;
+    if(!ctx)
+        return null;
     const ci = Components.interfaces;
     const lm = this.lookupMethod;
     if(!(ctx instanceof ci.nsIDOMWindow)) {
@@ -168,7 +169,48 @@ var splitbrowse = {
   	}
   	return null;
   },
-  getSplitBrowser : function (doc)
+  cloneHistoryEntry: function(aEntry) {
+    if (!aEntry)
+      return null;
+    aEntry = aEntry.QueryInterface(Components.interfaces.nsISHContainer);
+    var newEntry = aEntry.clone();
+    newEntry = newEntry.QueryInterface(Components.interfaces.nsISHContainer);
+    newEntry.loadType = Math.floor(aEntry.loadType);
+    if (aEntry.childCount) {
+      for (var j = 0; j < aEntry.childCount; j++) {
+          var childEntry = this.cloneHistoryEntry(aEntry.GetChildAt(j));
+          if (childEntry)
+            newEntry.AddChild(childEntry, j);
+      }
+    }
+    return newEntry;
+  },  
+  cloneBrowser: function(targetB, originalB)
+  {
+      var webNav = targetB.webNavigation;
+    var newHistory = webNav.sessionHistory;
+
+    newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+
+    // delete history entries if they are present
+    if (newHistory.count > 0)
+      newHistory.PurgeHistory(newHistory.count);
+    var originalHistory  = originalB.webNavigation.sessionHistory;
+    originalHistory = originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+
+
+    var entry = originalHistory.getEntryAtIndex(originalHistory.index,false).QueryInterface(Components.interfaces.nsISHEntry);
+     var newEntry = this.cloneHistoryEntry(entry);
+     if (newEntry)
+        newHistory.addEntry(newEntry, true);
+    
+
+    webNav.gotoIndex(0);
+    
+  },
+  //TODO:add clone content, can refer to code at http://www.koders.com/javascript/fid398B14A435A196EED1FC2F97C9E989476AF395AE.aspx?s=drop%20menu#0.7485053137827364
+  //cloneHistoryEntry: function(aEntry) 
+  getSplitBrowser : function (doc,createNew,clone)
   {
   	var browser = this.getBrowserNode(doc);
   	
@@ -182,7 +224,7 @@ var splitbrowse = {
   	var id = this.prefix + "-split-browser-" + subfix;
     var splitBrowser = document.getElementById(id);
     
-    if (!splitBrowser)
+    if (!splitBrowser && createNew)
     {
         
     	var vbox = document.createElement("vbox");
@@ -215,12 +257,20 @@ var splitbrowse = {
 	    splitBrowser.setAttribute(this.getSplitKey(),true);
         splitBrowser.addProgressListener(splitpanelProgressListener,
            Components.interfaces.nsIWebProgress.NOTIFY_ALL);
+        splitBrowser.autopagerSplitWinFirstDocSubmited = false;
         splitBrowser.loadURI("about:",null,null);
     	if (!browser.getAttribute("flex"))
 	    		browser.setAttribute("flex", "1");
-		this.setVisible(splitBrowser,this.hidden);        
+        this.setVisible(splitBrowser,this.hidden);      
+                
     }
-    
+       if (splitBrowser != null && clone)
+        {
+            splitBrowser.autopagerSplitWinFirstDocSubmited = true;
+            splitBrowser.autopagerSplitWinFirstDocloaded = false;
+            this.cloneBrowser(splitBrowser,browser);
+        }                  
+ 
 	//splitBrowser.parentNode.hidden = hidden;
 //	splitBrowser.hidden = hidden; 
   	
@@ -237,6 +287,8 @@ var splitbrowse = {
   setVisible: function (splitBrowser,hidden)
   {
     this.hidden = hidden;
+    if (splitBrowser == null)
+        return;
     var splitBar = document.getElementById(splitBrowser.id + "-splitbar");           
 	    if (!this.hidden)
 	    {
@@ -256,7 +308,7 @@ var splitbrowse = {
   	var splitBrowser =null;
   	this.hidden = hidden;
   	try {
-    	 splitBrowser = this.getSplitBrowser(doc);
+    	 splitBrowser = this.getSplitBrowser(doc,!hidden,true);
     }catch (e) {
     	alert(e);
     }
@@ -296,6 +348,7 @@ var splitbrowse = {
   // ***** set done navigation ui
   done : function() 
   {
+      //alert("done");
   }
 };
 var splitpanelProgressListener = {    

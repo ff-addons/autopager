@@ -7,6 +7,9 @@
 <!ENTITY setting.button.pick "选取">
 <!ENTITY setting.button.remove "删除">
 <!ENTITY setting.button.copy "复制">
+<!ENTITY setting.button.import "导入">
+<!ENTITY setting.button.export "导出">
+<!ENTITY setting.button.exportTip "导出选定站点配置">
 <!ENTITY setting.label.lblOwner "创建人:">
 <!ENTITY setting.label.lblURLPattern "地址通配符:">
 <!ENTITY setting.label.chkIsRegex "使用正则表达式">
@@ -16,6 +19,7 @@
 <!ENTITY setting.label.btnEdit "编辑">
 <!ENTITY setting.label.chkEnabled "启用">
 <!ENTITY setting.label.chkEnableJS "加载下一页时启用Javascript">
+<!ENTITY setting.label.chkQuickLoad "快速加载(部分站点不支持。)">
 <!ENTITY setting.label.chkFixOverflow "取消页面溢出控制">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">

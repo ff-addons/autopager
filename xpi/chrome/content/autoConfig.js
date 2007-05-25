@@ -136,10 +136,16 @@ function importFromURL()
 function importFromFile()
 {
 	try{
+                var fileURI  = null;
+               try{
 		var file = selectFile(getString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
-		var fileURI = Components.classes["@mozilla.org/network/io-service;1"]
+		
+                fileURI = Components.classes["@mozilla.org/network/io-service;1"]
 	                   .getService(Components.interfaces.nsIIOService)
 	                   .newFileURI(file);
+                }catch(e){
+                    return;
+                }
 		var configContents = getContents(fileURI);
 		sites =  loadConfigFromStr(configContents,false);
 		mergeSetting(sites,false);
@@ -177,6 +183,14 @@ function selectFile  (title,mode) {
 
 function getSiteIndex(sites,site)
 {
+    if ( site.guid.length >0)
+    {
+	for (var i=0;i<sites.length;i++)
+	{
+		if (sites[i].guid == site.guid)
+			return i;
+	}
+     }
 	for (var i=0;i<sites.length;i++)
 	{
 		if (sites[i].urlPattern == site.urlPattern)
@@ -250,13 +264,15 @@ function loadConfigFromStr(configContents,remote) {
 		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
 		  var doc = domParser.parseFromString(configContents, "text/xml");
 		  var nodes = doc.evaluate("//site", doc, null, 0, null);
-		
+		  var hasQuickLoad = false;
 		  for (var node = null; (node = nodes.iterateNext()); ) {
 		    var site = new Site();
 		
 		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
 		      if (childNode.nodeName == "urlPattern") {
 					site.urlPattern = getValue(childNode);
+		      }else  if (childNode.nodeName == "guid") {
+					site.guid = getValue(childNode);
 		      }else if (childNode.nodeName == "urlIsRegex") {
 					site.isRegex	= (getValue(childNode) == 'true');
 		      }
@@ -281,6 +297,10 @@ function loadConfigFromStr(configContents,remote) {
 					site.enableJS	= (getValue(childNode) == 'true');
 					//alert(site.enableJS + " " + childNode.firstChild.nodeValue);
 		      }
+		      else if (childNode.nodeName == "quickLoad") {
+					site.quickLoad	= (getValue(childNode) == 'true');
+					hasQuickLoad = true;
+		      }
 		      else if (childNode.nodeName == "fixOverflow") {
 					site.fixOverflow	= (getValue(childNode) == 'true');
 					//alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
@@ -294,7 +314,11 @@ function loadConfigFromStr(configContents,remote) {
 					site.owner	= getValue(childNode) ;
 		      }
 		    }
-			sites.push(site);
+                     if (!hasQuickLoad)
+                         site.quickLoad = false;
+                     if (site.createdByYou && site.guid.length == 0)
+                        site.guid = generateGuid();
+                     sites.push(site);
 		  }
 	}catch(e)
 	{
@@ -341,11 +365,15 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	  for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
 	    var siteNode = doc.createElement("site");
 	
+            if (siteObj.createdByYou && siteObj.guid.length == 0)
+                siteObj.guid = generateGuid();
 	    createNode(siteNode,"urlPattern",siteObj.urlPattern);
+	    createNode(siteNode,"guid",siteObj.guid);
 	    createNode(siteNode,"urlIsRegex",siteObj.isRegex);
 	    createNode(siteNode,"margin",siteObj.margin);
 	    createNode(siteNode,"enabled",siteObj.enabled);
 	    createNode(siteNode,"enableJS",siteObj.enableJS);
+	    createNode(siteNode,"quickLoad",siteObj.quickLoad);
 	    createNode(siteNode,"fixOverflow",siteObj.fixOverflow);
 	    createNode(siteNode,"owner",siteObj.owner);
 	
@@ -391,6 +419,7 @@ function Site()
         this.isRegex = false;
 	this.enabled  = true;
 	this.enableJS  = false;
+        this.quickLoad = false;
 	this.fixOverflow  = false;
 	this.createdByYou  = false;
 	this.changedByYou  = false;
@@ -404,15 +433,31 @@ function Site()
 	this.maxLinks = -1;
         this.isTemp = false;
         this.tmpPaths = [];
+        this.guid = "";
 }
+function generateGuid()
+{
+    var result, i;
+    result = '';
+    for(i=0; i<32; i++)
+    {
+        if( i >4  && i % 4 == 0)
+            result = result + '-';
+        result +=Math.floor(Math.random()*16).toString(16).toUpperCase();
+    }
+    return result
+}
+
 function cloneSite(site)
 {
 	var newSite = new Site();
 	newSite.urlPattern  = site.urlPattern;
+	newSite.guid  = site.guid;
 	newSite.isRegex  = site.isRegex;
 	newSite.margin  = site.margin;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
+        newSite.quickLoad  = site.quickLoad;
 	newSite.fixOverflow  = site.fixOverflow;
 	newSite.createdByYou  = site.createdByYou;
 	newSite.changedByYou  = site.changedByYou;
@@ -434,10 +479,12 @@ function cloneSite(site)
 		{
 			var oldSite = site.oldSite;
 			if (oldSite.urlPattern  != site.urlPattern 
+                                                || oldSite.guid  != site.guid
                                                 || oldSite.isRegex  != site.isRegex
 						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
+						|| oldSite.quickLoad  != site.quickLoad
 						|| oldSite.fixOverflow  != site.fixOverflow
 						|| oldSite.owner  != site.owner
 						|| oldSite.linkXPath != site.linkXPath

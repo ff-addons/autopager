@@ -7,6 +7,9 @@
 <!ENTITY setting.button.pick "Pick...">
 <!ENTITY setting.button.remove "Remove">
 <!ENTITY setting.button.copy "Copy">
+<!ENTITY setting.button.import "Import">
+<!ENTITY setting.button.export "Export">
+<!ENTITY setting.button.exportTip "Export Select Items">
 <!ENTITY setting.label.lblOwner "Created By:">
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.chkIsRegex "Is RegExp?">
@@ -16,6 +19,7 @@
 <!ENTITY setting.label.btnEdit "Edit">
 <!ENTITY setting.label.chkEnabled "Enabled">
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
+<!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
 <!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
 <!ENTITY setting.label.margin "Paging when space less then">
 <!ENTITY setting.label.marginEnd "window hight">

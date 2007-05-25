@@ -5,7 +5,7 @@
     var listbox, urlPattern,isRegex, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
-    var chkCtrl,chkAlt,chkShift;
+    var chkCtrl,chkAlt,chkShift,chkQuickLoad;
     var txtLoading,txtPagebreak,txtTimeout;
 
     var mynameText,grpSmart,smarttext,smartlinks;
@@ -92,6 +92,7 @@
         contentXPath = document.getElementById("lstContentXPath");
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
+        chkQuickLoad = document.getElementById("chkQuickLoad");
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
         siteSearch  = document.getElementById("siteSearch");
@@ -150,6 +151,12 @@
         chkEnableJS.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enableJS = chkEnableJS.checked;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        chkQuickLoad.addEventListener("command", function() {
+           if (selectedSite != null) {
+             selectedSite.quickLoad = chkQuickLoad.checked;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -322,6 +329,7 @@
             description.value = " ";
             chkEnabled.checked = true;
             chkEnableJS.checked = false;
+            chkQuickLoad.checked = false;
             chkFixOverflow.checked = true;
             lblOwner.value = "";
     }
@@ -342,6 +350,7 @@
             description.value = selectedSite.desc;
             chkEnabled.checked = selectedSite.enabled;
             chkEnableJS.checked = selectedSite.enableJS;
+            chkQuickLoad.checked = selectedSite.quickLoad;
             chkFixOverflow.checked = selectedSite.fixOverflow;
             
             populateXPath(selectedSite.contentXPath);
@@ -413,14 +422,33 @@
     }
 	
 
+function exportSelectedSetting()
+{
+        if (listbox.selectedCount > 0) {
+            var file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+	
+            if (file)
+            {
+                    var exportSites = new Array();
+                    for(var i=0;i<listbox.selectedCount ;++i) 
+                    {
+                        exportSites.push(listbox.getSelectedItem(i).site);
+                     }
+                     saveConfigToFile(exportSites,file,false);
+             }
+        }
+    
+}
     function handleDeleteSiteButton() {
         if (listbox.selectedCount > 0) {
         	var index = listbox.selectedIndex;
-            selectedSite = listbox.getSelectedItem(0).site;
-	    	//alert(index);
-        	removeFromArray(sites,selectedSite);
-        	listbox.removeChild(listbox.childNodes[index]);
-
+                while(listbox.selectedCount > 0) 
+                {
+                    selectedSite = listbox.getSelectedItem(listbox.selectedCount-1).site;
+                    //alert(index);
+                    removeFromArray(sites,selectedSite);
+                    listbox.removeChild(listbox.getSelectedItem(listbox.selectedCount-1));
+                 }
         	if (listbox.childNodes.length > 0) {
             	chooseSite(Math.max(Math.min(index, listbox.childNodes.length - 1), 0));
         	}

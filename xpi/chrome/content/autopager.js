@@ -41,6 +41,8 @@ var workingAutoSites=null;
 function autopagerOnLoad() {
     // listen for tab switches
     window.addEventListener("load", onPageLoad, true);
+    window.addEventListener("DOMContentLoaded", onContentLoad, false);
+    //window.addEventListener("DOMContentLoaded", onPageLoad, false);
 //    window.addEventListener("unload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
     //window.addEventListener("focus", onSelect, false);
@@ -173,15 +175,8 @@ function onPageUnLoad(event) {
         
     }
 }
-function onPageLoad(event) {
-    
-    
-    //var target = event.target;
-    //if(target != event.currentTarget)
-    //	return false;
-    //alert(event.target + " " 
-    //	+ event.currentTarget + " " 
-    //	+ event.originalTarget );
+
+function onContentLoad(event) {
     if (!document.autoPagerInited) {
         document.autoPagerInited = true;
         setGlobalEnabled(loadEnableStat());
@@ -218,46 +213,19 @@ function onPageLoad(event) {
     if (doc == null)
         return;
     //alert(url);
-    
-    
     if (browser.getAttribute(splitbrowse.getSplitKey())) {
-        if (doc.defaultView != doc.defaultView.top)
-            return;
-        
         if (browser.auotpagerContentDoc) {
-            //var doc=browser.contentWindow.content.document;
-            //alert(browser.auotpagerContentDoc.location + " " + doc.location);
-            //alert(nodes.length);
-            //ignore the event when the split browse is created
-            //if (!browser.autopagerSplitWinDefaultDocLoaded)
-            //{
-            //	browser.autopagerSplitWinDefaultDocLoaded = true;
-            //	logInfo("default doc loaded.","default doc loaded.")
-            //}else
             {
                 if (browser.autopagerSplitWinFirstDocSubmited) {
-                    if(!browser.autopagerSplitWinFirstDocloaded) {
-                        var nextUrl = null;
-                        
-                        var container = browser.auotpagerContentDoc;
-                        //the WinFirstDoc request finished
-                        onStopPaging(container);
-                        
-                        //var doc = browser.webNavigation.document;
-                        var urlNodes = findNodeInDoc(doc,
-                        container.documentElement.linkXPath,container.documentElement.enableJS);
-                        //alert(urlNodes);
-                        if (urlNodes != null && urlNodes.length >0) {
-                            nextUrl = getNextUrl(container,container.documentElement.enableJS,urlNodes[0]);
-                        }else
-                            nextUrl = null;
-                        container.documentElement.autopagernextUrl = nextUrl;
-                        browser.autopagerSplitWinFirstDocloaded = true;
-                        do_request(container);
-                        container.documentElement.autopagerSplitDocInited = true;
-                    }
-                    else {
+                    if(browser.autopagerSplitWinFirstDocloaded) {
+                        //use onload to make sure every thing is loaded
+                        if (browser.auotpagerContentDoc.documentElement.autopagerUseSafeEvent)
+                            return;
+                        //if (!browser.auotpagerContentDoc.documentElement.patternRegExp.test(url))
+                        //    return;
                         scrollWindow(browser.auotpagerContentDoc,doc);
+                        
+                        onStopPaging(browser.auotpagerContentDoc);
                     }
                 }
             }
@@ -268,19 +236,106 @@ function onPageLoad(event) {
     }
     //alert(doc.location.href);
     
+    handleDocLoad(doc,false);
+}
+function handleDocLoad(doc,safe)
+{
     workingAutoSites = loadConfig();
     loadTempConfig();
     
-    onInitDoc(doc);
+    onInitDoc(doc,safe);
     if (doc.defaultView.frames != null) {
         //alert(doc.defaultView.frames.length);
         var i=0;
         for(i=0;i<doc.defaultView.frames.length;++i) {
             //alert(doc.defaultView.frames[i]);
-            onInitDoc(doc.defaultView.frames[i].document);
+            onInitDoc(doc.defaultView.frames[i].document,safe);
             //doc.defaultView.frames[i].addEventListener("load", onPageLoad, true);
         }
+    }    
+}
+function onPageLoad(event) {
+    
+    var doc = event.originalTarget;
+    if (!(doc instanceof HTMLDocument))
+        {
+            return;
+        }
+    
+    
+    var browser = splitbrowse.getBrowserNode(doc);
+    
+    var url;
+    try{
+        url = doc.location.href;
+    }catch(e) {
+        //alert(e);
+        doc = doc.ownerDocument;
+        url = doc.location.href;
     }
+    if (doc == null)
+        return;
+    //alert(url);
+    
+    
+    if (browser.getAttribute(splitbrowse.getSplitKey())) {
+        
+        if (browser.auotpagerContentDoc) {
+            {
+                if (browser.autopagerSplitWinFirstDocSubmited) {
+                    if(!browser.autopagerSplitWinFirstDocloaded) {
+                        if (doc.defaultView != doc.defaultView.top)
+                               return;
+                        var nextUrl = null;
+                        
+                        var container = browser.auotpagerContentDoc;
+                        //var doc = browser.webNavigation.document;
+                        nextUrl = getNextUrlIncludeFrames(container,doc);
+                        container.documentElement.autopagernextUrl = nextUrl;
+                        browser.autopagerSplitWinFirstDocloaded = true;
+                        //do_request(container);
+                        container.documentElement.autopagerSplitDocInited = true;
+                    }
+                    else {
+                        //don't use onload to make sure every thing is loaded
+                        if (!browser.auotpagerContentDoc.documentElement.autopagerUseSafeEvent)
+                            return;                        
+                         //if (!browser.auotpagerContentDoc.documentElement.patternRegExp.test(url))
+                         //   return;
+                        scrollWindow(browser.auotpagerContentDoc,doc);
+                        
+                        onStopPaging(browser.auotpagerContentDoc);
+                    }
+                }
+            }
+            
+        }
+        
+        return;
+    }
+    handleDocLoad(doc,true);
+}
+function getNextUrlIncludeFrames(container,doc)
+{
+    var urlNodes = findNodeInDoc(doc,
+            container.documentElement.linkXPath,container.documentElement.enableJS);
+    //alert(urlNodes);
+    var nextUrl = null;
+    if (urlNodes != null && urlNodes.length >0) {
+        nextUrl = getNextUrl(container,container.documentElement.enableJS,urlNodes[0]);
+    }else
+    {
+        if (doc.defaultView.frames != null) {
+            //alert(doc.defaultView.frames.length);
+            var i=0;
+            for(i=0;i<doc.defaultView.frames.length && nextUrl == null;++i) {
+                nextUrl = getNextUrlIncludeFrames(container,doc.defaultView.frames[i].document);
+                //alert(urlNodes);
+              
+            }
+        }
+     }    
+    return nextUrl;
 }
 function loadTempConfig() {
     var smartenable = loadBoolPref("smartenable");
@@ -431,7 +486,7 @@ function getRegExp(site)
     else
         return convert2RegExp(site.urlPattern);
 }
-function onInitDoc(doc) {
+function onInitDoc(doc,safe) {
     try{
         debug=getPrefs().getBoolPref(".debug");
         document.getElementById("autopager-hidden-panel-menu").hidden = !debug;
@@ -460,17 +515,24 @@ function onInitDoc(doc) {
         );
     }	
     var url = doc.location.href;
+    if (url == "about:blank")
+        return;
     var i=0;
     for(i=0;i<workingAutoSites.length;++i) {
         var pattern = getRegExp(workingAutoSites[i]);
         if (pattern.test(url)) {
-
+            //should not equal
+            //if (workingAutoSites[i].quickLoad == safe)
+            //    return false;
+            if (safe)
+                return false;
             var msg="";
             var info = "";
             
             
             var de = doc.documentElement;
             if (!de.autoPagerRunning) {
+                de.patternRegExp = pattern;
                 var insertPoint = null;
                 var nextUrl = null;
                 
@@ -531,15 +593,17 @@ function onInitDoc(doc) {
                     de.autopagernextUrl= null;
                 else
                     de.autopagernextUrl = nextUrl;
+                de.autopagerUseSafeEvent = !workingAutoSites[i].quickLoad;
+                
                 if (autopagerEnabled) {
                      if(workingAutoSites[i].fixOverflow)
                         fixOverflow(doc);
 
                     try{
                         if (workingAutoSites[i].enableJS) {
-                            var splitbrowser = getSplitBrowserForDoc(doc);
+                            var splitbrowser = getSplitBrowserForDoc(doc,true);
                             splitbrowser.autopagerSplitWinFirstDocloaded = false;
-                            splitbrowser.autopagerSplitWinFirstDocSubmited = false;
+                            splitbrowser.autopagerSplitWinFirstDocSubmited = true;
                         }
                     }catch(e)
                     {}				
@@ -548,10 +612,10 @@ function onInitDoc(doc) {
                     if (!topDoc.documentElement.autopagerEnabledDoc)
                         topDoc.documentElement.autopagerEnabledDoc = new Array();
                     topDoc.documentElement.autopagerEnabledDoc.push( doc);
-                    if (!topDoc.documentElement.autopagerWatcherRunning) {
-                       topDoc.documentElement.autopagerWatcherRunning = true;
+                    //if (!topDoc.documentElement.autopagerWatcherRunning) {
+                    //   topDoc.documentElement.autopagerWatcherRunning = true;
                         scrollWatcher();
-                    }
+                    //}
                     msg = formatString("enableurl",[ url ]);
                     info = formatString("enableinfo",[url,workingAutoSites[i].linkXPath,workingAutoSites[i].contentXPath]);
                 }
@@ -592,20 +656,19 @@ function onSelect(event) {
 function do_request(doc){
     var nextUrl = doc.documentElement.autopagernextUrl;
     var browser = null;
-    if (doc.documentElement.enableJS)
-        browser = getSplitBrowserForDoc(doc);
+    //if (doc.documentElement.enableJS)
+    //    browser = getSplitBrowserForDoc(doc,false);
     var linkXPath = doc.documentElement.linkXPath;
-    if (nextUrl != null || (linkXPath  != null && doc.documentElement.enableJS && !browser.autopagerSplitWinFirstDocSubmited)) {
-        if (nextUrl == null || (nextUrl instanceof String) || !nextUrl.disabled)
-        {
+    if (nextUrl != null && ( (nextUrl instanceof String) || !nextUrl.disabled))
+    {
             onStartPaging(doc);
             processNextDoc(doc,nextUrl);
-        }
     }
 };
 
 function getEnabled(doc) {
     var enabled =doc.documentElement.autopagerEnabled && getGlobalEnabled();
+    enabled = enabled && ( !doc.documentElement.enableJS  || doc.documentElement.autopagerSplitDocInited );
     return  enabled;
 };
 var count=0;
@@ -1044,14 +1107,15 @@ function onFrameLoad(event) {
     //}catch(e) {
    //     frame = target;
     //}
-    if (frame.contentDocument.documentURI == 'about:black')
-        return;
+    //if (frame.contentDocument.documentURI == 'about:blank')
+    //    return;
     if (!frame.autoPagerInited) {
         //alert("onFrameLoad");
         
         frame.autoPagerInited = true;
         var doc = frame.contentDocument;
         scrollWindow(frame.ownerDocument,doc);
+        onStopPaging(frame.ownerDocument);        
         frame.contentDocument.close();
         
     }
@@ -1110,8 +1174,8 @@ function getContentType(doc) {
     var type= doc.contentType + "; charset=" + doc.characterSet;
     return type;
 }
-function getSplitBrowserForDoc(doc) {
-    var win = splitbrowse.getSplitBrowser(doc);
+function getSplitBrowserForDoc(doc,clone) {
+    var win = splitbrowse.getSplitBrowser(doc,true,clone);
     if (debug)
         splitbrowse.show(win);
     win.auotpagerContentDoc = doc;
@@ -1135,12 +1199,13 @@ function simulateClick(win,node) {
 }
 function processInSplitWin(doc){
     try{
-        var b = getSplitBrowserForDoc(doc);
-        if(!b.autopagerSplitWinFirstDocloaded) {
-            b.autopagerSplitWinFirstDocSubmited = true;
-            b.loadURI(doc.location.href,null,null);
-        }
-        else {
+        var b = getSplitBrowserForDoc(doc,false);
+        //if(!b.autopagerSplitWinFirstDocloaded) {
+        //    b.autopagerSplitWinFirstDocSubmited = true;
+        //    b.loadURI(doc.location.href,null,null);
+        //}
+       // else
+       {
             var node = doc.documentElement.autopagernextUrl;
             if (node.constructor == String)
                 b.loadURI(doc.documentElement.autopagernextUrl,null,null);
@@ -1164,7 +1229,7 @@ function processInSplitWin(doc){
 };
 function processInSplitWinByUrl(doc,url){
     try{
-        var win = getSplitBrowserForDoc(doc);
+        var win = getSplitBrowserForDoc(doc,false);
         win.loadURI(url,null,null);
     }catch (e){
         alertErr("unable to load url:" + url);
@@ -1193,6 +1258,7 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                         var frame = getSelectorLoadFrame(doc);
                         frame.autoPagerInited = false;
                         frame.contentDocument.clear();
+                        frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
                         //alert(xmlhttp.responseText);
                         frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.enableJS,url));
                         frame.contentDocument.close();
@@ -1202,6 +1268,7 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                                 //
                                 frame.autoPagerInited = true;
                                 scrollWindow(doc,newDoc);
+                                onStopPaging(doc);
                             }
                         }
                         ,60000);
@@ -1314,7 +1381,12 @@ var tagName   = "DIV";
 
 
 function scrollWindow(container,doc) {
+    if (doc.documentElement.autopageCurrentPageLoaded != null 
+        && doc.documentElement.autopageCurrentPageLoaded == true)
+        return ;
+    doc.documentElement.autopageCurrentPageLoaded = true;
     var de = container.documentElement;
+    
     try{
         if (debug)
             logInfo("scrollWindow","scrollWindow");
@@ -1330,40 +1402,48 @@ function scrollWindow(container,doc) {
         logInfo(nodes.length + " at "+  doc.location.href
         ,nodes.length + " at "+  doc.location.href);
         
-        if (debug)
-            logInfo(nodes.toString(),nodes.toString());
-        //alert(nodes);
-        var i=0;
-        var divStyle = loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
-        var div= createDiv(container,"",divStyle); 
-        
-        div.innerHTML = "<span>" + formatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</span>";
-        var insertPoint =	de.autopagerinsertPoint;
-        
-        insertPoint.parentNode.insertBefore(div,insertPoint);
-        for(i=0;i<nodes.length;++i) {
-            try{
-                var newNode = insertPoint.parentNode.insertBefore(nodes[i].cloneNode(true),insertPoint);
-            }catch(e) {
-                alertErr(e);
+        if (nodes.length >0)
+        {
+            //alert(nodes);
+            var i=0;
+            var divStyle = loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
+            var div= createDiv(container,"",divStyle); 
+
+            div.innerHTML = "<span>" + formatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</span>";
+            var insertPoint =	de.autopagerinsertPoint;
+
+            insertPoint.parentNode.insertBefore(div,insertPoint);
+            for(i=0;i<nodes.length;++i) {
+                try{
+                    var newNode = insertPoint.parentNode.insertBefore(nodes[i].cloneNode(true),insertPoint);
+                }catch(e) {
+                    alertErr(e);
+                }
             }
+            //alert(nodes.length);
+            var urlNodes = findNodeInDoc(doc,de.linkXPath,de.enableJS);
+            //alert(urlNodes);
+            if (urlNodes != null && urlNodes.length >0) {
+                nextUrl = getNextUrl(container,de.enableJS,urlNodes[0]);
+            }else
+                nextUrl = null;
+            //alert(nextUrl);
+            de.autopagernextUrl = nextUrl;
+            //container.close();
         }
-        //alert(nodes.length);
-        var urlNodes = findNodeInDoc(doc,de.linkXPath,de.enableJS);
-        //alert(urlNodes);
-        if (urlNodes != null && urlNodes.length >0) {
-            nextUrl = getNextUrl(container,de.enableJS,urlNodes[0]);
-        }else
-            nextUrl = null;
-        //alert(nextUrl);
-        de.autopagernextUrl = nextUrl;
-        container.close();
-        
     }catch(e) {
         alertErr(e);
     }
-    de.autopagerEnabled = true;
-    onStopPaging(container);
+
+   if (doc.defaultView.frames != null) {
+        //alert(doc.defaultView.frames.length);
+        var i=0;
+        for(i=0;i<doc.defaultView.frames.length;++i) {
+            //alert(doc.defaultView.frames[i]);
+            scrollWindow(container,doc.defaultView.frames[i].document);
+            //doc.defaultView.frames[i].addEventListener("load", onPageLoad, true);
+        }
+    }
 };
 function getNextUrl(container,enableJS,node) {
     if(node == null)
@@ -1390,7 +1470,9 @@ function onStopPaging(doc) {
         formatString("autopageOnTip",[doc.location.href]));
     }catch(e) {		
     }
-    doc.documentElement.autopagerPagingCount--;
+    doc.documentElement.autopagerEnabled = true;
+    if (doc.documentElement.autopagerPagingCount>0)
+        doc.documentElement.autopagerPagingCount--;
     if (doc.documentElement.autopagerPagingCount == 0)
     {
         //.defaultView.top.content.document
@@ -1507,7 +1589,7 @@ function xTestXPath(doc,path) {
                 var i=0;
                 for(i=0;i<doc.defaultView.frames.length;++i) {
                     found = evaluateXPath(doc.defaultView.frames[i].document,xpath,false);
-                    if (found!=null && found.length >=0)
+                    if (found!=null && found.length >0)
                         break;
                 }
             }
@@ -1702,7 +1784,8 @@ function logInfo(status,tip) {
         logInfoDebug(status,tip);
         return;
     }
-    window.content.status = status;
+    try{
+        window.content.status = status;
     var tooltip = document.getElementById("autopager_tip");
     
     var tips = tip.split("\n");
@@ -1715,6 +1798,7 @@ function logInfo(status,tip) {
     
     for(i=0;i<tips.length;i++)
         tooltip.childNodes[i].value = tips[i];
+  }catch(e){}
 }
 function logInfoDebug(status,tip) {
     window.content.status = status;
