@@ -316,7 +316,7 @@ function loadConfigFromStr(configContents,remote) {
 		    }
                      if (!hasQuickLoad)
                          site.quickLoad = false;
-                     if (site.createdByYou && site.guid.length == 0)
+                     if ((site.createdByYou || getPrefs().getBoolPref(".debug")) && site.guid.length == 0)
                         site.guid = generateGuid();
                      sites.push(site);
 		  }

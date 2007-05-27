@@ -256,7 +256,7 @@ var splitbrowse = {
 	    
 	    splitBrowser.setAttribute(this.getSplitKey(),true);
         splitBrowser.addProgressListener(splitpanelProgressListener,
-           Components.interfaces.nsIWebProgress.NOTIFY_ALL);
+              Components.interfaces.nsIWebProgress.NOTIFY_ALL);
         splitBrowser.autopagerSplitWinFirstDocSubmited = false;
         splitBrowser.loadURI("about:",null,null);
     	if (!browser.getAttribute("flex"))
@@ -346,9 +346,10 @@ var splitbrowse = {
   {
   },
   // ***** set done navigation ui
-  done : function() 
+  done : function(doc) 
   {
       //alert("done");
+      onContentDoc(doc,true);
   }
 };
 var splitpanelProgressListener = {    
@@ -362,7 +363,8 @@ var splitpanelProgressListener = {
         return;
     } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
       aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-        splitbrowse.done();
+        splitbrowse.done( aWebProgress.DOMWindow.document);
+        
         return;
     }
   },

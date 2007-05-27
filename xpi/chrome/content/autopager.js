@@ -40,7 +40,7 @@ var debug= false;
 var workingAutoSites=null;
 function autopagerOnLoad() {
     // listen for tab switches
-    window.addEventListener("load", onPageLoad, true);
+    //window.addEventListener("load", onPageLoad, false);
     window.addEventListener("DOMContentLoaded", onContentLoad, false);
     //window.addEventListener("DOMContentLoaded", onPageLoad, false);
     window.addEventListener("beforeunload", onPageUnLoad, true);
@@ -174,20 +174,16 @@ function onContentLoad(event) {
         {
             return;
         }
+
     setGlobalImageByStatus(getGlobalEnabled());
     try{
         hiddenDiv(getPagingWatcherDiv(doc),true);
         document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
     }catch(e){}
     
-    
     //don't handle frames
     var browser = splitbrowse.getBrowserNode(doc);
-    //if (browser.contentDocument != doc)
-    //    return;
-    //	alert(event.target + " " 
-    //			+ event.currentTarget + " " 
-    //			+ event.originalTarget );
+
     
     var url;
     try{
@@ -200,14 +196,36 @@ function onContentLoad(event) {
     if (doc == null)
         return;
     //alert(url);
+    onContentDoc(doc,false);
+    if (!browser.getAttribute(splitbrowse.getSplitKey()))
+        handleDocLoad(doc,false);
+  }
+  function onContentDoc(doc,safe) {
+
+    //don't handle frames
+    var browser = splitbrowse.getBrowserNode(doc);
     if (browser.getAttribute(splitbrowse.getSplitKey())) {
         if (browser.auotpagerContentDoc) {
             {
                 if (browser.autopagerSplitWinFirstDocSubmited) {
-                    if(browser.autopagerSplitWinFirstDocloaded) {
-                        //use onload to make sure every thing is loaded
-                        if (browser.auotpagerContentDoc.documentElement.autopagerUseSafeEvent)
+                        if (browser.auotpagerContentDoc.documentElement.autopagerUseSafeEvent
+                            != safe)
                             return;
+                    if(!browser.autopagerSplitWinFirstDocloaded) {
+                        if (doc.defaultView != doc.defaultView.top)
+                               return;
+                        var nextUrl = null;
+                        
+                        var container = browser.auotpagerContentDoc;
+                        //var doc = browser.webNavigation.document;
+                        nextUrl = getNextUrlIncludeFrames(container,doc);
+                        container.documentElement.autopagernextUrl = nextUrl;
+                        browser.autopagerSplitWinFirstDocloaded = true;
+                        //do_request(container);
+                        container.documentElement.autopagerSplitDocInited = true;
+                    }
+                    else {
+                        //use onload to make sure every thing is loaded
                         //if (!browser.auotpagerContentDoc.documentElement.patternRegExp.test(url))
                         //    return;
                         scrollWindow(browser.auotpagerContentDoc,doc);
@@ -221,9 +239,7 @@ function onContentLoad(event) {
         
         return;
     }
-    //alert(doc.location.href);
-    
-    handleDocLoad(doc,false);
+
 }
 function handleDocLoad(doc,safe)
 {
@@ -243,6 +259,9 @@ function handleDocLoad(doc,safe)
 }
 function onPageLoad(event) {
     
+    //window.addEventListener("pageshow", this.onContentLoad, false);
+    //window.addEventListener("DOMContentLoaded", this.onContentLoad, false);
+ 
     var doc = event.originalTarget;
     if (!(doc instanceof HTMLDocument))
         {
@@ -1403,7 +1422,7 @@ function scrollWindow(container,doc) {
             insertPoint.parentNode.insertBefore(div,insertPoint);
             for(i=0;i<nodes.length;++i) {
                 try{
-                    var newNode = insertPoint.parentNode.insertBefore(nodes[i].cloneNode(true),insertPoint);
+                    var newNode = insertPoint.parentNode.insertBefore(container.importNode (nodes[i],true),insertPoint);
                 }catch(e) {
                     alertErr(e);
                 }
@@ -1597,7 +1616,7 @@ function xTestXPath(doc,path) {
         try{
             //alert(found[i].tagName);
             var div = createDiv(newDoc,"","");
-            div.appendChild(found[i].cloneNode(true));
+            div.appendChild(newDoc.importNode( found[i],true));
         }catch(e) {
             alertErr(e);
         }
