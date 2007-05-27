@@ -128,8 +128,25 @@ var splitbrowse = {
   },    
   init : function() 
   {
-  	document.splitBrowserCount = 0;
-    window.removeEventListener("load",splitbrowse.init,false);
+  	//document.splitBrowserCount = 0;
+        window.removeEventListener("load",splitbrowse.init,false);
+    	var splitBox =document.getElementById("autopager-split-box");
+        var splitSplitter = document.getElementById("autopager-split-splitter");  
+        var xbrowser = document.getElementById("browser");
+        var xappcontent = document.getElementById("appcontent");
+
+          //xbrowser.appendChild(splitBox);
+          //xbrowser.appendChild(splitSplitter);
+          //xbrowser.insertBefore(splitBox,xappcontent);
+          //xbrowser.insertBefore(splitSplitter,xappcontent);
+          xappcontent.appendChild(splitSplitter);
+          xappcontent.appendChild(splitBox);
+          splitBox.setAttribute("position", "bottom");
+          splitBox.setAttribute("height", "0");
+          splitBox.setAttribute("flex","0");
+          splitSplitter.setAttribute("orient", "vertical");
+          splitSplitter.setAttribute("flex","0");
+    
   },
   getSplitKey :function ()
   {
@@ -208,8 +225,6 @@ var splitbrowse = {
     webNav.gotoIndex(0);
     
   },
-  //TODO:add clone content, can refer to code at http://www.koders.com/javascript/fid398B14A435A196EED1FC2F97C9E989476AF395AE.aspx?s=drop%20menu#0.7485053137827364
-  //cloneHistoryEntry: function(aEntry) 
   getSplitBrowser : function (doc,createNew,clone)
   {
   	var browser = this.getBrowserNode(doc);
@@ -227,24 +242,9 @@ var splitbrowse = {
     if (!splitBrowser && createNew)
     {
         
-    	var vbox = document.createElement("vbox");
-        var splitBar = document.createElement("splitter");
-    	//if (browser.nextSibling)
-        //    {
-                var node = browser;
-            	browser.parentNode.insertBefore(vbox,node);
-	    	browser.parentNode.insertBefore(splitBar,node);
-        //    }
-	//    else
-        //    {
-	//    	browser.parentNode.appendChild(splitBar);
-        //    	browser.parentNode.appendChild(vbox);
-        //    }
-	    splitBar.setAttribute("id", id + "-splitbar");
-            splitBar.setAttribute("orient", "vertical");            
-            splitBar.className = "chromeclass-extrachrome";
-            
-	    splitBrowser = document.createElement("browser");
+          
+            var vbox = document.getElementById("autopager-split-box");;
+            splitBrowser = document.createElement("browser");
     
 	    splitBrowser.setAttribute("id", id);
 	    splitBrowser.setAttribute("name", id);
@@ -289,7 +289,7 @@ var splitbrowse = {
     this.hidden = hidden;
     if (splitBrowser == null)
         return;
-    var splitBar = document.getElementById(splitBrowser.id + "-splitbar");           
+            var splitBar = document.getElementById("autopager-split-splitter");           
 	    if (!this.hidden)
 	    {
 	  		splitBrowser.parentNode.setAttribute("flex", "1");
@@ -322,9 +322,9 @@ var splitbrowse = {
   },
   close : function(doc) 
   {
-  	var splitBrowser = getSplitBrowser(doc);
+  	var splitBrowser = this.getSplitBrowser(doc,false,false);
       try{
-       litBrowser.removeProgressListener(splitpanelProgressListener);
+       splitBrowser.removeProgressListener(splitpanelProgressListener);
       } catch(e) {}
       try {
 	      	var parent = splitBrowser.parentNode;
@@ -393,4 +393,5 @@ var splitpanelProgressListener = {
     throw Components.results.NS_NOINTERFACE;
   }
 };
+document.splitBrowserCount = 0;
 window.addEventListener("load",splitbrowse.init,false);

@@ -8,7 +8,13 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     
-    
+    <window id="main-window">
+        <vbox id="autopager-split-box" position="bottom" flex="0" persist="height width">
+            
+        </vbox>
+        <splitter id="autopager-split-splitter" hidden="true" orient="vertical"
+                  class="chromeclass-extrachrome"/>
+    </window>
     <statusbar id="status-bar">
         <!--  onclick="enableSelector(_content.document);" -->
         <statusbarpanel id="autopager_status"
@@ -23,9 +29,9 @@
                 <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
             </stringbundleset>
             <image id="autopager_image" width="16" height="16" style="margin:0 5px"
-       onclick="statusClicked(event);"
-       src="chrome://autopager/skin/autopager-small.off.gif"
-       tooltip="autopager_tip"/>
+                   onclick="statusClicked(event);"
+                   src="chrome://autopager/skin/autopager-small.off.gif"
+                   tooltip="autopager_tip"/>
             <popup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
                 <menuitem
                     label="&autopager.status.setting;"
@@ -61,11 +67,11 @@
                 />
                 <menuseparator class="autipager-sep-global"/>
                 <menuitem id="autoPagerCreateXPath"
-                       label="&autopager.status.createXPath;"
-                       tooltiptext="&autopager.status.createXPathTip;"
-                       type="checkbox"
-                       autocheck="false" 
-                       oncommand="createXpath( content.document);"
+                          label="&autopager.status.createXPath;"
+                          tooltiptext="&autopager.status.createXPathTip;"
+                          type="checkbox"
+                          autocheck="false" 
+                          oncommand="createXpath( content.document);"
                 /> 
                 <menuitem 
                     label="&autopager.status.testXPath;"
@@ -84,12 +90,12 @@
                       hidden='true'>
                     <menupopup id="autopager-menupopup" >
                         <menuitem id="autopager-show" 
-                            label="show"
-                            oncommand="splitbrowse.open(content.document,false);"
+                                  label="show"
+                                  oncommand="splitbrowse.open(content.document,false);"
                         />
                         <menuitem id="autopager-hidden" 
-                            label="hidden"
-                            oncommand="splitbrowse.open(content.document,true);"
+                                  label="hidden"
+                                  oncommand="splitbrowse.open(content.document,true);"
                         />
                     </menupopup>	
                 </menu>

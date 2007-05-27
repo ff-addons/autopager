@@ -43,7 +43,7 @@ function autopagerOnLoad() {
     window.addEventListener("load", onPageLoad, true);
     window.addEventListener("DOMContentLoaded", onContentLoad, false);
     //window.addEventListener("DOMContentLoaded", onPageLoad, false);
-//    window.addEventListener("unload", onPageUnLoad, true);
+    window.addEventListener("beforeunload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
     //window.addEventListener("focus", onSelect, false);
     
@@ -160,20 +160,7 @@ function onPageUnLoad(event) {
     if (doc.defaultView != doc.defaultView.top)
            return;
 
-    var browser = splitbrowse.getBrowserNode(doc);
-    //alert(url);
-    
-    
-    if (browser.getAttribute(splitbrowse.getSplitKey())) {
-        //vbox
-        var parent = browser.parentNode;
-        browser.destroy();
-        //remove the splitter
-	parent.parentNode.removeChild(parent.nextSibling);
-        parent.removeChild(browser);
-        parent.parentNode.removeChild(parent);
-        
-    }
+    splitbrowse.close(doc);
 }
 
 function onContentLoad(event) {
@@ -659,7 +646,7 @@ function do_request(doc){
     //if (doc.documentElement.enableJS)
     //    browser = getSplitBrowserForDoc(doc,false);
     var linkXPath = doc.documentElement.linkXPath;
-    if (nextUrl != null && ( (nextUrl instanceof String) || !nextUrl.disabled))
+    if (nextUrl != null && ( typeof(nextUrl) =='string' || !nextUrl.getAttribute("disabled")))
     {
             onStartPaging(doc);
             processNextDoc(doc,nextUrl);
@@ -1176,8 +1163,7 @@ function getContentType(doc) {
 }
 function getSplitBrowserForDoc(doc,clone) {
     var win = splitbrowse.getSplitBrowser(doc,true,clone);
-    if (debug)
-        splitbrowse.show(win);
+    splitbrowse.setVisible(win,!debug);
     win.auotpagerContentDoc = doc;
     return win;
 }
@@ -1404,6 +1390,8 @@ function scrollWindow(container,doc) {
         
         if (nodes.length >0)
         {
+            if (debug)
+                logInfo(nodes.toString(),nodes.toString());
             //alert(nodes);
             var i=0;
             var divStyle = loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
@@ -1838,6 +1826,6 @@ function changeMyName() {
 }
 function alertErr(e) {
     logInfo(e,e);
-    if (debug)
-        alert(e);
+    //if (debug)
+    //    alert(e);
 }
