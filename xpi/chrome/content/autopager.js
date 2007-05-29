@@ -699,8 +699,8 @@ function  scrollWatcher() {
                 ? scroolDoc.documentElement.scrollHeight : scroolDoc.body.scrollHeight;
                 if (scroolDoc.body != null && scroolDoc.body.scrollHeight > sh)
                     sh = scroolDoc.body.scrollHeight;
-                
-                var wh = window.innerHeight ? window.innerHeight : scroolDoc.documentElement.clientHeight;
+                //alert(scroolDoc.defaultView.innerHeight);
+                var wh = scroolDoc.defaultView.innerHeight ? scroolDoc.defaultView.innerHeight : scroolDoc.documentElement.clientHeight;
                 var remain = sh - sc - wh;
                 // window.status = remain;
                 count++;
@@ -714,8 +714,11 @@ function  scrollWatcher() {
                 else
                     wh = wh * (doc.documentElement.margin * 1);
                 //alert(wh);
-                
+                    logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain,
+                    "SH=" + sh + " sc = " + sc + " wh= " + wh + " Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
+            
                 if(remain < wh ){
+                    //alert(remain + "   " + wh + "  "  + sh + " " + sc);
                     doc.documentElement.autopagerEnabled = false;
                     do_request(doc)
                 }
@@ -1258,14 +1261,13 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                 xmlhttp.readyState + " " + xmlhttp.status);
             if(xmlhttp.readyState == 4) {
                 if(xmlhttp.status == 200) {
-                    
-                    {
                         var frame = getSelectorLoadFrame(doc);
                         frame.autoPagerInited = false;
                         frame.contentDocument.clear();
                         frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
                         //alert(xmlhttp.responseText);
                         frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.enableJS,url));
+                        xmlhttp.abort();
                         frame.contentDocument.close();
                         setTimeout(function (){
                             if (!frame.autoPagerInited) {
@@ -1277,8 +1279,6 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                             }
                         }
                         ,60000);
-                    }
-                    
                 }
                 else {
                     alertErr("Error loading page:" + url);
@@ -1542,7 +1542,6 @@ function  pagingWatcher() {
 function fixUrl(doc,url) {
     if (url.toLowerCase().indexOf("javascript")!=-1)
         eval(url);
-    return url;
     if(url.indexOf(doc.location.protocol) == 0)
         return url
         //alert(doc.location);

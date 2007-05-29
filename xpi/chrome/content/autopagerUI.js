@@ -241,6 +241,8 @@
                newitem.site = site;
                sites[listitm.siteIndex ] = sites[newitem.siteIndex];
                sites[newitem.siteIndex] = site;
+               listitm.style.color = getColor(sites[listitm.siteIndex ] );
+               newitem.style.color = getColor(sites[newitem.siteIndex ] );
                
                listbox.selectedIndex = listbox.selectedIndex -1;
            }
@@ -258,6 +260,9 @@
                sites[listitm.siteIndex ] = sites[newitem.siteIndex];
                sites[newitem.siteIndex] = site;
                listbox.selectedIndex = listbox.selectedIndex +1;
+               listitm.style.color = getColor(sites[listitm.siteIndex ] );
+               newitem.style.color = getColor(sites[newitem.siteIndex ] );
+               
            }
         }, false);
         btnUp.addEventListener("command", function() {
