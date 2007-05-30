@@ -1,4 +1,4 @@
-<!ENTITY appname "自动翻页">
+<!ENTITY setting.appname "自动翻页">
 <!ENTITY setting.title "自动翻页 Setting">
 <!ENTITY setting.button.add "添加">
 <!ENTITY setting.button.edit "编辑">

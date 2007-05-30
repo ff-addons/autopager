@@ -322,16 +322,15 @@ var splitbrowse = {
   },
   close : function(doc) 
   {
-  	var splitBrowser = this.getSplitBrowser(doc,false,false);
-      try{
-       splitBrowser.removeProgressListener(splitpanelProgressListener);
-      } catch(e) {}
-      try {
-	      	var parent = splitBrowser.parentNode;
-	        splitBrowser.destroy();
-	        parent.removeChild(splitBrowser);
-      }catch (e) {}
-      content.focus();
+  	try{
+            var splitBrowser = this.getSplitBrowser(doc,false,false);
+            splitBrowser.removeProgressListener(splitpanelProgressListener);
+     
+	    var parent = splitBrowser.parentNode;
+	    parent.removeChild(splitBrowser);
+            splitBrowser.destroy();
+	    content.focus();
+        }catch (e) {}         
   },
   loadNewUrl : function(win,url)
   {

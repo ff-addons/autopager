@@ -211,6 +211,7 @@ function mergeArray(autoSites,sites,silient)
 	
 	var insertCount=0;
 	var updatedCount=0;
+	var ignoreCount=0;
 	for (var i=0;i<sites.length;i++)
 	{
 		var siteIndex = getSiteIndex(autoSites,sites[i]);
@@ -222,14 +223,18 @@ function mergeArray(autoSites,sites,silient)
 		else
 		{
 			if (!(autoSites[siteIndex].changedByYou 
-				|| autoSites[siteIndex].createdByYou))
+				|| autoSites[siteIndex].createdByYou) &&
+                                !(autoSites[siteIndex].guid.length > 0 && sites[i].guid.length == 0)
+                            )
 			{
 				updatedCount++;
 				autoSites[siteIndex] = sites[i];
 			}
+                        else
+                            ignoreCount ++;
 		}
 	}
-	var msg = formatString("importdone",[insertCount,updatedCount]);
+	var msg = formatString("importdone",[insertCount,updatedCount,ignoreCount]);
 	if (!silient)
 	{
 		alert(msg);
@@ -316,7 +321,7 @@ function loadConfigFromStr(configContents,remote) {
 		    }
                      if (!hasQuickLoad)
                          site.quickLoad = false;
-                     if ((site.createdByYou || getPrefs().getBoolPref(".debug")) && site.guid.length == 0)
+                     if (site.createdByYou)
                         site.guid = generateGuid();
                      sites.push(site);
 		  }

@@ -1,4 +1,4 @@
-<!ENTITY appname "Auto Pager">
+<!ENTITY setting.appname "Auto Pager">
 <!ENTITY setting.title "Auto Pager Setting">
 <!ENTITY setting.button.add "Add...">
 <!ENTITY setting.button.edit "Edit...">

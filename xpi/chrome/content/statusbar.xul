@@ -3,6 +3,7 @@
 
 <overlay id="autopagestatus" 
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
     <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
@@ -16,23 +17,7 @@
                   class="chromeclass-extrachrome"/>
     </window>
     <statusbar id="status-bar">
-        <!--  onclick="enableSelector(_content.document);" -->
-        <statusbarpanel id="autopager_status"
-                        context='autopager-popup'
-                        onclick="statusClicked(event);"
-                        hidden="false">
-            <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
-                <label value="auto pager"></label>
-            </tooltip>    	
-            
-            <stringbundleset id="autopagerStringbundleset">
-                <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
-            </stringbundleset>
-            <image id="autopager_image" width="16" height="16" style="margin:0 5px"
-                   onclick="statusClicked(event);"
-                   src="chrome://autopager/skin/autopager-small.off.gif"
-                   tooltip="autopager_tip"/>
-            <popup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
+      <menupopup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
@@ -118,7 +103,75 @@
          </menupopup>
        </menu>
        -->
-            </popup>
+      </menupopup>
+        <!--  onclick="enableSelector(_content.document);" -->
+        <statusbarpanel id="autopager_status"
+                        context='autopager-popup'
+                        onclick="statusClicked(event);"
+                        hidden="false">
+            <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
+                <label value="auto pager"></label>
+            </tooltip>    	
+            
+            <stringbundleset id="autopagerStringbundleset">
+                <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+            </stringbundleset>
+            <image id="autopager_image" width="16" height="16" style="margin:0 5px"
+                   onclick="statusClicked(event);"
+                   src="chrome://autopager/skin/autopager-small.off.gif"
+                   tooltip="autopager_tip"/>
         </statusbarpanel>
     </statusbar>
+
+   <menupopup id="menu_ToolsPopup">
+    <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator">
+        <menupopup id="autopager-popup-tool">
+                <menuitem
+                    label="&autopager.status.setting;"
+                    tooltiptext="&autopager.status.settingTip;"
+                    oncommand="openSetting(content.document.location.href);"
+                />
+                <menuitem
+                    label="&autopager.status.update;"
+                    tooltiptext="&autopager.status.updateTip;"
+                    oncommand="UpdateSetting(false);"
+                />
+                <menuseparator class="autipager-sep-global"/>
+                <menuitem 
+                    label="&autopager.status.importurl;"
+                    tooltiptext="&autopager.status.importurlTip;"
+                    oncommand="importFromURL();"
+                />
+                <menuitem 
+                    label="&autopager.status.importfile;"
+                    tooltiptext="&autopager.status.importfileTip;"
+                    oncommand="importFromFile();"
+                />
+                <menuitem 
+                    label="&autopager.status.export;"
+                    tooltiptext="&autopager.status.exportTip;"
+                    oncommand="exportSetting();"
+                />
+                <menuseparator class="autipager-sep-global"/>
+                <menuitem
+                    label="&autopager.status.sitewizard;"
+                    tooltiptext="&autopager.status.sitewizardTip;"
+                    oncommand="sitewizard( content.document);"
+                />
+                <menuseparator class="autipager-sep-global"/>
+                <menuitem id="autoPagerCreateXPath"
+                          label="&autopager.status.createXPath;"
+                          tooltiptext="&autopager.status.createXPathTip;"
+                          type="checkbox"
+                          autocheck="false" 
+                          oncommand="createXpath( content.document);"
+                /> 
+                <menuitem 
+                    label="&autopager.status.testXPath;"
+                    tooltiptext="&autopager.status.createXPathTip;"
+                    oncommand="xPathTest( content.document);"
+                />
+      </menupopup>
+          </menu>
+  </menupopup>
 </overlay>

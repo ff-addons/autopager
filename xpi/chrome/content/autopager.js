@@ -38,12 +38,13 @@ autopagerOnLoad();
 var autopagerPrefs = null;
 var debug= false;
 var workingAutoSites=null;
+ 
 function autopagerOnLoad() {
     // listen for tab switches
     //window.addEventListener("load", onPageLoad, false);
     window.addEventListener("DOMContentLoaded", onContentLoad, false);
     //window.addEventListener("DOMContentLoaded", onPageLoad, false);
-    window.addEventListener("beforeunload", onPageUnLoad, true);
+    //window.addEventListener("beforeunload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
     //window.addEventListener("focus", onSelect, false);
     
@@ -136,31 +137,33 @@ function enableSelector(doc,setMenuStatus) {
 
 function onPageUnLoad(event) {
     
-    
-    if (!document.autoPagerInited) {
-        document.autoPagerInited = true;
-        setGlobalEnabled(loadEnableStat());
-    }
-    
-    var doc = event.originalTarget;
-    if (!(doc instanceof HTMLDocument))
-        {
-            return;
+    try
+    {
+        if (!document.autoPagerInited) {
+            document.autoPagerInited = true;
+            setGlobalEnabled(loadEnableStat());
         }
-    setGlobalImageByStatus(getGlobalEnabled());
-    try{
-        hiddenDiv(getPagingWatcherDiv(doc),true);
-        document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
-    }catch(e){}
-    
-    
-    if (doc == null)
-        return;
-    //don't handle frames
-    if (doc.defaultView != doc.defaultView.top)
-           return;
 
-    splitbrowse.close(doc);
+        var doc = event.originalTarget;
+        if (!(doc instanceof HTMLDocument))
+            {
+                return;
+            }
+        setGlobalImageByStatus(getGlobalEnabled());
+        try{
+            hiddenDiv(getPagingWatcherDiv(doc),true);
+            document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
+        }catch(e){}
+
+
+        if (doc == null)
+            return;
+        //don't handle frames
+        if (doc.defaultView != doc.defaultView.top)
+               return;
+
+        splitbrowse.close(doc);
+    }catch(e){}
 }
 
 function onContentLoad(event) {
@@ -221,7 +224,6 @@ function onContentLoad(event) {
                         nextUrl = getNextUrlIncludeFrames(container,doc);
                         container.documentElement.autopagernextUrl = nextUrl;
                         browser.autopagerSplitWinFirstDocloaded = true;
-                        //do_request(container);
                         container.documentElement.autopagerSplitDocInited = true;
                     }
                     else {
@@ -299,7 +301,6 @@ function onPageLoad(event) {
                         nextUrl = getNextUrlIncludeFrames(container,doc);
                         container.documentElement.autopagernextUrl = nextUrl;
                         browser.autopagerSplitWinFirstDocloaded = true;
-                        //do_request(container);
                         container.documentElement.autopagerSplitDocInited = true;
                     }
                     else {
