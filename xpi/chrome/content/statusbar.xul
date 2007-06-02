@@ -17,11 +17,27 @@
                   class="chromeclass-extrachrome"/>
     </window>
     <statusbar id="status-bar">
+        <!--  onclick="enableSelector(_content.document);" -->
+        <statusbarpanel id="autopager_status"
+                        context='autopager-popup'
+                        onclick="statusClicked(event);"
+                        hidden="false">
+            <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
+                <label value="auto pager"></label>
+            </tooltip>    	
+            
+            <stringbundleset id="autopagerStringbundleset">
+                <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+            </stringbundleset>
+            <image id="autopager_image" width="16" height="16" style="margin:0 5px"
+                   onclick="statusClicked(event);"
+                   src="chrome://autopager/skin/autopager-small.off.gif"
+                   tooltip="autopager_tip"/>
       <menupopup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="openSetting(content.document.location.href);"
+                    oncommand="openSettingForDoc(content.document);"
                 />
                 <menuitem
                     label="&autopager.status.update;"
@@ -104,22 +120,6 @@
        </menu>
        -->
       </menupopup>
-        <!--  onclick="enableSelector(_content.document);" -->
-        <statusbarpanel id="autopager_status"
-                        context='autopager-popup'
-                        onclick="statusClicked(event);"
-                        hidden="false">
-            <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
-                <label value="auto pager"></label>
-            </tooltip>    	
-            
-            <stringbundleset id="autopagerStringbundleset">
-                <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
-            </stringbundleset>
-            <image id="autopager_image" width="16" height="16" style="margin:0 5px"
-                   onclick="statusClicked(event);"
-                   src="chrome://autopager/skin/autopager-small.off.gif"
-                   tooltip="autopager_tip"/>
         </statusbarpanel>
     </statusbar>
 
@@ -129,7 +129,7 @@
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="openSetting(content.document.location.href);"
+                    oncommand="openSettingForDoc(content.document);"
                 />
                 <menuitem
                     label="&autopager.status.update;"

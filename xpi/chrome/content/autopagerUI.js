@@ -20,13 +20,18 @@
         loadControls();
 		if (sites.length >= 0) {
             populateChooser();
-            var index=0;
+            chooseSite(0);
             var url = window.opener.autopagerSelectUrl;
 	        if (url != null )
 	        {
-	          	index = getMatchedIndex(url);
+                    window.autopagerSelectUrl = url;
+                    window.addEventListener("focus", function(ev) {
+                        var self = arguments.callee;
+                        window.removeEventListener("focus",self,false);
+	          	var index = getMatchedIndex(window.autopagerSelectUrl);
+        	        chooseSite(index);
+                    },false);
 	        }
-	        chooseSite(index);
         }
     }, false);
     function getMatchedIndex(url)
@@ -532,7 +537,7 @@ function exportSelectedSetting()
         return color;
 	}
     function chooseSite(index) {
-    	
+    	listbox.ensureIndexIsVisible(index);
         listbox.selectedIndex = index;
         listbox.focus();
     }

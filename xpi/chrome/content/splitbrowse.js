@@ -118,7 +118,7 @@ const XULDOMUtils = {
 };
 
 var splitbrowse = {
-  prefix : "autopager",
+  autopagerPrefix : "autopager",
   domUtils: XULDOMUtils,
   hidden : true,
   execute: function(node,method)
@@ -150,7 +150,7 @@ var splitbrowse = {
   },
   getSplitKey :function ()
   {
-  	return "is" + this.prefix + "_subwin";
+  	return "is" + this.autopagerPrefix + "_subwin";
   },
   getBrowserNode : function(doc)
   {
@@ -178,7 +178,7 @@ var splitbrowse = {
   	
   	for(var i=1;i<=document.splitBrowserCount;++i)
   	{
-  		var b = document.getElementById(this.prefix + "-split-browser-" + i);
+  		var b = document.getElementById(this.autopagerPrefix + "-split-browser-" + i);
   		if (b!=null && b.contentWindow == ctx)
   		{
   			return b;
@@ -190,7 +190,7 @@ var splitbrowse = {
     if (!aEntry)
       return null;
     aEntry = aEntry.QueryInterface(Components.interfaces.nsISHContainer);
-    var newEntry = aEntry.clone();
+    var newEntry = aEntry.clone(true);
     newEntry = newEntry.QueryInterface(Components.interfaces.nsISHContainer);
     newEntry.loadType = Math.floor(aEntry.loadType);
     if (aEntry.childCount) {
@@ -229,14 +229,14 @@ var splitbrowse = {
   {
   	var browser = this.getBrowserNode(doc);
   	
- 	if (!browser.getAttribute(this.prefix + "splitbrowse-id"))
+ 	if (!browser.getAttribute(this.autopagerPrefix + "splitbrowse-id"))
   	{
   		document.splitBrowserCount ++;
-  		browser.setAttribute(this.prefix + "splitbrowse-id",document.splitBrowserCount);
+  		browser.setAttribute(this.autopagerPrefix + "splitbrowse-id",document.splitBrowserCount);
   	}
-  	var subfix = browser.getAttribute(this.prefix + "splitbrowse-id");
+  	var subfix = browser.getAttribute(this.autopagerPrefix + "splitbrowse-id");
 
-  	var id = this.prefix + "-split-browser-" + subfix;
+  	var id = this.autopagerPrefix + "-split-browser-" + subfix;
     var splitBrowser = document.getElementById(id);
     
     if (!splitBrowser && createNew)
@@ -261,14 +261,21 @@ var splitbrowse = {
         splitBrowser.loadURI("about:",null,null);
     	if (!browser.getAttribute("flex"))
 	    		browser.setAttribute("flex", "1");
-        this.setVisible(splitBrowser,this.hidden);      
-                
+        this.setVisible(splitBrowser,!this.hidden);      
+                   
+        browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",this.onclose,false);
     }
        if (splitBrowser != null && clone)
         {
+            //splitBrowser.auotpagerContentDoc = doc;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
-            this.cloneBrowser(splitBrowser,browser);
+            splitBrowser.autopagerSplitWinFirstDocSubmited = true;
+            if (!doc.documentElement.autopagerUseSafeEvent)
+                this.cloneBrowser(splitBrowser,browser);
+            else
+                splitBrowser.loadURI( doc.location.href, null, null );
+            
         }                  
  
 	//splitBrowser.parentNode.hidden = hidden;
@@ -278,14 +285,15 @@ var splitbrowse = {
   },
   show :function(splitBrowser)
   {
-  	this.setVisible(splitBrowser,false);     
+  	this.setVisible(splitBrowser,true);     
   },
   hide : function(splitBrowser)
   {
-  	this.setVisible(splitBrowser,true);     
+  	this.setVisible(splitBrowser,false);     
   },
-  setVisible: function (splitBrowser,hidden)
+  setVisible: function (splitBrowser,visible)
   {
+      var hidden = !visible;
     this.hidden = hidden;
     if (splitBrowser == null)
         return;
@@ -324,13 +332,50 @@ var splitbrowse = {
   {
   	try{
             var splitBrowser = this.getSplitBrowser(doc,false,false);
+            if (splitBrowser==null)
+                return;
             splitBrowser.removeProgressListener(splitpanelProgressListener);
      
 	    var parent = splitBrowser.parentNode;
-	    parent.removeChild(splitBrowser);
-            splitBrowser.destroy();
-	    content.focus();
+            if (parent == null)
+                return;
+	    splitBrowser.parentNode.removeChild(splitBrowser);
+            //splitBrowser.destroy();
+	    //content.focus();
         }catch (e) {}         
+  },
+  onclose:function(event)
+  {
+         var browser=splitbrowse.getBrowserFromTarget(event.target);
+          if (browser == null)
+          {
+              return;
+          }
+  	var subfix = browser.getAttribute(splitbrowse.autopagerPrefix +  "splitbrowse-id");
+
+  	var id = splitbrowse.autopagerPrefix +"-split-browser-" + subfix;
+        var splitBrowser = document.getElementById(id);
+    
+        if (splitBrowser != null)
+        {
+                splitBrowser.removeProgressListener(splitpanelProgressListener);
+                var parent = splitBrowser.parentNode;
+                parent.removeChild(splitBrowser);
+                splitBrowser.destroy();
+         }
+  	 
+  },
+  getBrowserFromTarget: function(target)
+  {
+       if (target.localName == "browser")
+                return target;
+       for (var i=0;i<target.childNodes.length;i++)
+       {
+           var b = splitbrowse.getBrowserFromTarget(target.childNodes[i]);
+           if (b!= null)
+               return b;
+       }
+       return null;
   },
   loadNewUrl : function(win,url)
   {
@@ -348,7 +393,7 @@ var splitbrowse = {
   done : function(doc) 
   {
       //alert("done");
-      onContentDoc(doc,true);
+      onSplitDocLoaded(doc,true);
   }
 };
 var splitpanelProgressListener = {    
