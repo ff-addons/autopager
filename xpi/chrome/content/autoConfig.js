@@ -2,9 +2,23 @@ var configFile = getConfigFile("autopager.xml");
 var autoSites = null;
 
 var strbundle=null;
-
-
-
+var UpdateSites=
+{
+    updateSites: null,
+    init:function()
+    {
+        if (this.updateSites == null)
+        {
+            this.updateSites =  new Array();
+            this.updateSites.push(new UpdateSite("Wind Li","all","http://autopager.mozdev.org/conf.d/autopager.xml","default configurations"));
+        }
+    },
+    defaultSite : function()
+    {
+        return this.updateSites[0].url;
+    }
+};
+UpdateSites.init();
 function getString(name)
 {
 	try{
@@ -81,7 +95,7 @@ function getConfigDir() {
 function getContents(aURL, charset,warn){
 	var str;
 	try{
-	  if( !charset ) {
+	  if( charset == null) {
 	    charset = "UTF-8";
 	    warn = false;
 	  }
@@ -126,7 +140,7 @@ function loadConfig() {
 function importFromURL()
 {
 	var url = prompt(getString("inputurl"),
-		"http://blogs.sun.com/wind/resource/autopager.xml");
+                        UpdateSites.defaultSite());
 	if (url!=null && url.length >0)
 	{
 		var sites = loadConfigFromUrl(url);
@@ -321,7 +335,7 @@ function loadConfigFromStr(configContents,remote) {
 		    }
                      if (!hasQuickLoad)
                          site.quickLoad = false;
-                     if (site.createdByYou)
+                     if (site.guid.length == 0 && site.createdByYou)
                         site.guid = generateGuid();
                      sites.push(site);
 		  }
@@ -331,7 +345,7 @@ function loadConfigFromStr(configContents,remote) {
 	}
   if (remote && sites.length ==0 )
   {
-  	sites = loadConfigFromUrl("http://blogs.sun.com/wind/resource/autopager.xml");
+  	sites = loadConfigFromUrl(UpdateSites.defaultSite());
   	//saveConfig(sites);
   }
   return sites;
@@ -622,3 +636,117 @@ function  isNumeric(strNumber)
 		var  newPar=/^(\+)?\d+(\.\d+)?$/  
         return  newPar.test(strNumber);  
 } 
+function UpdateSite(owner,locales,url,desc)
+{
+    this.owner = owner;
+    this.locales=locales;
+    this.url=url;
+    this.desc=desc;
+};
+function SiteConfirm()
+{
+        this.guid = "";
+        this.host = "";
+        this.AllowedPageCount = -1;
+        this.UserAllowed = false;
+}
+ function addConfirm(confirmSites,guid,countNumber,host,enabled)
+ {
+     for(var i=0;i<confirmSites.length;i++)
+     {
+         if (confirmSites[i].guid == guid
+             && confirmSites[i].host == host  )
+         {
+             confirmSites[i].AllowedPageCount = countNumber;
+             confirmSites[i].UserAllowed = enabled;
+             return;
+         }
+     }
+     var site = new SiteConfirm();
+     site.guid = guid;
+     site.host = host;
+     site.AllowedPageCount = countNumber;
+     site.UserAllowed = enabled;
+     confirmSites.push(site);
+ }
+ function findConfirm(confirmSites,guid,host)
+ {
+     for(var i=0;i<confirmSites.length;i++)
+     {
+         if (confirmSites[i].guid == guid
+             && confirmSites[i].host == host  )
+         {
+             return confirmSites[i];
+         }
+     }
+     return null;
+ }
+function loadConfirm() {
+  var confirmContents="";
+  try{
+	  confirmContents= getContents(getConfigFileURI("site-confim.xml"));
+    }catch(e)
+    {
+    	//alert(e);
+    }
+    return loadConfirmFromStr(confirmContents);
+ }
+function loadConfirmFromStr(configContents) {
+  var sites = new Array();
+  try{
+		  var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
+		    .createInstance(Components.interfaces.nsIDOMParser);
+		  //alert(configFile);
+		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
+		  var doc = domParser.parseFromString(configContents, "text/xml");
+		  var nodes = doc.evaluate("//site-confirm", doc, null, 0, null);
+		  for (var node = null; (node = nodes.iterateNext()); ) {
+		    var site = new SiteConfirm();
+		
+		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
+		      if (childNode.nodeName == "guid") {
+					site.guid = getValue(childNode);
+		      }else  if (childNode.nodeName == "AllowedPageCount") {
+					site.AllowedPageCount = getValue(childNode);
+		      }else  if (childNode.nodeName == "host") {
+					site.host = getValue(childNode);
+		      }
+		      else if (childNode.nodeName == "UserAllowed") {
+					site.UserAllowed	= (getValue(childNode) == 'true');
+		      }
+		  }
+                 sites.push(site);
+               }
+	}catch(e)
+	{
+		//alert(e);
+	}
+  return sites;
+}
+function saveConfirm(sites) {
+	saveConfirmToFile(sites, getConfigFile("site-confim.xml"));
+}
+function saveConfirmToFile(sites,saveFile) {
+	try{
+	  var doc = document.implementation.createDocument("", "autopager", null);
+	  doc.firstChild.appendChild(doc.createTextNode("\n"))
+	
+	  for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
+                var siteNode = doc.createElement("site-confirm");
+
+                createNode(siteNode,"guid",siteObj.guid);
+                createNode(siteNode,"host",siteObj.host);
+                createNode(siteNode,"AllowedPageCount",siteObj.AllowedPageCount);
+                createNode(siteNode,"UserAllowed",siteObj.UserAllowed);
+                doc.firstChild.appendChild(siteNode);
+                doc.firstChild.appendChild(doc.createTextNode("\n"));
+	  }
+	
+	  var configStream = getWriteStream(saveFile);
+	  new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
+	  configStream.close();
+	}catch(e)
+	{
+		alert(e);
+	}
+}

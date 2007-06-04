@@ -101,6 +101,11 @@
                     </menupopup>	
                 </menu>
                 <menuseparator class="autipager-sep-global"/>
+                <menuitem id="autopager-showoption"
+                          label="&autopager.status.showoption;"
+                          tooltiptext="&autopager.status.showoptionTip;"
+                          oncommand="showAllPagingOptions()"
+                />
                 <menuitem id="autopager-enabled"
                           label="&autopager.status.enabled;"
                           type="checkbox"
@@ -159,6 +164,11 @@
                     oncommand="sitewizard( content.document);"
                 />
                 <menuseparator class="autipager-sep-global"/>
+                <menuitem id="autopager-showoption"
+                          label="&autopager.status.showoption;"
+                          tooltiptext="&autopager.status.showoptionTip;"
+                          oncommand="showAllPagingOptions()"
+                />
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"

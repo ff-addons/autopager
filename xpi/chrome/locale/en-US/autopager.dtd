@@ -60,6 +60,8 @@
 
 <!ENTITY autopager.status.enabled "Enabled">
 <!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
+<!ENTITY autopager.status.showoption "Show Page Options">
+<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
 
 <!ENTITY autopager.status.myname "My Name:">
 <!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">

@@ -61,6 +61,8 @@
 
 <!ENTITY autopager.status.enabled "启用">
 <!ENTITY autopager.status.enabledTip "启用/禁用自动翻页">
+<!ENTITY autopager.status.showoption "页选项">
+<!ENTITY autopager.status.showoptionTip "显示当前页的选项。">
 
 <!ENTITY autopager.status.myname "你的姓名:">
 <!ENTITY autopager.status.mynameTip "你的姓名。它将显示在你创建的自动翻页站点配置信息中.">

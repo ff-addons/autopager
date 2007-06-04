@@ -37,11 +37,13 @@ autopagerOnLoad();
 var autopagerPrefs = null;
 var debug= false;
 var workingAutoSites=null;
+var autopagerConfirmSites = null;
  
 function autopagerOnLoad() {
     window.addEventListener("DOMContentLoaded", onContentLoad, false);
     //window.addEventListener("beforeunload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
+    autopagerConfirmSites = loadConfirm();
 };
 
 function sitewizard(doc) {
@@ -270,6 +272,7 @@ function loadTempConfig() {
             
             site.fixOverflow = true;
             site.margin = loadPref("smartMargin");
+            site.guid="autopagertemp";
             workingAutoSites.push(site);
             //alert(linkXPath);
         }
@@ -425,6 +428,7 @@ function onInitDoc(doc,safe) {
                 var oldNodes = findNodeInDoc(doc,workingAutoSites[i].contentXPath,workingAutoSites[i].enableJS);
                 
                 de.contentXPath = workingAutoSites[i].contentXPath;
+                de.autopagerGUID = workingAutoSites[i].guid;
                 de.margin = workingAutoSites[i].margin;
                 de.enabled = workingAutoSites[i].enabled;
                 //if (workingAutoSites[i].enabled)
@@ -432,7 +436,19 @@ function onInitDoc(doc,safe) {
                 de.setAttribute('enableJS', workingAutoSites[i].enableJS);
                 if (!de.autopagerPagingCount)
                     de.autopagerPagingCount = 0;
-                
+                if (!de.autoPagerPage)
+                    de.autoPagerPage = 0;
+                if (autopagerConfirmSites == null)
+                    autopagerConfirmSites = loadConfirm();
+                var siteConfirm = findConfirm(autopagerConfirmSites,workingAutoSites[i].guid,doc.location.host);
+                if (siteConfirm!=null)
+                {
+                    de.autopagerUserConfirmed= true;
+                    de.autopagerSessionAllowed= siteConfirm.UserAllowed;
+                    de.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
+                    de.autopagerUserAllowed=siteConfirm.UserAllowed;
+                }
+
                 if (oldNodes!= null && oldNodes.length >0)
                     insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
                 if(insertPoint == null)
@@ -597,7 +613,19 @@ function  scrollWatcher() {
                             if(remain < wh ){
                                 //alert(remain + "   " + wh + "  "  + sh + " " + sc);
                                 doc.documentElement.autopagerEnabled = false;
-                                do_request(doc)
+                                if (!doc.documentElement.autopagerUserConfirmed
+                                    || (doc.documentElement.autopagerSessionAllowed && doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage)
+                                )
+                                    hiddenDiv(getPagingOptionDiv(doc),false);
+                                else
+                                if (doc.documentElement.autopagerUserConfirmed
+                                    && doc.documentElement.autopagerUserAllowed
+                                    && ( doc.documentElement.autopagerAllowedPageCount < 0
+                                                ||  doc.documentElement.autopagerAllowedPageCount> doc.documentElement.autoPagerPage)
+                                )
+                                    do_request(doc);
+                                
+                                    
                             }
                         }catch(e){
                             alertErr("Exception:" + e);
@@ -612,6 +640,34 @@ function  scrollWatcher() {
         
     var self = arguments.callee;
     setTimeout(self,400);
+    
+};
+function  showAllPagingOptions() {
+    
+    try{
+        var showedCount = 0;
+        var i =0;
+        if (debug)
+            logInfo(count,"Enter showAllPagingOptions");
+        var de = content.document.documentElement;
+        if (de.autopagerEnabledDoc != null)
+       {
+            for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+                var doc = de.autopagerEnabledDoc[i];
+                if (doc.location != null)
+               {
+                     hiddenDiv(getPagingOptionDiv(doc),false);
+                     showedCount ++;
+                }
+            }
+         }
+         if (showedCount==0)
+        {
+            alert(getString("nomatchedconfig"));
+        }
+    }catch(e){
+       alertErr("Exception:" + e);
+   }
     
 };
 
@@ -681,10 +737,13 @@ function getSelectorLoadFrame(doc) {
     }
     //fix for enable to work at restored session
     try{
-        frame.removeEventListener("load", onFrameLoad, false);
+     //       frame.removeEventListener("DOMContentLoaded", onFrameLoad, false);
+            frame.removeEventListener("load", onFrameLoad, false);
     }catch(e){}
-    
-    frame.addEventListener("load", onFrameLoad, false);
+   // if (doc.documentElement.autopagerUseSafeEvent)
+        frame.addEventListener("load", onFrameLoad, false);
+  //  else
+  //      frame.addEventListener("DOMContentLoaded", onFrameLoad, false);
     return frame;
 };
 
@@ -1345,6 +1404,107 @@ function getPagingWatcherDiv(doc)
     return div;
 	
 }
+function getPagingOptionDiv(doc)
+{
+	var divName = "autoPagerBorderOptions";
+    var div = doc.getElementById(divName);
+    if (!div) {
+        var str = "<a href='javascript:alert(\"" + getString("optionexplain")+ "\")'><b>"
++getString("optiontitle") + "</b></a> <a href='javascript:enabledInThisSession(false)'><img "
++ " style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopager/content/images/vx.png'></a> "
++ "<li><a href='javascript:enabledInThisTime(true)'>"+ getString("enableshort") +"</a>/<a href='javascript:enabledInThisTime(false)'>D</a>:"
++ getString("thistime") + "</li>"
++ "<li><a href='javascript:enabledInThisSession(true)'>"+ getString("enableshort") +"</a>/<a"
++ " href='javascript:enabledInThisSession(false)'>"+ getString("disableshort") +"</a>:"
++ getString("thissession") + "</li>"
++ "<li><a href='javascript:enabledInNextPagesAlways(false)'>"+ getString("enableshort") +"</a>/<a"
++ " href='javascript:enabledInNextPagesAlways(true)'>"+ getString("alwaysenableshort") +"</a>:"
++ formatString("nextpages",["<input maxlength='3' size='1' id='autopagercount' value='3'>"]) +"</li>"
++ "<li><a href='javascript:enabledThisSite(true)'>"+ getString("alwaysenableshort") +"</a>/<a"
++ " href='javascript:enabledThisSite(false)'>"+ getString("alwaysdisableshort") +"</a>:"
++ getString("thissite") + "</li>";
+    var style = getOptionStyle();
+        div = createDiv(doc,divName,style);
+        div.innerHTML = str;//"<b>Loading ...</b>";
+        var links=evaluateXPath(div,".//a",false);
+        for(var i=0;i<links.length;i++)
+        {
+            links[i].addEventListener("click",onConfirmClick,true);
+             links[i].title = getString("optionexplain");
+        }
+    }
+    return div;
+	
+}
+function onConfirmClick(event)
+{
+    event.preventDefault();
+    var link = event.target;
+    if (link.tagName.toLowerCase() != "a")
+        link = link.parentNode;
+    var exp = link.href;
+    document.autopagerConfirmDoc = link.ownerDocument;
+    
+    eval(exp);
+    document.autopagerConfirmDoc = null;
+}
+
+function enabledInNextPagesAlways(always)
+{
+    var doc=document.autopagerConfirmDoc ;
+    var count = doc.getElementById("autopagercount").value;
+    var countNumber = parseInt(count);
+    if (isNaN(countNumber))
+    {
+        alert("please input a integer.");
+        return;
+    }
+    enabledInNextPages(true,countNumber);
+    if (always)
+    {
+        var host = doc.location.host;
+        var guid = doc.documentElement.autopagerGUID;
+        autopagerConfirmSites = loadConfirm();
+        addConfirm(autopagerConfirmSites,guid,countNumber,host,true);
+        saveConfirm(autopagerConfirmSites);
+    }
+}
+function enabledInThisTime(enabled)
+{
+    enabledInNextPages(enabled,1);
+}
+function enabledInNextPages(enabled,count)
+{
+    var doc = document.autopagerConfirmDoc;
+    var de =doc.documentElement;
+    de.autopagerUserConfirmed= true;
+    de.autopagerSessionAllowed= true;
+    de.autopagerAllowedPageCount=de.autoPagerPage+count;
+    de.autopagerUserAllowed=enabled;
+    de.autopagerEnabled = enabled;
+     hiddenDiv(getPagingOptionDiv(doc),true);
+}
+function enabledThisSite(enabled)
+{
+    enabledInThisSession(enabled);
+    var doc = document.autopagerConfirmDoc;
+    var host = doc.location.host;
+    var guid = doc.documentElement.autopagerGUID;
+    autopagerConfirmSites = loadConfirm();
+    addConfirm(autopagerConfirmSites,guid,-1,host,enabled);
+    saveConfirm(autopagerConfirmSites);
+}
+function enabledInThisSession(enabled)
+{
+    var doc = document.autopagerConfirmDoc;
+    var de =doc.documentElement;
+    de.autopagerUserConfirmed= true;
+    de.autopagerSessionAllowed= enabled;
+    de.autopagerAllowedPageCount=-1;
+    de.autopagerUserAllowed=enabled;
+    de.autopagerEnabled = enabled;
+     hiddenDiv(getPagingOptionDiv(doc),true);
+}
 function  pagingWatcher() {
     var doc = content.document;
     var de = doc.documentElement;
@@ -1366,7 +1526,7 @@ function  pagingWatcher() {
                     document.autoPagerImageShowStatus = !document.autoPagerImageShowStatus;
                     setGlobalImageByStatus(document.autoPagerImageShowStatus);
                     var self = arguments.callee;
-                    setTimeout(self, 100);//10 +Math.random()*200);                    
+                    setTimeout(self, 300);//10 +Math.random()*200);                    
                 }
             
         }
@@ -1540,6 +1700,16 @@ function getLoadingStyle()
  try{
         
         return loadUTF8Pref("loading"); // get a pref
+    }catch(e) {
+        //alertErr(e);
+    }
+    return "";
+}
+function getOptionStyle()
+{
+ try{
+        
+        return loadUTF8Pref("optionstyle"); // get a pref
     }catch(e) {
         //alertErr(e);
     }
