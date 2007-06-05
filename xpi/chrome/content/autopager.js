@@ -37,6 +37,7 @@ autopagerOnLoad();
 var autopagerPrefs = null;
 var debug= false;
 var workingAutoSites=null;
+var workingAllSites=null;
 var autopagerConfirmSites = null;
  
 function autopagerOnLoad() {
@@ -44,6 +45,7 @@ function autopagerOnLoad() {
     //window.addEventListener("beforeunload", onPageUnLoad, true);
     window.addEventListener("select", onSelect, true);
     autopagerConfirmSites = loadConfirm();
+    
 };
 
 function sitewizard(doc) {
@@ -166,11 +168,6 @@ function onPageUnLoad(event) {
 }
 
 function onContentLoad(event) {
-    if (!document.autoPagerInited) {
-        document.autoPagerInited = true;
-        setGlobalEnabled(loadEnableStat());
-    }
-    
     var doc = event.target;// event.originalTarget;
     if (doc == null)
         return;
@@ -180,6 +177,11 @@ function onContentLoad(event) {
         {
             return;
         }
+    if (!document.autoPagerInited) {
+        document.autoPagerInited = true;
+        setGlobalEnabled(loadEnableStat());
+        window.setTimeout(function(){autopagerUpdate();},400);
+   }
     setGlobalImageByStatus(getGlobalEnabled());
     try{
         hiddenDiv(getPagingWatcherDiv(doc),true);
@@ -230,8 +232,15 @@ function onContentLoad(event) {
 }
 function handleDocLoad(doc,safe)
 {
-    workingAutoSites = loadConfig();
-    loadTempConfig();
+    //workingAutoSites = loadConfig();
+    workingAllSites = UpdateSites.loadAll();
+            
+    var tmpSites = loadTempConfig();
+    tmpSites.updateSite = new UpdateSite("Wind Li","all",
+                        "","text/html; charset=utf-8",
+                        "smart paging configurations",
+                        "smartpaging.xml",null);
+    workingAllSites[tmpSites.updateSite.filename] = tmpSites;
     onInitDoc(doc,safe);
 }
 function getNextUrlIncludeFrames(container,doc)
@@ -257,6 +266,7 @@ function getNextUrlIncludeFrames(container,doc)
     return nextUrl;
 }
 function loadTempConfig() {
+    var sites = new Array();
     var smartenable = loadBoolPref("smartenable");
     if (smartenable) {
         
@@ -273,10 +283,11 @@ function loadTempConfig() {
             site.fixOverflow = true;
             site.margin = loadPref("smartMargin");
             site.guid="autopagertemp";
-            workingAutoSites.push(site);
+            sites.push(site);
             //alert(linkXPath);
         }
     }
+    return sites;
 }
 function convertToXpath(str) {
     var xpaths = new Array();
@@ -409,6 +420,7 @@ function onInitDoc(doc,safe) {
     if (url == "about:blank")
         return;
     var i=0;
+    workingAutoSites= UpdateSites.getMatchedSiteConfig(workingAllSites,url);
     for(i=0;i<workingAutoSites.length;++i) {
         var pattern = getRegExp(workingAutoSites[i]);
         if (pattern.test(url)) {

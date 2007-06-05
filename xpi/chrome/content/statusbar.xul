@@ -6,6 +6,8 @@
     
     <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     
@@ -42,7 +44,7 @@
                 <menuitem
                     label="&autopager.status.update;"
                     tooltiptext="&autopager.status.updateTip;"
-                    oncommand="UpdateSetting(false);"
+                    oncommand="UpdateSites.updateOnline();"
                 />
                 <menuseparator class="autipager-sep-global"/>
                 <menuitem 
@@ -164,11 +166,6 @@
                     oncommand="sitewizard( content.document);"
                 />
                 <menuseparator class="autipager-sep-global"/>
-                <menuitem id="autopager-showoption"
-                          label="&autopager.status.showoption;"
-                          tooltiptext="&autopager.status.showoptionTip;"
-                          oncommand="showAllPagingOptions()"
-                />
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
@@ -181,6 +178,13 @@
                     tooltiptext="&autopager.status.createXPathTip;"
                     oncommand="xPathTest( content.document);"
                 />
+                <menuseparator class="autipager-sep-global"/>
+                <menuitem id="autopager-showoption"
+                          label="&autopager.status.showoption;"
+                          tooltiptext="&autopager.status.showoptionTip;"
+                          oncommand="UpdateSites.updateOnline();showAllPagingOptions()"
+                />
+                
       </menupopup>
           </menu>
   </menupopup>

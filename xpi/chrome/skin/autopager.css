@@ -1,1 +1,25 @@
 
+treechildren:-moz-tree-row(selected) {
+   background: #E4EEF8;
+   border-bottom: 0px
+}
+treechildren::-moz-tree-row(statusgreen) {
+background-color: green;
+}
+
+treechildren::-moz-tree-cell-text(status)
+{    
+}
+treechildren::-moz-tree-cell-text(statusblue)
+{
+color:blue;
+}
+treechildren::-moz-tree-cell-text(statusgreen)
+{
+color:green;
+}
+treechildren::-moz-tree-cell-text(statusgray)
+{
+color:gray;
+}
+

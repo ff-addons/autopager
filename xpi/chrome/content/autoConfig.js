@@ -5,20 +5,152 @@ var strbundle=null;
 var UpdateSites=
 {
     updateSites: null,
+    submitCount:0,
     init:function()
     {
+        function xmlConfigCallback(doc,updatesite)
+        {
+            var sites = loadConfigFromDoc(doc);
+            return sites;
+        }
+        function blogConfigCallback(doc,updatesite)
+        {
+            var commentPath="//div[@class='comment even' or @class='comment odd']";
+            var nodes =doc.evaluate(commentPath, doc, null, 0, null);
+                var allSites = new Array();
+                for (var node = null; (node = nodes.iterateNext()); ) {
+
+                        //alert(node.textContent);
+                        var sites = loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
+                        //alert(sites.length);
+                        mergeArray(allSites,sites,true);
+                }
+            return allSites;
+        }
         if (this.updateSites == null)
         {
             this.updateSites =  new Array();
-            this.updateSites.push(new UpdateSite("Wind Li","all","http://autopager.mozdev.org/conf.d/autopager.xml","default configurations"));
+
+            this.updateSites.push(new UpdateSite("Wind Li","all",
+                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
+                        "configurations added to blog",
+                        "blogcomments.xml",blogConfigCallback));
+
+            this.updateSites.push(new UpdateSite("autopagerize","all",
+                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
+                        "autopagerize configurations",
+                        "autopagerize.xml",AutoPagerize.onload));
+
+            this.updateSites.push(new UpdateSite("pagerization","all",
+                        "http://userjs.oh.land.to/pagerization/convert.php?file=siteinfo.v4","text/html; charset=utf-8",
+                        "pagerization configurations",
+                        "pagerization.xml",AutoPagerize.onload));
+
+            this.updateSites.push(new UpdateSite("Wind Li","all",
+                        "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
+                        "default configurations",
+                        "autopagerMozdev.xml",xmlConfigCallback));
+                        
+            this.updateSites.push(new UpdateSite("Wind Li","all",
+                        "","text/html; charset=utf-8",
+                        "user created configurations",
+                        "autopager.xml",null));
+
+         }
+        
+    },
+    updateSiteOnline:function (updatesite)
+    {
+        UpdateSites.submitCount ++;
+        apxmlhttprequest.xmlhttprequest(updatesite.url,updatesite.type,this.callback,this.onerror,updatesite);
+    },
+    updateOnline:function ()
+    {
+        this.init();
+        UpdateSites.submitCount=0;
+        for(var i=0;i<this.updateSites.length;i++)
+        {
+            var site= this.updateSites[i];
+            if (site.url.length >0)
+                this.updateSiteOnline(site);
         }
+    },
+    onerror:function(doc,obj)
+    {
+            //TODO:notification the update failed
+             UpdateSites.submitCount--;
+             if (UpdateSites.submitCount<=0)
+                 savePref("lastupdate",(new Date()).getTime());
+    },
+    callback:function(doc,updatesite)
+    {
+            var sites = updatesite.callback(doc,updatesite);
+            var file = getConfigFile(updatesite.filename);
+            if (file)
+            {
+                saveConfigToFile(sites,file,true);
+             }
+             UpdateSites.submitCount--;
+             if (UpdateSites.submitCount<=0)
+                 savePref("lastupdate",(new Date()).getTime());
     },
     defaultSite : function()
     {
-        return this.updateSites[0].url;
+        return UpdateSites.updateSites[UpdateSites.updateSites.length-2].url;
+    },
+    loadAll:function()
+    {
+        var allSites = {};
+        for(var i=this.updateSites.length-1;i>=0;i--)
+        {
+            var configContents="";
+            try{
+                  configContents= getContents(getConfigFileURI(this.updateSites[i].filename));
+                  var sites= null;
+                  sites = loadConfigFromStr(configContents,false);
+                  sites.updateSite = this.updateSites[i];
+                  allSites[this.updateSites[i].filename] = sites;
+            }catch(e)
+            {
+                //alert(e);
+            }            
+        }
+        return allSites;
+    },
+    getMatchedSiteConfig: function(allSites,url)
+    {
+        var newSites = new Array();
+        var key;
+        for ( key in allSites){
+                    var tmpsites = allSites[key];
+                    
+                    for (var i = 0; i < tmpsites.length; i++) {
+                            var site = tmpsites[i];
+                             var pattern = getRegExp(site);
+                            if (pattern.test(url)) { 
+                                newSites.push(site);
+                            }
+                    }
+            };
+        return newSites;
+        
     }
 };
 UpdateSites.init();
+function autopagerUpdate()
+{
+    var update = loadPref("update");
+    if (update == "-1")
+        UpdateSites.updateOnline();
+    else if(update != "0")
+    {
+        var today = new Date();
+        var lastUpdate = loadPref("lastupdate");
+        
+        if (lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > update)
+            UpdateSites.updateOnline();
+    }    
+}
 function getString(name)
 {
 	try{
@@ -143,8 +275,18 @@ function importFromURL()
                         UpdateSites.defaultSite());
 	if (url!=null && url.length >0)
 	{
-		var sites = loadConfigFromUrl(url);
+            function callback(doc,obj)
+            {
+                var sites = loadConfigFromDoc(doc);
 		mergeSetting(sites,false);
+
+            }
+            function onerror(doc,obj)
+            {
+                //TODO:notify error
+            }
+            apxmlhttprequest.xmlhttprequest(url,"text/html; charset=utf-8",callback,onerror,url);
+	
 	}
 }
 function importFromFile()
@@ -274,71 +416,79 @@ function loadConfigFromUrl(url) {
  	else
  		return node.firstChild.nodeValue;
  }
-function loadConfigFromStr(configContents,remote) {
+function loadConfigFromDoc(doc) {
   var sites = new Array();
+    
+  var nodes = doc.evaluate("//site", doc, null, 0, null);
+  if (nodes == null)
+      return sites;
+  var hasQuickLoad = false;
+  for (var node = null; (node = nodes.iterateNext()); ) {
+    var site = new Site();
+
+    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
+      if (childNode.nodeName == "urlPattern") {
+                        site.urlPattern = getValue(childNode);
+      }else  if (childNode.nodeName == "guid") {
+                        site.guid = getValue(childNode);
+      }else if (childNode.nodeName == "urlIsRegex") {
+                        site.isRegex	= (getValue(childNode) == 'true');
+      }
+      else if (childNode.nodeName == "margin") {
+                var val = getValue(childNode);
+                        if (isNumeric(val))
+                                site.margin = val;
+      }
+      else if (childNode.nodeName == "desc") {
+                        site.desc	= getValue(childNode);
+      }
+      else if (childNode.nodeName == "linkXPath") {
+                        site.linkXPath	= getValue(childNode);
+      }
+      else if (childNode.nodeName == "contentXPath") {
+                        site.contentXPath.push(getValue(childNode));
+      }
+      else if (childNode.nodeName == "enabled") {
+                        site.enabled	= (getValue(childNode) == 'true');
+      }
+      else if (childNode.nodeName == "enableJS") {
+                        site.enableJS	= (getValue(childNode) == 'true');
+                        //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
+      }
+      else if (childNode.nodeName == "quickLoad") {
+                        site.quickLoad	= (getValue(childNode) == 'true');
+                        hasQuickLoad = true;
+      }
+      else if (childNode.nodeName == "fixOverflow") {
+                        site.fixOverflow	= (getValue(childNode) == 'true');
+                        //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
+      }
+      else if (childNode.nodeName == "createdByYou") {
+                        site.createdByYou	= (getValue(childNode) == 'true');
+      }
+      else if (childNode.nodeName == "changedByYou") {
+                        site.changedByYou	= (getValue(childNode) == 'true');
+      }else if (childNode.nodeName == "owner") {
+                        site.owner	= getValue(childNode) ;
+      }
+    }
+     if (!hasQuickLoad)
+         site.quickLoad = false;
+     if (site.guid.length == 0 && site.createdByYou)
+        site.guid = generateGuid();
+     sites.push(site);
+  }
+  return sites;
+}
+function loadConfigFromStr(configContents,remote) {
+  var sites = null;
   try{
 		  var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 		    .createInstance(Components.interfaces.nsIDOMParser);
 		  //alert(configFile);
 		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
 		  var doc = domParser.parseFromString(configContents, "text/xml");
-		  var nodes = doc.evaluate("//site", doc, null, 0, null);
-		  var hasQuickLoad = false;
-		  for (var node = null; (node = nodes.iterateNext()); ) {
-		    var site = new Site();
-		
-		    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
-		      if (childNode.nodeName == "urlPattern") {
-					site.urlPattern = getValue(childNode);
-		      }else  if (childNode.nodeName == "guid") {
-					site.guid = getValue(childNode);
-		      }else if (childNode.nodeName == "urlIsRegex") {
-					site.isRegex	= (getValue(childNode) == 'true');
-		      }
-		      else if (childNode.nodeName == "margin") {
-		      		var val = getValue(childNode);
-					if (isNumeric(val))
-						site.margin = val;
-		      }
-		      else if (childNode.nodeName == "desc") {
-					site.desc	= getValue(childNode);
-		      }
-		      else if (childNode.nodeName == "linkXPath") {
-					site.linkXPath	= getValue(childNode);
-		      }
-		      else if (childNode.nodeName == "contentXPath") {
-					site.contentXPath.push(getValue(childNode));
-		      }
-		      else if (childNode.nodeName == "enabled") {
-					site.enabled	= (getValue(childNode) == 'true');
-		      }
-		      else if (childNode.nodeName == "enableJS") {
-					site.enableJS	= (getValue(childNode) == 'true');
-					//alert(site.enableJS + " " + childNode.firstChild.nodeValue);
-		      }
-		      else if (childNode.nodeName == "quickLoad") {
-					site.quickLoad	= (getValue(childNode) == 'true');
-					hasQuickLoad = true;
-		      }
-		      else if (childNode.nodeName == "fixOverflow") {
-					site.fixOverflow	= (getValue(childNode) == 'true');
-					//alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
-		      }
-		      else if (childNode.nodeName == "createdByYou") {
-					site.createdByYou	= (getValue(childNode) == 'true');
-		      }
-		      else if (childNode.nodeName == "changedByYou") {
-					site.changedByYou	= (getValue(childNode) == 'true');
-		      }else if (childNode.nodeName == "owner") {
-					site.owner	= getValue(childNode) ;
-		      }
-		    }
-                     if (!hasQuickLoad)
-                         site.quickLoad = false;
-                     if (site.guid.length == 0 && site.createdByYou)
-                        site.guid = generateGuid();
-                     sites.push(site);
-		  }
+                  sites = loadConfigFromDoc(doc);
 	}catch(e)
 	{
 		//alert(e);
@@ -574,74 +724,20 @@ function getUpdateFrame(doc)
 	return frame;
 };
 	
-var updateUrl="http://blogs.sun.com/wind/entry/autopager_site_config#comments";
-var commentPath="//div[@class='comment even' or @class='comment odd']";
-//var commentPath="//div";
-function UpdateSetting(silence)
-{
-	var url = updateUrl;
-	var xmlhttp=null;
-	try{
-	      try{
-	        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	      }catch(e){
-	        xmlhttp = new XMLHttpRequest();
-	      }
-		xmlhttp.overrideMimeType("text/html; charset=utf-8");
-        xmlhttp.onreadystatechange = function (aEvt) {
-        if(xmlhttp.readyState == 4) 
-        {
-        	if(xmlhttp.status == 200)
-        	{
-        		var frame = getUpdateFrame(content.document);
-        		frame.autoPagerInited = false;
-        		frame.contentDocument.clear();
-        		//alert(xmlhttp.responseText);
-				frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,false));
-				frame.contentDocument.close();
-				var doc = frame.contentDocument;
-        		
-        		
-				var nodes =doc.evaluate(commentPath, doc, null, 0, null);
-				var allSites = new Array();
-				for (var node = null; (node = nodes.iterateNext()); ) {
-		  
-					//alert(node.textContent);
-					var sites = loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
-					//alert(sites.length);
-					mergeArray(allSites,sites,true);
-				}
-				mergeSetting(allSites,silence);
-        	}
-        	else
-        	{
-        		if (!silence)
-        			alert(getString("errorload") + url);
-		      logInfo(getString("errorload") + url,getString("errorload") + url);
-        	}
-        }
-      };
-      xmlhttp.open("GET", url, true);
-      logInfo(getString("loading") + url,getString("loading") + url);
-      xmlhttp.send(null);
-
-    }catch (e){
-    	if (!silence)
-        		alert(getString("unableload") + url);
-      logInfo(getString("unableload") + url,getString("unableload") + url);
-    }
-}
 function  isNumeric(strNumber)
 {  
 		var  newPar=/^(\+)?\d+(\.\d+)?$/  
         return  newPar.test(strNumber);  
 } 
-function UpdateSite(owner,locales,url,desc)
+function UpdateSite(owner,locales,url,type,desc,filename,callback)
 {
     this.owner = owner;
     this.locales=locales;
     this.url=url;
+    this.type=type;
     this.desc=desc;
+    this.filename = filename;
+    this.callback = callback;
 };
 function SiteConfirm()
 {

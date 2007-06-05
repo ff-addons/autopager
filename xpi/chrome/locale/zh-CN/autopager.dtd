@@ -32,6 +32,7 @@
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.loading "'加载中'提示的样式:">
 <!ENTITY setting.label.pagebreak "分页符样式:">
+<!ENTITY setting.label.confirmstyle "翻页提示样式:">
 <!ENTITY setting.label.timeout "载入超时(秒):">
 
 <!ENTITY setting.label.smartenable "启用智能翻页">
@@ -66,3 +67,13 @@
 
 <!ENTITY autopager.status.myname "你的姓名:">
 <!ENTITY autopager.status.mynameTip "你的姓名。它将显示在你创建的自动翻页站点配置信息中.">
+
+<!ENTITY setting.label.update "自动更新">
+<!ENTITY setting.label.lblUpdate "自动更新站点配置:">
+
+<!ENTITY setting.update.startup "每次启动">
+<!ENTITY setting.update.daily "每天">
+<!ENTITY setting.update.weekly "每周">
+<!ENTITY setting.update.monthly "每月">
+<!ENTITY setting.update.never "从不">
+
