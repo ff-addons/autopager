@@ -1,0 +1,70 @@
+<!ENTITY setting.appname "AutoPager">
+<!ENTITY setting.title "Paramètres d&apos;AutoPager">
+<!ENTITY setting.button.add "Ajouter…">
+<!ENTITY setting.button.edit "Éditer…">
+<!ENTITY setting.button.up "Monter">
+<!ENTITY setting.button.down "Descendre">
+<!ENTITY setting.button.pick "Choisir…">
+<!ENTITY setting.button.remove "Supprimer">
+<!ENTITY setting.button.copy "Copier">
+<!ENTITY setting.button.import "Importer">
+<!ENTITY setting.button.export "Exporter">
+<!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
+<!ENTITY setting.label.lblOwner "Créé par :">
+<!ENTITY setting.label.lblURLPattern "URL Pattern:">
+<!ENTITY setting.label.chkIsRegex "Is RegExp?">
+<!ENTITY setting.label.lblDesc "Description :">
+<!ENTITY setting.label.grpContentXPath "Contenu XPath :">
+<!ENTITY setting.label.lblLinkXPath "Lien XPath :">
+<!ENTITY setting.label.btnEdit "Edit">
+<!ENTITY setting.label.chkEnabled "Activé">
+<!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
+<!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les istes).">
+<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
+<!ENTITY setting.label.margin "Paging when space less then">
+<!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.general "Général">
+<!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkShift "Maj">
+<!ENTITY setting.label.doubleclick "+ double-clic">
+<!ENTITY setting.label.loading "loading notification style:">
+<!ENTITY setting.label.pagebreak "Style de saut de page :">
+<!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
+<!ENTITY setting.label.smartenable "Enable Smart Paging">
+<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
+<!ENTITY setting.label.grpSmart "Smart Paging">
+<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
+<!ENTITY setting.label.smartlinksEnd "meet links.">
+<!ENTITY autopager.status.sitewizard "Assistant pour le site">
+<!ENTITY autopager.status.sitewizardTip "Créer des paramètres pour ce site grâce à l&apos;assistant">
+<!ENTITY autopager.status.setting "Configuration…">
+<!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
+<!ENTITY autopager.status.update "Mise à jour des paramètres">
+<!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d&apos;AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.importurl "Importer depuis une URL">
+<!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
+<!ENTITY autopager.status.importfile "Importer depuis un fichier">
+<!ENTITY autopager.status.importfileTip "Importer les paramètres d&apos;AutoPager depuis un fichier.">
+<!ENTITY autopager.status.export "Exporter les paramètres">
+<!ENTITY autopager.status.exportTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
+<!ENTITY autopager.status.createXPath "Créer une expression XPath">
+<!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
+<!ENTITY autopager.status.testXPath "Test XPath">
+<!ENTITY autopager.status.testXPathTip "Faire le test d&apos;une expression XPath étant sur la page.">
+<!ENTITY autopager.status.enabled "Activé">
+<!ENTITY autopager.status.enabledTip "État d&apos;activation d&apos;AutoPager.">
+<!ENTITY autopager.status.showoption "Options de la page">
+<!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page.">
+<!ENTITY autopager.status.myname "Mon nom :">
+<!ENTITY autopager.status.mynameTip "Votre nom. Il sera lié à ce que vous avez créé durant le paramétrage.">
+<!ENTITY setting.label.update "Mise à jour">
+<!ENTITY setting.label.lblUpdate "Mettre à jour automatiquement les configurations de sites :">
+<!ENTITY setting.update.startup "À chaque démarrage">
+<!ENTITY setting.update.daily "Chaque jour">
+<!ENTITY setting.update.weekly "Chaque semaine">
+<!ENTITY setting.update.monthly "Chaque mois">
+<!ENTITY setting.update.never "Jamais">

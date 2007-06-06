@@ -31,11 +31,6 @@ var UpdateSites=
         {
             this.updateSites =  new Array();
 
-            this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
-                        "configurations added to blog",
-                        "blogcomments.xml",blogConfigCallback));
-
             this.updateSites.push(new UpdateSite("autopagerize","all",
                         "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
                         "autopagerize configurations",
@@ -45,6 +40,11 @@ var UpdateSites=
                         "http://userjs.oh.land.to/pagerization/convert.php?file=siteinfo.v4","text/html; charset=utf-8",
                         "pagerization configurations",
                         "pagerization.xml",AutoPagerize.onload));
+
+            this.updateSites.push(new UpdateSite("Wind Li","all",
+                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
+                        "configurations added to blog",
+                        "blogcomments.xml",blogConfigCallback));
 
             this.updateSites.push(new UpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
@@ -289,6 +289,33 @@ function importFromURL()
 	
 	}
 }
+
+function importFromClip()
+{
+	try{
+                var configContents = "<root></root>";
+                var clip  = Components.classes["@mozilla.org/widget/clipboard;1"].getService(Components.interfaces.nsIClipboard);
+                if (!clip) return false;
+
+                var trans = Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+                if (!trans) return false;
+                trans.addDataFlavor("text/unicode");
+                clip.getData(trans, clip.kGlobalClipboard);
+
+                var str       = new Object();
+                var strLength = new Object();
+
+                trans.getTransferData("text/unicode", str, strLength);
+                if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
+                if (str) configContents = str.data.substring(0, strLength.value / 2);
+                
+		sites =  loadConfigFromStr(configContents,false);
+		mergeSetting(sites,false);
+	}catch(e)
+	{
+		alert(e);
+	}
+}
 function importFromFile()
 {
 	try{
@@ -495,7 +522,7 @@ function loadConfigFromStr(configContents,remote) {
 	}
   if (remote && sites.length ==0 )
   {
-  	sites = loadConfigFromUrl(UpdateSites.defaultSite());
+  	//sites = loadConfigFromUrl(UpdateSites.defaultSite());
   	//saveConfig(sites);
   }
   return sites;
@@ -604,6 +631,18 @@ function Site()
         this.tmpPaths = [];
         this.guid = "";
 }
+// Array.insert( index, value ) - Insert value at index, without overwriting existing keys
+function insertAt(sites, index, site ) {
+    sites.push(site);
+    if( index>=0 && index<sites.length) {
+     for(var i=sites.length -1;i>index;i--)
+     {
+         sites[i] = sites[i-1];
+     }
+    sites[index] = site;
+  return sites;
+ }
+};
 function generateGuid()
 {
     var result, i;

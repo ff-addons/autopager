@@ -6,7 +6,9 @@
 <!ENTITY setting.button.down "Down">
 <!ENTITY setting.button.pick "Pick...">
 <!ENTITY setting.button.remove "Remove">
-<!ENTITY setting.button.copy "Copy">
+<!ENTITY setting.button.copy "Clone">
+<!ENTITY setting.button.cloneToEdit "Clone To Edit">
+<!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
 <!ENTITY setting.button.import "Import">
 <!ENTITY setting.button.export "Export">
 <!ENTITY setting.button.exportTip "Export Select Items">
@@ -51,8 +53,14 @@
 <!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
 <!ENTITY autopager.status.importfile "Import from File">
 <!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
+<!ENTITY autopager.status.importclip "Import from Clipboard">
+<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
 <!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings to a File.">
+<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
+<!ENTITY autopager.status.exportfile "Export To File">
+<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
+<!ENTITY autopager.status.exportclip "Export To Clipboard">
+<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
 
 <!ENTITY autopager.status.createXPath "Create XPath">
 <!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">

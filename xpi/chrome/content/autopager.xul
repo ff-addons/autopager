@@ -54,7 +54,6 @@
                                     </treecols>
                                     <treechildren id="siteContents"></treechildren>
                                 </tree>
-                                <listbox seltype="multiple" id="lstSites"  flex="10" hidden="true"/>
                             </vbox>
                             <vbox>
                                 <spacer flex="1"/>
@@ -77,12 +76,27 @@
                                             tooltiptext="&autopager.status.importfileTip;"
                                             oncommand="saveConfig(sites);importFromFile();onSiteFilter(siteSearch.value,true);"
                                         />
+                                        <menuitem 
+                                            label="&autopager.status.importclip;"
+                                            tooltiptext="&autopager.status.importclipTip;"
+                                            oncommand="saveConfig(sites);importFromClip();onSiteFilter(siteSearch.value,true);"
+                                        />
+                                    </popup>
+                                    <popup id="export-settings" position="before_start">
+                                        <menuitem 
+                                            label="&autopager.status.exportfile;"
+                                            tooltiptext="&autopager.status.exportfileTip;"
+                                            oncommand="exportSelectedSetting(false);"
+                                        />
+                                        <menuitem 
+                                            label="&autopager.status.exportclip;"
+                                            tooltiptext="&autopager.status.exportclipTip;"
+                                            oncommand="exportSelectedSetting(true);"
+                                        />
                                     </popup>
                                 </popupset>
                                 
-                                <button id="btnExport" label="&setting.button.export;"
-                                        oncommand="exportSelectedSetting();"
-                                        tooltiptext="&setting.button.exportTip;"/>
+                                <button id="btnExport" label="&setting.button.export;" popup="export-settings" />
                                 <spacer flex="1"/>
                                 <button id="btnSiteUp" label="&setting.button.up;" />
                                 <button id="btnSiteDown" label="&setting.button.down;" />
@@ -96,6 +110,9 @@
                         <hbox>
                             <label control="lblOwner" value="&setting.label.lblOwner;"/>
                             <label id="lblOwner" value=""/>
+                            <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;" 
+                                    hidden="true" flex="1" style="color:red;"
+                                     tooltiptext="&setting.button.cloneToEditTip;"/>                                
                         </hbox>
                         
                         <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />

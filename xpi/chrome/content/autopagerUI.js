@@ -1,7 +1,8 @@
     var allSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
-    var treeSites,treebox,listbox, urlPattern,isRegex, description,lblOwner, chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnDelete;
+    var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
+    var chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
@@ -89,7 +90,6 @@
 
     }
     function loadControls() {
-        listbox = document.getElementById("lstSites");
         treeSites = document.getElementById("treeSites");
         treebox = document.getElementById("siteContents");
         urlPattern = document.getElementById("urlPattern");
@@ -99,6 +99,7 @@
         description = document.getElementById("desc");
         btnAdd = document.getElementById("btnAdd");
         btnCopy = document.getElementById("btnCopy");
+        btnClone = document.getElementById("btnCloneToEdit");
         btnDelete = document.getElementById("btnDelete");
         btnAddPath = document.getElementById("btnAddPath");
         btnEditPath = document.getElementById("btnEditPath");
@@ -160,6 +161,7 @@
         
         btnAdd.addEventListener("command", handleAddSiteButton, false);
         btnCopy.addEventListener("command", handleCopySiteButton, false);
+        btnClone.addEventListener("command", handleCopySiteButton, false);
         btnDelete.addEventListener("command", handleDeleteSiteButton, false);
         chkEnabled.addEventListener("command", function() {
            if (selectedSite != null) {
@@ -374,6 +376,7 @@
             chkQuickLoad.checked = false;
             chkFixOverflow.checked = true;
             lblOwner.value = "";
+            btnClone.hidden = true;
     }
 	function updateDetails(event) {
             if(treeSites.filterIng)
@@ -389,8 +392,8 @@
                var updateSite = itemParent.updateSite;
                if (updateSite == null)
                {
-                   clearInfo();
                    enableSiteEditControls(false);
+                   clearInfo();
                    return;
                }
                var enableEdit =  (updateSite.url.length == 0);
@@ -439,6 +442,7 @@
         chkFixOverflow.disabled =disabled;
         linkXPath.readOnly =disabled;
         btnPickLinkPath.disabled = disabled;
+        btnClone.hidden = enableEdit;
       }
 	function populateXPath(paths)
 	{
@@ -480,30 +484,28 @@
   				,"//a[contains(.//text(),'Next')]","//body/*");
 		site.createdByYou = true;
 		site.owner = myname;
-		sites.push(site);
-		addSite(site,sites.length -1);    
+		addSite(site,sites.length -1);
+                insertAt(sites,0,site);
+                onSiteFilter(siteSearch.value,false);
 	}
     function handleCopySiteButton() {
     	if (treeSites.currentIndex >= 0) {
-    		var myname = checkMyName();
-    		if (myname==null || myname.length == 0)
-    			return;
-    	
+            var myname = checkMyName();
+            if (myname==null || myname.length == 0)
+                    return;
+
             selectedSite = treeSites.view.getItemAtIndex(treeSites.currentIndex).site;
             if (selectedSite == null)
                 return;
-	    var site = newSite(selectedSite.urlPattern,selectedSite.desc,
-	    			selectedSite.linkXPath,selectedSite.contentXPath);
-			site.createdByYou = true;
-			site.owner = myname;
-                        site.isRegex = selectedSite.isRegex;
-			sites.push(site);
-			addSite(site,sites.length -1);    
-		}
+            var site = cloneSite(selectedSite);
+            
+            insertAt(sites,0,site);
+            onSiteFilter(siteSearch.value,false);
+        }
     }
 	
 
-    function exportSelectedSetting()
+    function exportSelectedSetting(exportToClipboard)
     {
         var exportSites = new Array();
         var start = new Object();
@@ -520,10 +522,35 @@
         }
 
             if (exportSites.length > 0) {
-                var file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                var file = null;
+                if (!exportToClipboard)
+                    selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                else
+                {
+                    file = Components.classes["@mozilla.org/file/directory_service;1"]
+                     .getService(Components.interfaces.nsIProperties)
+                     .get("TmpD", Components.interfaces.nsIFile);
+                    file.append("autopager.tmp");
+                    file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0664);
+                    // do whatever you need to the created file
+                    //alert(file.path);
+                }
+                
+                
                 if (file)
                 {
                      saveConfigToFile(exportSites,file,false);
+                      if (exportToClipboard)
+                      {
+                          var contentStr = getContents(Components.classes["@mozilla.org/network/io-service;1"]
+                                            .getService(Components.interfaces.nsIIOService)
+                                             .newFileURI(file));
+                          
+                          file.remove(true);
+                          var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                                    getService(Components.interfaces.nsIClipboardHelper);
+                           gClipboardHelper.copyString(contentStr);
+                      }
                  }
             }
 
@@ -547,9 +574,11 @@
            node = treeitem.previousSibling;
        if (node==null)
            node = treeitem.parentNode.parentNode;
-        items.forEach(function(item){
+       for(var i=items.length-1;i>=0;i--)
+       {
+           var item = items[i];
             deleteItem(item);
-            });
+       };
         chooseTreeItem(node);
 
     }
@@ -587,8 +616,7 @@
         populateChooser(filter,reload);
     	treeSites.filterIng = false;
 	    var index = getMatchedIndex(url);
-	    //alert(listbox.childNodes.length);
-	    if ( listbox.childNodes.length > 0)
+	    if ( treeSites.view.rowCount > 0)
 	    	chooseSite(index);
 	    else
 	    {

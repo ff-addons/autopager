@@ -173,6 +173,7 @@ _handleParse: function (event) {
             }
           };
           xmlhttp.open("GET", url, true);
+          xmlhttp.setRequestHeader("Cache-Control" ,"no-cache");
           xmlhttp.send(null);
 
         }catch (e){

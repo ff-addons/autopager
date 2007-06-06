@@ -46,7 +46,7 @@
                     tooltiptext="&autopager.status.updateTip;"
                     oncommand="UpdateSites.updateOnline();"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem 
                     label="&autopager.status.importurl;"
                     tooltiptext="&autopager.status.importurlTip;"
@@ -58,17 +58,23 @@
                     oncommand="importFromFile();"
                 />
                 <menuitem 
+                    label="&autopager.status.importclip;"
+                    tooltiptext="&autopager.status.importclipTip;"
+                    oncommand="importFromClip();"
+                />
+
+                <menuitem 
                     label="&autopager.status.export;"
                     tooltiptext="&autopager.status.exportTip;"
                     oncommand="exportSetting();"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
                     oncommand="sitewizard( content.document);"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
@@ -81,13 +87,13 @@
                     tooltiptext="&autopager.status.createXPathTip;"
                     oncommand="xPathTest( content.document);"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-myname"
                           label="&autopager.status.myname;"
                           tooltiptext="&autopager.status.mynameTip;"
                           oncommand="changeMyName();"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-hidden-panel-menu" class="autopager-menu-class" 
                       onpopupshowing="javascript:void();" label="Page Holder"
                       hidden='true'>
@@ -102,7 +108,7 @@
                         />
                     </menupopup>	
                 </menu>
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
                           tooltiptext="&autopager.status.showoptionTip;"
@@ -116,9 +122,9 @@
                           oncommand="onEnable();"
                 />
                 <!--
-        <menuseparator class="autipager-sep-global"/>
+        <menuseparator class="autopager-sep-global"/>
         <menuitem class="menuitem-iconic" />
-        <menuseparator class="autipager-sep-global"/>
+        <menuseparator class="autopager-sep-global"/>
         <menuitem class="menuitem-iconic" />
         <menu id="autopager-menu" class="autopager-menu-class" 
           onpopupshowing="event.stopPropagation()" label="hello">
@@ -143,7 +149,7 @@
                     tooltiptext="&autopager.status.updateTip;"
                     oncommand="UpdateSetting(false);"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem 
                     label="&autopager.status.importurl;"
                     tooltiptext="&autopager.status.importurlTip;"
@@ -159,13 +165,13 @@
                     tooltiptext="&autopager.status.exportTip;"
                     oncommand="exportSetting();"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
                     oncommand="sitewizard( content.document);"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
@@ -178,7 +184,7 @@
                     tooltiptext="&autopager.status.createXPathTip;"
                     oncommand="xPathTest( content.document);"
                 />
-                <menuseparator class="autipager-sep-global"/>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
                           tooltiptext="&autopager.status.showoptionTip;"

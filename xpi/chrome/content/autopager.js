@@ -1006,7 +1006,7 @@ function onXPathClick(event) {
             else
                 site.enableJS = true;
             workingAutoSites = loadConfig();
-            workingAutoSites.push(site);
+            insertAt(workingAutoSites,0,site);
             saveConfig(workingAutoSites);
             document.autopagerXPathModel = "";
             openSetting(urlPattern);

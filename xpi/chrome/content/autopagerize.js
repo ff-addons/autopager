@@ -28,16 +28,19 @@ var AutoPagerize= {
         var info = []
         var textareas = apxmlhttprequest.getElementsByXPath(
             '//*[@class="autopagerize_data"]', doc) || []
-        textareas.forEach(function(textarea) {
+        for(var i=0;i<textareas.length;i++)
+        {
+            var textarea = textareas[i];
             var d = AutoPagerize.parseInfo(textarea.value)
             if (d) {
                 var text = AutoPagerize.getDesc(textarea);
                 d["desc"] = text;
                 info.push(d)
             }
-        }) 
+        }
         var sites = new Array();
-        info.forEach(function(site){
+        for(var i=0;i<info.length;i++){
+            var site = info[i];
             var newSite = new Site();
             newSite.urlPattern  = site["url"];
             newSite.guid  = newSite.urlPattern;
@@ -58,7 +61,7 @@ var AutoPagerize= {
             newSite.desc = site["desc"];
             newSite.oldSite = null;
             sites.push(newSite);
-	});
+	};
         
         return sites;
     },
