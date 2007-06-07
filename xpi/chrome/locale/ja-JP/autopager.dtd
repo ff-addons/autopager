@@ -7,6 +7,8 @@
 <!ENTITY setting.button.pick "選択…">
 <!ENTITY setting.button.remove "除去…">
 <!ENTITY setting.button.copy "コピー">
+<!ENTITY setting.button.cloneToEdit "複製して編集">
+<!ENTITY setting.button.cloneToEditTip "この項目は元々用意されています。必要に応じて複製版を編集することができます。">
 <!ENTITY setting.button.import "読み込み">
 <!ENTITY setting.button.export "書き出し">
 <!ENTITY setting.button.exportTip "選択した項目を書き出します">
@@ -35,31 +37,37 @@
 <!ENTITY setting.label.confirmstyle "確認のスタイル:">
 <!ENTITY setting.label.timeout "ページ読み込み待ち時間 ( 秒 ):">
 <!ENTITY setting.label.smartenable "Smart Paging を有効にする">
-<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
+<!ENTITY setting.label.smarttext "次のリンクを探すテキスト/画像 Src/ID/Class (&quot;|&quot; で分割 ):">
 <!ENTITY setting.label.grpSmart "Smart Paging">
 <!ENTITY setting.label.smartlinks "Follow link when there are no more then">
 <!ENTITY setting.label.smartlinksEnd "meet links.">
-<!ENTITY autopager.status.sitewizard "Site Wizard">
-<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
-<!ENTITY autopager.status.setting "Manage Setting">
-<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
-<!ENTITY autopager.status.update "Update Setting Online">
-<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.importurl "Import from URL">
-<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
-<!ENTITY autopager.status.importfile "Import from File">
-<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
-<!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings to a File.">
-<!ENTITY autopager.status.createXPath "Create XPath">
-<!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
-<!ENTITY autopager.status.testXPath "Test XPath">
-<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
+<!ENTITY autopager.status.sitewizard "サイトウィザード">
+<!ENTITY autopager.status.sitewizardTip "対話形式でサイト設定を作成する">
+<!ENTITY autopager.status.setting "設定管理">
+<!ENTITY autopager.status.settingTip "Auto Pager 設定を管理します。">
+<!ENTITY autopager.status.update "オンラインで設定を更新する">
+<!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
+<!ENTITY autopager.status.importurl "URL から読み込む">
+<!ENTITY autopager.status.importurlTip "Auto Pager の設定を URL から読み込みます。">
+<!ENTITY autopager.status.importfile "ファイルから読み込む">
+<!ENTITY autopager.status.importfileTip "Auto Pager の設定をファイルから読み込みます。">
+<!ENTITY autopager.status.importclip "クリップボードから読み込む">
+<!ENTITY autopager.status.importclipTip "Auto Pager の設定をクリップボードから読み込みます。">
+<!ENTITY autopager.status.export "設定を書き出す">
+<!ENTITY autopager.status.exportTip "Auto Pager の設定を書き出します。">
+<!ENTITY autopager.status.exportfile "ファイルに書き出す">
+<!ENTITY autopager.status.exportfileTip "Auto Pager の設定をファイルに書き出します。">
+<!ENTITY autopager.status.exportclip "クリップボードに書き出す">
+<!ENTITY autopager.status.exportclipTip "Auto Pager の設定をクリップボードに書き出します。">
+<!ENTITY autopager.status.createXPath "XPath を作成する">
+<!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
+<!ENTITY autopager.status.testXPath "XPath をテスト">
+<!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.enabled "Enabled">
-<!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
-<!ENTITY autopager.status.showoption "Show Page Options">
-<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
-<!ENTITY autopager.status.myname "名前:">
+<!ENTITY autopager.status.enabledTip "Auto Pager が有効かどうか。">
+<!ENTITY autopager.status.showoption "ページ設定を表示する">
+<!ENTITY autopager.status.showoptionTip "このページの設定を表示します。">
+<!ENTITY autopager.status.myname "私の名前:">
 <!ENTITY autopager.status.mynameTip "作成した設定に追加される、あなたの名前です。">
 <!ENTITY setting.label.update "更新">
 <!ENTITY setting.label.lblUpdate "サイト設定の自動更新:">

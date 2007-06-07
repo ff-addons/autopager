@@ -349,8 +349,8 @@ function fixOverflow(doc) {
     if (nodes != null) {
         for(var i = 0;i<nodes.length;++i) {
             var node = nodes[i];
-            if ( node.style.position == "fixed" && node.className != "autoPagerS")
-                node.style.position = "absolute";
+            if ( (node.style.position == "fixed" || node.style.position == "absolute" ) && node.className != "autoPagerS")
+                node.style.position = "relative"; 
         }
     }
 }

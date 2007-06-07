@@ -6,7 +6,9 @@
 <!ENTITY setting.button.down "Descendre">
 <!ENTITY setting.button.pick "Choisir…">
 <!ENTITY setting.button.remove "Supprimer">
-<!ENTITY setting.button.copy "Copier">
+<!ENTITY setting.button.copy "Cloner">
+<!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
+<!ENTITY setting.button.cloneToEditTip "Cet élément provient d&apos;une source sûre. L&apos;édition de la version clonée n&apos;est à faire que s&apos;il est nécessaire.">
 <!ENTITY setting.button.import "Importer">
 <!ENTITY setting.button.export "Exporter">
 <!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
@@ -16,10 +18,10 @@
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.grpContentXPath "Contenu XPath :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">
-<!ENTITY setting.label.btnEdit "Edit">
+<!ENTITY setting.label.btnEdit "Éditer">
 <!ENTITY setting.label.chkEnabled "Activé">
 <!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
-<!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les istes).">
+<!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
 <!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
 <!ENTITY setting.label.margin "Paging when space less then">
 <!ENTITY setting.label.marginEnd "window hight">
@@ -30,13 +32,13 @@
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkShift "Maj">
 <!ENTITY setting.label.doubleclick "+ double-clic">
-<!ENTITY setting.label.loading "loading notification style:">
+<!ENTITY setting.label.loading "Style du cadre de notification :">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
-<!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.confirmstyle "Style des options de page :">
 <!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
-<!ENTITY setting.label.smartenable "Enable Smart Paging">
+<!ENTITY setting.label.smartenable "Activer la pagination intelligente">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
-<!ENTITY setting.label.grpSmart "Smart Paging">
+<!ENTITY setting.label.grpSmart "Pagination intelligente">
 <!ENTITY setting.label.smartlinks "Follow link when there are no more then">
 <!ENTITY setting.label.smartlinksEnd "meet links.">
 <!ENTITY autopager.status.sitewizard "Assistant pour le site">
@@ -49,8 +51,14 @@
 <!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
 <!ENTITY autopager.status.importfile "Importer depuis un fichier">
 <!ENTITY autopager.status.importfileTip "Importer les paramètres d&apos;AutoPager depuis un fichier.">
+<!ENTITY autopager.status.importclip "Importer depuis le presse-papiers">
+<!ENTITY autopager.status.importclipTip "Importer les paramètres d&apos;AutoPager depuis le contenu du presse-papiers">
 <!ENTITY autopager.status.export "Exporter les paramètres">
-<!ENTITY autopager.status.exportTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
+<!ENTITY autopager.status.exportTip "Exporter les paramètres d&apos;Auto Pager.">
+<!ENTITY autopager.status.exportfile "Exporter vers un fichier">
+<!ENTITY autopager.status.exportfileTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
+<!ENTITY autopager.status.exportclip "Exporter vers le presse-papiers">
+<!ENTITY autopager.status.exportclipTip "Exporter les paramètres d&apos;Auto Pager vers le presse-papiers">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
 <!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
 <!ENTITY autopager.status.testXPath "Test XPath">

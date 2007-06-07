@@ -81,6 +81,13 @@ var UpdateSites=
              UpdateSites.submitCount--;
              if (UpdateSites.submitCount<=0)
                  savePref("lastupdate",(new Date()).getTime());
+             
+             if (obj.triedTime < 3)
+             {
+                    obj.triedTime ++;
+                    //try 3 times
+                    updateSiteOnline(obj)
+             }
     },
     callback:function(doc,updatesite)
     {
@@ -203,6 +210,10 @@ function getRemoteURI(url)
 function getConfigFile(fileName) {
   var file = getConfigDir();
   file.append(fileName);
+  if (!file.exists()) {
+          file.create(Components.interfaces.nsIFile.FILE_TYPE, 0755);
+  }
+
   return file;
 }
 
@@ -777,6 +788,7 @@ function UpdateSite(owner,locales,url,type,desc,filename,callback)
     this.desc=desc;
     this.filename = filename;
     this.callback = callback;
+    this.triedTime=0;
 };
 function SiteConfirm()
 {

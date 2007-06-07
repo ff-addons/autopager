@@ -106,26 +106,45 @@ _handleParse: function (event) {
   },
     // utility functions.
     createHTMLDocumentByString: function(str) {
-    var windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].
-                         getService(Components.interfaces.nsIWindowMediator);
-    var window = windowMediator.getMostRecentWindow("navigator:browser");
-    var doc;
-    //if (window != null)
-    //  doc = window.document;
-  //else
-      doc = content.document;
+    var doc = content.document;
 
-    var html = str.replace(/<!DOCTYPE.*?>/, '').replace(/<html.*?>/, '').replace(/<\/html>.*/, '');
+    var html = str.replace(/<!DOCTYPE.*>/, '').replace(/<html.*>/, '').replace(/<\/html>.*/, '');
         var htmlDoc  = doc.implementation.createDocument(null, 'html', null);
         var fragment = apxmlhttprequest.createDocumentFragmentByString(doc,html);
-        htmlDoc.documentElement.appendChild(fragment);
+        if(fragment == null)
+            return createHTMLDocumentByString2(str);
+        try{
+            htmlDoc.documentElement.appendChild(htmlDoc.importNode( fragment,true));
+        }catch(e)
+        {
+            //alert(e)
+        }
+        
         return htmlDoc;
     },
     createDocumentFragmentByString: function(doc,str) {
         var range = doc.createRange()
-        range.setStartAfter(doc.body)
-        //range.setStartAfter(doc.documentElement)
-        return range.createContextualFragment(str)
+        //range.selectNode(doc.getElementsByTagName("body").item(0));
+        var refObj = doc.body;
+        try{
+            if (refObj == null)
+                regObj = doc.childNodes[0];
+            range.setStartAfter(refObj);
+            //range.setStartAfter(doc.body)
+            //range.setStartAfter(doc.documentElement)
+            var nodes =  range.createContextualFragment(str)
+            var i=0;
+            while (nodes == null && refObj.childNodes.length > i)
+            {
+                    range.setStartAfter(refObj.childNodes[i]);
+                    i++;
+                    nodes =  range.createContextualFragment(str)
+            }
+        }catch(e)
+        {
+            //alert(e)
+        }
+        return nodes;
     },
 
     xmlhttprequest: function(url,type,loadCallBack,errorCallBack,obj)
@@ -181,15 +200,13 @@ _handleParse: function (event) {
         }
     },
 
-    getElementsByXPath:function(xpath, node) {
-        var node = node || document
-        var nodesSnapshot = content.document.evaluate(xpath, node, null,
-            XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null)
+    getElementsByXPath:function(xpath, doc) {
+        var nodes =doc.evaluate(xpath, doc, null, 0, null);
         var data = []
-        for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
-            data.push(nodesSnapshot.snapshotItem(i))
+        for (var node = null; (node = nodes.iterateNext()); ) {
+                data.push(node)
         }
-        return (data.length >= 1) ? data : null
+        return data;
     }
 
 }

@@ -468,7 +468,7 @@
     		myname = changeMyName();
     		if (myname==null || myname.length == 0)
     		{
-    			alert(getString("mustinputname"));
+    			alert(getString("mustinput"));
     			return "";
     		}
     	}
@@ -662,11 +662,17 @@
         if(reload)
         {
             allSites = UpdateSites.loadAll();
-            userSites = allSites["autopager.xml"] ;
-
+            try{
+                userSites = allSites["autopager.xml"] ;
+            }catch(e)
+            {
+            }
+            if (userSites == null)
+                userSites = new Array();
             sites = cloneSites(userSites);
             sites.updateSite = userSites.updateSite;
             allSites["autopager.xml"] = sites;
+                
          }
         else
             userSites = allSites["autopager.xml"] ;
