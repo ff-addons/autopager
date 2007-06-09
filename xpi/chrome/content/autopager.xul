@@ -3,7 +3,7 @@
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://autopager/skin/autopager.css" type="text/css"?>
 
-<!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd">
+<!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd" >
 
 <dialog id="autopager" 
         title="&setting.title;"
@@ -166,15 +166,15 @@
                         <label control="myname" value = "&autopager.status.myname;"/>
                         <textbox id="myname" flex="1"/>
                     </hbox>
-                    <hbox >
+                    <hbox id="loading-hbox">
                         <label control="loading" value = "&setting.label.loading;"/>
                         <textbox id="loading" flex="1"/>
                     </hbox>
-                    <hbox >
+                    <hbox id="pagebreak-hbox">
                         <label control="pagebreak" value = "&setting.label.pagebreak;"/>
                         <textbox id="pagebreak" flex="1"/>
                     </hbox>
-                    <hbox >
+                    <hbox  id="confirm-hbox">
                         <label control="confirm" value = "&setting.label.confirmstyle;"/>
                         <textbox id="confirm" flex="1"/>
                     </hbox>

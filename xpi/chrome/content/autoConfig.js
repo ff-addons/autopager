@@ -167,8 +167,8 @@ function getString(name)
 		return strbundle.getString(name);
 	}catch(e)
 	{
-		alert(name + " " + e);
-		return "";
+		//alert(name + " " + e);
+		return name;
 	}
 }
 function formatString(name,parms)

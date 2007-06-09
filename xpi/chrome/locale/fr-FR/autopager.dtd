@@ -13,8 +13,8 @@
 <!ENTITY setting.button.export "Exporter">
 <!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
 <!ENTITY setting.label.lblOwner "Créé par :">
-<!ENTITY setting.label.lblURLPattern "URL Pattern:">
-<!ENTITY setting.label.chkIsRegex "Is RegExp?">
+<!ENTITY setting.label.lblURLPattern "Format de l&apos;URL :">
+<!ENTITY setting.label.chkIsRegex "Est une expr. rat. ?">
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.grpContentXPath "Contenu XPath :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">

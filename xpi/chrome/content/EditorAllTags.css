@@ -240,12 +240,6 @@ div {
   background-repeat: no-repeat; 
   background-position: top left;
 }
-.autoPagerS{
-  min-height: 0px; margin-left: 0px; margin-top: 0px;
-  padding-left: 0px; 
-  background-image: none;
-  
-}
 
 input div,
 textarea div {
@@ -607,11 +601,13 @@ select {
 }
 
 small {
-  min-height: 35px; margin-left: 2px; margin-top: 2px;
-  padding-left: 41px; 
-  background-image: url(chrome://autopager/content/images/tag-sml.gif);
-  background-repeat: no-repeat; 
-  background-position: top left;
+   background-image: url(chrome://autopager/content/images/tag-sml.gif);
+   background-position: top left;
+   background-repeat: no-repeat;
+   margin-left: 2px;
+   margin-top: 2px;
+   min-height: 35px;
+   padding-left: 41px
 }
 
 span:not([\_moz_anonclass]) {
@@ -764,6 +760,12 @@ xmp {
   background-position: top left;
 }
 
+.autoPagerS{
+  min-height: 0px; margin-left: 0px; margin-top: 0px;
+  padding-left: 0px; 
+  background-image: none;
+  
+}
 
 /* These are tags that we DON'T want to show icons for.
    We have images for them in case we want to utilize them

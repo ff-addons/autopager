@@ -104,7 +104,7 @@ function enableSelector(doc,setMenuStatus) {
         de.autoPagerSelectorEnabled = false;
         removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorContent.css");
         removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorAllTags.css");
-        hiddenSelectorDivs(doc);
+        hiddenRegionDivs(doc,"");
         if (selectedObj) {
             enableClick(selectedObj,false);
         }
@@ -332,6 +332,7 @@ function getPrefs() {
     if (autopagerPrefs == null) {
         autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
         getService(Components.interfaces.nsIPrefService).getBranch("autopager");
+        autopagerPrefs=autopagerPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
         
     }
     return autopagerPrefs;
@@ -793,11 +794,11 @@ function enableClickOnNodes(node,enabled) {
 };
 
 var selectedObj = null;
-function hiddenSelectorDivs(doc) {
-    var leftDiv =getSelectorDiv(doc,"autoPagerBorderLeft");
-    var rightDiv =getSelectorDiv(doc,"autoPagerBorderRight");
-    var topDiv =getSelectorDiv(doc,"autoPagerBorderTop");
-    var bottomDiv =getSelectorDiv(doc,"autoPagerBorderBottom");
+function hiddenRegionDivs(doc,subfix) {
+    var leftDiv =getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
+    var rightDiv =getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
+    var topDiv =getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
+    var bottomDiv =getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
     hiddenDiv(leftDiv,true);
     hiddenDiv(rightDiv,true);
     hiddenDiv(topDiv,true);
@@ -817,12 +818,14 @@ function createPagerSelectorDivs(doc,target) {
     }
     selectedObj = target;
     enableClick(selectedObj,true);
-    
+    createRegionDivs(doc,target,"");
+}    
+function createRegionDivs(doc,target,subfix) {
     var margin = 2;
-    var leftDiv =getSelectorDiv(doc,"autoPagerBorderLeft");
-    var rightDiv =getSelectorDiv(doc,"autoPagerBorderRight");
-    var topDiv =getSelectorDiv(doc,"autoPagerBorderTop");
-    var bottomDiv =getSelectorDiv(doc,"autoPagerBorderBottom");
+    var leftDiv =getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
+    var rightDiv =getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
+    var topDiv =getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
+    var bottomDiv =getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
     var left = getOffsetLeft(target);
     var top = getOffsetTop(target);
     
@@ -1421,32 +1424,91 @@ function getPagingOptionDiv(doc)
 	var divName = "autoPagerBorderOptions";
     var div = doc.getElementById(divName);
     if (!div) {
-        var str = "<a href='javascript:alert(\"" + getString("optionexplain")+ "\")'><b>"
-+getString("optiontitle") + "</b></a> <a href='javascript:enabledInThisSession(false)'><img "
-+ " style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopager/content/images/vx.png'></a> "
-+ "<li><a href='javascript:enabledInThisTime(true)'>"+ getString("enableshort") +"</a>/<a href='javascript:enabledInThisTime(false)'>D</a>:"
+        var str = "<div style='cursor:move;height:18px;background-color: gray;margin:0px;' class='autoPagerS' "
+  + " onmouseover='document.documentElement.setAttribute(\"over\",true);' onmouseout='document.documentElement.setAttribute(\"over\",false);'>"
++"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%'>"
++"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='90%'><a  href='javascript:showConfirmTip();'><b class='autoPagerS'>"
++getString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'><a href='javascript:enabledInThisSession(false)'>"
++ "<img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopager/content/images/vx.png'></a></td></tr></tbody></table></div> "
++ "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;'>"
++"<li class='autoPagerS'><a href='javascript:HighlightNextLinks()''>"+ getString("highlightnextlinks") +"</a></li>"
++ "<li class='autoPagerS'><a href='javascript:enabledInThisTime(true)'>"+ getString("enableshort") +"</a>/<a href='javascript:enabledInThisTime(false)'>D</a>:"
 + getString("thistime") + "</li>"
-+ "<li><a href='javascript:enabledInThisSession(true)'>"+ getString("enableshort") +"</a>/<a"
++ "<li class='autoPagerS'><a href='javascript:enabledInThisSession(true)'>"+ getString("enableshort") +"</a>/<a"
 + " href='javascript:enabledInThisSession(false)'>"+ getString("disableshort") +"</a>:"
 + getString("thissession") + "</li>"
-+ "<li><a href='javascript:enabledInNextPagesAlways(false)'>"+ getString("enableshort") +"</a>/<a"
++ "<li class='autoPagerS'><a href='javascript:enabledInNextPagesAlways(false)'>"+ getString("enableshort") +"</a>/<a"
 + " href='javascript:enabledInNextPagesAlways(true)'>"+ getString("alwaysenableshort") +"</a>:"
-+ formatString("nextpages",["<input maxlength='3' size='1' id='autopagercount' value='3'>"]) +"</li>"
-+ "<li><a href='javascript:enabledThisSite(true)'>"+ getString("alwaysenableshort") +"</a>/<a"
++ formatString("nextpages",["<input  class='autoPagerS' maxlength='3' size='1' id='autopagercount' value='3'>"]) +"</li>"
++ "<li class='autoPagerS'><a href='javascript:enabledThisSite(true)'>"+ getString("alwaysenableshort") +"</a>/<a"
 + " href='javascript:enabledThisSite(false)'>"+ getString("alwaysdisableshort") +"</a>:"
-+ getString("thissite") + "</li>";
++ getString("thissite") + "</li></ul>";
     var style = getOptionStyle();
+    
         div = createDiv(doc,divName,style);
+        if (div.style.width == "")
+            div.style.width = "190px";
         div.innerHTML = str;//"<b>Loading ...</b>";
         var links=evaluateXPath(div,".//a",false);
         for(var i=0;i<links.length;i++)
         {
             links[i].addEventListener("click",onConfirmClick,true);
              links[i].title = getString("optionexplain");
+             links[i].style.color="rgb(0,0,204)";
+             links[i].className = 'autoPagerS';
         }
+        doc.addEventListener("mousedown",initializedrag,false);
+        doc.addEventListener("mouseup",stopdrag,false);
+         
     }
+    
     return div;
 	
+}
+function showConfirmTip()
+{
+    alert(getString("optionexplain"));
+}
+function stopdrag(event){
+    var div=event.target;
+    var doc = event.target.ownerDocument;
+    doc.removeEventListener("mousemove",dragdrop,false);
+    doc.removeEventListener("selectstart",selectstart,true);
+}
+
+function initializedrag(event)
+{
+    var doc = event.target.ownerDocument;
+    //alert(doc.documentElement);
+    //alert(doc.documentElement.over);
+    if (doc.documentElement.getAttribute("over")=='true')
+    {
+            var objDiv = doc.getElementById("autoPagerBorderOptions");
+            doc.documentElement.startX = window.innerWidth - event.pageX - parseInt(objDiv.style.right);
+            doc.documentElement.startY = window.innerHeight - event.pageY - parseInt(objDiv.style.bottom);
+            doc.addEventListener("mousemove",dragdrop,false);
+            doc.addEventListener("selectstart",selectstart,true);
+            return false;
+    }
+    
+}
+function selectstart(event)
+{
+    event.preventDefault();
+    return false;
+}
+function dragdrop(event)
+{
+    var div=event.target;
+    var doc = event.target.ownerDocument;
+    var objDiv = doc.getElementById("autoPagerBorderOptions");
+    
+    //if (doc.documentElement.getAttribute("over")=='true')
+    {
+            objDiv.style.right=(window.innerWidth - event.pageX -  doc.documentElement.startX) + 'px';
+            objDiv.style.bottom=(window.innerHeight - event.pageY - doc.documentElement.startY ) + 'px';
+    }
+    
 }
 function onConfirmClick(event)
 {
@@ -1460,7 +1522,28 @@ function onConfirmClick(event)
     eval(exp);
     document.autopagerConfirmDoc = null;
 }
+function HighlightNextLinks()
+{
+    var doc=document.autopagerConfirmDoc ;
+    var urlNodes = findNodeInDoc(doc,
+            doc.documentElement.getAttribute('linkXPath'),doc.documentElement.getAttribute('enableJS') == 'true');
+    if (urlNodes == null || urlNodes.length == 0)
+        return;
+    for(var i=0;i<urlNodes.length;i++)
+        createRegionDivs(doc,urlNodes[i],i);
+    doc.documentElement.autopagerHighlightedNextLinkCount = urlNodes.length;
+    if(doc.documentElement.autopagerHighlightedNextLinkNumber == null)
+        doc.documentElement.autopagerHighlightedNextLinkNumber = 0;
+    if (doc.documentElement.autopagerHighlightedNextLinkNumber >= urlNodes.length)
+        doc.documentElement.autopagerHighlightedNextLinkNumber  = 0;
+    var node = urlNodes[doc.documentElement.autopagerHighlightedNextLinkNumber];
+    var left = getOffsetLeft(node);
+    var top = getOffsetTop(node);
+    doc.defaultView.scrollTo(left,top);
+    node.focus();
 
+    doc.documentElement.autopagerHighlightedNextLinkNumber ++;
+}
 function enabledInNextPagesAlways(always)
 {
     var doc=document.autopagerConfirmDoc ;
@@ -1494,7 +1577,13 @@ function enabledInNextPages(enabled,count)
     de.autopagerAllowedPageCount=de.autoPagerPage+count;
     de.autopagerUserAllowed=enabled;
     de.autopagerEnabled = enabled;
-     hiddenDiv(getPagingOptionDiv(doc),true);
+     hiddenOptionDiv(doc);
+}
+function hiddenOptionDiv(doc)
+{
+    hiddenDiv(getPagingOptionDiv(doc),true);
+    for(var i=0;i<doc.documentElement.autopagerHighlightedNextLinkCount;i++)
+        hiddenRegionDivs(doc,i);
 }
 function enabledThisSite(enabled)
 {
@@ -1515,7 +1604,7 @@ function enabledInThisSession(enabled)
     de.autopagerAllowedPageCount=-1;
     de.autopagerUserAllowed=enabled;
     de.autopagerEnabled = enabled;
-     hiddenDiv(getPagingOptionDiv(doc),true);
+     hiddenOptionDiv(doc);
 }
 function  pagingWatcher() {
     var doc = content.document;
@@ -1874,8 +1963,7 @@ function showMyName(){
     }
 }
 function changeMyName() {
-    var name = prompt(getString("inputname")
-    ,loadMyName());
+    var name = prompt(getString("inputname"),loadMyName());
     if (name!=null && name.length>0) {
         saveMyName(name);
         showMyName();

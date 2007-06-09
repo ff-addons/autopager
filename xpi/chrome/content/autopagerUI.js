@@ -18,6 +18,8 @@
 	var siteSearch;
     
     window.addEventListener("load", function(ev) {
+        var self = arguments.callee;
+        window.removeEventListener("load",self,false);
         loadControls();
 	 {
             populateChooser("",true);
@@ -246,7 +248,6 @@
            }
         }, false);
 		
-		//var btnAddPath,btnEditPath,btnDeletePath;
         btnAddPath.addEventListener("command", function() {
            xpath = prompt(getString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
@@ -255,7 +256,6 @@
            		onPathChange();
            }
         }, false);
-		//var btnAddPath,btnEditPath,btnDeletePath;
         btnSiteUp.addEventListener("command", function() {
            if (treeSites.currentIndex > 0) {
                var treeitem = treeSites.view.getItemAtIndex(treeSites.currentIndex);
@@ -326,16 +326,16 @@
         }, false);
         btnEditPath.addEventListener("command", function() {
 			if (contentXPath.selectedCount > 0) {
-            	treeitem = contentXPath.getSelectedItem(0);
-	    		xpath = treeitem.label;
-        		xpath = prompt(getString("inputxpath"),xpath);
-                        if (btnAddPath.disabled)
-                            return;
-           		if (xpath!=null && xpath.length>0)
-           		{
-           			treeitem.label = (xpath);
-           			onPathChange();
-           		}
+                            treeitem = contentXPath.getSelectedItem(0);
+                            xpath = treeitem.label;
+                            xpath = prompt(getString("inputxpath"),xpath);
+                            if (btnAddPath.disabled)
+                                return;
+                            if (xpath!=null && xpath.length>0)
+                            {
+                                    treeitem.label = xpath;
+                                    onPathChange();
+                            }
            	}
         }, false);
         btnDeletePath.addEventListener("command", function() {
@@ -387,7 +387,6 @@
             else {
                 
                 slectedListItem = treeSites.view.getItemAtIndex (treeSites.currentIndex);
-                selectedSite = slectedListItem.site;
                 var itemParent = slectedListItem.parentNode.parentNode;
                var updateSite = itemParent.updateSite;
                if (updateSite == null)
@@ -397,6 +396,10 @@
                    return;
                }
                var enableEdit =  (updateSite.url.length == 0);
+               if (enableEdit)
+                    selectedSite = sites[slectedListItem.siteIndex];
+                else
+                    selectedSite = slectedListItem.site;
                
                enableSiteEditControls(enableEdit);
                 if (selectedSite == null)
@@ -598,8 +601,8 @@
                    node = treeitem.previousSibling;
                if (node==null)
                    node = treeitem.parentNode.parentNode;
-               var site = treeitem.site;
-               removeFromArray(sites,site);
+               //var site = treeitem.site;
+               removeFromArrayByIndex(sites,treeitem.siteIndex);
                treeitem.parentNode.removeChild(treeitem);
            }
 

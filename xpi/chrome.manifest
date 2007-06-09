@@ -2,6 +2,7 @@ content autopager 					 jar:chrome/autopager.jar!/content/
 skin	autopager	classic/1.0                    jar:chrome/autopager.jar!/skin/
 
 overlay	chrome://browser/content/browser.xul	chrome://autopager/content/statusbar.xul
+overlay	chrome://autopager/content/autopager.xul	chrome://autopager/content/autopager-reset.xul
 
 locale	autopager	en-US		       jar:chrome/autopager.jar!/locale/en-US/
 locale	autopager	zh-CN		       jar:chrome/autopager.jar!/locale/zh-CN/

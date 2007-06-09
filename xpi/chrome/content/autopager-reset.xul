@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://global/locale/config.dtd">
+
+<overlay id="autopager" 
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+    <stringbundleset id="autopagerStringbundleset">
+        <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+    </stringbundleset>
+    
+    
+    <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+
+    
+    
+    <hbox id="loading-hbox">
+        <button id="loadingReset" label="&reset.label;" accesskey="&reset.accesskey;"
+            oncommand="try{getPrefs().clearUserPref('.loading');}catch(e){}; txtLoading.value = getLoadingStyle();"/>
+    </hbox>
+    <hbox  id="pagebreak-hbox">
+        <button id="pagebreakReset" label="&reset.label;" accesskey="&reset.accesskey;"
+            oncommand="try{getPrefs().clearUserPref('.pagebreak');}catch(e){}; txtPagebreak.value = loadUTF8Pref('pagebreak');"/>
+    </hbox>
+    <hbox  id="confirm-hbox">
+        <button id="confirmReset" label="&reset.label;" accesskey="&reset.accesskey;"
+            oncommand="try{getPrefs().clearUserPref('.optionstyle');}catch(e){};txtConfirmStyle.value = loadUTF8Pref('optionstyle');}catch(e){}"/>
+    </hbox>
+</overlay>
