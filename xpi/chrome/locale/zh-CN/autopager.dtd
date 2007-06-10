@@ -86,3 +86,5 @@
 <!ENTITY setting.update.monthly "每月">
 <!ENTITY setting.update.never "从不">
 
+<!ENTITY setting.tree.URLPattern "地址通配符">
+<!ENTITY setting.tree.Description "描述">

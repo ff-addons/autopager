@@ -8,13 +8,13 @@
 <!ENTITY setting.button.remove "Supprimer">
 <!ENTITY setting.button.copy "Cloner">
 <!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
-<!ENTITY setting.button.cloneToEditTip "Cet élément provient d&apos;une source sûre. L&apos;édition de la version clonée n&apos;est à faire que s&apos;il est nécessaire.">
+<!ENTITY setting.button.cloneToEditTip "Cet élément provient d&apos;une source sûre.\nL&apos;édition de la version clonée n&apos;est à faire que si nécessaire.">
 <!ENTITY setting.button.import "Importer">
 <!ENTITY setting.button.export "Exporter">
 <!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
 <!ENTITY setting.label.lblOwner "Créé par :">
 <!ENTITY setting.label.lblURLPattern "Format de l&apos;URL :">
-<!ENTITY setting.label.chkIsRegex "Est une expr. rat. ?">
+<!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.grpContentXPath "Contenu XPath :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">
@@ -22,9 +22,9 @@
 <!ENTITY setting.label.chkEnabled "Activé">
 <!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
 <!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
-<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
-<!ENTITY setting.label.margin "Paging when space less then">
-<!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.label.chkFixOverflow "Désactiver les paramètres de débordement concernant la page chargée.">
+<!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
+<!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.general "Général">
 <!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
@@ -39,8 +39,8 @@
 <!ENTITY setting.label.smartenable "Activer la pagination intelligente">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
 <!ENTITY setting.label.grpSmart "Pagination intelligente">
-<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
-<!ENTITY setting.label.smartlinksEnd "meet links.">
+<!ENTITY setting.label.smartlinks "Suivre le lien quand il n&apos;y a pas plus de">
+<!ENTITY setting.label.smartlinksEnd "liens rassemblés.">
 <!ENTITY autopager.status.sitewizard "Assistant pour le site">
 <!ENTITY autopager.status.sitewizardTip "Créer des paramètres pour ce site grâce à l&apos;assistant">
 <!ENTITY autopager.status.setting "Configuration…">

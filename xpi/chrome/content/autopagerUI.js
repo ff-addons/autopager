@@ -219,7 +219,7 @@
              selectedSite.urlPattern = urlPattern.value;
              var treerow = slectedListItem.childNodes[0];
              var treecell = treerow.childNodes[0];
-             treecell.setAttribute("label") = urlPattern.value;
+             treecell.setAttribute("label",urlPattern.value);
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);

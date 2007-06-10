@@ -84,3 +84,5 @@
 <!ENTITY setting.update.monthly "Every Month">
 <!ENTITY setting.update.never "Never">
 
+<!ENTITY setting.tree.URLPattern "URL Pattern">
+<!ENTITY setting.tree.Description "Description">

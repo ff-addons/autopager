@@ -48,9 +48,9 @@
                             <vbox flex="1">
                                 <tree flex="10"  id="treeSites" seltype="multiple" width="400">
                                     <treecols>
-                                        <treecol id="urlPatternCol" label="URL Pattern" primary="true"  flex="5" width="300"/>
+                                        <treecol id="urlPatternCol" label="&setting.tree.URLPattern;" primary="true"  flex="5" width="300"/>
                                         <splitter class="tree-splitter"/>    
-                                        <treecol id="descCol" label="Description" flex="1" hidden="false"/>
+                                        <treecol id="descCol" label="&setting.tree.Description;" flex="1" hidden="false"/>
                                     </treecols>
                                     <treechildren id="siteContents"></treechildren>
                                 </tree>
@@ -107,7 +107,7 @@
                     </vbox>
                     <splitter/>
                     <vbox flex="1">
-                        <hbox>
+                        <hbox align="center">
                             <label control="lblOwner" value="&setting.label.lblOwner;"/>
                             <label id="lblOwner" value=""/>
                             <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;" 
@@ -116,12 +116,12 @@
                         </hbox>
                         
                         <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
-                        <hbox>
+                        <hbox align="center">
                             <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
                             <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
                             <textbox id="urlPattern" flex="1"/>
                         </hbox>
-                        <hbox>
+                        <hbox align="center">
                             <label control="margin" value="&setting.label.margin;"/>
                             <textbox id="margin" flex="1"/>
                             <label control="margin" value="&setting.label.marginEnd;"/>
@@ -145,7 +145,7 @@
                                 </hbox>
                             </groupbox>
                             
-                            <hbox>
+                            <hbox align="center">
                                 <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
                                 <textbox id="linkXPath" flex="1"/>
                                 <button id="pickLinkPath" label="&setting.button.pick;" />		                    
@@ -162,29 +162,29 @@
             </tabpanel>
             <tabpanel id="general-setting">
                 <vbox flex="1">
-                    <hbox >
+                    <hbox align="center">
                         <label control="myname" value = "&autopager.status.myname;"/>
                         <textbox id="myname" flex="1"/>
                     </hbox>
-                    <hbox id="loading-hbox">
+                    <hbox align="center" id="loading-hbox">
                         <label control="loading" value = "&setting.label.loading;"/>
                         <textbox id="loading" flex="1"/>
                     </hbox>
-                    <hbox id="pagebreak-hbox">
+                    <hbox align="center" id="pagebreak-hbox">
                         <label control="pagebreak" value = "&setting.label.pagebreak;"/>
                         <textbox id="pagebreak" flex="1"/>
                     </hbox>
-                    <hbox  id="confirm-hbox">
+                    <hbox align="center" id="confirm-hbox">
                         <label control="confirm" value = "&setting.label.confirmstyle;"/>
                         <textbox id="confirm" flex="1"/>
                     </hbox>
                     <!-- 
-                    <hbox >
+                    <hbox align="center">
                         <label control="timeout" value = "&setting.label.timeout;"/>
                         <textbox id="timeout" flex="1"/>
                     </hbox>
                     -->
-                    <hbox>
+                    <hbox align="center">
                         <label control="chkCtrl" value="&setting.label.hotkeys;"/>
                         <checkbox id="chkCtrl" label="&setting.label.chkCtrl;" checked="true" />
                         <checkbox id="chkAlt" label="&setting.label.chkAlt;" checked="false" />
@@ -192,26 +192,26 @@
                         <label value="&setting.label.doubleclick;"/>
                     </hbox>
                     <vbox flex="1">
-                        <hbox >
+                        <hbox align="center">
                             <checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>
                         </hbox>
                         <hbox flex="1">
                             <groupbox id="grpSmart" orient="vertical" flex="1">
                                 <caption label="&setting.label.grpSmart;" />
                                 <vbox>
-                                    <hbox>
+                                    <hbox align="center">
                                         <label control="smarttext" value = "&setting.label.smarttext;" flex="1"/>
                                     </hbox>
-                                    <hbox>
+                                    <hbox align="center">
                                         <textbox id="smarttext" flex="1"/>
                                     </hbox>
                                 </vbox>
-                                <hbox>
+                                <hbox align="center">
                                     <label control="smartlinks" value = "&setting.label.smartlinks;"/>
                                     <textbox id="smartlinks" flex="1"/>
                                     <label control="smartlinksEnd" value = "&setting.label.smartlinksEnd;"/>
                                 </hbox>
-                                <hbox>
+                                <hbox align="center">
                                     <label control="smartMargin" value="&setting.label.margin;"/>
                                     <textbox id="smartMargin" flex="1"/>
                                     <label control="smartMargin" value="&setting.label.marginEnd;"/>
@@ -224,7 +224,7 @@
             </tabpanel>
             <tabpanel id="update-setting">
                 <vbox flex="1">
-                        <hbox>
+                        <hbox align="center">
                             <label control="updatePeriod" value="&setting.label.lblUpdate;"/>
                             <menulist id="updatePeriod" flex="1">
                                 <menupopup>
