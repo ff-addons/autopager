@@ -51,14 +51,14 @@
 <!ENTITY autopager.status.importurlTip "Importa le impostazioni di Auto Pager da un URL.">
 <!ENTITY autopager.status.importfile "Importa da file">
 <!ENTITY autopager.status.importfileTip "Importa le impostazioni di Auto Pager da un file.">
-<!ENTITY autopager.status.importclip "Import from Clipboard">
-<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
+<!ENTITY autopager.status.importclip "Import dagli Appunti">
+<!ENTITY autopager.status.importclipTip "Importa le impostazioni di Auto Pager dagli Appunti">
 <!ENTITY autopager.status.export "Esporta le impostazioni">
-<!ENTITY autopager.status.exportTip "Esporta le impostazioni di Auto Pager in un file.">
-<!ENTITY autopager.status.exportfile "Export To File">
-<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
-<!ENTITY autopager.status.exportclip "Export To Clipboard">
-<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
+<!ENTITY autopager.status.exportTip "Esporta le impostazioni di Auto Pager.">
+<!ENTITY autopager.status.exportfile "Esporta in un file">
+<!ENTITY autopager.status.exportfileTip "Esporta le impostazioni di Auto Pager in un file.">
+<!ENTITY autopager.status.exportclip "Esporta negli Appunti">
+<!ENTITY autopager.status.exportclipTip "Esporta le impostazioni di Auto Pager negli Appunti.">
 <!ENTITY autopager.status.createXPath "Crea XPath">
 <!ENTITY autopager.status.createXPathTip "Crea XPath selezionando un nodo nella pagina">
 <!ENTITY autopager.status.testXPath "Test di XPath">
@@ -69,10 +69,12 @@
 <!ENTITY autopager.status.showoptionTip "Mostra le opzioni pagina per la pagina corrente.">
 <!ENTITY autopager.status.myname "Inserire il proprio nome:">
 <!ENTITY autopager.status.mynameTip "Il proprio nome sarà aggiunto alla configurazione creata">
-<!ENTITY setting.label.update "Update">
-<!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
-<!ENTITY setting.update.startup "Every Startup">
-<!ENTITY setting.update.daily "Every Day">
-<!ENTITY setting.update.weekly "Every Week">
-<!ENTITY setting.update.monthly "Every Month">
-<!ENTITY setting.update.never "Never">
+<!ENTITY setting.label.update "Aggiornamento">
+<!ENTITY setting.label.lblUpdate "Configurazione del sito per gli aggiornamenti automatici:">
+<!ENTITY setting.update.startup "Ogni avvio">
+<!ENTITY setting.update.daily "Ogni giorno">
+<!ENTITY setting.update.weekly "Ogni settimana">
+<!ENTITY setting.update.monthly "Ogni mese">
+<!ENTITY setting.update.never "Mai">
+<!ENTITY setting.tree.URLPattern "Modello dell&apos;URL">
+<!ENTITY setting.tree.Description "Descrizione">

@@ -153,7 +153,7 @@
                         </vbox>
                         <hbox flex="2">
                             <label control="desc" value="&setting.label.lblDesc;"/>
-                            <textbox multiline="true" id="desc" flex="1"/>
+                            <textbox multiline="true" id="desc" rows="4" flex="1"/>
                         </hbox>
                     </vbox>
                     

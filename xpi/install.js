@@ -1,15 +1,16 @@
 const APP_DISPLAY_NAME = "autopager";
 const APP_NAME = "autopager";
 const APP_PACKAGE = "/informaction/autopager";
-const APP_VERSION = "0.1.5.6";
+const APP_VERSION = "0.1.5.6.1";
 
 const APP_PREFS_FILE="defaults/preferences/autopagerdef.js";
 const APP_XPCOM_SERVICE=null;
 const APP_JAR_FILE = "autopager.jar";
 const APP_CONTENT_FOLDER = "content/";
 const APP_LOCALES = [
-  "fr-FR","it-IT","ja-JP","zh-CN","en-US"
+  "fr-FR","zh-CN","en-US"
   ];
+  //"it-IT","ja-JP",
 
 const APP_SUCCESS_MESSAGE = APP_DISPLAY_NAME+" should now be available on the statusbar when you restart Mozilla.";
 

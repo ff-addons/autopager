@@ -6,7 +6,7 @@
 <!ENTITY setting.button.down "下へ">
 <!ENTITY setting.button.pick "選択…">
 <!ENTITY setting.button.remove "除去…">
-<!ENTITY setting.button.copy "コピー">
+<!ENTITY setting.button.copy "複製">
 <!ENTITY setting.button.cloneToEdit "複製して編集">
 <!ENTITY setting.button.cloneToEditTip "この項目は元々用意されています。必要に応じて複製版を編集することができます。">
 <!ENTITY setting.button.import "読み込み">
@@ -22,7 +22,7 @@
 <!ENTITY setting.label.chkEnabled "有効">
 <!ENTITY setting.label.chkEnableJS "読み込み中に JavaScript を有効にする。">
 <!ENTITY setting.label.chkQuickLoad "Quick Load ( あらゆるサイトで安全ではありません )。">
-<!ENTITY setting.label.chkFixOverflow "読み込んだページのはみ出し設定を無効にする。">
+<!ENTITY setting.label.chkFixOverflow "読み込んだページの、はみ出し設定を無効にする。">
 <!ENTITY setting.label.margin "Paging when space less then">
 <!ENTITY setting.label.marginEnd "window hight">
 <!ENTITY setting.label.sites "サイト">
@@ -76,3 +76,5 @@
 <!ENTITY setting.update.weekly "毎週">
 <!ENTITY setting.update.monthly "毎月">
 <!ENTITY setting.update.never "しない">
+<!ENTITY setting.tree.URLPattern "URL パターン">
+<!ENTITY setting.tree.Description "説明">

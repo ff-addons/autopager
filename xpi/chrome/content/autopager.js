@@ -332,8 +332,9 @@ function getPrefs() {
     if (autopagerPrefs == null) {
         autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
         getService(Components.interfaces.nsIPrefService).getBranch("autopager");
-        autopagerPrefs=autopagerPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-        
+        try{
+            autopagerPrefs=autopagerPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+        }catch(e){}
     }
     return autopagerPrefs;
 }
