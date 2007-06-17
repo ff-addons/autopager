@@ -527,7 +527,7 @@
             if (exportSites.length > 0) {
                 var file = null;
                 if (!exportToClipboard)
-                    selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                    file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
                 else
                 {
                     file = Components.classes["@mozilla.org/file/directory_service;1"]

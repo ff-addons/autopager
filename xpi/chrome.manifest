@@ -7,3 +7,4 @@ overlay	chrome://autopager/content/autopager.xul	chrome://autopager/content/auto
 locale	autopager	en-US		       jar:chrome/autopager.jar!/locale/en-US/
 locale	autopager	zh-CN		       jar:chrome/autopager.jar!/locale/zh-CN/
 locale	autopager	fr-FR		       jar:chrome/autopager.jar!/locale/fr-FR/
+locale	autopager	nl-NL		       jar:chrome/autopager.jar!/locale/nl-NL/

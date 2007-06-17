@@ -1,80 +1,80 @@
-<!ENTITY setting.appname "Auto Pager">
-<!ENTITY setting.title "Auto Pager Setting">
-<!ENTITY setting.button.add "Add...">
-<!ENTITY setting.button.edit "Edit...">
-<!ENTITY setting.button.up "Up">
-<!ENTITY setting.button.down "Down">
-<!ENTITY setting.button.pick "Pick...">
-<!ENTITY setting.button.remove "Remove">
-<!ENTITY setting.button.copy "Clone">
-<!ENTITY setting.button.cloneToEdit "Clone To Edit">
-<!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
-<!ENTITY setting.button.import "Import">
-<!ENTITY setting.button.export "Export">
-<!ENTITY setting.button.exportTip "Export Select Items">
-<!ENTITY setting.label.lblOwner "Created By:">
-<!ENTITY setting.label.lblURLPattern "URL Pattern:">
-<!ENTITY setting.label.chkIsRegex "Is RegExp?">
-<!ENTITY setting.label.lblDesc "Desciption:">
-<!ENTITY setting.label.grpContentXPath "Content XPath:">
-<!ENTITY setting.label.lblLinkXPath "Link XPath:">
-<!ENTITY setting.label.btnEdit "Edit">
-<!ENTITY setting.label.chkEnabled "Enabled">
-<!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
-<!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
-<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
-<!ENTITY setting.label.margin "Paging when space less then">
-<!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.appname "AutoPager">
+<!ENTITY setting.title "AutoPager instellingen">
+<!ENTITY setting.button.add "Toevoegen...">
+<!ENTITY setting.button.edit "Bewerken...">
+<!ENTITY setting.button.up "Omhoog">
+<!ENTITY setting.button.down "Omlaag">
+<!ENTITY setting.button.pick "Kiezen...">
+<!ENTITY setting.button.remove "Verwijderen">
+<!ENTITY setting.button.copy "Kopiëren">
+<!ENTITY setting.button.cloneToEdit "Kopiëren voor bewerking">
+<!ENTITY setting.button.cloneToEditTip "Dit onderdeel komt uit een afgeronde bron. U kunt zonodig de gekopieerde versie bewerken.">
+<!ENTITY setting.button.import "Importeren">
+<!ENTITY setting.button.export "Exporteren">
+<!ENTITY setting.button.exportTip "Geselecteerde onderdelen exporteren">
+<!ENTITY setting.label.lblOwner "Gemaakt door:">
+<!ENTITY setting.label.lblURLPattern "URL patroon:">
+<!ENTITY setting.label.chkIsRegex "Reguliere expressie?">
+<!ENTITY setting.label.lblDesc "Beschrijving:">
+<!ENTITY setting.label.grpContentXPath "XPath naar content:">
+<!ENTITY setting.label.lblLinkXPath "XPath naar koppeling:">
+<!ENTITY setting.label.btnEdit "Bewerken">
+<!ENTITY setting.label.chkEnabled "Ingeschakeld">
+<!ENTITY setting.label.chkEnableJS "Javascript inschakelen bij het laden van de pagina.">
+<!ENTITY setting.label.chkQuickLoad "Snel laden (niet voor alle sites veilig).">
+<!ENTITY setting.label.chkFixOverflow "Overflow instelling van de geladen pagina uitschakelen.">
+<!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
+<!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.sites "Sites">
-<!ENTITY setting.label.general "General">
-<!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
+<!ENTITY setting.label.general "Algemeen">
+<!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.doubleclick "+Double Click">
-<!ENTITY setting.label.loading "loading notification style:">
-<!ENTITY setting.label.pagebreak "page break style:">
-<!ENTITY setting.label.confirmstyle "confirm style:">
-<!ENTITY setting.label.timeout "page loading timeout(Seconds):">
-<!ENTITY setting.label.smartenable "Enable Smart Paging">
-<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
-<!ENTITY setting.label.grpSmart "Smart Paging">
-<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
-<!ENTITY setting.label.smartlinksEnd "meet links.">
-<!ENTITY autopager.status.sitewizard "Site Wizard">
-<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
-<!ENTITY autopager.status.setting "Manage Setting">
-<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
-<!ENTITY autopager.status.update "Update Setting Online">
-<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.importurl "Import from URL">
-<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
-<!ENTITY autopager.status.importfile "Import from File">
-<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
-<!ENTITY autopager.status.importclip "Import from Clipboard">
-<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
-<!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
-<!ENTITY autopager.status.exportfile "Export To File">
-<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
-<!ENTITY autopager.status.exportclip "Export To Clipboard">
-<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
-<!ENTITY autopager.status.createXPath "Create XPath">
-<!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
-<!ENTITY autopager.status.testXPath "Test XPath">
-<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
-<!ENTITY autopager.status.enabled "Enabled">
-<!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
-<!ENTITY autopager.status.showoption "Show Page Options">
-<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
-<!ENTITY autopager.status.myname "My Name:">
-<!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">
-<!ENTITY setting.label.update "Update">
-<!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
-<!ENTITY setting.update.startup "Every Startup">
-<!ENTITY setting.update.daily "Every Day">
-<!ENTITY setting.update.weekly "Every Week">
-<!ENTITY setting.update.monthly "Every Month">
-<!ENTITY setting.update.never "Never">
-<!ENTITY setting.tree.URLPattern "URL Pattern">
-<!ENTITY setting.tree.Description "Description">
+<!ENTITY setting.label.doubleclick "+dubbelklik">
+<!ENTITY setting.label.loading "Stijl van laadbericht:">
+<!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
+<!ENTITY setting.label.confirmstyle "Stijl bevestigen:">
+<!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
+<!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
+<!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door &apos;|&apos;):">
+<!ENTITY setting.label.grpSmart "Slim pagineren">
+<!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
+<!ENTITY setting.label.smartlinksEnd "koppelingen worden gevonden.">
+<!ENTITY autopager.status.sitewizard "Site wizard">
+<!ENTITY autopager.status.sitewizardTip "Site-instelling in wizard maken">
+<!ENTITY autopager.status.setting "Instellingen beheren">
+<!ENTITY autopager.status.settingTip "AutoPager instellingen beheren">
+<!ENTITY autopager.status.update "Instellingen online bijwerken">
+<!ENTITY autopager.status.updateTip "AutoPager instellingen bijwerken van http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.importurl "Van URL importeren">
+<!ENTITY autopager.status.importurlTip "AutoPager instellingen importeren van URL.">
+<!ENTITY autopager.status.importfile "Uit bestand importeren">
+<!ENTITY autopager.status.importfileTip "AutoPager instellingen uit bestand importeren.">
+<!ENTITY autopager.status.importclip "Van Klembord importeren">
+<!ENTITY autopager.status.importclipTip "AutoPager instellingen van Klembord importeren.">
+<!ENTITY autopager.status.export "Instellingen exporteren">
+<!ENTITY autopager.status.exportTip "AutoPager instellingen exporteren.">
+<!ENTITY autopager.status.exportfile "Naar bestand exporteren">
+<!ENTITY autopager.status.exportfileTip "AutoPager instellingen naar bestand exporteren.">
+<!ENTITY autopager.status.exportclip "Naar Klembord exporteren">
+<!ENTITY autopager.status.exportclipTip "AutoPager instellingen naar Klembord exporteren.">
+<!ENTITY autopager.status.createXPath "XPath aanmaken">
+<!ENTITY autopager.status.createXPathTip "XPath aanmaken door een node op de pagina te selecteren.">
+<!ENTITY autopager.status.testXPath "XPath testen">
+<!ENTITY autopager.status.testXPathTip "Een XPath op de pagina testen.">
+<!ENTITY autopager.status.enabled "Inschakelen">
+<!ENTITY autopager.status.enabledTip "AutoPager in-/uitschakelen">
+<!ENTITY autopager.status.showoption "Pagina-opties weergeven">
+<!ENTITY autopager.status.showoptionTip "Pagina-opties voor deze pagina weergeven.">
+<!ENTITY autopager.status.myname "Mijn naam:">
+<!ENTITY autopager.status.mynameTip "Uw naam; deze wordt aan de door u aangemaakte configuratie toegevoegd.">
+<!ENTITY setting.label.update "Bijwerken">
+<!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">
+<!ENTITY setting.update.startup "Bij elke keer opstarten">
+<!ENTITY setting.update.daily "Elke dag">
+<!ENTITY setting.update.weekly "Elke week">
+<!ENTITY setting.update.monthly "Elke maand">
+<!ENTITY setting.update.never "Nooit">
+<!ENTITY setting.tree.URLPattern "URL patroon">
+<!ENTITY setting.tree.Description "Beschrijving">
