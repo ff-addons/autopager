@@ -9,7 +9,6 @@
 <!ENTITY setting.button.copy "克隆">
 <!ENTITY setting.button.cloneToEdit "编辑克隆版">
 <!ENTITY setting.button.cloneToEditTip "这条记录来自于一个只读的配置，如果需要你可以编辑它的一个克隆版。">
-
 <!ENTITY setting.button.import "导入">
 <!ENTITY setting.button.export "导出">
 <!ENTITY setting.button.exportTip "导出选定站点配置">
@@ -33,20 +32,17 @@
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.doubleclick "+双击">
-<!ENTITY setting.label.loading "'加载中'提示的样式:">
+<!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
 <!ENTITY setting.label.pagebreak "分页符样式:">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
 <!ENTITY setting.label.timeout "载入超时(秒):">
-
 <!ENTITY setting.label.smartenable "启用智能翻页">
-<!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用'|'分割):">
+<!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用&apos;|&apos;分割):">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.smartlinks "仅当匹配不多于:">
 <!ENTITY setting.label.smartlinksEnd "链接时才启用翻页。">
-
 <!ENTITY autopager.status.sitewizard "站点向导">
 <!ENTITY autopager.status.sitewizardTip "使用向导创建站点">
-
 <!ENTITY autopager.status.setting "设置">
 <!ENTITY autopager.status.settingTip "设置自动翻页选项。">
 <!ENTITY autopager.status.update "在线更新">
@@ -63,28 +59,22 @@
 <!ENTITY autopager.status.exportfileTip "导出自动翻页设置到文件.">
 <!ENTITY autopager.status.exportclip "导出到剪贴板">
 <!ENTITY autopager.status.exportclipTip "导出自动翻页设置到剪贴板.">
-
 <!ENTITY autopager.status.createXPath "创建XPath路径">
 <!ENTITY autopager.status.createXPathTip "点选页面内容创建XPath路径.">
 <!ENTITY autopager.status.testXPath "测试XPath">
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
-
 <!ENTITY autopager.status.enabled "启用">
 <!ENTITY autopager.status.enabledTip "启用/禁用自动翻页">
 <!ENTITY autopager.status.showoption "页选项">
 <!ENTITY autopager.status.showoptionTip "显示当前页的选项。">
-
 <!ENTITY autopager.status.myname "你的姓名:">
 <!ENTITY autopager.status.mynameTip "你的姓名。它将显示在你创建的自动翻页站点配置信息中.">
-
 <!ENTITY setting.label.update "自动更新">
 <!ENTITY setting.label.lblUpdate "自动更新站点配置:">
-
 <!ENTITY setting.update.startup "每次启动">
 <!ENTITY setting.update.daily "每天">
 <!ENTITY setting.update.weekly "每周">
 <!ENTITY setting.update.monthly "每月">
 <!ENTITY setting.update.never "从不">
-
 <!ENTITY setting.tree.URLPattern "地址通配符">
 <!ENTITY setting.tree.Description "描述">

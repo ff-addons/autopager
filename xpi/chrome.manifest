@@ -4,7 +4,12 @@ skin	autopager	classic/1.0                    jar:chrome/autopager.jar!/skin/
 overlay	chrome://browser/content/browser.xul	chrome://autopager/content/statusbar.xul
 overlay	chrome://autopager/content/autopager.xul	chrome://autopager/content/autopager-reset.xul
 
-locale	autopager	en-US		       jar:chrome/autopager.jar!/locale/en-US/
 locale	autopager	zh-CN		       jar:chrome/autopager.jar!/locale/zh-CN/
-locale	autopager	fr-FR		       jar:chrome/autopager.jar!/locale/fr-FR/
+locale	autopager	zh-TW		       jar:chrome/autopager.jar!/locale/zh-TW/
 locale	autopager	nl-NL		       jar:chrome/autopager.jar!/locale/nl-NL/
+locale	autopager	en-US		       jar:chrome/autopager.jar!/locale/en-US/
+locale	autopager	fr-FR		       jar:chrome/autopager.jar!/locale/fr-FR/
+locale	autopager	de-DE		       jar:chrome/autopager.jar!/locale/de-DE/
+locale	autopager	it-IT		       jar:chrome/autopager.jar!/locale/it-IT/
+locale	autopager	ja-JP		       jar:chrome/autopager.jar!/locale/ja-JP/
+locale	autopager	pt-BR		       jar:chrome/autopager.jar!/locale/pt-BR/

@@ -1,0 +1,80 @@
+<!ENTITY setting.appname "AutoPager">
+<!ENTITY setting.title "AutoPager - Einstellungen">
+<!ENTITY setting.button.add "Hinzufügen...">
+<!ENTITY setting.button.edit "Bearbeiten...">
+<!ENTITY setting.button.up "Nach oben">
+<!ENTITY setting.button.down "Nach unten">
+<!ENTITY setting.button.pick "Auswählen...">
+<!ENTITY setting.button.remove "Löschen">
+<!ENTITY setting.button.copy "Kopieren">
+<!ENTITY setting.button.cloneToEdit "Duplizieren und Bearbeiten">
+<!ENTITY setting.button.cloneToEditTip "Dieser Eintrag befindet sich in einer schreibgeschützten Datei. Sie können nur einen duplizierten Eintrag bearbeiten.">
+<!ENTITY setting.button.import "Importieren">
+<!ENTITY setting.button.export "Exportieren">
+<!ENTITY setting.button.exportTip "Ausgewählte Einträge exportieren">
+<!ENTITY setting.label.lblOwner "Erstellt von:">
+<!ENTITY setting.label.lblURLPattern "Adressregel:">
+<!ENTITY setting.label.chkIsRegex "Regulärer Ausdruck">
+<!ENTITY setting.label.lblDesc "Beschreibung:">
+<!ENTITY setting.label.grpContentXPath "XPath des Inhalts:">
+<!ENTITY setting.label.lblLinkXPath "XPath des Links:">
+<!ENTITY setting.label.btnEdit "Bearbeiten">
+<!ENTITY setting.label.chkEnabled "Aktiviert">
+<!ENTITY setting.label.chkEnableJS "JavaScript beim Laden der Seite aktivieren.">
+<!ENTITY setting.label.chkQuickLoad "Schnelles Laden (Funktioniert nicht für alle Seiten).">
+<!ENTITY setting.label.chkFixOverflow "Allen Seiten gleiche Breite geben.">
+<!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
+<!ENTITY setting.label.marginEnd "Pixel ist.">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.general "Allgemein">
+<!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
+<!ENTITY setting.label.chkCtrl "Strg">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkShift "Umschalt">
+<!ENTITY setting.label.doubleclick "+Doppelklick">
+<!ENTITY setting.label.loading "CSS-Stil für Laden der nächsten Seite:">
+<!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
+<!ENTITY setting.label.confirmstyle "CSS-Stil für Steuerungs-Pop-up:">
+<!ENTITY setting.label.timeout "Maximale Wartezeit beim Laden einer Seite (Sekunden):">
+<!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">
+<!ENTITY setting.label.smarttext "Text des Links zur nächsten Seite/Pfad des verlinkenden Bildes/ID oder CSS-Class des Links (getrennt durch &apos;|&apos;):">
+<!ENTITY setting.label.grpSmart "Intelligenter Modus">
+<!ENTITY setting.label.smartlinks "Diesen Link verwenden, wenn nicht mehr als">
+<!ENTITY setting.label.smartlinksEnd "zutreffende Links gefunden werden.">
+<!ENTITY autopager.status.sitewizard "Seitenassistent">
+<!ENTITY autopager.status.sitewizardTip "Seitenkonfiguration mittels des Assistenten erstellen">
+<!ENTITY autopager.status.setting "Einstellungen bearbeiten">
+<!ENTITY autopager.status.settingTip "AutoPager-Einstellungen bearbeiten">
+<!ENTITY autopager.status.update "Einstellungen aus dem Internet aktualisieren">
+<!ENTITY autopager.status.updateTip "Lädt die AutoPager-Einstellungen von http://blogs.sun.com/wind/entry/autopager_site_config herunter">
+<!ENTITY autopager.status.importurl "Einstellungen von einer Seite aus dem Internet importieren">
+<!ENTITY autopager.status.importurlTip "Importiert die AutoPager-Einstellungen von einer Datei aus dem Internet">
+<!ENTITY autopager.status.importfile "Einstellungen aus Datei importieren">
+<!ENTITY autopager.status.importfileTip "Importiert die AutoPager-Einstellungen aus einer Datei">
+<!ENTITY autopager.status.importclip "Einstellungen aus Zwischenablage importieren">
+<!ENTITY autopager.status.importclipTip "Importiert die AutoPager-Einstellungen aus der Zwischenablage">
+<!ENTITY autopager.status.export "Einstellungen exportieren">
+<!ENTITY autopager.status.exportTip "Exportiert die AutoPager-Einstellungen">
+<!ENTITY autopager.status.exportfile "Einstellungen in Datei exportieren">
+<!ENTITY autopager.status.exportfileTip "Exportiert die AutoPager-Einstellungen in eine Datei">
+<!ENTITY autopager.status.exportclip "Einstellungen in Zwischenablage kopieren">
+<!ENTITY autopager.status.exportclipTip "Exportiert die AutoPager-Einstellungen in die Zwischenablage">
+<!ENTITY autopager.status.createXPath "XPath erstellen">
+<!ENTITY autopager.status.createXPathTip "Erstellt einen XPath anhand der Auswahl eines Seitenknotens">
+<!ENTITY autopager.status.testXPath "XPath testen">
+<!ENTITY autopager.status.testXPathTip "XPath-Ausdruck für einen Test auf diese Seite anwenden">
+<!ENTITY autopager.status.enabled "Aktiviert">
+<!ENTITY autopager.status.enabledTip "AutoPager-Status: Aktiviert oder deaktiviert">
+<!ENTITY autopager.status.showoption "Seitenkonfiguration anzeigen">
+<!ENTITY autopager.status.showoptionTip "Zeigt die AutoPager-Konfiguration für diese Seite an.">
+<!ENTITY autopager.status.myname "Ihr Name:">
+<!ENTITY autopager.status.mynameTip "Ihr Name wird den von Ihnen erstellten Seitekonfigurationen hinzugefügt.">
+<!ENTITY setting.label.update "Aktualisierung">
+<!ENTITY setting.label.lblUpdate "Seitenkonfigurationen aktualisieren:">
+<!ENTITY setting.update.startup "Bei jedem Start">
+<!ENTITY setting.update.daily "Täglich">
+<!ENTITY setting.update.weekly "Wöchentlich">
+<!ENTITY setting.update.monthly "Monatlich">
+<!ENTITY setting.update.never "Nie">
+<!ENTITY setting.tree.URLPattern "Adressregel">
+<!ENTITY setting.tree.Description "Beschreibung">

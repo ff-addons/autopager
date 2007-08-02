@@ -8,7 +8,7 @@ const APP_XPCOM_SERVICE=null;
 const APP_JAR_FILE = "autopager.jar";
 const APP_CONTENT_FOLDER = "content/";
 const APP_LOCALES = [
-  "fr-FR","nl-NL","zh-CN","en-US"
+  "zh-CN", "zh-TW","nl-NL","en-US","fr-FR","de-DE","it-IT","ja-JP","pt-BR"
   ];
   //"it-IT","ja-JP",
 
