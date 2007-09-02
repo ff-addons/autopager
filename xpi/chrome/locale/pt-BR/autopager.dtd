@@ -1,5 +1,5 @@
 <!ENTITY setting.appname "Auto Pager">
-<!ENTITY setting.title "Preferências Auto Pager">
+<!ENTITY setting.title "Configurações do Auto Pager">
 <!ENTITY setting.button.add "Adicionar...">
 <!ENTITY setting.button.edit "Editar...">
 <!ENTITY setting.button.up "Cima">
@@ -8,7 +8,7 @@
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.copy "Clonar">
 <!ENTITY setting.button.cloneToEdit "Clonar para Editar">
-<!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
+<!ENTITY setting.button.cloneToEditTip "Este item é de uma fonte somente leitura. Você somente poderá editar uma cópia se necessário.">
 <!ENTITY setting.button.import "Importar">
 <!ENTITY setting.button.export "Exportar">
 <!ENTITY setting.button.exportTip "Exportar Itens Selecionados">
@@ -21,9 +21,9 @@
 <!ENTITY setting.label.btnEdit "Editar">
 <!ENTITY setting.label.chkEnabled "Habilitar">
 <!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
-<!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
-<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
-<!ENTITY setting.label.margin "Paging when space less then">
+<!ENTITY setting.label.chkQuickLoad "Carregamento Rápido (Não seguro para todos os sites).">
+<!ENTITY setting.label.chkFixOverflow "Desabilitar a sobreposição de configurações da página carregada.">
+<!ENTITY setting.label.margin "Paginar quando o espaço for menor que">
 <!ENTITY setting.label.marginEnd "altura da janela">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.general "Geral">
@@ -34,43 +34,43 @@
 <!ENTITY setting.label.doubleclick "+Duplo-clique">
 <!ENTITY setting.label.loading "carregando estilo de notificação:">
 <!ENTITY setting.label.pagebreak "estilo de quebra de página:">
-<!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.confirmstyle "estilo de confirmação:">
 <!ENTITY setting.label.timeout "tempo esgotado de carregamento de página(segundos):">
-<!ENTITY setting.label.smartenable "Enable Smart Paging">
-<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
-<!ENTITY setting.label.grpSmart "Smart Paging">
-<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
-<!ENTITY setting.label.smartlinksEnd "meet links.">
+<!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
+<!ENTITY setting.label.smarttext "Procurar Texto/Imagem Src/ID/Class(Separado por &quot;|&quot;) nos links Próximo (Next):">
+<!ENTITY setting.label.grpSmart "Paginação Inteligente">
+<!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
+<!ENTITY setting.label.smartlinksEnd "encontrar links.">
 <!ENTITY autopager.status.sitewizard "Assistente de Site">
-<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
-<!ENTITY autopager.status.setting "Preferências de Gerenciamento">
-<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
-<!ENTITY autopager.status.update "Update Setting Online">
-<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.sitewizardTip "Criar Configurações de Site usando o Assistente">
+<!ENTITY autopager.status.setting "Gerenciador de Configurações">
+<!ENTITY autopager.status.settingTip "Gerenciar Configurações do Auto Pager">
+<!ENTITY autopager.status.update "Atualizar Configurações Online">
+<!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
 <!ENTITY autopager.status.importurl "Importar da URL">
-<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
-<!ENTITY autopager.status.importfile "Import from File">
-<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
-<!ENTITY autopager.status.importclip "Import from Clipboard">
-<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
-<!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
+<!ENTITY autopager.status.importurlTip "Importar Configurações do Auto Pager da URL.">
+<!ENTITY autopager.status.importfile "Importar do Arquivo">
+<!ENTITY autopager.status.importfileTip "Importar Configurações do Auto Pager do Arquivo.">
+<!ENTITY autopager.status.importclip "Importar da Área de Transferência">
+<!ENTITY autopager.status.importclipTip "Importar Configurações do Auto Pager da Área de Transferência.">
+<!ENTITY autopager.status.export "Exportar Preferências">
+<!ENTITY autopager.status.exportTip "Exportar Configurações do Auto Pager.">
 <!ENTITY autopager.status.exportfile "Exportar Para Arquivo">
-<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
-<!ENTITY autopager.status.exportclip "Export To Clipboard">
-<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
-<!ENTITY autopager.status.createXPath "Create XPath">
-<!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
-<!ENTITY autopager.status.testXPath "Test XPath">
-<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
+<!ENTITY autopager.status.exportfileTip "Exportar Configurações do Auto Pager para Arquivo.">
+<!ENTITY autopager.status.exportclip "Exportar para a Área de Transferência">
+<!ENTITY autopager.status.exportclipTip "Exportar Configurações do Auto Pager para Área de Transferência.">
+<!ENTITY autopager.status.createXPath "Criar XPath">
+<!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
+<!ENTITY autopager.status.testXPath "Testar XPath">
+<!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.enabled "Habilitado">
-<!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
-<!ENTITY autopager.status.showoption "Show Page Options">
-<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
+<!ENTITY autopager.status.enabledTip "Auto Pager Habilitado ou não">
+<!ENTITY autopager.status.showoption "Exibir Página de Opções">
+<!ENTITY autopager.status.showoptionTip "Exibe a Página de Opções para esta página.">
 <!ENTITY autopager.status.myname "Meu Nome:">
-<!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">
+<!ENTITY autopager.status.mynameTip "Seu Nome, será adicionado a configuração que você criou.">
 <!ENTITY setting.label.update "Atualizar">
-<!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
+<!ENTITY setting.label.lblUpdate "Configurações da Atualização Automática:">
 <!ENTITY setting.update.startup "Cada Início">
 <!ENTITY setting.update.daily "Todo Dia">
 <!ENTITY setting.update.weekly "Toda Semana">
