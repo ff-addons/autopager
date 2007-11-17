@@ -576,7 +576,7 @@ function do_request(doc){
     }
 };
 
-function getEnabled(doc) {
+function getEnabledAutopagingPage(doc) {
     var enabled =doc.documentElement.autopagerEnabled && getGlobalEnabled();
     enabled = enabled && ( !(doc.documentElement.getAttribute('enableJS') == 'true')  || doc.documentElement.autopagerSplitDocInited );
     return  enabled;
@@ -595,7 +595,7 @@ function  scrollWatcher() {
                 var doc = de.autopagerEnabledDoc[i];
                 if (doc.location != null)
                {
-                    var Enable = getEnabled(doc);
+                    var Enable = getEnabledAutopagingPage(doc);
                     if (Enable) {
                         if (debug)
                             logInfo(count+ "Enabled " + doc.location.href,count+ "Enabled " + doc.location.href);
