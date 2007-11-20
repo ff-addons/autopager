@@ -1,7 +1,7 @@
 var configFile = getConfigFile("autopager.xml");
 var autoSites = null;
 
-var strbundle=null;
+var autopagerStrbundle=null;
 var UpdateSites=
 {
     updateSites: null,
@@ -158,27 +158,27 @@ function autopagerUpdate()
             UpdateSites.updateOnline();
     }    
 }
-function getString(name)
+function autopagerGetString(name)
 {
 	try{
 		
-		if (strbundle == null)
-			strbundle = document.getElementById("autopagerStrings");
-		return strbundle.getString(name);
+		if (autopagerStrbundle == null)
+			autopagerStrbundle = document.getElementById("autopagerStrings");
+		return autopagerStrbundle.getString(name);
 	}catch(e)
 	{
 		//alert(name + " " + e);
 		return name;
 	}
 }
-function formatString(name,parms)
+function autopagerFormatString(name,parms)
 {
 	
 	
 	try{
-		if (strbundle == null)
-			strbundle = document.getElementById("autopagerStrings");
-		return strbundle.getFormattedString(name, parms);
+		if (autopagerStrbundle == null)
+			autopagerStrbundle = document.getElementById("autopagerStrings");
+		return autopagerStrbundle.getFormattedString(name, parms);
 	}catch(e)
 	{
 		alert(name + " " + e);
@@ -282,7 +282,7 @@ function loadConfig() {
  }
 function importFromURL()
 {
-	var url = prompt(getString("inputurl"),
+	var url = prompt(autopagerGetString("inputurl"),
                         UpdateSites.defaultSite());
 	if (url!=null && url.length >0)
 	{
@@ -332,7 +332,7 @@ function importFromFile()
 	try{
                 var fileURI  = null;
                try{
-		var file = selectFile(getString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
+		var file = selectFile(autopagerGetString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
 		
                 fileURI = Components.classes["@mozilla.org/network/io-service;1"]
 	                   .getService(Components.interfaces.nsIIOService)
@@ -350,7 +350,7 @@ function importFromFile()
 }
 function exportSetting()
 {
-	var file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+	var file = selectFile(autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
 	if (file)
         {
             autoSites = loadConfig();
@@ -428,7 +428,7 @@ function mergeArray(autoSites,sites,silient)
                             ignoreCount ++;
 		}
 	}
-	var msg = formatString("importdone",[insertCount,updatedCount,ignoreCount]);
+	var msg = autopagerFormatString("importdone",[insertCount,updatedCount,ignoreCount]);
 	if (!silient)
 	{
 		alert(msg);

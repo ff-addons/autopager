@@ -234,7 +234,7 @@
            if (selectedSite != null) {
            	if (!isNumeric( margin.value))
            	{
-           		alert(getString("inputnumber"));
+           		alert(autopagerGetString("inputnumber"));
            		margin.focus();
            		return;
            	}
@@ -249,7 +249,7 @@
         }, false);
 		
         btnAddPath.addEventListener("command", function() {
-           xpath = prompt(getString("inputxpath"),xpath);
+           xpath = prompt(autopagerGetString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
            {
            		addContentXPath(xpath);
@@ -328,7 +328,7 @@
 			if (contentXPath.selectedCount > 0) {
                             treeitem = contentXPath.getSelectedItem(0);
                             xpath = treeitem.label;
-                            xpath = prompt(getString("inputxpath"),xpath);
+                            xpath = prompt(autopagerGetString("inputxpath"),xpath);
                             if (btnAddPath.disabled)
                                 return;
                             if (xpath!=null && xpath.length>0)
@@ -471,7 +471,7 @@
     		myname = changeMyName();
     		if (myname==null || myname.length == 0)
     		{
-    			alert(getString("mustinput"));
+    			alert(autopagerGetString("mustinput"));
     			return "";
     		}
     	}
@@ -527,7 +527,7 @@
             if (exportSites.length > 0) {
                 var file = null;
                 if (!exportToClipboard)
-                    file = selectFile(getString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                    file = selectFile(autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
                 else
                 {
                     file = Components.classes["@mozilla.org/file/directory_service;1"]
