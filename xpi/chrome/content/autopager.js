@@ -745,6 +745,8 @@ function getSelectorLoadFrame(doc) {
             "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
         
         frame = doc.getElementById(frameName);
+
+        //frame.src = "about:";
         frame.autoPagerInited = false;
         //create a empty div in target
         getLastDiv(doc);
@@ -753,6 +755,9 @@ function getSelectorLoadFrame(doc) {
     try{
      //       frame.removeEventListener("DOMContentLoaded", onFrameLoad, false);
             frame.removeEventListener("load", onFrameLoad, false);
+         frame.contentDocument.clear();
+        //frame.normalize();
+        frame.contentDocument.documentElement.innerHTML = "<html><body>autopaging</body></html>";
     }catch(e){}
    // if (doc.documentElement.autopagerUseSafeEvent)
         frame.addEventListener("load", onFrameLoad, false);
@@ -1189,8 +1194,8 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                         frame.contentDocument.clear();
                         frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
                         //alert(xmlhttp.responseText);
-                        frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url));
-                        xmlhttp.abort();
+                        //frame.contentDocument.write(getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url));
+                        frame.contentDocument.documentElement.innerHTML = getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url);
                         frame.contentDocument.close();
                         setTimeout(function (){
                             if (!frame.autoPagerInited) {
@@ -1201,7 +1206,8 @@ function processNextDocUsingXMLHttpRequest(doc,url){
                                 onStopPaging(doc);
                             }
                         }
-                        ,60000);
+                        ,60);
+                        //xmlhttp.abort();
                 }
                 else {
                     alertErr("Error loading page:" + url);
@@ -1212,7 +1218,7 @@ function processNextDocUsingXMLHttpRequest(doc,url){
             }
         };
         xmlhttp.open("GET", url, true);
-        window.content.status = "loading ... " + url;
+        //window.content.status = "loading ... " + url;
         xmlhttp.send(null);
         
     }catch (e){
@@ -1905,7 +1911,8 @@ function logInfo(status,tip) {
         return;
     }
     try{
-        window.content.status = status;
+        if (debug)
+            window.content.status = status;
     var tooltip = document.getElementById("autopager_tip");
     
     var tips = tip.split("\n");

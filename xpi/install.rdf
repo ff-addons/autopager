@@ -4,36 +4,55 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.1.5.6.8"
+                     em:version="0.1.5.6.9"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too."
                      em:creator="Wind Li"
                      em:optionsURL="chrome://autopager/content/autopager.xul"
                      em:homepageURL="http://blog.teesoft.com/">
-        <em:targetApplication RDF:resource="rdf:#$pq+79"/>
-        <em:targetApplication RDF:resource="rdf:#$tq+79"/>
-        <em:targetApplication RDF:resource="rdf:#$xq+79"/>
-        <em:targetApplication RDF:resource="rdf:#$Bq+79"/>
         <em:contributor>skylove  at http://bbs.chinaunix.net</em:contributor>
         <em:contributor>DLSQFLY  at http://forums.mozine.cn</em:contributor>
         <em:contributor>Chris  atclbertelson2  at hotmail.com</em:contributor>
         <em:translator>[fr-FR] myahoo at http://www.babelzilla.org</em:translator>
         <em:translator>[nl-NL] markh at http://www.babelzilla.org</em:translator>
+
+<em:targetApplication>
+<!-- Mozilla Firefox -->
+	<RDF:Description>
+		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+		<em:minVersion>1.5</em:minVersion>
+		<em:maxVersion>3.0b4pre</em:maxVersion>
+	</RDF:Description>
+</em:targetApplication>
+
+<em:targetApplication>
+<!-- Mozilla Suite 1.x -->
+	<RDF:Description>
+		<em:id>{86c18b42-e466-45a9-ae7a-9b95ba6f5640}</em:id>
+		<em:minVersion>1.7</em:minVersion>
+		<em:maxVersion>1.8+</em:maxVersion>
+	</RDF:Description>
+</em:targetApplication>
+
+<em:targetApplication>
+<!-- Seamonkey -->
+	<RDF:Description>
+		<em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+		<em:minVersion>1.0</em:minVersion>
+		<em:maxVersion>2.0a1</em:maxVersion>
+	</RDF:Description>
+</em:targetApplication>
+
+<em:targetApplication>
+<!-- Flock -->
+	<RDF:Description>
+		<em:id>{a463f10c-3994-11da-9945-000d60ca027b}</em:id>
+		<em:minVersion>0.5</em:minVersion>
+		<em:maxVersion>1.1+</em:maxVersion>
+	</RDF:Description>
+</em:targetApplication>
+
+        
     </RDF:Description>
-    <RDF:Description RDF:about="rdf:#$xq+79"
-                     em:id="{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}"
-                     em:minVersion="1.0"
-                     em:maxVersion="2.0a1" />
-    <RDF:Description RDF:about="rdf:#$tq+79"
-                     em:id="{86c18b42-e466-45a9-ae7a-9b95ba6f5640}"
-                     em:minVersion="1.7"
-                     em:maxVersion="1.8+" />
-    <RDF:Description RDF:about="rdf:#$pq+79"
-                     em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                     em:minVersion="1.5"
-                     em:maxVersion="3.0b1" />
-    <RDF:Description RDF:about="rdf:#$Bq+79"
-                     em:id="{a463f10c-3994-11da-9945-000d60ca027b}"
-                     em:minVersion="0.5"
-                     em:maxVersion="1.0+" />
+
 </RDF:RDF>

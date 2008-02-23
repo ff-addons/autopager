@@ -9,7 +9,7 @@
 
   <!-- locale information -->
   <RDF:Description about="urn:mozilla:locale:pt-BR"
-        chrome:displayName="Português(Brasil)"
+        chrome:displayName="Portuguï¿½s(Brasil)"
         chrome:author="Pedro Luiz Failla Junior"
         chrome:name="pt-BR">
     <chrome:packages>

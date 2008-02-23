@@ -6,7 +6,7 @@
 <!ENTITY setting.button.down "Nach unten">
 <!ENTITY setting.button.pick "Auswählen...">
 <!ENTITY setting.button.remove "Löschen">
-<!ENTITY setting.button.copy "Kopieren">
+<!ENTITY setting.button.copy "Duplizieren">
 <!ENTITY setting.button.cloneToEdit "Duplizieren und Bearbeiten">
 <!ENTITY setting.button.cloneToEditTip "Dieser Eintrag befindet sich in einer schreibgeschützten Datei. Sie können nur einen duplizierten Eintrag bearbeiten.">
 <!ENTITY setting.button.import "Importieren">
@@ -24,7 +24,7 @@
 <!ENTITY setting.label.chkQuickLoad "Schnelles Laden (Funktioniert nicht für alle Seiten).">
 <!ENTITY setting.label.chkFixOverflow "Allen Seiten gleiche Breite geben.">
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
-<!ENTITY setting.label.marginEnd "Pixel ist.">
+<!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.general "Allgemein">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
@@ -68,7 +68,7 @@
 <!ENTITY autopager.status.showoption "Seitenkonfiguration anzeigen">
 <!ENTITY autopager.status.showoptionTip "Zeigt die AutoPager-Konfiguration für diese Seite an.">
 <!ENTITY autopager.status.myname "Ihr Name:">
-<!ENTITY autopager.status.mynameTip "Ihr Name wird den von Ihnen erstellten Seitekonfigurationen hinzugefügt.">
+<!ENTITY autopager.status.mynameTip "Ihr Name wird den von Ihnen erstellten Seitenkonfigurationen hinzugefügt.">
 <!ENTITY setting.label.update "Aktualisierung">
 <!ENTITY setting.label.lblUpdate "Seitenkonfigurationen aktualisieren:">
 <!ENTITY setting.update.startup "Bei jedem Start">
