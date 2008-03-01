@@ -2,9 +2,12 @@ var configFile = getConfigFile("autopager.xml");
 var autoSites = null;
 
 var autopagerStrbundle=null;
+var autopagerDomParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
+		    .createInstance(Components.interfaces.nsIDOMParser);
 var UpdateSites=
 {
     updateSites: null,
+    allSiteSetting: null,
     submitCount:0,
     init:function()
     {
@@ -107,22 +110,25 @@ var UpdateSites=
     },
     loadAll:function()
     {
-        var allSites = {};
-        for(var i=this.updateSites.length-1;i>=0;i--)
+        if (this.allSiteSetting == null)
         {
-            var configContents="";
-            try{
-                  configContents= getContents(getConfigFileURI(this.updateSites[i].filename));
-                  var sites= null;
-                  sites = loadConfigFromStr(configContents,false);
-                  sites.updateSite = this.updateSites[i];
-                  allSites[this.updateSites[i].filename] = sites;
-            }catch(e)
+          this.allSiteSetting = {};
+            for(var i=this.updateSites.length-1;i>=0;i--)
             {
-                //alert(e);
-            }            
+                var configContents="";
+                try{
+                      configContents= getContents(getConfigFileURI(this.updateSites[i].filename));
+                      var sites= null;
+                      sites = loadConfigFromStr(configContents,false);
+                      sites.updateSite = this.updateSites[i];
+                      this.allSiteSetting[this.updateSites[i].filename] = sites;
+                }catch(e)
+                {
+                    //alert(e);
+                }            
+            }
         }
-        return allSites;
+        return this.allSiteSetting;
     },
     getMatchedSiteConfig: function(allSites,url)
     {
@@ -457,58 +463,62 @@ function loadConfigFromUrl(url) {
 function loadConfigFromDoc(doc) {
   var sites = new Array();
     
-  var nodes = doc.evaluate("//site", doc, null, 0, null);
+  var nodes = doc.evaluate("/autopager/site | /root//site", doc, null, 0, null);
   if (nodes == null)
       return sites;
   var hasQuickLoad = false;
   for (var node = null; (node = nodes.iterateNext()); ) {
     var site = new Site();
 
-    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
-      if (childNode.nodeName == "urlPattern") {
+    var childNodes = node.childNodes;
+    //childNode = childNodes[i]
+    for (var i = 0, childNode = null; (childNode = childNodes[i]) ; i++) {
+      var nodeName = childNode.nodeName;
+      if (nodeName == "urlPattern") {
                         site.urlPattern = getValue(childNode);
-      }else  if (childNode.nodeName == "guid") {
+      }else  if (nodeName == "guid") {
                         site.guid = getValue(childNode);
-      }else if (childNode.nodeName == "urlIsRegex") {
+      }else if (nodeName == "urlIsRegex") {
                         site.isRegex	= (getValue(childNode) == 'true');
       }
-      else if (childNode.nodeName == "margin") {
+      else if (nodeName == "margin") {
                 var val = getValue(childNode);
                         if (isNumeric(val))
                                 site.margin = val;
       }
-      else if (childNode.nodeName == "desc") {
+      else if (nodeName == "desc") {
                         site.desc	= getValue(childNode);
       }
-      else if (childNode.nodeName == "linkXPath") {
+      else if (nodeName == "linkXPath") {
                         site.linkXPath	= getValue(childNode);
       }
-      else if (childNode.nodeName == "contentXPath") {
+      else if (nodeName == "contentXPath") {
                         site.contentXPath.push(getValue(childNode));
       }
-      else if (childNode.nodeName == "enabled") {
+      else if (nodeName == "enabled") {
                         site.enabled	= (getValue(childNode) == 'true');
       }
-      else if (childNode.nodeName == "enableJS") {
+      else if (nodeName == "enableJS") {
                         site.enableJS	= (getValue(childNode) == 'true');
                         //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
       }
-      else if (childNode.nodeName == "quickLoad") {
+      else if (nodeName == "quickLoad") {
                         site.quickLoad	= (getValue(childNode) == 'true');
                         hasQuickLoad = true;
       }
-      else if (childNode.nodeName == "fixOverflow") {
+      else if (nodeName == "fixOverflow") {
                         site.fixOverflow	= (getValue(childNode) == 'true');
                         //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
       }
-      else if (childNode.nodeName == "createdByYou") {
+      else if (nodeName == "createdByYou") {
                         site.createdByYou	= (getValue(childNode) == 'true');
       }
-      else if (childNode.nodeName == "changedByYou") {
+      else if (nodeName == "changedByYou") {
                         site.changedByYou	= (getValue(childNode) == 'true');
-      }else if (childNode.nodeName == "owner") {
+      }else if (nodeName == "owner") {
                         site.owner	= getValue(childNode) ;
       }
+    
     }
      if (!hasQuickLoad)
          site.quickLoad = false;
@@ -521,11 +531,10 @@ function loadConfigFromDoc(doc) {
 function loadConfigFromStr(configContents,remote) {
   var sites = null;
   try{
-		  var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-		    .createInstance(Components.interfaces.nsIDOMParser);
+
 		  //alert(configFile);
 		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
-		  var doc = domParser.parseFromString(configContents, "text/xml");
+		  var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
                   sites = loadConfigFromDoc(doc);
 	}catch(e)
 	{
@@ -611,6 +620,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	{
 		alert(e);
 	}
+        UpdateSites.allSiteSetting= null;
 }
 function getWriteStream(file) {
   var stream = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -841,12 +851,10 @@ function loadConfirm() {
 function loadConfirmFromStr(configContents) {
   var sites = new Array();
   try{
-		  var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-		    .createInstance(Components.interfaces.nsIDOMParser);
 		  //alert(configFile);
 		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
-		  var doc = domParser.parseFromString(configContents, "text/xml");
-		  var nodes = doc.evaluate("//site-confirm", doc, null, 0, null);
+		  var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
+		  var nodes = doc.evaluate("/autopager/site-confirm", doc, null, 0, null);
 		  for (var node = null; (node = nodes.iterateNext()); ) {
 		    var site = new SiteConfirm();
 		
