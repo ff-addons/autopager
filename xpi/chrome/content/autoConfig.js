@@ -9,6 +9,7 @@ var UpdateSites=
     updateSites: null,
     allSiteSetting: null,
     submitCount:0,
+    loadeddate:null,
     init:function()
     {
         function xmlConfigCallback(doc,updatesite)
@@ -108,9 +109,20 @@ var UpdateSites=
     {
         return UpdateSites.updateSites[UpdateSites.updateSites.length-2].url;
     },
-    loadAll:function()
+    isUpdated:function()
     {
         if (this.allSiteSetting == null)
+            return true;
+        var date = getDatePrefs("settingupdatedate");
+        if (this.loadeddate == null || date > this.loadeddate)
+            {
+              return true;
+            }
+            return false;
+    },
+    loadAll:function()
+    {
+        if (this.isUpdated())
         {
           this.allSiteSetting = {};
             for(var i=this.updateSites.length-1;i>=0;i--)
@@ -127,6 +139,7 @@ var UpdateSites=
                     //alert(e);
                 }            
             }
+            this.loadeddate = new Date();
         }
         return this.allSiteSetting;
     },
@@ -463,7 +476,7 @@ function loadConfigFromUrl(url) {
 function loadConfigFromDoc(doc) {
   var sites = new Array();
     
-  var nodes = doc.evaluate("/autopager/site | /root//site", doc, null, 0, null);
+  var nodes = doc.evaluate("//site | /root//site", doc, null, 0, null);
   if (nodes == null)
       return sites;
   var hasQuickLoad = false;
@@ -621,6 +634,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 		alert(e);
 	}
         UpdateSites.allSiteSetting= null;
+        setDatePrefs("settingupdatedate", new Date());
 }
 function getWriteStream(file) {
   var stream = Components.classes["@mozilla.org/network/file-output-stream;1"]

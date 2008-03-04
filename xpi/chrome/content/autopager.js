@@ -51,6 +51,7 @@ function autopagerOnLoad() {
 function sitewizard(doc) {
     alert(autopagerGetString("selectlinkxpath"));
     document.autopagerXPathModel = "wizard";
+    document.autopagerWizardStep = "";
     if(!doc.documentElement.autoPagerSelectorEnabled)
         enableSelector(doc,true);
 }
@@ -328,7 +329,7 @@ function appendOrCondition(base,newStr) {
     return newStr;
 }
 
-function getPrefs() {
+function getAutopagerPrefs() {
     if (autopagerPrefs == null) {
         autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
         getService(Components.interfaces.nsIPrefService).getBranch("autopager");
@@ -338,6 +339,7 @@ function getPrefs() {
     }
     return autopagerPrefs;
 }
+
 function fixOverflow(doc) {
     var nodes = findNodeInDoc(doc,"//*[contains(@style,'overflow')]",false);
     if (nodes != null) {
@@ -358,27 +360,27 @@ function fixOverflow(doc) {
 }
 function getCtrlKey()
 {
-    return getPrefs().getBoolPref(".enablehotkeys.ctrlkey");
+    return getAutopagerPrefs().getBoolPref(".enablehotkeys.ctrlkey");
 }
 function setCtrlKey(value)
 {
-    return getPrefs().setBoolPref(".enablehotkeys.ctrlkey",value);
+    return getAutopagerPrefs().setBoolPref(".enablehotkeys.ctrlkey",value);
 }
 function getAltKey()
 {
-    return getPrefs().getBoolPref(".enablehotkeys.altkey");
+    return getAutopagerPrefs().getBoolPref(".enablehotkeys.altkey");
 }
 function setAltKey(value)
 {
-    return getPrefs().setBoolPref(".enablehotkeys.altkey",value);
+    return getAutopagerPrefs().setBoolPref(".enablehotkeys.altkey",value);
 }
 function getShiftKey()
 {
-    return getPrefs().getBoolPref(".enablehotkeys.shiftkey");
+    return getAutopagerPrefs().getBoolPref(".enablehotkeys.shiftkey");
 }
 function setShiftKey(value)
 {
-    return getPrefs().setBoolPref(".enablehotkeys.shiftkey",value);
+    return getAutopagerPrefs().setBoolPref(".enablehotkeys.shiftkey",value);
 }
 
 function getRegExp(site)
@@ -390,7 +392,7 @@ function getRegExp(site)
 }
 function onInitDoc(doc,safe) {
     try{
-        debug=getPrefs().getBoolPref(".debug");
+        debug=getAutopagerPrefs().getBoolPref(".debug");
         document.getElementById("autopager-hidden-panel-menu").hidden = !debug;
         document.getElementById("autopager-hidden-panel-menu").nextSibling.hidden = !debug;
     }catch(e) {
@@ -510,6 +512,7 @@ function onInitDoc(doc,safe) {
                     de.autopagernextUrl = nextUrl;
                 de.autopagerUseSafeEvent = !workingAutoSites[i].quickLoad;
                 de.setAttribute('fixOverflow',workingAutoSites[i].fixOverflow);
+                de.setAttribute('contentXPath',workingAutoSites[i].contentXPath);
                 if (autopagerEnabled) {
                      if(workingAutoSites[i].fixOverflow)
                         fixOverflow(doc);
@@ -998,13 +1001,33 @@ function onXPathClick(event) {
     var url = doc.location.href;
     
     var newpath = xTestXPath(target.ownerDocument,path);
-    if (document.autopagerXPathModel == "wizard") {
-        if (confirm(autopagerGetString("xpathconfirm"))) {
+    if (newpath != null && document.autopagerXPathModel == "wizard") {
+
+        if (document.autopagerWizardStep != "contentXPath")
+        {
+        //step1, select the xpath
+         if ( confirm(autopagerGetString("xpathconfirm"))) {
+            document.autopagerWizardStep = "contentXPath";
+            document.autopagerWizardLinkXPath = newpath;
+            alert(autopagerGetString("selectcontentxpath"));
+        }else if(!confirm(autopagerGetString("tryagain"))) {
+            if(doc.documentElement.autoPagerSelectorEnabled)
+                enableSelector(content.document,true);
+        }
+        else
+            if(!doc.documentElement.autoPagerSelectorEnabled)
+                enableSelector(content.document,true);
+       
+        }
+       else
+           {
+       
+      if ( confirm(autopagerGetString("contentxpathconfirm"))) {
             var urlPattern = url;
             if (url.indexOf("?")>0)
                 urlPattern = url.substring(0,url.indexOf("?")) + "*";
             var site = newSite(urlPattern,url
-            ,newpath,"//body/*");
+                ,document.autopagerWizardLinkXPath,newpath);
             site.createdByYou = true;
             site.owner = loadMyName();
             while (site.owner.length == 0)
@@ -1018,6 +1041,7 @@ function onXPathClick(event) {
             insertAt(workingAutoSites,0,site);
             saveConfig(workingAutoSites);
             document.autopagerXPathModel = "";
+            document.autopagerWizardStep = "";
             openSetting(urlPattern);
             if(doc.documentElement.autoPagerSelectorEnabled)
                 enableSelector(doc,true);
@@ -1028,6 +1052,7 @@ function onXPathClick(event) {
         else
             if(!doc.documentElement.autoPagerSelectorEnabled)
                 enableSelector(content.document,true);
+       }
     }
     //	if (target.tagName == 'A')
     //		processNextDoc(target.autoPagerHref);
@@ -1431,14 +1456,16 @@ function getPagingOptionDiv(doc)
 	var divName = "autoPagerBorderOptions";
     var div = doc.getElementById(divName);
     if (!div) {
+        var overEvent = "onmouseover='document.documentElement.setAttribute(\"over\",true);' onmouseout='document.documentElement.setAttribute(\"over\",false);'";
         var str = "<div style='cursor:move;height:18px;background-color: gray;margin:0px;' class='autoPagerS' "
-  + " onmouseover='document.documentElement.setAttribute(\"over\",true);' onmouseout='document.documentElement.setAttribute(\"over\",false);'>"
-+"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%'>"
+  + overEvent + " >"
++"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%' "+ overEvent + ">"
 +"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='90%'><a  href='javascript:showConfirmTip();'><b class='autoPagerS'>"
 +autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'><a href='javascript:enabledInThisSession(false)'>"
 + "<img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopager/content/images/vx.png'></a></td></tr></tbody></table></div> "
-+ "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;'>"
++ "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;' "+ overEvent + ">"
 +"<li class='autoPagerS'><a href='javascript:HighlightNextLinks()''>"+ autopagerGetString("highlightnextlinks") +"</a></li>"
++"<li class='autoPagerS'><a href='javascript:HighlightAutoPagerContents()''>"+ autopagerGetString("highlightcontents") +"</a></li>"
 + "<li class='autoPagerS'><a href='javascript:enabledInThisTime(true)'>"+ autopagerGetString("enableshort") +"</a>/<a href='javascript:enabledInThisTime(false)'>D</a>:"
 + autopagerGetString("thistime") + "</li>"
 + "<li class='autoPagerS'><a href='javascript:enabledInThisSession(true)'>"+ autopagerGetString("enableshort") +"</a>/<a"
@@ -1551,6 +1578,17 @@ function HighlightNextLinks()
 
     doc.documentElement.autopagerHighlightedNextLinkNumber ++;
 }
+function HighlightAutoPagerContents()
+{
+    var doc=document.autopagerConfirmDoc ;
+    var urlNodes = findNodeInDoc(doc,
+            doc.documentElement.getAttribute('contentXPath'),doc.documentElement.getAttribute('enableJS') == 'true');
+    if (urlNodes == null || urlNodes.length == 0)
+        return;
+    for(var i=0;i<urlNodes.length;i++)
+        createRegionDivs(doc,urlNodes[i],i);
+}
+
 function enabledInNextPagesAlways(always)
 {
     var doc=document.autopagerConfirmDoc ;
@@ -1690,11 +1728,16 @@ function xPathTest(doc) {
 function xTestXPath(doc,path) {
     
     var newpath = path;//prompt("Please input the xpath:",path);
+    var key = "inputxpath";
     if (document.autopagerXPathModel != "wizard") {
-        newpath =prompt("Please input the xpath:",path);
-        }
+        key = "inputxpath";
+    }
+    else
+        key = "modifyxpath";
+    newpath =prompt(autopagerGetString(key),path);
+    
     if (!newpath || newpath.length==0)
-        return;
+        return null;
     xpath = newpath;
     var found = evaluateXPath(doc,xpath,false);
     if (found==null || found.length ==0) {
@@ -1714,7 +1757,7 @@ function xTestXPath(doc,path) {
          if (found==null || found.length ==0) 
         {
                 alert(autopagerGetString("xpathreturnnothing"));
-                return;
+                return null;
         }
     }
     
@@ -1786,10 +1829,10 @@ function getGlobalEnabled() {
     }
 }
 function saveEnableStat(enabled) {
-    getPrefs().setBoolPref(".enabled", enabled); // set a pref
+    getAutopagerPrefs().setBoolPref(".enabled", enabled); // set a pref
 }
 function loadEnableStat() {
-    return getPrefs().getBoolPref(".enabled"); // get a pref
+    return getAutopagerPrefs().getBoolPref(".enabled"); // get a pref
 }
 function saveMyName(myname) {
     saveUTF8Pref("myname", myname); // set a pref
@@ -1858,16 +1901,35 @@ function saveUTF8Pref(name,value) {
 function loadPref(name) {
     try{
         
-        return getPrefs().getCharPref("." +  name); // get a pref
+        return getAutopagerPrefs().getCharPref("." +  name); // get a pref
     }catch(e) {
         //alertErr(e);
     }
     return "";
 }
+function getDatePrefs(name){
+   var date = new Date();
+   try{        
+        var timestamp = getAutopagerPrefs().getCharPref("." +  name); // get a pref
+          date.setTime(timestamp);
+    }catch(e) {
+        //alertErr(e);
+    }     
+    return date;
+}
+function setDatePrefs(name,date){
+   try{
+        
+        getAutopagerPrefs().setCharPref("." +  name,date.getTime()); // get a pref
+    }catch(e) {
+        //alertErr(e);
+    }     
+}
+
 function loadBoolPref(name) {
     try{
         
-        return getPrefs().getBoolPref("." +  name); // get a pref
+        return getAutopagerPrefs().getBoolPref("." +  name); // get a pref
     }catch(e) {
         //alertErr(e);
     }
@@ -1876,7 +1938,7 @@ function loadBoolPref(name) {
 function savePref(name,value) {
     try{
         
-        return getPrefs().setCharPref("." +  name,value); // set a pref
+        return getAutopagerPrefs().setCharPref("." +  name,value); // set a pref
     }catch(e) {
         //alertErr(e);
     }
@@ -1885,7 +1947,7 @@ function savePref(name,value) {
 function saveBoolPref(name,value) {
     try{
         
-        return getPrefs().setBoolPref("." +  name,value); // get a pref
+        return getAutopagerPrefs().setBoolPref("." +  name,value); // get a pref
     }catch(e) {
         //alertErr(e);
     }

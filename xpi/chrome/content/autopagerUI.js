@@ -17,9 +17,9 @@
 	var xpath="";
 	var siteSearch;
     
-    window.addEventListener("load", function(ev) {
+    window.addEventListener("DOMContentLoaded", function(ev) {
         var self = arguments.callee;
-        window.removeEventListener("load",self,false);
+        window.removeEventListener("DOMContentLoaded",self,false);
         loadControls();
 	 {
             populateChooser("",true);
@@ -28,12 +28,14 @@
 	        if (url != null )
 	        {
                     window.autopagerSelectUrl = url;
-                    window.addEventListener("focus", function(ev) {
+                    //window.addEventListener("focus", function(ev) 
+                    {
                         var self = arguments.callee;
                         window.removeEventListener("focus",self,false);
 	          	var index = getMatchedIndex(window.autopagerSelectUrl);
         	        chooseSite(index);
-                    },false);
+                    }
+                    //,false);
 	        }
         }
     }, false);

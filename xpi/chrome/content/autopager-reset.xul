@@ -23,14 +23,14 @@
     
     <hbox id="loading-hbox">
         <button id="loadingReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{getPrefs().clearUserPref('.loading');}catch(e){}; txtLoading.value = getLoadingStyle();"/>
+            oncommand="try{getAutopagerPrefs().clearUserPref('.loading');}catch(e){}; txtLoading.value = getLoadingStyle();"/>
     </hbox>
     <hbox  id="pagebreak-hbox">
         <button id="pagebreakReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{getPrefs().clearUserPref('.pagebreak');}catch(e){}; txtPagebreak.value = loadUTF8Pref('pagebreak');"/>
+            oncommand="try{getAutopagerPrefs().clearUserPref('.pagebreak');}catch(e){}; txtPagebreak.value = loadUTF8Pref('pagebreak');"/>
     </hbox>
     <hbox  id="confirm-hbox">
         <button id="confirmReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{getPrefs().clearUserPref('.optionstyle');}catch(e){};txtConfirmStyle.value = loadUTF8Pref('optionstyle');}catch(e){}"/>
+            oncommand="try{getAutopagerPrefs().clearUserPref('.optionstyle');}catch(e){};txtConfirmStyle.value = loadUTF8Pref('optionstyle');}catch(e){}"/>
     </hbox>
 </overlay>
