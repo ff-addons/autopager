@@ -14,7 +14,7 @@
 <!ENTITY setting.button.exportTip "選択した項目を書き出します">
 <!ENTITY setting.label.lblOwner "作成者:">
 <!ENTITY setting.label.lblURLPattern "URL パターン:">
-<!ENTITY setting.label.chkIsRegex "正規表現を使う">
+<!ENTITY setting.label.chkIsRegex "正規表現を利用する">
 <!ENTITY setting.label.lblDesc "説明:">
 <!ENTITY setting.label.grpContentXPath "コンテンツ XPath:">
 <!ENTITY setting.label.lblLinkXPath "リンク XPath:">

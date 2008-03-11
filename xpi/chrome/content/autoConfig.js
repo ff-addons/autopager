@@ -476,7 +476,7 @@ function loadConfigFromUrl(url) {
 function loadConfigFromDoc(doc) {
   var sites = new Array();
     
-  var nodes = doc.evaluate("//site | /root//site", doc, null, 0, null);
+  var nodes = doc.evaluate("//site", doc, null, 0, null);
   if (nodes == null)
       return sites;
   var hasQuickLoad = false;
