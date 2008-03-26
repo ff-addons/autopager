@@ -112,7 +112,7 @@ _handleParse: function (event) {
         var htmlDoc  = doc.implementation.createDocument(null, 'html', null);
         var fragment = apxmlhttprequest.createDocumentFragmentByString(doc,html);
         if(fragment == null)
-            return createHTMLDocumentByString2(str);
+            return this.createHTMLDocumentByString2(str);
         try{
             htmlDoc.documentElement.appendChild(htmlDoc.importNode( fragment,true));
         }catch(e)

@@ -50,11 +50,17 @@ var UpdateSites=
                         "configurations added to blog",
                         "blogcomments.xml",blogConfigCallback));
 
+                    
             this.updateSites.push(new UpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
-                        "default configurations",
+                        "default configurations on autopager.mozdev.org",
                         "autopagerMozdev.xml",xmlConfigCallback));
-                        
+
+            this.updateSites.push(new UpdateSite("Wind Li","all",
+                        "http://www.teesoft.info/components/com_autopager/export.php?lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
+                        "default configurations @ teesoft.info",
+                        "autopagerTee.xml",xmlConfigCallback));
+                                               
             this.updateSites.push(new UpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
                         "user created configurations",
@@ -102,8 +108,8 @@ var UpdateSites=
                 saveConfigToFile(sites,file,true);
              }
              UpdateSites.submitCount--;
-             if (UpdateSites.submitCount<=0)
-                 savePref("lastupdate",(new Date()).getTime());
+             //if (UpdateSites.submitCount<=0)
+              savePref("lastupdate",(new Date()).getTime());
     },
     defaultSite : function()
     {
@@ -587,11 +593,14 @@ function createNode(siteNode,name,value)
 	siteNode.appendChild(doc.createTextNode("\n"));
 }
 function saveConfigToFile(sites,saveFile,includeChangeInfo) {
+    
 	try{
 	  var doc = document.implementation.createDocument("", "autopager", null);
 	  doc.firstChild.appendChild(doc.createTextNode("\n"))
 	
-	  for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
+if (sites!=null)
+    {
+    for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
 	    var siteNode = doc.createElement("site");
 	
             if (siteObj.createdByYou && siteObj.guid.length == 0)
@@ -625,7 +634,7 @@ function saveConfigToFile(sites,saveFile,includeChangeInfo) {
 	    doc.firstChild.appendChild(siteNode);
 	  	doc.firstChild.appendChild(doc.createTextNode("\n"));
 	  }
-	
+	}
 	  var configStream = getWriteStream(saveFile);
 	  new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
 	  configStream.close();
