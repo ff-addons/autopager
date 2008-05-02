@@ -1,80 +1,105 @@
-<!ENTITY setting.appname "Auto Pager">
-<!ENTITY setting.title "Auto Pager 設定">
-<!ENTITY setting.button.add "追加...">
-<!ENTITY setting.button.edit "編集...">
-<!ENTITY setting.button.up "上へ">
-<!ENTITY setting.button.down "下へ">
-<!ENTITY setting.button.pick "選択...">
-<!ENTITY setting.button.remove "除去...">
-<!ENTITY setting.button.copy "複製">
-<!ENTITY setting.button.cloneToEdit "複製して編集">
-<!ENTITY setting.button.cloneToEditTip "この項目は元々用意されています。必要に応じて複製版を編集することができます。">
-<!ENTITY setting.button.import "読み込み">
-<!ENTITY setting.button.export "書き出し">
-<!ENTITY setting.button.exportTip "選択した項目を書き出します">
-<!ENTITY setting.label.lblOwner "作成者:">
-<!ENTITY setting.label.lblURLPattern "URL パターン:">
-<!ENTITY setting.label.chkIsRegex "正規表現を利用する">
-<!ENTITY setting.label.lblDesc "説明:">
-<!ENTITY setting.label.grpContentXPath "コンテンツ XPath:">
-<!ENTITY setting.label.lblLinkXPath "リンク XPath:">
-<!ENTITY setting.label.btnEdit "編集">
-<!ENTITY setting.label.chkEnabled "有効">
-<!ENTITY setting.label.chkEnableJS "読み込み中に JavaScript を有効にする。">
-<!ENTITY setting.label.chkQuickLoad "Quick Load (あらゆるサイトで安全ではありません)。">
-<!ENTITY setting.label.chkFixOverflow "読み込んだページの、はみ出し設定を無効にする。">
-<!ENTITY setting.label.margin "ページングする際の残りスペース">
-<!ENTITY setting.label.marginEnd "ウィンドウ高さ">
-<!ENTITY setting.label.sites "サイト">
-<!ENTITY setting.label.general "全般">
-<!ENTITY setting.label.hotkeys "有効・無効化ホットキー:">
-<!ENTITY setting.label.chkCtrl "Ctrl">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.doubleclick "+ダブルクリック">
-<!ENTITY setting.label.loading "読み込み通知のスタイル:">
-<!ENTITY setting.label.pagebreak "改ページのスタイル:">
-<!ENTITY setting.label.confirmstyle "確認のスタイル:">
-<!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
-<!ENTITY setting.label.smartenable "スマートページングを有効にする">
-<!ENTITY setting.label.smarttext "次のリンクを探すテキスト/画像 Src/ID/Class (「|」で分割):">
-<!ENTITY setting.label.grpSmart "スマートページング">
-<!ENTITY setting.label.smartlinks "リンクが">
-<!ENTITY setting.label.smartlinksEnd "以上ない場合にリンクを追う。">
-<!ENTITY autopager.status.sitewizard "サイトウィザード">
-<!ENTITY autopager.status.sitewizardTip "対話形式でサイト設定を作成する">
-<!ENTITY autopager.status.setting "設定管理">
-<!ENTITY autopager.status.settingTip "Auto Pager の設定を管理します。">
-<!ENTITY autopager.status.update "オンラインで設定を更新する">
-<!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
-<!ENTITY autopager.status.importurl "URL から読み込む">
-<!ENTITY autopager.status.importurlTip "Auto Pager の設定を URL から読み込みます。">
-<!ENTITY autopager.status.importfile "ファイルから読み込む">
-<!ENTITY autopager.status.importfileTip "Auto Pager の設定をファイルから読み込みます。">
-<!ENTITY autopager.status.importclip "クリップボードから読み込む">
-<!ENTITY autopager.status.importclipTip "Auto Pager の設定をクリップボードから読み込みます。">
-<!ENTITY autopager.status.export "設定を書き出す">
-<!ENTITY autopager.status.exportTip "Auto Pager の設定を書き出します。">
-<!ENTITY autopager.status.exportfile "ファイルに書き出す">
-<!ENTITY autopager.status.exportfileTip "Auto Pager の設定をファイルに書き出します。">
-<!ENTITY autopager.status.exportclip "クリップボードに書き出す">
-<!ENTITY autopager.status.exportclipTip "Auto Pager の設定をクリップボードに書き出します。">
+<!ENTITY autopager.label.value "auto pager">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "XPath を作成">
 <!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
-<!ENTITY autopager.status.testXPath "XPath をテスト">
-<!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.enabled "有効">
 <!ENTITY autopager.status.enabledTip "Auto Pager が有効かどうか。">
-<!ENTITY autopager.status.showoption "ページ設定を表示する">
-<!ENTITY autopager.status.showoptionTip "このページの設定を表示します。">
+<!ENTITY autopager.status.export "設定を書き出す">
+<!ENTITY autopager.status.exportTip "Auto Pager の設定を書き出します。">
+<!ENTITY autopager.status.exportclip "クリップボードに書き出す">
+<!ENTITY autopager.status.exportclipTip "Auto Pager の設定をクリップボードに書き出します。">
+<!ENTITY autopager.status.exportfile "ファイルに書き出す">
+<!ENTITY autopager.status.exportfileTip "Auto Pager の設定をファイルに書き出します。">
+<!ENTITY autopager.status.importclip "クリップボードから読み込む">
+<!ENTITY autopager.status.importclipTip "Auto Pager の設定をクリップボードから読み込みます。">
+<!ENTITY autopager.status.importfile "ファイルから読み込む">
+<!ENTITY autopager.status.importfileTip "Auto Pager の設定をファイルから読み込みます。">
+<!ENTITY autopager.status.importurl "URL から読み込む">
+<!ENTITY autopager.status.importurlTip "Auto Pager の設定を URL から読み込みます。">
 <!ENTITY autopager.status.myname "私の名前:">
 <!ENTITY autopager.status.mynameTip "作成した設定に追加される、あなたの名前です。">
-<!ENTITY setting.label.update "更新">
+<!ENTITY autopager.status.setting "設定管理">
+<!ENTITY autopager.status.settingTip "Auto Pager の設定を管理します。">
+<!ENTITY autopager.status.showoption "ページ設定を表示する">
+<!ENTITY autopager.status.showoptionTip "このページの設定を表示します。">
+<!ENTITY autopager.status.sitewizard "サイトウィザード">
+<!ENTITY autopager.status.sitewizardTip "対話形式でサイト設定を作成する">
+<!ENTITY autopager.status.testXPath "XPath をテスト">
+<!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
+<!ENTITY autopager.status.update "オンラインで設定を更新する">
+<!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
+<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
+<!ENTITY caption.results-caption.label "Results">
+<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY label.1.value "Body XPath:">
+<!ENTITY label.Usages.value "Usages">
+<!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY setting.appname "Auto Pager">
+<!ENTITY setting.button.add "追加...">
+<!ENTITY setting.button.cloneToEdit "複製して編集">
+<!ENTITY setting.button.cloneToEditTip "この項目は元々用意されています。必要に応じて複製版を編集することができます。">
+<!ENTITY setting.button.copy "複製">
+<!ENTITY setting.button.down "下へ">
+<!ENTITY setting.button.edit "編集...">
+<!ENTITY setting.button.export "書き出し">
+<!ENTITY setting.button.exportTip "選択した項目を書き出します">
+<!ENTITY setting.button.import "読み込み">
+<!ENTITY setting.button.pick "選択...">
+<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.remove "除去...">
+<!ENTITY setting.button.up "上へ">
+<!ENTITY setting.label.btnEdit "編集">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkEnableJS "読み込み中に JavaScript を有効にする。">
+<!ENTITY setting.label.chkEnabled "有効">
+<!ENTITY setting.label.chkFixOverflow "読み込んだページの、はみ出し設定を無効にする。">
+<!ENTITY setting.label.chkIsRegex "正規表現を利用する">
+<!ENTITY setting.label.chkQuickLoad "Quick Load (あらゆるサイトで安全ではありません)。">
+<!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.confirmstyle "確認のスタイル:">
+<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.doubleclick "+ダブルクリック">
+<!ENTITY setting.label.general "全般">
+<!ENTITY setting.label.grpContentXPath "コンテンツ XPath:">
+<!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpSmart "スマートページング">
+<!ENTITY setting.label.hotkeys "有効・無効化ホットキー:">
+<!ENTITY setting.label.lblDesc "説明:">
+<!ENTITY setting.label.lblLinkXPath "リンク XPath:">
+<!ENTITY setting.label.lblOwner "作成者:">
+<!ENTITY setting.label.lblURLPattern "URL パターン:">
 <!ENTITY setting.label.lblUpdate "サイト設定の自動更新:">
-<!ENTITY setting.update.startup "起動毎">
+<!ENTITY setting.label.loading "読み込み通知のスタイル:">
+<!ENTITY setting.label.margin "ページングする際の残りスペース">
+<!ENTITY setting.label.marginEnd "ウィンドウ高さ">
+<!ENTITY setting.label.pagebreak "改ページのスタイル:">
+<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.sites "サイト">
+<!ENTITY setting.label.smartenable "スマートページングを有効にする">
+<!ENTITY setting.label.smartlinks "リンクが">
+<!ENTITY setting.label.smartlinksEnd "以上ない場合にリンクを追う。">
+<!ENTITY setting.label.smarttext "次のリンクを探すテキスト/画像 Src/ID/Class (「|」で分割):">
+<!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
+<!ENTITY setting.label.update "更新">
+<!ENTITY setting.title "Auto Pager 設定">
+<!ENTITY setting.tree.Description "説明">
+<!ENTITY setting.tree.URLPattern "URL パターン">
 <!ENTITY setting.update.daily "毎日">
-<!ENTITY setting.update.weekly "毎週">
 <!ENTITY setting.update.monthly "毎月">
 <!ENTITY setting.update.never "しない">
-<!ENTITY setting.tree.URLPattern "URL パターン">
-<!ENTITY setting.tree.Description "説明">
+<!ENTITY setting.update.startup "起動毎">
+<!ENTITY setting.update.weekly "毎週">
+<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
+<!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
+<!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
+<!ENTITY treecol.authorityCol.label "Authority">
+<!ENTITY treecol.machedCol.label "Matched Count">
+<!ENTITY treecol.xpathCol.label "XPath">

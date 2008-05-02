@@ -1,80 +1,105 @@
-<!ENTITY setting.appname "AutoPager">
-<!ENTITY setting.title "Paramètres d&apos;AutoPager">
-<!ENTITY setting.button.add "Ajouter…">
-<!ENTITY setting.button.edit "Éditer…">
-<!ENTITY setting.button.up "Monter">
-<!ENTITY setting.button.down "Descendre">
-<!ENTITY setting.button.pick "Choisir…">
-<!ENTITY setting.button.remove "Supprimer">
-<!ENTITY setting.button.copy "Cloner">
-<!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
-<!ENTITY setting.button.cloneToEditTip "Élément provenant d&apos;une source sûre. N&apos;éditer la version clonée que si nécessaire.">
-<!ENTITY setting.button.import "Importer">
-<!ENTITY setting.button.export "Exporter">
-<!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
-<!ENTITY setting.label.lblOwner "Créé par :">
-<!ENTITY setting.label.lblURLPattern "Format de l&apos;URL :">
-<!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
-<!ENTITY setting.label.lblDesc "Description :">
-<!ENTITY setting.label.grpContentXPath "Contenu XPath :">
-<!ENTITY setting.label.lblLinkXPath "Lien XPath :">
-<!ENTITY setting.label.btnEdit "Éditer">
-<!ENTITY setting.label.chkEnabled "Activé">
-<!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
-<!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
-<!ENTITY setting.label.chkFixOverflow "Désactiver les paramètres de débordement concernant la page chargée.">
-<!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
-<!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
-<!ENTITY setting.label.sites "Sites">
-<!ENTITY setting.label.general "Général">
-<!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
-<!ENTITY setting.label.chkCtrl "Ctrl">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkShift "Maj">
-<!ENTITY setting.label.doubleclick "+ double-clic">
-<!ENTITY setting.label.loading "Style du cadre de notification :">
-<!ENTITY setting.label.pagebreak "Style de saut de page :">
-<!ENTITY setting.label.confirmstyle "Style des options de page :">
-<!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
-<!ENTITY setting.label.smartenable "Activer la pagination intelligente">
-<!ENTITY setting.label.smarttext "Noms (de textes, d&apos;images, de champs ou de classes) déterminant le lien vers la page suivante. Les séparer avec la barre verticale « | » :">
-<!ENTITY setting.label.grpSmart "Pagination intelligente">
-<!ENTITY setting.label.smartlinks "Suivre le lien quand il n&apos;y a pas plus de">
-<!ENTITY setting.label.smartlinksEnd "liens rassemblés.">
-<!ENTITY autopager.status.sitewizard "Assistant pour le site">
-<!ENTITY autopager.status.sitewizardTip "Créer des paramètres pour ce site grâce à l&apos;assistant">
-<!ENTITY autopager.status.setting "Configuration…">
-<!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
-<!ENTITY autopager.status.update "Mise à jour des paramètres">
-<!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d&apos;AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.importurl "Importer depuis une URL">
-<!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
-<!ENTITY autopager.status.importfile "Importer depuis un fichier">
-<!ENTITY autopager.status.importfileTip "Importer les paramètres d&apos;AutoPager depuis un fichier.">
-<!ENTITY autopager.status.importclip "Importer depuis le presse-papiers">
-<!ENTITY autopager.status.importclipTip "Importer les paramètres d&apos;AutoPager depuis le contenu du presse-papiers">
-<!ENTITY autopager.status.export "Exporter les paramètres">
-<!ENTITY autopager.status.exportTip "Exporter les paramètres d&apos;Auto Pager.">
-<!ENTITY autopager.status.exportfile "Exporter vers un fichier">
-<!ENTITY autopager.status.exportfileTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
-<!ENTITY autopager.status.exportclip "Exporter vers le presse-papiers">
-<!ENTITY autopager.status.exportclipTip "Exporter les paramètres d&apos;Auto Pager vers le presse-papiers">
+<!ENTITY autopager.label.value "auto pager">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
 <!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
-<!ENTITY autopager.status.testXPath "Test XPath">
-<!ENTITY autopager.status.testXPathTip "Faire le test d&apos;une expression XPath étant sur la page.">
 <!ENTITY autopager.status.enabled "Activé">
 <!ENTITY autopager.status.enabledTip "État d&apos;activation d&apos;AutoPager.">
-<!ENTITY autopager.status.showoption "Options de la page">
-<!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page.">
+<!ENTITY autopager.status.export "Exporter les paramètres">
+<!ENTITY autopager.status.exportTip "Exporter les paramètres d&apos;Auto Pager.">
+<!ENTITY autopager.status.exportclip "Exporter vers le presse-papiers">
+<!ENTITY autopager.status.exportclipTip "Exporter les paramètres d&apos;Auto Pager vers le presse-papiers">
+<!ENTITY autopager.status.exportfile "Exporter vers un fichier">
+<!ENTITY autopager.status.exportfileTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
+<!ENTITY autopager.status.importclip "Importer depuis le presse-papiers">
+<!ENTITY autopager.status.importclipTip "Importer les paramètres d&apos;AutoPager depuis le contenu du presse-papiers">
+<!ENTITY autopager.status.importfile "Importer depuis un fichier">
+<!ENTITY autopager.status.importfileTip "Importer les paramètres d&apos;AutoPager depuis un fichier.">
+<!ENTITY autopager.status.importurl "Importer depuis une URL">
+<!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
 <!ENTITY autopager.status.myname "Mon nom :">
 <!ENTITY autopager.status.mynameTip "Votre nom. Il sera lié à ce que vous avez créé durant le paramétrage.">
-<!ENTITY setting.label.update "Mise à jour">
+<!ENTITY autopager.status.setting "Configuration…">
+<!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
+<!ENTITY autopager.status.showoption "Options de la page">
+<!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page.">
+<!ENTITY autopager.status.sitewizard "Assistant pour le site">
+<!ENTITY autopager.status.sitewizardTip "Créer des paramètres pour ce site grâce à l&apos;assistant">
+<!ENTITY autopager.status.testXPath "Test XPath">
+<!ENTITY autopager.status.testXPathTip "Faire le test d&apos;une expression XPath étant sur la page.">
+<!ENTITY autopager.status.update "Mise à jour des paramètres">
+<!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d&apos;AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
+<!ENTITY caption.results-caption.label "Results">
+<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY label.1.value "Body XPath:">
+<!ENTITY label.Usages.value "Usages">
+<!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY setting.appname "AutoPager">
+<!ENTITY setting.button.add "Ajouter…">
+<!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
+<!ENTITY setting.button.cloneToEditTip "Élément provenant d&apos;une source sûre. N&apos;éditer la version clonée que si nécessaire.">
+<!ENTITY setting.button.copy "Cloner">
+<!ENTITY setting.button.down "Descendre">
+<!ENTITY setting.button.edit "Éditer…">
+<!ENTITY setting.button.export "Exporter">
+<!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
+<!ENTITY setting.button.import "Importer">
+<!ENTITY setting.button.pick "Choisir…">
+<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.remove "Supprimer">
+<!ENTITY setting.button.up "Monter">
+<!ENTITY setting.label.btnEdit "Éditer">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
+<!ENTITY setting.label.chkEnabled "Activé">
+<!ENTITY setting.label.chkFixOverflow "Désactiver les paramètres de débordement concernant la page chargée.">
+<!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
+<!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
+<!ENTITY setting.label.chkShift "Maj">
+<!ENTITY setting.label.confirmstyle "Style des options de page :">
+<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.doubleclick "+ double-clic">
+<!ENTITY setting.label.general "Général">
+<!ENTITY setting.label.grpContentXPath "Contenu XPath :">
+<!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpSmart "Pagination intelligente">
+<!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
+<!ENTITY setting.label.lblDesc "Description :">
+<!ENTITY setting.label.lblLinkXPath "Lien XPath :">
+<!ENTITY setting.label.lblOwner "Créé par :">
+<!ENTITY setting.label.lblURLPattern "Format de l&apos;URL :">
 <!ENTITY setting.label.lblUpdate "Mettre à jour automatiquement les configurations de sites :">
-<!ENTITY setting.update.startup "À chaque démarrage">
+<!ENTITY setting.label.loading "Style du cadre de notification :">
+<!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
+<!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
+<!ENTITY setting.label.pagebreak "Style de saut de page :">
+<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.smartenable "Activer la pagination intelligente">
+<!ENTITY setting.label.smartlinks "Suivre le lien quand il n&apos;y a pas plus de">
+<!ENTITY setting.label.smartlinksEnd "liens rassemblés.">
+<!ENTITY setting.label.smarttext "Noms (de textes, d&apos;images, de champs ou de classes) déterminant le lien vers la page suivante. Les séparer avec la barre verticale « | » :">
+<!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
+<!ENTITY setting.label.update "Mise à jour">
+<!ENTITY setting.title "Paramètres d&apos;AutoPager">
+<!ENTITY setting.tree.Description "Description">
+<!ENTITY setting.tree.URLPattern "Format de l&apos;URL">
 <!ENTITY setting.update.daily "Chaque jour">
-<!ENTITY setting.update.weekly "Chaque semaine">
 <!ENTITY setting.update.monthly "Chaque mois">
 <!ENTITY setting.update.never "Jamais">
-<!ENTITY setting.tree.URLPattern "Format de l&apos;URL">
-<!ENTITY setting.tree.Description "Description">
+<!ENTITY setting.update.startup "À chaque démarrage">
+<!ENTITY setting.update.weekly "Chaque semaine">
+<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
+<!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
+<!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
+<!ENTITY treecol.authorityCol.label "Authority">
+<!ENTITY treecol.machedCol.label "Matched Count">
+<!ENTITY treecol.xpathCol.label "XPath">

@@ -60,6 +60,7 @@
                                 <button id="btnAdd" label="&setting.button.add;" />
                                 <button id="btnCopy" label="&setting.button.copy;" />
                                 <button id="btnDelete" label="&setting.button.remove;" />
+                                <button id="btnPublic" label="&setting.button.public;" />
                                 <spacer flex="1"/>
                                 <button id="btnImport"  popup="import-settings" label="&setting.button.import;"
                                         dir="reverse" />
@@ -191,7 +192,7 @@
                         <checkbox id="chkShift" label="&setting.label.chkShift;" checked="false" />
                         <label value="&setting.label.doubleclick;"/>
                     </hbox>
-                    <vbox flex="1">
+                    <vbox>
                         <hbox align="center">
                             <checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1"/>
                         </hbox>
@@ -220,6 +221,26 @@
                             </groupbox>
                         </hbox>
                     </vbox>
+                    <vbox>
+                        <hbox flex="1">
+                            <groupbox id="grpDiscovery" orient="vertical" flex="1">
+                                <caption label="&setting.label.grpDiscovery;" />
+                                <vbox>
+                                    <hbox align="center">
+                                        <label control="discoverytext" value = "&setting.label.discoverytext;" flex="1"/>
+                                    </hbox>
+                                    <hbox align="center">
+                                        <textbox id="discoverytext" flex="1"/>
+                                    </hbox>
+                                </vbox>
+                                
+                            </groupbox>
+                        </hbox>
+                    </vbox>
+                    <hbox align="center">
+                            <checkbox id="showtags" label="&setting.label.showtags;" check="false" flex="1"/>
+                    </hbox>
+
                 </vbox>
             </tabpanel>
             <tabpanel id="update-setting">

@@ -1,80 +1,105 @@
-<!ENTITY setting.appname "Auto Pager">
-<!ENTITY setting.title "Auto Pager Setting">
-<!ENTITY setting.button.add "Add...">
-<!ENTITY setting.button.edit "Edit...">
-<!ENTITY setting.button.up "Up">
-<!ENTITY setting.button.down "Down">
-<!ENTITY setting.button.pick "Pick...">
-<!ENTITY setting.button.remove "Remove">
-<!ENTITY setting.button.copy "Clone">
-<!ENTITY setting.button.cloneToEdit "Clone To Edit">
-<!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
-<!ENTITY setting.button.import "Import">
-<!ENTITY setting.button.export "Export">
-<!ENTITY setting.button.exportTip "Export Select Items">
-<!ENTITY setting.label.lblOwner "Created By:">
-<!ENTITY setting.label.lblURLPattern "URL Pattern:">
-<!ENTITY setting.label.chkIsRegex "Is RegExp?">
-<!ENTITY setting.label.lblDesc "Desciption:">
-<!ENTITY setting.label.grpContentXPath "Content XPath:">
-<!ENTITY setting.label.lblLinkXPath "Link XPath:">
-<!ENTITY setting.label.btnEdit "Edit">
-<!ENTITY setting.label.chkEnabled "Enabled">
-<!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
-<!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
-<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
-<!ENTITY setting.label.margin "Paging when space less then">
-<!ENTITY setting.label.marginEnd "window hight">
-<!ENTITY setting.label.sites "Sites">
-<!ENTITY setting.label.general "General">
-<!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
-<!ENTITY setting.label.chkCtrl "Ctrl">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.doubleclick "+Double Click">
-<!ENTITY setting.label.loading "loading notification style:">
-<!ENTITY setting.label.pagebreak "page break style:">
-<!ENTITY setting.label.confirmstyle "confirm style:">
-<!ENTITY setting.label.timeout "page loading timeout(Seconds):">
-<!ENTITY setting.label.smartenable "Enable Smart Paging">
-<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
-<!ENTITY setting.label.grpSmart "Smart Paging">
-<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
-<!ENTITY setting.label.smartlinksEnd "meet links.">
-<!ENTITY autopager.status.sitewizard "Site Wizard">
-<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
-<!ENTITY autopager.status.setting "Manage Setting">
-<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
-<!ENTITY autopager.status.update "Update Setting Online">
-<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.importurl "Import from URL">
-<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
-<!ENTITY autopager.status.importfile "Import from File">
-<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
-<!ENTITY autopager.status.importclip "Import from Clipboard">
-<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
-<!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
-<!ENTITY autopager.status.exportfile "Export To File">
-<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
-<!ENTITY autopager.status.exportclip "Export To Clipboard">
-<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
+<!ENTITY autopager.label.value "auto pager">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Create XPath">
 <!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
-<!ENTITY autopager.status.testXPath "Test XPath">
-<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
 <!ENTITY autopager.status.enabled "Enabled">
 <!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
-<!ENTITY autopager.status.showoption "Show Page Options">
-<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
+<!ENTITY autopager.status.export "Export Setting">
+<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
+<!ENTITY autopager.status.exportclip "Export To Clipboard">
+<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
+<!ENTITY autopager.status.exportfile "Export To File">
+<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
+<!ENTITY autopager.status.importclip "Import from Clipboard">
+<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
+<!ENTITY autopager.status.importfile "Import from File">
+<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
+<!ENTITY autopager.status.importurl "Import from URL">
+<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
 <!ENTITY autopager.status.myname "My Name:">
 <!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">
-<!ENTITY setting.label.update "Update">
+<!ENTITY autopager.status.setting "Manage Setting">
+<!ENTITY autopager.status.settingTip "Manage Auto Pager Setting.">
+<!ENTITY autopager.status.showoption "Show Page Options">
+<!ENTITY autopager.status.showoptionTip "Show the Page Options for this page.">
+<!ENTITY autopager.status.sitewizard "Site Wizard">
+<!ENTITY autopager.status.sitewizardTip "Create Site Setting In Wizard">
+<!ENTITY autopager.status.testXPath "Test XPath">
+<!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
+<!ENTITY autopager.status.update "Update Setting Online">
+<!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
+<!ENTITY caption.results-caption.label "Results">
+<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY label.1.value "Body XPath:">
+<!ENTITY label.Usages.value "Usages">
+<!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY setting.appname "Auto Pager">
+<!ENTITY setting.button.add "Add...">
+<!ENTITY setting.button.cloneToEdit "Clone To Edit">
+<!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
+<!ENTITY setting.button.copy "Clone">
+<!ENTITY setting.button.down "Down">
+<!ENTITY setting.button.edit "Edit...">
+<!ENTITY setting.button.export "Export">
+<!ENTITY setting.button.exportTip "Export Select Items">
+<!ENTITY setting.button.import "Import">
+<!ENTITY setting.button.pick "Pick...">
+<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.remove "Remove">
+<!ENTITY setting.button.up "Up">
+<!ENTITY setting.label.btnEdit "Edit">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
+<!ENTITY setting.label.chkEnabled "Enabled">
+<!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
+<!ENTITY setting.label.chkIsRegex "Is RegExp?">
+<!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
+<!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.doubleclick "+Double Click">
+<!ENTITY setting.label.general "General">
+<!ENTITY setting.label.grpContentXPath "Content XPath:">
+<!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpSmart "Smart Paging">
+<!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
+<!ENTITY setting.label.lblDesc "Desciption:">
+<!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.lblOwner "Created By:">
+<!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
-<!ENTITY setting.update.startup "Every Startup">
+<!ENTITY setting.label.loading "loading notification style:">
+<!ENTITY setting.label.margin "Paging when space less then">
+<!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.label.pagebreak "page break style:">
+<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.smartenable "Enable Smart Paging">
+<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
+<!ENTITY setting.label.smartlinksEnd "meet links.">
+<!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
+<!ENTITY setting.label.timeout "page loading timeout(Seconds):">
+<!ENTITY setting.label.update "Update">
+<!ENTITY setting.title "Auto Pager Setting">
+<!ENTITY setting.tree.Description "Description">
+<!ENTITY setting.tree.URLPattern "URL Pattern">
 <!ENTITY setting.update.daily "Every Day">
-<!ENTITY setting.update.weekly "Every Week">
 <!ENTITY setting.update.monthly "Every Month">
 <!ENTITY setting.update.never "Never">
-<!ENTITY setting.tree.URLPattern "URL Pattern">
-<!ENTITY setting.tree.Description "Description">
+<!ENTITY setting.update.startup "Every Startup">
+<!ENTITY setting.update.weekly "Every Week">
+<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
+<!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
+<!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
+<!ENTITY treecol.authorityCol.label "Authority">
+<!ENTITY treecol.machedCol.label "Matched Count">
+<!ENTITY treecol.xpathCol.label "XPath">

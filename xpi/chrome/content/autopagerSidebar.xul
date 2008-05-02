@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager-sidebar.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd" >
+<page id="autopagerPage" 
+        title="&setting.title;"
+        orient="vertical"
+        onload="autopagerSidebar.onLoad();"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <stringbundleset id="autopagerStringbundleset">
+        <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+    </stringbundleset>
+
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-highlight.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopagerSidebar.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
+    <toolbox class="plain">
+        <toolbar>
+            <toolbarbutton id="discoverPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.discovery();" tooltiptext="&toolbarbutton.discoverPath.tooltiptext;"/>
+            
+            <toolbarbutton id="pickupLinkPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.pickupLink();" tooltiptext="&toolbarbutton.pickupLinkPath.tooltiptext;"/>
+            <toolbarbutton id="pickupContentPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.pickupContent();" tooltiptext="&toolbarbutton.pickupContentPath.tooltiptext;"/>
+            
+            <toolbarbutton id="clearAllPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.clearAll();" tooltiptext="&toolbarbutton.clearAllPath.tooltiptext;"/>
+            <toolbarbutton id="addSite" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.addSite();" tooltiptext="&toolbarbutton.addSite.tooltiptext;"/>
+            <spacer flex="1"/>
+            <!--
+            <toolbarbutton id="tools" type="menu" class="autopager_button toolbarbutton-1" label="Tools"  tooltiptext="Tools">
+                <menupopup>
+                    <menuitem label="test" oncommand="test()"/>
+                </menupopup>
+            </toolbarbutton>
+            -->
+        </toolbar>
+    </toolbox>
+  
+    <deck selectedIndex="0" id="xpathDeck" flex="1">
+    <vbox flex="1">
+     <vbox flex="1">
+        <hbox align="center">
+            <label control="xpath" value="&label.1.value;"/>
+            <textbox id="xpath" flex="1" type="timed" timeout="500"/>
+        </hbox>
+        <tree id="xpaths" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
+            <treecols>
+                <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" 
+                        class="sortDirectionIndicator"    persist="hidden width ordinal sortDirection"/>
+                <splitter ordinal="2" class="tree-splitter"/>
+                <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                <splitter ordinal="4" class="tree-splitter"/>
+                <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+            </treecols>
+            <treechildren flex="1" id="autoLinkPathTreeBody" ondblclick="autopagerSidebar.setLinkXPath();"/>
+        </tree>
+        <splitter />
+        <groupbox flex="3">
+            <caption id="results-caption" label="&caption.results-caption.label;"/>
+            <vbox flex="1">
+                <label id="status"/>
+                    <iframe id="resultsFrame" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
+            </vbox>
+        </groupbox>
+        </vbox>
+        <splitter />
+        <vbox flex="1">
+        <hbox align="center">
+            <label control="xpath" value="&label.1.value;"/>
+            <textbox id="contentXPath" flex="1"/>
+        </hbox>
+        <tree id="contentXPaths" flex="3" seltype="single" enableColumnDrag="true" context="contentXPathsContext">
+            <treecols>
+                <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" class="sortDirectionIndicator"
+             ignoreincolumnpicker="true" persist="hidden width ordinal sortDirection"/>
+                <splitter ordinal="2" class="tree-splitter"/>
+                <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
+             class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                <splitter ordinal="4" class="tree-splitter"/>
+                <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
+             class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+            </treecols>
+            <treechildren id="autoContentPathTreeBody" ondblclick="autopagerSidebar.setContentXPath();"/>
+        </tree>
+        <splitter />
+        <groupbox flex="3">
+            <caption id="results-caption2" label="&caption.results-caption2.label;"/>
+            <vbox flex="1">
+                <label id="status2"/>
+                    <iframe id="resultsFrame2" type="content" flex="1" src="chrome://autopager/content/empty.html"/>
+            </vbox>
+        </groupbox>
+        </vbox>
+    </vbox>
+    <vbox>
+      <label id="Usages" value="&label.Usages.value;"/>
+      <rows id="autopager-helpbox-rows"/>
+        <tooltip id="autopager-viewsource" noautohide="true" orient="vertical"/>
+    </vbox>
+    </deck>
+</page>

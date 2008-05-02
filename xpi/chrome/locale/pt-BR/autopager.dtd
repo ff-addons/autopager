@@ -1,80 +1,105 @@
-<!ENTITY setting.appname "Auto Pager">
-<!ENTITY setting.title "Configurações do Auto Pager">
-<!ENTITY setting.button.add "Adicionar...">
-<!ENTITY setting.button.edit "Editar...">
-<!ENTITY setting.button.up "Cima">
-<!ENTITY setting.button.down "Baixo">
-<!ENTITY setting.button.pick "Escolher...">
-<!ENTITY setting.button.remove "Excluir">
-<!ENTITY setting.button.copy "Clonar">
-<!ENTITY setting.button.cloneToEdit "Clonar para Editar">
-<!ENTITY setting.button.cloneToEditTip "Este item é de uma fonte somente leitura. Você somente poderá editar uma cópia se necessário.">
-<!ENTITY setting.button.import "Importar">
-<!ENTITY setting.button.export "Exportar">
-<!ENTITY setting.button.exportTip "Exportar Itens Selecionados">
-<!ENTITY setting.label.lblOwner "Criado Por:">
-<!ENTITY setting.label.lblURLPattern "Padrão URL:">
-<!ENTITY setting.label.chkIsRegex "É RegExp?">
-<!ENTITY setting.label.lblDesc "Descrição:">
-<!ENTITY setting.label.grpContentXPath "Conteúdo XPath:">
-<!ENTITY setting.label.lblLinkXPath "Link XPath:">
-<!ENTITY setting.label.btnEdit "Editar">
-<!ENTITY setting.label.chkEnabled "Habilitar">
-<!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
-<!ENTITY setting.label.chkQuickLoad "Carregamento Rápido (Não seguro para todos os sites).">
-<!ENTITY setting.label.chkFixOverflow "Desabilitar a sobreposição de configurações da página carregada.">
-<!ENTITY setting.label.margin "Paginar quando o espaço for menor que">
-<!ENTITY setting.label.marginEnd "altura da janela">
-<!ENTITY setting.label.sites "Sites">
-<!ENTITY setting.label.general "Geral">
-<!ENTITY setting.label.hotkeys "Habilitar/Desabilitar teclas de atalho:">
-<!ENTITY setting.label.chkCtrl "Ctrl">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.doubleclick "+Duplo-clique">
-<!ENTITY setting.label.loading "carregando estilo de notificação:">
-<!ENTITY setting.label.pagebreak "estilo de quebra de página:">
-<!ENTITY setting.label.confirmstyle "estilo de confirmação:">
-<!ENTITY setting.label.timeout "tempo esgotado de carregamento de página(segundos):">
-<!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
-<!ENTITY setting.label.smarttext "Procurar Texto/Imagem Src/ID/Class(Separado por &quot;|&quot;) nos links Próximo (Next):">
-<!ENTITY setting.label.grpSmart "Paginação Inteligente">
-<!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
-<!ENTITY setting.label.smartlinksEnd "encontrar links.">
-<!ENTITY autopager.status.sitewizard "Assistente de Site">
-<!ENTITY autopager.status.sitewizardTip "Criar Configurações de Site usando o Assistente">
-<!ENTITY autopager.status.setting "Gerenciador de Configurações">
-<!ENTITY autopager.status.settingTip "Gerenciar Configurações do Auto Pager">
-<!ENTITY autopager.status.update "Atualizar Configurações Online">
-<!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.importurl "Importar da URL">
-<!ENTITY autopager.status.importurlTip "Importar Configurações do Auto Pager da URL.">
-<!ENTITY autopager.status.importfile "Importar do Arquivo">
-<!ENTITY autopager.status.importfileTip "Importar Configurações do Auto Pager do Arquivo.">
-<!ENTITY autopager.status.importclip "Importar da Área de Transferência">
-<!ENTITY autopager.status.importclipTip "Importar Configurações do Auto Pager da Área de Transferência.">
-<!ENTITY autopager.status.export "Exportar Preferências">
-<!ENTITY autopager.status.exportTip "Exportar Configurações do Auto Pager.">
-<!ENTITY autopager.status.exportfile "Exportar Para Arquivo">
-<!ENTITY autopager.status.exportfileTip "Exportar Configurações do Auto Pager para Arquivo.">
-<!ENTITY autopager.status.exportclip "Exportar para a Área de Transferência">
-<!ENTITY autopager.status.exportclipTip "Exportar Configurações do Auto Pager para Área de Transferência.">
+<!ENTITY autopager.label.value "auto pager">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Criar XPath">
 <!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
-<!ENTITY autopager.status.testXPath "Testar XPath">
-<!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.enabled "Habilitado">
 <!ENTITY autopager.status.enabledTip "Auto Pager Habilitado ou não">
-<!ENTITY autopager.status.showoption "Exibir Página de Opções">
-<!ENTITY autopager.status.showoptionTip "Exibe a Página de Opções para esta página.">
+<!ENTITY autopager.status.export "Exportar Preferências">
+<!ENTITY autopager.status.exportTip "Exportar Configurações do Auto Pager.">
+<!ENTITY autopager.status.exportclip "Exportar para a Área de Transferência">
+<!ENTITY autopager.status.exportclipTip "Exportar Configurações do Auto Pager para Área de Transferência.">
+<!ENTITY autopager.status.exportfile "Exportar Para Arquivo">
+<!ENTITY autopager.status.exportfileTip "Exportar Configurações do Auto Pager para Arquivo.">
+<!ENTITY autopager.status.importclip "Importar da Área de Transferência">
+<!ENTITY autopager.status.importclipTip "Importar Configurações do Auto Pager da Área de Transferência.">
+<!ENTITY autopager.status.importfile "Importar do Arquivo">
+<!ENTITY autopager.status.importfileTip "Importar Configurações do Auto Pager do Arquivo.">
+<!ENTITY autopager.status.importurl "Importar da URL">
+<!ENTITY autopager.status.importurlTip "Importar Configurações do Auto Pager da URL.">
 <!ENTITY autopager.status.myname "Meu Nome:">
 <!ENTITY autopager.status.mynameTip "Seu Nome, será adicionado a configuração que você criou.">
-<!ENTITY setting.label.update "Atualizar">
+<!ENTITY autopager.status.setting "Gerenciador de Configurações">
+<!ENTITY autopager.status.settingTip "Gerenciar Configurações do Auto Pager">
+<!ENTITY autopager.status.showoption "Exibir Página de Opções">
+<!ENTITY autopager.status.showoptionTip "Exibe a Página de Opções para esta página.">
+<!ENTITY autopager.status.sitewizard "Assistente de Site">
+<!ENTITY autopager.status.sitewizardTip "Criar Configurações de Site usando o Assistente">
+<!ENTITY autopager.status.testXPath "Testar XPath">
+<!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
+<!ENTITY autopager.status.update "Atualizar Configurações Online">
+<!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
+<!ENTITY caption.results-caption.label "Results">
+<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY label.1.value "Body XPath:">
+<!ENTITY label.Usages.value "Usages">
+<!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY setting.appname "Auto Pager">
+<!ENTITY setting.button.add "Adicionar...">
+<!ENTITY setting.button.cloneToEdit "Clonar para Editar">
+<!ENTITY setting.button.cloneToEditTip "Este item é de uma fonte somente leitura. Você somente poderá editar uma cópia se necessário.">
+<!ENTITY setting.button.copy "Clonar">
+<!ENTITY setting.button.down "Baixo">
+<!ENTITY setting.button.edit "Editar...">
+<!ENTITY setting.button.export "Exportar">
+<!ENTITY setting.button.exportTip "Exportar Itens Selecionados">
+<!ENTITY setting.button.import "Importar">
+<!ENTITY setting.button.pick "Escolher...">
+<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.remove "Excluir">
+<!ENTITY setting.button.up "Cima">
+<!ENTITY setting.label.btnEdit "Editar">
+<!ENTITY setting.label.chkAlt "Alt">
+<!ENTITY setting.label.chkCtrl "Ctrl">
+<!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
+<!ENTITY setting.label.chkEnabled "Habilitar">
+<!ENTITY setting.label.chkFixOverflow "Desabilitar a sobreposição de configurações da página carregada.">
+<!ENTITY setting.label.chkIsRegex "É RegExp?">
+<!ENTITY setting.label.chkQuickLoad "Carregamento Rápido (Não seguro para todos os sites).">
+<!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.confirmstyle "estilo de confirmação:">
+<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.doubleclick "+Duplo-clique">
+<!ENTITY setting.label.general "Geral">
+<!ENTITY setting.label.grpContentXPath "Conteúdo XPath:">
+<!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpSmart "Paginação Inteligente">
+<!ENTITY setting.label.hotkeys "Habilitar/Desabilitar teclas de atalho:">
+<!ENTITY setting.label.lblDesc "Descrição:">
+<!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.lblOwner "Criado Por:">
+<!ENTITY setting.label.lblURLPattern "Padrão URL:">
 <!ENTITY setting.label.lblUpdate "Configurações da Atualização Automática:">
-<!ENTITY setting.update.startup "Cada Início">
+<!ENTITY setting.label.loading "carregando estilo de notificação:">
+<!ENTITY setting.label.margin "Paginar quando o espaço for menor que">
+<!ENTITY setting.label.marginEnd "altura da janela">
+<!ENTITY setting.label.pagebreak "estilo de quebra de página:">
+<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.sites "Sites">
+<!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
+<!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
+<!ENTITY setting.label.smartlinksEnd "encontrar links.">
+<!ENTITY setting.label.smarttext "Procurar Texto/Imagem Src/ID/Class(Separado por &quot;|&quot;) nos links Próximo (Next):">
+<!ENTITY setting.label.timeout "tempo esgotado de carregamento de página(segundos):">
+<!ENTITY setting.label.update "Atualizar">
+<!ENTITY setting.title "Configurações do Auto Pager">
+<!ENTITY setting.tree.Description "Descrição">
+<!ENTITY setting.tree.URLPattern "Padrão URL:">
 <!ENTITY setting.update.daily "Todo Dia">
-<!ENTITY setting.update.weekly "Toda Semana">
 <!ENTITY setting.update.monthly "Todo Mês">
 <!ENTITY setting.update.never "Nunca">
-<!ENTITY setting.tree.URLPattern "Padrão URL:">
-<!ENTITY setting.tree.Description "Descrição">
+<!ENTITY setting.update.startup "Cada Início">
+<!ENTITY setting.update.weekly "Toda Semana">
+<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
+<!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
+<!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
+<!ENTITY treecol.authorityCol.label "Authority">
+<!ENTITY treecol.machedCol.label "Matched Count">
+<!ENTITY treecol.xpathCol.label "XPath">

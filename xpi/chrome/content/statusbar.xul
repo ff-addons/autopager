@@ -10,6 +10,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />    
     
     <window id="main-window">
         <vbox id="autopager-split-box" position="bottom" flex="0" persist="height width">
@@ -25,7 +26,7 @@
                         onclick="statusClicked(event);"
                         hidden="false">
             <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
-                <label value="auto pager"></label>
+                <label value="&autopager.label.value;"></label>
             </tooltip>    	
             
             <stringbundleset id="autopagerStringbundleset">
@@ -85,7 +86,7 @@
                 <menuitem 
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="xPathTest( content.document);"
+                    oncommand="toggleSidebar('viewautopagerSidebar');/*xPathTest( content.document);*/"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-myname"
@@ -95,15 +96,13 @@
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-hidden-panel-menu" class="autopager-menu-class" 
-                      onpopupshowing="javascript:void();" label="Page Holder"
+                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-hidden-panel-menu.label;"
                       hidden='true'>
                     <menupopup id="autopager-menupopup" >
-                        <menuitem id="autopager-show" 
-                                  label="show"
+                        <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
                                   oncommand="splitbrowse.open(content.document,false);"
                         />
-                        <menuitem id="autopager-hidden" 
-                                  label="hidden"
+                        <menuitem id="autopager-hidden" label="&autopager.menuitem.autopager-hidden.label;"
                                   oncommand="splitbrowse.open(content.document,true);"
                         />
                     </menupopup>	
@@ -139,6 +138,7 @@
    <menupopup id="menu_ToolsPopup">
     <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator">
         <menupopup id="autopager-popup-tool">
+        	<menuitem key="key_openautopagerSidebar" observes="viewautopagerSidebar" position="1"/>
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
@@ -182,7 +182,7 @@
                 <menuitem 
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="xPathTest( content.document);"
+                    oncommand="toggleSidebar('viewautopagerSidebar');/*xPathTest( content.document);*/"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-showoption"
@@ -194,4 +194,30 @@
       </menupopup>
           </menu>
   </menupopup>
+
+	<menupopup id="viewSidebarMenu">
+		<menuitem key="key_openautopagerSidebar" observes="viewautopagerSidebar"/>
+	</menupopup>
+
+	<keyset id="mainKeyset">
+		<key id="key_openautopagerSidebar" command="viewautopagerSidebar"
+			key="&openautopagerSidebar.commandkey;"
+			modifiers="&openautopagerSidebar.modifiersKey;"/>
+	</keyset>
+
+	<broadcasterset id="mainBroadcasterSet">
+		<broadcaster id="viewautopagerSidebar"
+			autoCheck="false"
+			label="&autopager.toolbarLabel;"
+			type="checkbox" group="sidebar"
+			sidebarurl="chrome://autopager/content/autopagerSidebar.xul"
+			sidebartitle="&autopager.sidebarTitle;"
+			oncommand="toggleSidebar('viewautopagerSidebar');"/>
+	</broadcasterset>
+
+
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbarbutton id="autopager-button"  image="chrome://autopager/skin/autopager.gif"  tooltiptext="&autopager.tooltip;" observes="viewautopagerSidebar" class="toolbarbutton-1"/>
+	</toolbarpalette>
+  
 </overlay>

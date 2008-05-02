@@ -106,6 +106,8 @@ function enableSelector(doc,setMenuStatus) {
         removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorContent.css");
         removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorAllTags.css");
         hiddenRegionDivs(doc,"");
+        hiddenDiv(doc.getElementById("autoPagerLabel"),true);
+
         if (selectedObj) {
             enableClick(selectedObj,false);
         }
@@ -116,7 +118,8 @@ function enableSelector(doc,setMenuStatus) {
         de.autoPagerSelectorEnabled = true;
         
         addStyleSheetToDoc(doc,"chrome://autopager/content/EditorContent.css");
-        addStyleSheetToDoc(doc,"chrome://autopager/content/EditorAllTags.css");
+        if (loadBoolPref('showtags'))
+          addStyleSheetToDoc(doc,"chrome://autopager/content/EditorAllTags.css");
     }
     if (setMenuStatus) {
         if (de.autoPagerSelectorEnabled ) {
@@ -633,7 +636,7 @@ function  scrollWatcher() {
                                 if (!doc.documentElement.autopagerUserConfirmed
                                     || (doc.documentElement.autopagerSessionAllowed && doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage)
                                 )
-                                    hiddenDiv(getPagingOptionDiv(doc),false);
+                                    hiddenDiv(getPagingOptionDiv(doc),false || !loadEnableStat());
                                 else
                                 if (doc.documentElement.autopagerUserConfirmed
                                     && doc.documentElement.autopagerUserAllowed
@@ -673,7 +676,7 @@ function  showAllPagingOptions() {
                 var doc = de.autopagerEnabledDoc[i];
                 if (doc.location != null)
                {
-                     hiddenDiv(getPagingOptionDiv(doc),false);
+                     hiddenDiv(getPagingOptionDiv(doc),false || !loadEnableStat());
                      showedCount ++;
                 }
             }
@@ -726,11 +729,42 @@ function createDiv(doc,id,style) {
 function getSelectorDiv(doc,divName) {
     var div = doc.getElementById(divName);
     if (!div) {
-        var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 90; left: -100px; top: -100px; height: 0px;"; 
+        var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;"; 
         div = createDiv(doc,divName,style);
     }
     return div;
 };
+function getLabelDiv(doc,divName) {
+    var div = doc.getElementById(divName);
+    if (!div) {
+        var style =""; 
+        div = createDiv(doc,divName,style);
+        var s = div.style;
+	s.display = "none";
+	s.backgroundColor = "#fff0cc";
+	s.borderColor = "black";
+	s.borderWidth = "1px 2px 2px 1px";
+	s.borderStyle = "solid";
+	s.fontFamily = "arial";
+	s.textAlign = "left";
+	s.color = "#000";
+	s.fontSize = "12px";
+	s.position = "absolute";
+	s.paddingTop = "2px";
+	s.paddingBottom = "2px";
+	s.paddingLeft = "5px";
+	s.paddingRight = "5px";
+        
+	s.borderTopWidth = "0";
+	s.MozBorderRadiusBottomleft = "6px";
+	s.MozBorderRadiusBottomright = "6px";
+        s.zIndex = "65535";        
+              
+    }
+    return div;
+};
+
+
 function getSelectorLoadFrame(doc) {
     var divName = "autoPagerLoadDiv";
     var frameName = divName + "ifr";
@@ -783,10 +817,13 @@ function getLastDiv(doc) {
 };
 
 function enableClickOnNode(node,enabled) {
+    if (node!=null)
+    {
     if (enabled) {
         node.addEventListener("click",onXPathClick,true);
     }else {
         node.removeEventListener("click",onXPathClick,true);
+    }
     }
 };
 function enableClick(node,enabled) {
@@ -814,10 +851,13 @@ function hiddenRegionDivs(doc,subfix) {
     hiddenDiv(bottomDiv,true);
 }
 function hiddenDiv(div,hidden) {
-    if (hidden) {
-        div.style.display = "none";
-    }else {
-        div.style.display = "block";
+    if (div)
+    {
+        if (hidden) {
+            div.style.display = "none";
+        }else {
+            div.style.display = "block";
+        }
     }
 	//div.hidden = hidden;
 }
@@ -828,7 +868,99 @@ function createPagerSelectorDivs(doc,target) {
     selectedObj = target;
     enableClick(selectedObj,true);
     createRegionDivs(doc,target,"");
-}    
+    createLabelDivs(doc,target,"");
+        
+}   
+function myGetPos(target)
+{
+    var node = target;
+	var pos = {x: 0, y: 0};
+
+	while (node)
+	{
+		pos.x += node.offsetLeft;
+		pos.y += node.offsetTop;
+		node = node.offsetParent;
+	}
+	return pos;
+}
+function myGetWindowDimensions  (doc)
+{
+	var out = {};
+
+	out.scrollX = doc.body.scrollLeft + doc.documentElement.scrollLeft; 
+	out.scrollY = doc.body.scrollTop + doc.documentElement.scrollTop;
+
+	if (doc.compatMode == "BackCompat")
+	{
+		out.width = doc.body.clientWidth;
+		out.height = doc.body.clientHeight;
+	}
+	else
+	{
+		out.width = doc.documentElement.clientWidth;
+		out.height = doc.documentElement.clientHeight;
+	}
+	return out;
+}
+
+function makeElementLabelString (target) {
+	var s = "<b style='color:#000'>" + target.tagName.toLowerCase() + "</b>";
+	if (target.id != '')
+		s += ", id: " + target.id;
+	if (target.className != '')
+		s += ", class: " + target.className;
+	/*for (var i in target.style)
+		if (target.style[i] != '')
+			s += "<br> " + i + ": " + target.style[i]; */
+	if (target.style.cssText != '')
+		s += ", style: " + target.style.cssText;
+		
+	return s;
+}
+
+var labelDrawnHigh=null;
+function createLabelDivs(doc,target,subfix)
+{
+	var pos = myGetPos(target)
+	var dims = myGetWindowDimensions (doc);    
+    	var y = pos.y + target.offsetHeight + 1;
+        var labelDiv =getLabelDiv(doc,"autoPagerLabel" + subfix);
+	labelDiv.style.left = (pos.x + 2) + "px";
+        
+    
+    	
+        labelDiv.innerHTML = makeElementLabelString(target);
+	labelDiv.style.display = "";
+
+	// adjust the label as necessary to make sure it is within screen and
+	// the border is pretty
+	if ((y + labelDiv.offsetHeight) >= dims.scrollY + dims.height)
+	{
+		labelDiv.style.borderTopWidth = "1px";
+		labelDiv.style.MozBorderRadiusTopleft = "6px";
+		labelDiv.style.MozBorderRadiusTopright = "6px";
+		labelDrawnHigh = true;
+		y = (dims.scrollY + dims.height) - labelDiv.offsetHeight;
+	}
+	else if (labelDiv.offsetWidth > target.offsetWidth)
+	{
+		labelDiv.style.borderTopWidth = "1px";
+		labelDiv.style.MozBorderRadiusTopright = "6px";
+		labelDrawnHigh = true;
+	}
+	else if (labelDrawnHigh)
+	{
+		labelDiv.style.borderTopWidth = "0";
+		labelDiv.style.MozBorderRadiusTopleft = "";
+		labelDiv.style.MozBorderRadiusTopright = "";
+		delete (labelDrawnHigh); 
+	}
+	labelDiv.style.top = y + "px";	
+
+            
+}
+    
 function createRegionDivs(doc,target,subfix) {
     var margin = 2;
     var leftDiv =getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
@@ -1627,6 +1759,8 @@ function enabledInNextPages(enabled,count)
 function hiddenOptionDiv(doc)
 {
     hiddenDiv(getPagingOptionDiv(doc),true);
+    hiddenDiv(doc.getElementById("autoPagerLabel"),true);
+    
     for(var i=0;i<doc.documentElement.autopagerHighlightedNextLinkCount;i++)
         hiddenRegionDivs(doc,i);
 }
@@ -2017,11 +2151,6 @@ function openSettingForDoc(doc)
          }
      }catch(e){}
      openSetting(url);
-}
-function openSetting(url) {
-    window.autopagerSelectUrl=url;
-    window.open("chrome://autopager/content/autopager.xul", "autopager",
-    "chrome,resizable,centerscreen");
 }
 
 function showMyName(){

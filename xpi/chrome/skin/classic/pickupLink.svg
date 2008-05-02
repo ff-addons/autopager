@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg:svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24"
+   height="24"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="pickupLink.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/wind/workspace/xul/AutoPager/src/skin/classic/pickupLink.png"
+   inkscape:export-xdpi="85.791733"
+   inkscape:export-ydpi="85.791733">
+  <svg:defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+  </svg:defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="20.583333"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:document-units="px"
+     inkscape:current-layer="svg2"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="823"
+     inkscape:window-x="0"
+     inkscape:window-y="26" />
+  <svg:metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle />
+  </svg:g>
+  <svg:path
+     sodipodi:type="arc"
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32299995;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+     id="path3163"
+     sodipodi:cx="13.020243"
+     sodipodi:cy="14.186234"
+     sodipodi:rx="8.4534416"
+     sodipodi:ry="8.0161943"
+     d="M 21.473684,14.186234 A 8.4534416,8.0161943 0 1 1 4.5668011,14.186234 A 8.4534416,8.0161943 0 1 1 21.473684,14.186234 z"
+     transform="matrix(1.1364687,0,0,1.1954276,-2.6999319,-5.1286565)" />
+  <svg:rect
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32299995;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+     id="rect3169"
+     width="23.854252"
+     height="0.72874492"
+     x="-0.048582997"
+     y="11.271255"
+     rx="0.41017494"
+     ry="0.29149798" />
+  <svg:rect
+     style="opacity:1;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32299995;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+     id="rect3171"
+     width="0.77732795"
+     height="24"
+     x="11.611336"
+     y="-0.24291497"
+     rx="0.41017494"
+     ry="0.29149798" />
+  <svg:text
+     xml:space="preserve"
+     style="font-size:12px;font-style:normal;font-weight:normal;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+     x="0.3400811"
+     y="9.1821871"
+     id="text3193"><svg:tspan
+       sodipodi:role="line"
+       id="tspan3195"
+       x="0.3400811"
+       y="9.1821871">A</svg:tspan></svg:text>
+</svg:svg>

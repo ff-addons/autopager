@@ -35,16 +35,22 @@ var UpdateSites=
         {
             this.updateSites =  new Array();
 
-            this.updateSites.push(new UpdateSite("autopagerize","all",
-                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
-                        "autopagerize configurations",
-                        "autopagerize.xml",AutoPagerize.onload));
-
             this.updateSites.push(new UpdateSite("pagerization","all",
                         "http://userjs.oh.land.to/pagerization/convert.php?file=siteinfo.v4","text/html; charset=utf-8",
                         "pagerization configurations",
                         "pagerization.xml",AutoPagerize.onload));
 
+            this.updateSites.push(new UpdateSite("autopagerize","all",
+                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
+                        "autopagerize configurations",
+                        "autopagerize.xml",AutoPagerize.onload));
+
+
+            this.updateSites.push(new UpdateSite("chinalist","all",
+                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
+                        "pagerization chinalist configurations",
+                        "chinalist.xml",AutoPagerize.onload));
+            
             this.updateSites.push(new UpdateSite("Wind Li","all",
                         "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
                         "configurations added to blog",
@@ -57,7 +63,7 @@ var UpdateSites=
                         "autopagerMozdev.xml",xmlConfigCallback));
 
             this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
+                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.9&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml",xmlConfigCallback));
                                                
@@ -822,6 +828,9 @@ function UpdateSite(owner,locales,url,type,desc,filename,callback)
     this.filename = filename;
     this.callback = callback;
     this.triedTime=0;
+    this.updateType = null;
+    this.enabled = true;
+    this.xpath = "//site";
 };
 function SiteConfirm()
 {
@@ -927,4 +936,9 @@ function saveConfirmToFile(sites,saveFile) {
 	{
 		alert(e);
 	}
+}
+function openSetting(url) {
+    window.autopagerSelectUrl=url;
+    window.open("chrome://autopager/content/autopager.xul", "autopager",
+    "chrome,resizable,centerscreen");
 }

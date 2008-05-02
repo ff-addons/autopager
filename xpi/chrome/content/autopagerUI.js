@@ -2,14 +2,14 @@
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
-    var chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete;
+    var chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
     var txtLoading,txtPagebreak,txtConfirmStyle,txtTimeout;
     var mnuUpdate;
 
-    var mynameText,grpSmart,smarttext,smartlinks;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags;
     var slectedListItem = null;;
     var margin,smartMargin;
     var selectedSite;
@@ -67,11 +67,15 @@
        	saveConfig(sites);
 		autoSites = loadConfig();
 
-		saveMyName(mynameText.value);
+	saveMyName(mynameText.value);
         saveBoolPref("smartenable",smartenable.checked);
-		saveUTF8Pref("smarttext",smarttext.value);
+	saveUTF8Pref("smarttext",smarttext.value);
         savePref("smartlinks",smartlinks.value);
-		savePref("smartMargin",smartMargin.value);
+	savePref("smartMargin",smartMargin.value);
+
+        savePref("discoverytext",discoverytext.value);
+        saveBoolPref("showtags",showtags.checked);
+	        
 		//savePref("timeout",txtTimeout.value);
          setCtrlKey(chkCtrl.checked);
          setAltKey(chkAlt.checked );
@@ -105,6 +109,8 @@
         btnCopy = document.getElementById("btnCopy");
         btnClone = document.getElementById("btnCloneToEdit");
         btnDelete = document.getElementById("btnDelete");
+        btnPublic = document.getElementById("btnPublic");
+        
         btnAddPath = document.getElementById("btnAddPath");
         btnEditPath = document.getElementById("btnEditPath");
         btnUp = document.getElementById("btnUp");
@@ -141,6 +147,8 @@
         chkAlt.checked = getAltKey();
         chkShift.checked = getShiftKey();
         
+        showtags = document.getElementById("showtags");
+        showtags.checked = loadBoolPref("showtags");
         smartenable = document.getElementById("smartenable");
         smartenable.checked = loadBoolPref("smartenable");
 
@@ -151,6 +159,9 @@
         
         smartlinks = document.getElementById("smartlinks");
         smartlinks.value = loadPref("smartlinks");
+        
+        discoverytext = document.getElementById("discoverytext");
+        discoverytext.value = loadPref("discoverytext");
         
         smartMargin = document.getElementById("smartMargin");
         smartMargin.value = loadPref("smartMargin");
@@ -167,6 +178,7 @@
         btnCopy.addEventListener("command", handleCopySiteButton, false);
         btnClone.addEventListener("command", handleCopySiteButton, false);
         btnDelete.addEventListener("command", handleDeleteSiteButton, false);
+        btnPublic.addEventListener("command", handlePublicSiteButton, false);
         chkEnabled.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enabled = chkEnabled.checked;
@@ -440,6 +452,7 @@
         btnSiteUp.disabled =disabled;
         btnSiteDown.disabled =disabled;
         btnDelete.disabled =disabled;
+        btnPublic.disabled =disabled;
         contentXPath.readOnly =disabled;
         chkEnabled.disabled =disabled;
         chkEnableJS.disabled =disabled;
@@ -560,6 +573,35 @@
             }
 
     }
+    function handlePublicSiteButton() {
+        var start = new Object();
+        var end = new Object();
+        var numRanges = treeSites.view.selection.getRangeCount();
+        var items = new Array();
+        for (var t = 0; t < numRanges; t++){
+          treeSites.view.selection.getRangeAt(t,start,end);
+          for (var v = start.value; v <= end.value; v++){
+              items.push(treeSites.view.getItemAtIndex(v));
+          }
+        }
+        if (items.length ==0)
+            return;
+        //public the first one
+        
+        var treeitem = items[0];
+        if (treeitem.updateSite != null)
+          return;
+        var site = sites[treeitem.siteIndex];
+      
+        window.autopagerPublicSite=site;
+        //
+        
+        //var browser = window.open("http://localhost:8080/WebApplication1/");
+        var browser = window.open("http://www.teesoft.info/component/option,com_autopager/Itemid,47/");
+
+
+    }
+    
     function handleDeleteSiteButton() {
         var start = new Object();
         var end = new Object();

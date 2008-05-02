@@ -1,0 +1,50 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#discoverPath {
+	list-style-image:	url("chrome://autopager/skin/toolbar.png") !important;
+}
+
+toolbarbutton.autopager_button .toolbarbutton-text {
+	display: none;
+}
+
+#addSite {
+	list-style-image:	url("chrome://autopager/skin/apply.png") !important;
+}
+#clearAllPath {
+	list-style-image:	url("chrome://autopager/skin/clear.png") !important;
+}
+#pickupLinkPath {
+	list-style-image:	url("chrome://autopager/skin/pickupLink.png") !important;
+}
+#pickupContentPath {
+	list-style-image:	url("chrome://autopager/skin/pickupContent.png") !important;
+}
+#tools {
+	list-style-image:	url("chrome://autopager/skin/tools.png") !important;
+}
+
+
+#pickupPath1 {
+	-moz-image-region: rect(0px 26px 24px 0px) !important;
+}
+
+#pickupPath1:active {
+	-moz-image-region: rect(24px 26px 48px 0px) !important;
+}
+
+#pickupPath1[disabled="true"] {
+	-moz-image-region: rect(48px 26px 72px 0px) !important;
+}
+
+#discoverPath {
+	-moz-image-region: rect(0px 52px 24px 26px) !important;
+}
+
+#discoverPath:active {
+	-moz-image-region: rect(24px 52px 48px 26px) !important;
+}
+
+#discoverPath[disabled="true"] {
+	-moz-image-region: rect(48px 52px 72px 26px) !important;
+}

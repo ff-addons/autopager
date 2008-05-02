@@ -1,0 +1,28 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#autopager-button {
+  list-style-image: url("chrome://autopager/skin/autopager.png");
+}
+
+toolbar[iconsize="small"] #autopager-button {
+  list-style-image: url("chrome://autopager/skin/autopager-small.png");
+}
+
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+/* 
+ * Allow sidebar to be closed completely using the slider
+ */
+#sidebar-box {
+    overflow-x: hidden !important;
+}
+#sidebar {
+    min-width: 0px !important;
+    max-width: none !important;
+    overflow-x: hidden !important;
+}
+/*
+ * Allow sidebar to be opened completely using the slider
+ */
+#appcontent {
+    overflow-x: hidden !important;
+}
