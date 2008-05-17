@@ -48,3 +48,22 @@ toolbarbutton.autopager_button .toolbarbutton-text {
 #discoverPath[disabled="true"] {
 	-moz-image-region: rect(48px 52px 72px 26px) !important;
 }
+
+/* If this is removed, please remove next rule as well */
+treechildren::-moz-tree-twisty {
+	-moz-appearance: none !important;
+	padding-right: 0px !important;
+	padding-top: 0px !important;
+	width:	0px !important;
+	list-style-image: none !important;
+}
+/* Work around for bug in separators at level 0 when twisty has width 0 */
+treechildren::-moz-tree-cell-text(Name, separator) {
+	margin-left:	20px;
+}
+
+treechildren::-moz-tree-separator {
+  -moz-appearance: separator !important;
+  border-top: 1px solid ThreeDShadow !important;
+  border-bottom: 1px solid ThreeDHighlight !important;
+}

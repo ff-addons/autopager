@@ -33,10 +33,16 @@ var autopagerSidebar =
         
         document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status');},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','status');},false);
+        document.getElementById("xpath").addEventListener('keypress',
+                    function(event){if (event.keyCode == event.DOM_VK_RETURN)
+                             autopagerSidebar.search('xpath','resultsFrame','status');},true);
 
 
         document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2');},false);
         document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','status2');},false);
+        document.getElementById("contentXPath").addEventListener('keypress',
+                    function(event){if (event.keyCode == event.DOM_VK_RETURN)
+                            autopagerSidebar.search('contentXPath','resultsFrame2','status2');},true);
         
         this.loadXPathForNode(this.currentDoc);
 
@@ -119,7 +125,7 @@ var autopagerSidebar =
 
     onTextChangeInXPathBox:function(xpathID,statusID) {
         var xpath = document.getElementById(xpathID).value
-        var isValid = autopagerXPath.isValidXPath(xpath,autopagerUtils.currentDocument())
+        var isValid = autopagerXPath.isValidXPath(xpath,autopagerSidebar.currentDoc)
         document.getElementById(statusID).value = isValid ? "" : "Syntax error"
     },
 
@@ -132,7 +138,7 @@ var autopagerSidebar =
     searchXPath:function(xpath,contentFrame,statusID) {
         autopagerUtils.log("search called")
 
-        var doc = autopagerUtils.currentDocument();
+        var doc = autopagerSidebar.currentDoc;
         
         if(!autopagerXPath.isValidXPath(xpath,doc)) {
             document.getElementById(statusID).value = "Syntax error"
@@ -167,7 +173,7 @@ var autopagerSidebar =
         var tbody = autopagerSidebar.addNode(table,"tbody");
         
 
-        autopagerHightlight.HighlightNodes(autopagerUtils.currentDocument(),results,-1);
+        autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1);
         for (var i in results) {
             var node = results[i]
             node.blur = true;
@@ -215,11 +221,15 @@ var autopagerSidebar =
             treecell.setAttribute("label", xpath.xpath);
             
             treecell = this.addNode(treerow,"treecell");
-            treecell.setAttribute("label", xpath.authority);
+            treecell.setAttribute("label", this.round(xpath.authority));
             
             treecell = this.addNode(treerow,"treecell");
             treecell.setAttribute("label", xpath.matchCount);
         }
+    },
+    round:function(num)
+    {
+      return Math.round(num * 100) /100; 
     },
     addNode:function (pNode,name)
     {
@@ -259,7 +269,7 @@ var autopagerSidebar =
         var view = tree.view;
         var list = tree.xpathes;
         var xpathItem = list[view.selection.currentIndex];
-        //        this.loadIFrame(autopagerUtils.currentDocument(),resultFrameID,captionID);
+        //        this.loadIFrame(autopagerSidebar.currentDoc,resultFrameID,captionID);
 
         txtbox.value = xpathItem.xpath;
         this.searchXPath(xpathItem.xpath,document.getElementById(resultFrameID),statusID);
@@ -314,7 +324,7 @@ var autopagerSidebar =
             autopagerSelector.clearFunctions();
             autopagerSelector.registorSelectFunction(function (elem){
               
-                  var doc = autopagerUtils.currentDocument();
+                  var doc = elem.ownerDocument;
                   if (autopagerSidebar.currUrl != doc.documentURI)
                     autopagerSidebar.loadXPathForNode(doc);
 
@@ -353,14 +363,14 @@ var autopagerSidebar =
             autopagerSelector.clearFunctions();
             autopagerSelector.registorSelectFunction(function (elem){
               
-                  var doc = autopagerUtils.currentDocument();
+                  var doc = elem.ownerDocument;
                   if (autopagerSidebar.currUrl != doc.documentURI)
                     autopagerSidebar.loadXPathForNode(doc);
 
                  var nodes = [];
                  nodes.push(elem);
 
-                  var links = document.getElementById("autoLinkPathTreeBody").parentNode.xpathes;
+                  var links = document.getElementById("autoContentPathTreeBody").parentNode.xpathes;
                   if (!links)
                       links = [];
                   links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);

@@ -81,6 +81,32 @@ autopagerSelector.CanSelect = function (browser) {
 	return true;
 }
 
+autopagerSelector.addEventListener = function(browser,name,func,user)
+{
+	browser.contentWindow.addEventListener(name, func, user);
+    
+        if (browser.contentWindow.frames != null) {
+            //alert(doc.defaultView.frames.length);
+            var i=0;
+            for(i=0;i<browser.contentWindow.frames.length;++i) {
+                browser.contentWindow.frames[i].addEventListener(name, func, user);
+            }
+        }
+    
+}
+autopagerSelector.removeEventListener = function(browser,name,func,user)
+{
+	browser.contentWindow.removeEventListener(name, func, user);
+    
+        if (browser.contentWindow.frames != null) {
+            //alert(doc.defaultView.frames.length);
+            var i=0;
+            for(i=0;i<browser.contentWindow.frames.length;++i) {
+                browser.contentWindow.frames[i].removeEventListener(name, func, user);
+            }
+        }
+    
+}
 autopagerSelector.start = function(browser) {
 	if (!this.CanSelect(browser))
 		return;
@@ -108,11 +134,11 @@ autopagerSelector.start = function(browser) {
 		}
 	}
 
-	browser.contentWindow.addEventListener("click", this.mouseClick, true);
-	browser.contentWindow.addEventListener("mouseover", this.mouseOver, true);
-	browser.contentWindow.addEventListener("keypress", this.keyPress, true);
-	browser.contentWindow.addEventListener("mousemove", this.mouseMove, true);
-	browser.contentWindow.addEventListener("pagehide", this.pageHide, true);
+	this.addEventListener(browser,"click", this.mouseClick, true);
+	this.addEventListener(browser,"mouseover", this.mouseOver, true);
+	this.addEventListener(browser,"keypress", this.keyPress, true);
+	this.addEventListener(browser,"mousemove", this.mouseMove, true);
+	this.addEventListener(browser,"pagehide", this.pageHide, true);
 
 	browser.contentWindow.focus();
 
@@ -552,11 +578,11 @@ autopagerSelector.quit = function ()
 	this.clearBox();
 	//ehhHideTooltips();
 	
-	this.browser.contentWindow.removeEventListener("click", this.mouseClick, true);
-	this.browser.contentWindow.removeEventListener("mouseover", this.mouseOver, true);
-	this.browser.contentWindow.removeEventListener("keypress", this.keyPress, true);
-	this.browser.contentWindow.removeEventListener("mousemove", this.mouseMove, true);
-	this.browser.contentWindow.removeEventListener("pagehide", this.pageHide, true);
+	this.removeEventListener(this.browser,"click", this.mouseClick, true);
+	this.removeEventListener(this.browser,"mouseover", this.mouseOver, true);
+	this.removeEventListener(this.browser,"keypress", this.keyPress, true);
+	this.removeEventListener(this.browser,"mousemove", this.mouseMove, true);
+	this.removeEventListener(this.browser,"pagehide", this.pageHide, true);
 
 	this.selectedElem = null;
 	this.browser = null;

@@ -49,6 +49,12 @@ const autopagerXPath = {
         item.xpath = "//a[contains(%href% , @href)]/following-sibling::a[1]";
         this.addItem(doc,links,item);
         
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 12;
+        item.xpath = "(//a[contains(%href% , @href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
         //try to find the page navigator, then find next links
         var navBars = this.evaluate(doc,"//*[count(a[text() != '' and translate(text(),'0123456789','')=''])>=2]/a[text() != '' and translate(text(),'0123456789','')='']");
         if (navBars && navBars.length !=0)
@@ -199,6 +205,10 @@ const autopagerXPath = {
             item.authority = (this.MAXLevel  - level) / 2;
             items.push(item);
             
+            item = new autopagerXPathItem();
+            item.xpath = this.getXPathForObjectByPosition(urlNodes[0],3,level);
+            item.authority = (this.MAXLevel  - level) / 2.2;
+            items.push(item);
         }
         else if (urlNodes.length <= 4)
         {
@@ -455,6 +465,15 @@ const autopagerXPath = {
         }
         return path;	
     },
+    getXPathForObjectByPosition : function(target,maxChildCount,level) {
+
+        if (target==null || target.nodeType != 1)
+            return "";
+        var pos = this.getNodePosition(target)
+        var path= this.getXPathForObjectByParent(target.parentNode,maxChildCount,level);
+        path = path + "/" + target.tagName.toLowerCase() + "[" + pos +"]";
+        return path;	
+    },
     getPreviousNodes : function(node) {
         var result = []
         var tagname = node.tagName;
@@ -470,6 +489,20 @@ const autopagerXPath = {
                 break;
         }
         return result
+    },
+    getNodePosition : function(node) {
+        var pos = 0;
+        var tagname = node.tagName;
+        while (node !=null) {
+            if (node.nodeType == 1 && tagname == node.tagName)
+            {
+              pos=pos+1;
+            }
+            node = node.previousSibling
+            if (node == null)
+                break;
+        }
+        return pos;
     },
     getNodeParents : function(node) {
         var result = []

@@ -49,12 +49,12 @@
      <vbox flex="1">
         <hbox align="center">
             <label control="xpath" value="&label.1.value;"/>
-            <textbox id="xpath" flex="1" type="timed" timeout="500"/>
+            <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
         </hbox>
-        <tree id="xpaths" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
+        <tree id="xpaths" width="100px" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
             <treecols>
                 <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" 
-                        class="sortDirectionIndicator"    persist="hidden width ordinal sortDirection"/>
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
                 <splitter ordinal="2" class="tree-splitter"/>
                 <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
                         class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
@@ -69,7 +69,7 @@
             <caption id="results-caption" label="&caption.results-caption.label;"/>
             <vbox flex="1">
                 <label id="status"/>
-                    <iframe id="resultsFrame" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
+                    <iframe id="resultsFrame" width="100px" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
             </vbox>
         </groupbox>
         </vbox>
@@ -79,7 +79,7 @@
             <label control="xpath" value="&label.1.value;"/>
             <textbox id="contentXPath" flex="1"/>
         </hbox>
-        <tree id="contentXPaths" flex="3" seltype="single" enableColumnDrag="true" context="contentXPathsContext">
+        <tree width="100px" id="contentXPaths" flex="3" seltype="single" enableColumnDrag="true" context="contentXPathsContext">
             <treecols>
                 <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" class="sortDirectionIndicator"
              ignoreincolumnpicker="true" persist="hidden width ordinal sortDirection"/>
@@ -97,7 +97,7 @@
             <caption id="results-caption2" label="&caption.results-caption2.label;"/>
             <vbox flex="1">
                 <label id="status2"/>
-                    <iframe id="resultsFrame2" type="content" flex="1" src="chrome://autopager/content/empty.html"/>
+                    <iframe id="resultsFrame2" width="100px" type="content" flex="1" src="chrome://autopager/content/empty.html"/>
             </vbox>
         </groupbox>
         </vbox>
