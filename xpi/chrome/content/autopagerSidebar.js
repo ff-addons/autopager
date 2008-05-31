@@ -1,8 +1,26 @@
 var autopagerSidebar =  
     {
-    prompt : "Input A XPath Or Double a XPath in the list to see the effect.",
+    initialized: false,
     currentDoc:  autopagerUtils.currentDocument(),
     currUrl : null,
+    loadString: function() {
+        // initialization code
+        this.initialized = true;
+        this.gfiltersimportexportBundle = Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService);
+        this.mystrings = this.gfiltersimportexportBundle.createBundle("chrome://autopager/locale/autopager.properties");
+    },
+    getString:function(key)
+    {
+        if (!this.initialized)
+            this.loadString();
+        try{
+            var str = this.mystrings.GetStringFromName(key);
+            return str;
+        }catch(e)
+       {
+            return key;
+       }
+    },
     discovery: function()
     {
         var doc = autopagerUtils.currentDocument();
@@ -81,7 +99,7 @@ var autopagerSidebar =
             iframe.removeEventListener("DOMContentLoaded",self,false);
             autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
             var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
-            autopagerSidebar.addTextNode(b,autopagerSidebar.prompt);
+            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
         } 
         , false);
         autopagerUtils.cloneBrowser(iframe, browser);
@@ -93,7 +111,7 @@ var autopagerSidebar =
             iframe.removeEventListener("DOMContentLoaded",self,false);
             autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
             var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
-            autopagerSidebar.addTextNode(b,autopagerSidebar.prompt);
+            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
         } 
         , false);
         autopagerUtils.cloneBrowser(iframe, browser);
@@ -120,7 +138,7 @@ var autopagerSidebar =
         docShell.allowPlugins = false
         docShell.allowSubframes = false
 
-        document.getElementById(captionID).label = "Results from "+url
+        document.getElementById(captionID).label = this.getString("Resultsfrom") + ":" + url;
     },
 
     onTextChangeInXPathBox:function(xpathID,statusID) {
@@ -157,11 +175,11 @@ var autopagerSidebar =
     updateStatus:function(results,statusID) {
         var status;
         if(results.length==0) {
-            status = "No matches found"
+            status = this.getString("Nomatchesfound");
         } else if(results.length==1) {
-            status = "One match found"
+            status = this.getString("Onematchfound");
         } else if(results.length>1) {
-            status = results.length+" matches found"
+            status = results.length+ " " + this.getString("matchesfound")
         }
         document.getElementById(statusID).value = status
     }
@@ -279,14 +297,14 @@ var autopagerSidebar =
         var linkXPath =document.getElementById("xpath").value;
         if (linkXPath == null || linkXPath.length ==0)
         {
-          alert("Link XPath can't be null!");
+          alert(this.getString("LinkXPathcannotbenull"));
           document.getElementById("xpath").focus();
           return;
         }
         var contentXPath =document.getElementById("contentXPath").value;
         if (contentXPath == null || contentXPath.length ==0)
         {
-          alert("Content XPath can't be null!");
+          alert(this.getString("ContentXPathcannotbenull"));
           document.getElementById("contentXPath").focus();
           return;
         }

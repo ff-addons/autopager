@@ -20,23 +20,23 @@
                   class="chromeclass-extrachrome"/>
     </window>
     <statusbar id="status-bar">
+                    <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
+                <label value="&autopager.label.value;"></label>
+            </tooltip>  
         <!--  onclick="enableSelector(_content.document);" -->
         <statusbarpanel id="autopager_status"
-                        context='autopager-popup'
                         onclick="statusClicked(event);"
-                        hidden="false">
-            <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
-                <label value="&autopager.label.value;"></label>
-            </tooltip>    	
+                        hidden="false"
+                        class="statusbarpanel-menu-iconic"
+                        src="chrome://autopager/skin/autopager-small.off.gif"
+                        tooltip="autopager_tip">
+  	
             
             <stringbundleset id="autopagerStringbundleset">
                 <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
             </stringbundleset>
-            <image id="autopager_image" width="16" height="16" style="margin:0 5px"
-                   onclick="statusClicked(event);"
-                   src="chrome://autopager/skin/autopager-small.off.gif"
-                   tooltip="autopager_tip"/>
-      <menupopup id="autopager-popup" position='before_end' onpopupshowing="event.preventBubble();">
+
+      <menupopup id="autopager-popup" hidden="true">
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
@@ -219,5 +219,4 @@
 	<toolbarpalette id="BrowserToolbarPalette">
 		<toolbarbutton id="autopager-button"  image="chrome://autopager/skin/autopager.gif"  tooltiptext="&autopager.tooltip;" observes="viewautopagerSidebar" class="toolbarbutton-1"/>
 	</toolbarpalette>
-  
 </overlay>

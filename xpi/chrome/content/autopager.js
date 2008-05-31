@@ -1915,9 +1915,11 @@ function showAutoPagerMenu() {
     showMyName();
     
     var popup = document.getElementById("autopager-popup");
+    popup.hidden=false;
     popup.addEventListener("popuphidden", function(ev) {
         if(ev.currentTarget != ev.target) return;
         ev.target.removeEventListener("popuphidden", arguments.callee, false);
+        ev.target.hidden=true;
     }, false);    
     popup.showPopup();
     
@@ -1929,10 +1931,14 @@ function onEnable() {
 function statusClicked(event) {
     if(event.currentTarget != event.target) return;
     if(event.button == 2) {
+        event.preventDefault();
         showAutoPagerMenu();
     }
     else if(event.button == 0) {
-        var image = document.getElementById("autopager_image");
+        var popup = document.getElementById("autopager-popup");
+        popup.hidden=true;
+        popup.hidePopup();
+        var image = document.getElementById("autopager_status");
         var enabled = !getGlobalEnabled();
         setGlobalEnabled( enabled);
     }
@@ -1948,7 +1954,7 @@ function setGlobalImageByStatus(enabled) {
     }
 }
 function setGlobalStatusImage(url) {
-    var image = document.getElementById("autopager_image");
+    var image = document.getElementById("autopager_status");
     image.src=url;
 }
 function getGlobalEnabled() {
