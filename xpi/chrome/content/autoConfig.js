@@ -63,7 +63,7 @@ var UpdateSites=
                         "autopagerMozdev.xml",xmlConfigCallback));
 
             this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.13&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
+                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.14&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml",xmlConfigCallback));
                                                
@@ -141,7 +141,7 @@ var UpdateSites=
             {
                 var configContents="";
                 try{
-                      configContents= getContents(getConfigFileURI(this.updateSites[i].filename));
+                      configContents= autopagerGetContents(getConfigFileURI(this.updateSites[i].filename));
                       var sites= null;
                       sites = loadConfigFromStr(configContents,false);
                       sites.updateSite = this.updateSites[i];
@@ -266,7 +266,7 @@ function getConfigDir() {
 }
 
 
-function getContents(aURL, charset,warn){
+function autopagerGetContents(aURL, charset,warn){
 	var str;
 	try{
 	  if( charset == null) {
@@ -304,7 +304,7 @@ function getContents(aURL, charset,warn){
 function loadConfig() {
   var configContents="";
   try{
-	  configContents= getContents(getConfigFileURI("autopager.xml"));
+	  configContents= autopagerGetContents(getConfigFileURI("autopager.xml"));
     }catch(e)
     {
     	//alert(e);
@@ -371,7 +371,7 @@ function importFromFile()
                 }catch(e){
                     return;
                 }
-		var configContents = getContents(fileURI);
+		var configContents = autopagerGetContents(fileURI);
 		sites =  loadConfigFromStr(configContents,false);
 		mergeSetting(sites,false);
 	}catch(e)
@@ -470,7 +470,7 @@ function mergeArray(autoSites,sites,silient)
 }
 function loadConfigFromUrl(url) {
   try{
-	  var configContents = getContents(getRemoteURI(url),"UTF-8",true);
+	  var configContents = autopagerGetContents(getRemoteURI(url),"UTF-8",true);
 	  return loadConfigFromStr(configContents,false);
     }
     catch(e)
@@ -558,7 +558,7 @@ function loadConfigFromStr(configContents,remote) {
   try{
 
 		  //alert(configFile);
-		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
+		  //var configContents = autopagerGetContents(getConfigFileURI("autopager.xml"));
 		  var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
                   sites = loadConfigFromDoc(doc);
 	}catch(e)
@@ -873,7 +873,7 @@ function SiteConfirm()
 function loadConfirm() {
   var confirmContents="";
   try{
-	  confirmContents= getContents(getConfigFileURI("site-confim.xml"));
+	  confirmContents= autopagerGetContents(getConfigFileURI("site-confim.xml"));
     }catch(e)
     {
     	//alert(e);
@@ -884,7 +884,7 @@ function loadConfirmFromStr(configContents) {
   var sites = new Array();
   try{
 		  //alert(configFile);
-		  //var configContents = getContents(getConfigFileURI("autopager.xml"));
+		  //var configContents = autopagerGetContents(getConfigFileURI("autopager.xml"));
 		  var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
 		  var nodes = doc.evaluate("/autopager/site-confirm", doc, null, 0, null);
 		  for (var node = null; (node = nodes.iterateNext()); ) {

@@ -560,7 +560,7 @@
                      saveConfigToFile(exportSites,file,false);
                       if (exportToClipboard)
                       {
-                          var contentStr = getContents(Components.classes["@mozilla.org/network/io-service;1"]
+                          var contentStr = autopagerGetContents(Components.classes["@mozilla.org/network/io-service;1"]
                                             .getService(Components.interfaces.nsIIOService)
                                              .newFileURI(file));
                           

@@ -173,7 +173,7 @@ _handleParse: function (event) {
                                 var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
                                 .createInstance(Components.interfaces.nsIDOMParser);
                                 //alert(configFile);
-                                //var configContents = getContents(getConfigFileURI("autopager.xml"));
+                                //var configContents = autopagerGetContents(getConfigFileURI("autopager.xml"));
                                 doc = domParser.parseFromString(xmlhttp.responseText, "text/xml");
                                 if (doc != null && doc.childNodes[0].localName == "parsererror")
                                     doc = null;

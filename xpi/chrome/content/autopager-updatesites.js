@@ -50,7 +50,7 @@ var AutoPagerUpdateTypes =
         
         var configContents="";
         try{
-            configContents= getContents(getConfigFileURI("all-sites.xml"));
+            configContents= autopagerGetContents(getConfigFileURI("all-sites.xml"));
             var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
                       
             var sites= null;
