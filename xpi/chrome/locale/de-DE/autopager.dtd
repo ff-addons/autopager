@@ -32,7 +32,7 @@
 <!ENTITY autopager.status.update "Einstellungen aus dem Internet aktualisieren">
 <!ENTITY autopager.status.updateTip "Lädt die AutoPager-Einstellungen von http://blogs.sun.com/wind/entry/autopager_site_config herunter">
 <!ENTITY autopager.toolbarLabel "AutoPager Sidebar ein-/ausblenden">
-<!ENTITY autopager.tooltip "Sidebar zum Erstellen der Regeln für das Anfüngen der nächsten Seite">
+<!ENTITY autopager.tooltip "Sidebar zum Erstellen der Regeln für das Anfügen der nächsten Seite">
 <!ENTITY caption.results-caption.label "Ergebnisse">
 <!ENTITY caption.results-caption2.label "Ergebnisse">
 <!ENTITY label.1.value "XPath des Inhalts:">
@@ -95,7 +95,7 @@
 <!ENTITY setting.update.never "Nie">
 <!ENTITY setting.update.startup "Bei jedem Start">
 <!ENTITY setting.update.weekly "Wöchentlich">
-<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.addSite.tooltiptext "Site hinzufügen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Liste leeren">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Durchsuchen">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Inhalt auswählen">

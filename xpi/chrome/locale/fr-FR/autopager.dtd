@@ -38,7 +38,7 @@
 <!ENTITY label.1.value "Corps du XPath :">
 <!ENTITY label.Usages.value "Utilisations">
 <!ENTITY openautopagerSidebar.commandkey "S">
-<!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY setting.appname "AutoPager">
 <!ENTITY setting.button.add "Ajouter…">
 <!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
@@ -87,7 +87,7 @@
 <!ENTITY setting.label.smarttext "Noms (de textes, d&apos;images, de champs ou de classes) déterminant le lien vers la page suivante. Les séparer avec la barre verticale « | » :">
 <!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
 <!ENTITY setting.label.update "Mise à jour">
-<!ENTITY setting.title "Paramètres d&apos;AutoPagerDiscovery">
+<!ENTITY setting.title "Paramètres d&apos;AutoPager">
 <!ENTITY setting.tree.Description "Description">
 <!ENTITY setting.tree.URLPattern "Format de l&apos;URL">
 <!ENTITY setting.update.daily "Chaque jour">

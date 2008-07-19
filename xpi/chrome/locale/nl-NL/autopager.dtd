@@ -71,7 +71,7 @@
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
 <!ENTITY setting.label.lblDesc "Beschrijving:">
-<!ENTITY setting.label.lblLinkXPath "XPath naar koppeling:">
+<!ENTITY setting.label.lblLinkXPath "Koppelings-XPath:">
 <!ENTITY setting.label.lblOwner "Gemaakt door:">
 <!ENTITY setting.label.lblURLPattern "URL patroon:">
 <!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">

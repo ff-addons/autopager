@@ -63,7 +63,7 @@ var UpdateSites=
                         "autopagerMozdev.xml",xmlConfigCallback));
 
             this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.14&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
+                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.15&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml",xmlConfigCallback));
                                                

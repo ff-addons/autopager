@@ -131,7 +131,7 @@ var splitbrowse = {
   	//document.splitBrowserCount = 0;
         window.removeEventListener("load",splitbrowse.init,false);
     	var splitBox =document.getElementById("autopager-split-box");
-        var splitSplitter = document.getElementById("autopager-split-splitter");  
+        var splitSplitter = document.getElementById("autopager-split-splitter");
         var xbrowser = document.getElementById("browser");
         var xappcontent = document.getElementById("appcontent");
 
@@ -250,7 +250,8 @@ var splitbrowse = {
 	    splitBrowser.setAttribute("name", id);
              
 	    splitBrowser.setAttribute("type", "content");
-    	splitBrowser.setAttribute("contextmenu", "contentAreaContextMenu");
+            splitBrowser.setAttribute("contextmenu", "contentAreaContextMenu");
+            //splitBrowser.setAttribute("class",this.autopagerPrefix + "-split-browser");
 	    //splitBrowser.setAttribute("home", "about:black");
 	    vbox.appendChild(splitBrowser);
 	    
@@ -297,7 +298,7 @@ var splitbrowse = {
     this.hidden = hidden;
     if (splitBrowser == null)
         return;
-            var splitBar = document.getElementById("autopager-split-splitter");           
+            var splitBar = document.getElementById("autopager-split-splitter");
 	    if (!this.hidden)
 	    {
 	  		splitBrowser.parentNode.setAttribute("flex", "1");

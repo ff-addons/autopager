@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay SYSTEM "chrome://autopager/locale/autopager.dtd">
+<?xml-stylesheet href="chrome://autopager/skin/autopager-split.css" type="text/css"?>
 
 <overlay id="autopagestatus" 
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -11,10 +12,9 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />    
-    
     <window id="main-window">
         <vbox id="autopager-split-box" position="bottom" flex="0" persist="height width">
-            
+
         </vbox>
         <splitter id="autopager-split-splitter" hidden="true" orient="vertical"
                   class="chromeclass-extrachrome"/>
