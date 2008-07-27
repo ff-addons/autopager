@@ -9,7 +9,7 @@
     var txtLoading,txtPagebreak,txtConfirmStyle,txtTimeout;
     var mnuUpdate;
 
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript;
     var slectedListItem = null;;
     var margin,smartMargin;
     var selectedSite;
@@ -75,6 +75,8 @@
 
         savePref("discoverytext",discoverytext.value);
         saveBoolPref("showtags",showtags.checked);
+        saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
+        
 	        
 		//savePref("timeout",txtTimeout.value);
          setCtrlKey(chkCtrl.checked);
@@ -149,6 +151,10 @@
         
         showtags = document.getElementById("showtags");
         showtags.checked = loadBoolPref("showtags");
+        
+        alwaysEnableJavaScript = document.getElementById("alwaysEnableJavaScript");
+        alwaysEnableJavaScript.checked = loadBoolPref("alwaysEnableJavaScript");
+        
         smartenable = document.getElementById("smartenable");
         smartenable.checked = loadBoolPref("smartenable");
 

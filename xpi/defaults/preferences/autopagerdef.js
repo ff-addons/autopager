@@ -3,11 +3,12 @@ pref("autopager.debug", false);
 pref("autopager.myname", "");
 pref("autopager.smartenable", true);
 pref("autopager.smarttext", "next|>");
-pref("autopager.discoverytext", "navbar");
+pref("autopager.discoverytext", "navbar|right_arrow");
 
 pref("autopager.smartlinks", "2");
 pref("autopager.smartMargin", "2");
 pref("autopager.showtags", false);
+pref("autopager.alwaysEnableJavaScript", false);
 
 pref("autopager.enablehotkeys.ctrlkey", true);
 pref("autopager.enablehotkeys.altkey", false);

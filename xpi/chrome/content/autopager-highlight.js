@@ -78,7 +78,7 @@ const autopagerHightlight =
     createDiv : function(doc,id,style) {
         var div = doc.createElement("div");
         //div.innerHTML = divHtml;
-        doc.documentElement.appendChild(div);
+        doc.body.appendChild(div);
         div.className="autoPagerS";
         if (id.length>0)
             div.id = id;

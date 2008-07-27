@@ -54,6 +54,7 @@
 <!ENTITY setting.button.remove "Löschen">
 <!ENTITY setting.button.up "Nach oben">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.allwaysEnableJavaScript; "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bearbeiten">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Strg">

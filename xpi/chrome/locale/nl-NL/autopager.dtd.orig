@@ -54,6 +54,7 @@
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.allwaysEnableJavaScript; "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">

@@ -80,6 +80,7 @@
 <!ENTITY setting.label.marginEnd "window hight">
 <!ENTITY setting.label.pagebreak "page break style:">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
 <!ENTITY setting.label.smartlinks "Follow link when there are no more then">

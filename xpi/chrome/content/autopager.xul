@@ -240,6 +240,9 @@
                     <hbox align="center">
                             <checkbox id="showtags" label="&setting.label.showtags;" check="false" flex="1"/>
                     </hbox>
+                    <hbox align="center">
+                            <checkbox id="alwaysEnableJavaScript" label="&setting.label.allwaysEnableJavaScript;" check="false" flex="1"/>
+                    </hbox>
 
                 </vbox>
             </tabpanel>

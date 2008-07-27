@@ -54,6 +54,7 @@
 <!ENTITY setting.button.remove "移除">
 <!ENTITY setting.button.up "上">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.allwaysEnableJavaScript; "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "編輯">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
