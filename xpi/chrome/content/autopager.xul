@@ -149,7 +149,11 @@
                             <hbox align="center">
                                 <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
                                 <textbox id="linkXPath" flex="1"/>
-                                <button id="pickLinkPath" label="&setting.button.pick;" />		                    
+                                <button id="pickLinkPath" label="&setting.button.pick;" />
+                            </hbox>
+                            <hbox align="center">
+                                <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
+                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
                             </hbox>
                         </vbox>
                         <hbox flex="2">

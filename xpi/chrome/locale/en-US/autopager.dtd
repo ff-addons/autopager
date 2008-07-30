@@ -72,6 +72,8 @@
 <!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
 <!ENTITY setting.label.lblDesc "Desciption:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "Created By:">
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">

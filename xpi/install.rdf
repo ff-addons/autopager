@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.1.6.0.18"
+                     em:version="0.1.6.0.19"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too."
                      em:creator="Wind Li"
@@ -22,7 +22,7 @@
 	<RDF:Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 		<em:minVersion>1.5</em:minVersion>
-		<em:maxVersion>3.0.*</em:maxVersion>
+		<em:maxVersion>3.1a2pre</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 

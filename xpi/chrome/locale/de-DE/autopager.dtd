@@ -71,6 +71,7 @@
 <!ENTITY setting.label.grpDiscovery "Erkennung">
 <!ENTITY setting.label.grpSmart "Intelligenter Modus">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Beschreibung:">
 <!ENTITY setting.label.lblLinkXPath "XPath des Links:">
 <!ENTITY setting.label.lblOwner "Erstellt von:">
@@ -88,6 +89,7 @@
 <!ENTITY setting.label.smarttext "Text des Links zur nächsten Seite/Pfad des verlinkenden Bildes/ID oder CSS-Class des Links (getrennt durch &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Maximale Wartezeit beim Laden einer Seite (Sekunden):">
 <!ENTITY setting.label.update "Aktualisierung">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "AutoPager - Einstellungen">
 <!ENTITY setting.tree.Description "Beschreibung">
 <!ENTITY setting.tree.URLPattern "Adressregel">

@@ -428,7 +428,8 @@ function onInitDoc(doc,safe) {
         return;
     var i=0;
     workingAutoSites= UpdateSites.getMatchedSiteConfig(workingAllSites,url);
-    for(i=0;i<workingAutoSites.length;++i) {
+    for(i=0;i<workingAutoSites.length;++i)
+    {
         var pattern = getRegExp(workingAutoSites[i]);
         if (pattern.test(url)) {
             //should not equal
@@ -516,6 +517,8 @@ function onInitDoc(doc,safe) {
                 de.autopagerUseSafeEvent = !workingAutoSites[i].quickLoad;
                 de.setAttribute('fixOverflow',workingAutoSites[i].fixOverflow);
                 de.setAttribute('contentXPath',workingAutoSites[i].contentXPath);
+                de.setAttribute('containerXPath',workingAutoSites[i].containerXPath);
+                
                 if (autopagerEnabled) {
                      if(workingAutoSites[i].fixOverflow)
                         fixOverflow(doc);
@@ -608,16 +611,35 @@ function  scrollWatcher() {
                         try{
                             var scrollDoc =doc; 
 
-                            var sc = (scrollDoc.documentElement && scrollDoc.documentElement.scrollTop)
-                                    ? scrollDoc.documentElement.scrollTop : scrollDoc.body.scrollTop;
-                            var sh = (scrollDoc.documentElement && scrollDoc.documentElement.scrollHeight)
-                                    ? scrollDoc.documentElement.scrollHeight : scrollDoc.body.scrollHeight;
+                            var wh = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
+                            
+                            var scrollContainer = null;
+                            if (scrollDoc.documentElement.getAttribute("containerXPath"))
+                            {
+                                containerXPath = scrollDoc.documentElement.getAttribute("containerXPath");
+                                var autopagerContainer = null;
+                                if (containerXPath != "")
+                                {
+                                    autopagerContainer = findNodeInDoc(doc,containerXPath,false);
+                                    if (autopagerContainer!=null)
+                                    {
+                                        scrollContainer = autopagerContainer[0];
+                                        wh = autopagerContainer[0].clientHeight;                                        
+                                    }
+                                }
+                                
+                            }   
+                            if (scrollContainer==null)
+                                scrollContainer = scrollDoc.documentElement;
+                            var sc = (scrollContainer && scrollContainer.scrollTop)
+                                    ? scrollContainer.scrollTop : scrollDoc.body.scrollTop;
+                            var sh = (scrollContainer && scrollContainer.scrollHeight)
+                                    ? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
                             if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
                                 sh = scrollDoc.body.scrollHeight;
 
-                            var wh = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
 
-                            var remain = sh - sc - wh;
+                            var remain = sh - sc - scrollContainer.offsetTop - wh;
                             count++;
                             if (autopagerDebug)
                                 logInfo(count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain,

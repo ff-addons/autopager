@@ -71,6 +71,7 @@
 <!ENTITY setting.label.grpDiscovery "Discovery">
 <!ENTITY setting.label.grpSmart "智能翻頁">
 <!ENTITY setting.label.hotkeys "啓用/禁用熱鍵">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "描述">
 <!ENTITY setting.label.lblLinkXPath "鏈接到XPath">
 <!ENTITY setting.label.lblOwner "創建者">
@@ -88,6 +89,7 @@
 <!ENTITY setting.label.smarttext "搜尋下一鏈接的字符串/圖像">
 <!ENTITY setting.label.timeout "頁面載入超時（秒）">
 <!ENTITY setting.label.update "升級">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "自動翻頁設置">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "URL通配符">

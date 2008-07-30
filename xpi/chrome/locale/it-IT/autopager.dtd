@@ -71,6 +71,7 @@
 <!ENTITY setting.label.grpDiscovery "Discovery">
 <!ENTITY setting.label.grpSmart "Smart Paging">
 <!ENTITY setting.label.hotkeys "Attiva/disattiva scorciatoie da tastiera:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Descrizione:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
 <!ENTITY setting.label.lblOwner "Creata da:">
@@ -88,6 +89,7 @@
 <!ENTITY setting.label.smarttext "Ricerca testo/immagini Src/ID/Class (separati da &apos;|&apos;) nel prossimo link:">
 <!ENTITY setting.label.timeout "Timeout per il caricamento pagina (in secondi):">
 <!ENTITY setting.label.update "Aggiornamento">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "Opzioni di Auto Pager">
 <!ENTITY setting.tree.Description "Descrizione">
 <!ENTITY setting.tree.URLPattern "Modello dell&apos;URL">

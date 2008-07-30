@@ -49,14 +49,14 @@ function autopagerToobarInit() {
     var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
     var prefBranch = prefService.getBranch("autopager.");
     if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-        prefBranch.setCharPref("last_version", "0.1.6.0.18");
+        prefBranch.setCharPref("last_version", "0.1.6.0.19");
         autopagerOpenIntab(autopagerHome,null);
         addAutopagerButton();
     } else { // check for upgrade
         var lastVersion = prefBranch.getCharPref("last_version");
-        if (lastVersion != "0.1.6.0.18")
+        if (lastVersion != "0.1.6.0.19")
         {
-            prefBranch.setCharPref("last_version", "0.1.6.0.18");
+            prefBranch.setCharPref("last_version", "0.1.6.0.19");
             autopagerOpenIntab(autopagerHome,null);
             //addAutopagerButton();
         }

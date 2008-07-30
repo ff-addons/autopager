@@ -71,6 +71,7 @@
 <!ENTITY setting.label.grpDiscovery "ディスカバリ">
 <!ENTITY setting.label.grpSmart "スマートページング">
 <!ENTITY setting.label.hotkeys "有効・無効化ホットキー:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "説明:">
 <!ENTITY setting.label.lblLinkXPath "リンク XPath:">
 <!ENTITY setting.label.lblOwner "作成者:">
@@ -88,6 +89,7 @@
 <!ENTITY setting.label.smarttext "次のリンクを探すテキスト・画像の src・ID・class (「|」で分割):">
 <!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
 <!ENTITY setting.label.update "更新">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "Auto Pager 設定">
 <!ENTITY setting.tree.Description "説明">
 <!ENTITY setting.tree.URLPattern "URL パターン">

@@ -8,9 +8,10 @@
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
     var txtLoading,txtPagebreak,txtConfirmStyle,txtTimeout;
     var mnuUpdate;
+    var linkXPath,containerXPath;
 
     var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript;
-    var slectedListItem = null;;
+    var slectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
     var contentXPath;
@@ -126,6 +127,7 @@
         chkQuickLoad = document.getElementById("chkQuickLoad");
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
+        containerXPath  = document.getElementById("containerXPath");
         btnPickLinkPath  = document.getElementById("pickLinkPath");
         
         siteSearch  = document.getElementById("siteSearch");
@@ -217,6 +219,12 @@
         linkXPath.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.linkXPath = linkXPath.value;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        containerXPath.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.containerXPath = containerXPath.value;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -439,6 +447,7 @@
 
                 populateXPath(selectedSite.contentXPath);
                 linkXPath.value    = selectedSite.linkXPath;
+                containerXPath.value    = selectedSite.containerXPath;
                 lblOwner.value = selectedSite.owner;
             
         }
@@ -465,6 +474,7 @@
         chkQuickLoad.disabled =disabled;
         chkFixOverflow.disabled =disabled;
         linkXPath.readOnly =disabled;
+        containerXPath.readOnly =disabled;
         btnPickLinkPath.disabled = disabled;
         btnClone.hidden = enableEdit;
       }

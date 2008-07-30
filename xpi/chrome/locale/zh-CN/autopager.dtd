@@ -71,6 +71,7 @@
 <!ENTITY setting.label.grpDiscovery "自动识别">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "下一页XPath路径:">
 <!ENTITY setting.label.lblOwner "创建人:">
@@ -88,6 +89,7 @@
 <!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用&apos;|&apos;分割):">
 <!ENTITY setting.label.timeout "载入超时(秒):">
 <!ENTITY setting.label.update "自动更新">
+<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "自动翻页 Setting">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "地址通配符">

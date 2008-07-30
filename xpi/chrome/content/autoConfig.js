@@ -63,7 +63,7 @@ var UpdateSites=
                         "autopagerMozdev.xml",xmlConfigCallback));
 
             this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.18&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
+                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.19&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml",xmlConfigCallback));
                                                
@@ -517,6 +517,9 @@ function loadConfigFromDoc(doc) {
       else if (nodeName == "linkXPath") {
                         site.linkXPath	= getValue(childNode);
       }
+      else if (nodeName == "containerXPath") {
+                        site.containerXPath	= getValue(childNode);
+      }      
       else if (nodeName == "contentXPath") {
                         site.contentXPath.push(getValue(childNode));
       }
@@ -629,6 +632,8 @@ if (sites!=null)
 		}
 	    
 	    createNode(siteNode,"linkXPath",siteObj.linkXPath);
+	    createNode(siteNode,"containerXPath",siteObj.containerXPath);
+            
 	    createNode(siteNode,"desc",siteObj.desc);
 	
 		if (includeChangeInfo)
@@ -672,6 +677,7 @@ function Site()
 	this.owner  = "";
 	this.contentXPath = [];//["//div[@class='g']"];
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
+        this.containerXPath="";
 	this.desc = null;
 	this.oldSite = null;
 	this.margin = 2;
@@ -724,6 +730,8 @@ function cloneSite(site)
 			newSite.contentXPath[i] = site.contentXPath[i];
 	
 	newSite.linkXPath = site.linkXPath;
+        newSite.containerXPath = site.containerXPath;
+        
 	newSite.desc = site.desc;
 	newSite.oldSite = site;
 	
@@ -746,6 +754,7 @@ function cloneSite(site)
 						|| oldSite.fixOverflow  != site.fixOverflow
 						|| oldSite.owner  != site.owner
 						|| oldSite.linkXPath != site.linkXPath
+						|| oldSite.containerXPath != site.containerXPath
 						|| oldSite.desc != site.desc
 						|| oldSite.contentXPath.length != site.contentXPath.length)
 						{
