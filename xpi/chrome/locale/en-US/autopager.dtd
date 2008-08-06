@@ -31,7 +31,7 @@
 <!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
 <!ENTITY autopager.status.update "Update Setting Online">
 <!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
 <!ENTITY caption.results-caption2.label "Results">

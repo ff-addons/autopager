@@ -34,7 +34,7 @@
   display: inline;
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 16px; 
-  background-image: url(chrome://autopager/content/images/tag-userdefined.gif);
+  background-image: url(chrome://autopagerimg/content/tag-userdefined.gif);
   background-repeat: no-repeat;
   background-position: top left;
 }
@@ -42,7 +42,7 @@
 a:not([\_moz_anonclass]) {
   min-height: 16px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-a.gif);
+  background-image: url(chrome://autopagerimg/content/tag-a.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -50,7 +50,7 @@ a:not([\_moz_anonclass]) {
 abbr {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 35px; 
-  background-image: url(chrome://autopager/content/images/tag-abr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-abr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -59,7 +59,7 @@ abbr {
 acronym {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 57px; 
-  background-image: url(chrome://autopager/content/images/tag-acr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-acr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -67,7 +67,7 @@ acronym {
 address {
   min-height: 44px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-adr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-adr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -75,7 +75,7 @@ address {
 applet {
   min-height: 35px; margin-top: 2px;
   padding-left: 47px; 
-  background-image: url(chrome://autopager/content/images/tag-app.gif);
+  background-image: url(chrome://autopagerimg/content/tag-app.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -83,7 +83,7 @@ applet {
 area {
   min-height: 35px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-ara.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ara.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -91,7 +91,7 @@ area {
 b {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-b.gif);
+  background-image: url(chrome://autopagerimg/content/tag-b.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -99,7 +99,7 @@ b {
 basefont {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 57px; 
-  background-image: url(chrome://autopager/content/images/tag-bsf.gif);
+  background-image: url(chrome://autopagerimg/content/tag-bsf.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -107,7 +107,7 @@ basefont {
 bdo {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-bdo.gif);
+  background-image: url(chrome://autopagerimg/content/tag-bdo.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -115,7 +115,7 @@ bdo {
 big {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-big.gif);
+  background-image: url(chrome://autopagerimg/content/tag-big.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -123,7 +123,7 @@ big {
 blockquote {
   min-height: 44px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-blq.gif);
+  background-image: url(chrome://autopagerimg/content/tag-blq.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -131,7 +131,7 @@ blockquote {
 body {
   min-height: 36px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-body.gif);
+  background-image: url(chrome://autopagerimg/content/tag-body.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -139,7 +139,7 @@ body {
 br {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-br.gif);
+  background-image: url(chrome://autopagerimg/content/tag-br.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -147,7 +147,7 @@ br {
 button {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 57px; 
-  background-image: url(chrome://autopager/content/images/tag-btn.gif);
+  background-image: url(chrome://autopagerimg/content/tag-btn.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -155,7 +155,7 @@ button {
 caption {
   min-height: 35px; margin-top: 2px;
   padding-left: 55px; 
-  background-image: url(chrome://autopager/content/images/tag-cpt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-cpt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -163,7 +163,7 @@ caption {
 center {
   min-height: 44px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-ctr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ctr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -171,7 +171,7 @@ center {
 cite {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-cit.gif);
+  background-image: url(chrome://autopagerimg/content/tag-cit.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -179,7 +179,7 @@ cite {
 code {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-cod.gif);
+  background-image: url(chrome://autopagerimg/content/tag-cod.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -187,7 +187,7 @@ code {
 col {
   min-height: 35px; margin-left: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-col.gif);
+  background-image: url(chrome://autopagerimg/content/tag-col.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -195,7 +195,7 @@ col {
 colgroup {
   min-height: 35px; margin-left: 2px;
   padding-left: 51px; 
-  background-image: url(chrome://autopager/content/images/tag-clg.gif);
+  background-image: url(chrome://autopagerimg/content/tag-clg.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -203,7 +203,7 @@ colgroup {
 dd {
   min-height: 35px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-dd.gif);
+  background-image: url(chrome://autopagerimg/content/tag-dd.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -211,7 +211,7 @@ dd {
 del {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-del.gif);
+  background-image: url(chrome://autopagerimg/content/tag-del.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -219,7 +219,7 @@ del {
 dfn {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-dfn.gif);
+  background-image: url(chrome://autopagerimg/content/tag-dfn.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -227,7 +227,7 @@ dfn {
 dir {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-dir.gif);
+  background-image: url(chrome://autopagerimg/content/tag-dir.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -236,7 +236,7 @@ div {
   min-height: 24px; margin-top: 2px;
   /* TEMPORARY TO COMPENSATE FOR BUG */
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-div.gif);
+  background-image: url(chrome://autopagerimg/content/tag-div.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -251,7 +251,7 @@ textarea div {
 dl {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-dl.gif);
+  background-image: url(chrome://autopagerimg/content/tag-dl.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -259,7 +259,7 @@ dl {
 dt {
   min-height: 35px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-dt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-dt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -267,7 +267,7 @@ dt {
 em {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-em.gif);
+  background-image: url(chrome://autopagerimg/content/tag-em.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -275,7 +275,7 @@ em {
 fieldset {
   min-height: 44px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-fld.gif);
+  background-image: url(chrome://autopagerimg/content/tag-fld.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -283,7 +283,7 @@ fieldset {
 font {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-fnt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-fnt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -291,7 +291,7 @@ font {
 form {
   min-height: 36px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-for.gif);
+  background-image: url(chrome://autopagerimg/content/tag-for.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -299,7 +299,7 @@ form {
 frame {
   min-height: 40px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-frm.gif);
+  background-image: url(chrome://autopagerimg/content/tag-frm.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -307,7 +307,7 @@ frame {
 frameset {
   min-height: 44px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-fst.gif);
+  background-image: url(chrome://autopagerimg/content/tag-fst.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -315,7 +315,7 @@ frameset {
 h1 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h1.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h1.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -323,7 +323,7 @@ h1 {
 h2 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h2.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h2.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -331,7 +331,7 @@ h2 {
 h3 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h3.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h3.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -339,7 +339,7 @@ h3 {
 h4 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h4.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h4.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -347,7 +347,7 @@ h4 {
 h5 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h5.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h5.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -355,7 +355,7 @@ h5 {
 h6 {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-h6.gif);
+  background-image: url(chrome://autopagerimg/content/tag-h6.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -363,7 +363,7 @@ h6 {
 hr {
   min-height: 20px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-hr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-hr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -371,7 +371,7 @@ hr {
 i {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-i.gif);
+  background-image: url(chrome://autopagerimg/content/tag-i.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -379,7 +379,7 @@ i {
 iframe {
   min-height: 35px; margin-left: 2px;
   padding-left: 47px; 
-  background-image: url(chrome://autopager/content/images/tag-ifr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ifr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -387,7 +387,7 @@ iframe {
 :not(nvu|*) > img:not([\_moz_anonclass]) {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-img.gif);
+  background-image: url(chrome://autopagerimg/content/tag-img.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -395,7 +395,7 @@ iframe {
 input {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-inp.gif);
+  background-image: url(chrome://autopagerimg/content/tag-inp.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -403,7 +403,7 @@ input {
 ins {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-ins.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ins.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -411,7 +411,7 @@ ins {
 isindex {
   min-height: 40px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-isx.gif);
+  background-image: url(chrome://autopagerimg/content/tag-isx.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -419,7 +419,7 @@ isindex {
 kbd {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-kbd.gif);
+  background-image: url(chrome://autopagerimg/content/tag-kbd.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -427,7 +427,7 @@ kbd {
 label {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-lbl.gif);
+  background-image: url(chrome://autopagerimg/content/tag-lbl.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -435,7 +435,7 @@ label {
 legend {
   min-height: 35px; margin-top: 2px;
   padding-left: 49px; 
-  background-image: url(chrome://autopager/content/images/tag-lgn.gif);
+  background-image: url(chrome://autopagerimg/content/tag-lgn.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -443,7 +443,7 @@ legend {
 li {
   min-height: 35px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-li.gif);
+  background-image: url(chrome://autopagerimg/content/tag-li.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -451,7 +451,7 @@ li {
 listing {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 57px; 
-  background-image: url(chrome://autopager/content/images/tag-lst.gif);
+  background-image: url(chrome://autopagerimg/content/tag-lst.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -459,7 +459,7 @@ listing {
 map {
   min-height: 35px; margin-left: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-map.gif);
+  background-image: url(chrome://autopagerimg/content/tag-map.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -467,7 +467,7 @@ map {
 menu {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-men.gif);
+  background-image: url(chrome://autopagerimg/content/tag-men.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -475,7 +475,7 @@ menu {
 nobr {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-nbr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-nbr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -483,7 +483,7 @@ nobr {
 noframes {
   min-height: 44px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-nfr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-nfr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -491,7 +491,7 @@ noframes {
 noscript {
   min-height: 44px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-nsc.gif);
+  background-image: url(chrome://autopagerimg/content/tag-nsc.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -499,7 +499,7 @@ noscript {
 object {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 49px; 
-  background-image: url(chrome://autopager/content/images/tag-obj.gif);
+  background-image: url(chrome://autopagerimg/content/tag-obj.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -507,7 +507,7 @@ object {
 ol {
   min-height: 38px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-ol.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ol.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -515,7 +515,7 @@ ol {
 optgroup {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 51px; 
-  background-image: url(chrome://autopager/content/images/tag-opg.gif);
+  background-image: url(chrome://autopagerimg/content/tag-opg.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -523,7 +523,7 @@ optgroup {
 option {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 47px; 
-  background-image: url(chrome://autopager/content/images/tag-opt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-opt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -531,7 +531,7 @@ option {
 p {
   min-height: 38px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-p.gif);
+  background-image: url(chrome://autopagerimg/content/tag-p.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -539,7 +539,7 @@ p {
 param {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 43px; 
-  background-image: url(chrome://autopager/content/images/tag-prm.gif);
+  background-image: url(chrome://autopagerimg/content/tag-prm.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -547,7 +547,7 @@ param {
 plaintext {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 57px; 
-  background-image: url(chrome://autopager/content/images/tag-pln.gif);
+  background-image: url(chrome://autopagerimg/content/tag-pln.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -555,7 +555,7 @@ plaintext {
 pre {
   min-height: 24px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-pre.gif);
+  background-image: url(chrome://autopagerimg/content/tag-pre.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -563,7 +563,7 @@ pre {
 q {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-q.gif);
+  background-image: url(chrome://autopagerimg/content/tag-q.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -571,7 +571,7 @@ q {
 s {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-s.gif);
+  background-image: url(chrome://autopagerimg/content/tag-s.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -579,7 +579,7 @@ s {
 samp {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-smp.gif);
+  background-image: url(chrome://autopagerimg/content/tag-smp.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -587,7 +587,7 @@ samp {
 script {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 45px; 
-  background-image: url(chrome://autopager/content/images/tag-scr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-scr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -595,13 +595,13 @@ script {
 select {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 47px; 
-  background-image: url(chrome://autopager/content/images/tag-slc.gif);
+  background-image: url(chrome://autopagerimg/content/tag-slc.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
 
 small {
-   background-image: url(chrome://autopager/content/images/tag-sml.gif);
+   background-image: url(chrome://autopagerimg/content/tag-sml.gif);
    background-position: top left;
    background-repeat: no-repeat;
    margin-left: 2px;
@@ -614,7 +614,7 @@ span:not([\_moz_anonclass]) {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   /* TEMPORARY TO COMPENSATE FOR BUG */
   padding-left: 39px; 
-  background-image: url(chrome://autopager/content/images/tag-spn.gif);
+  background-image: url(chrome://autopagerimg/content/tag-spn.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -622,7 +622,7 @@ span:not([\_moz_anonclass]) {
 strike {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 45px; 
-  background-image: url(chrome://autopager/content/images/tag-stk.gif);
+  background-image: url(chrome://autopagerimg/content/tag-stk.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -630,7 +630,7 @@ strike {
 strong {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 51px; 
-  background-image: url(chrome://autopager/content/images/tag-stn.gif);
+  background-image: url(chrome://autopagerimg/content/tag-stn.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -638,7 +638,7 @@ strong {
 sub {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-sub.gif);
+  background-image: url(chrome://autopagerimg/content/tag-sub.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -646,7 +646,7 @@ sub {
 sup {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-sup.gif);
+  background-image: url(chrome://autopagerimg/content/tag-sup.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -658,7 +658,7 @@ sup {
 table {
   min-height: 40px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-tbl.gif);
+  background-image: url(chrome://autopagerimg/content/tag-tbl.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -666,7 +666,7 @@ table {
 tbody {
   min-height: 42px; margin-left: 2px; margin-top: 1px;
   padding-left: 17px; 
-  content: url(chrome://autopager/content/images/tag-tbd.gif);
+  content: url(chrome://autopagerimg/content/tag-tbd.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -674,7 +674,7 @@ tbody {
 td {
   min-height: 22px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-td.gif);
+  background-image: url(chrome://autopagerimg/content/tag-td.gif);
 
   background-repeat: no-repeat;
   background-position: top left;
@@ -683,7 +683,7 @@ td {
 textarea {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 59px; 
-  background-image: url(chrome://autopager/content/images/tag-txt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-txt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -691,7 +691,7 @@ textarea {
 tfoot {
   min-height: 42px; margin-left: 2px; margin-top: 1px;
   padding-left: 17px; 
-  content: url(chrome://autopager/content/images/tag-tft.gif);
+  content: url(chrome://autopagerimg/content/tag-tft.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -699,7 +699,7 @@ tfoot {
 th {
   min-height: 22px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-th.gif);
+  background-image: url(chrome://autopagerimg/content/tag-th.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -707,7 +707,7 @@ th {
 thead {
   min-height: 42px; margin-left: 2px; margin-top: 1px;
   padding-left: 17px; 
-  content: url(chrome://autopager/content/images/tag-thd.gif);
+  content: url(chrome://autopagerimg/content/tag-thd.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -715,7 +715,7 @@ thead {
 tr {
   min-height: 22px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-tr.gif);
+  background-image: url(chrome://autopagerimg/content/tag-tr.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -723,7 +723,7 @@ tr {
 tt {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-tt.gif);
+  background-image: url(chrome://autopagerimg/content/tag-tt.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -731,7 +731,7 @@ tt {
 u {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 23px; 
-  background-image: url(chrome://autopager/content/images/tag-u.gif);
+  background-image: url(chrome://autopagerimg/content/tag-u.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -739,7 +739,7 @@ u {
 ul {
   min-height: 20px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-ul.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ul.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -747,7 +747,7 @@ ul {
 var {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-var.gif);
+  background-image: url(chrome://autopagerimg/content/tag-var.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -755,7 +755,7 @@ var {
 xmp {
   min-height: 35px; margin-left: 2px; margin-top: 2px;
   padding-left: 31px; 
-  background-image: url(chrome://autopager/content/images/tag-xmp.gif);
+  background-image: url(chrome://autopagerimg/content/tag-xmp.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -774,7 +774,7 @@ xmp {
 html {
   min-height: 36px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-html.gif);
+  background-image: url(chrome://autopagerimg/content/tag-html.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -782,7 +782,7 @@ html {
 head {
   min-height: 36px; margin-left: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-hed.gif);
+  background-image: url(chrome://autopagerimg/content/tag-hed.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -792,7 +792,7 @@ These are tags that are ONLY allowed as children of HEAD:
 title {
   min-height: 40px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-ttl.gif);
+  background-image: url(chrome://autopagerimg/content/tag-ttl.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -800,7 +800,7 @@ title {
 base {
   min-height: 36px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-bas.gif);
+  background-image: url(chrome://autopagerimg/content/tag-bas.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -808,7 +808,7 @@ base {
 style {
   min-height: 40px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-stl.gif);
+  background-image: url(chrome://autopagerimg/content/tag-stl.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -816,7 +816,7 @@ style {
 meta {
   min-height: 36px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-met.gif);
+  background-image: url(chrome://autopagerimg/content/tag-met.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -824,7 +824,7 @@ meta {
 link {
   min-height: 30px; margin-left: 2px; margin-top: 2px;
   padding-left: 17px; 
-  background-image: url(chrome://autopager/content/images/tag-lnk.gif);
+  background-image: url(chrome://autopagerimg/content/tag-lnk.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }

@@ -50,7 +50,7 @@
 a[name] {
   min-height: 17px; margin-left: 2px; margin-top: 2px;
   padding-left: 20px; 
-  background-image: url(chrome://autopager/content/images/tag-anchor.gif);
+  background-image: url(chrome://autopagerimg/content/tag-anchor.gif);
   background-repeat: no-repeat; 
   background-position: top left;
 }
@@ -148,70 +148,70 @@ span.moz-smiley-s16 > span
 
 
 span.moz-smiley-s1 {
-  background-image: url(chrome://autopager/content/images/smile_n.gif);
+  background-image: url(chrome://autopagerimg/content/smile_n.gif);
 }
 
 
 span.moz-smiley-s2 {
-  background-image: url(chrome://autopager/content/images/frown_n.gif);
+  background-image: url(chrome://autopagerimg/content/frown_n.gif);
 }
 
 
 span.moz-smiley-s3 {
-  background-image: url(chrome://autopager/content/images/wink_n.gif);
+  background-image: url(chrome://autopagerimg/content/wink_n.gif);
 }
 
 
 span.moz-smiley-s4 { 
-  background-image: url(chrome://autopager/content/images/tongue_n.gif);
+  background-image: url(chrome://autopagerimg/content/tongue_n.gif);
 }
 
 span.moz-smiley-s5 {
-  background-image: url(chrome://autopager/content/images/laughing_n.gif);
+  background-image: url(chrome://autopagerimg/content/laughing_n.gif);
 }
 
 span.moz-smiley-s6 {
-  background-image: url(chrome://autopager/content/images/embarrassed_n.gif);
+  background-image: url(chrome://autopagerimg/content/embarrassed_n.gif);
 }
 
 span.moz-smiley-s7 {
-  background-image: url(chrome://autopager/content/images/undecided_n.gif);
+  background-image: url(chrome://autopagerimg/content/undecided_n.gif);
 }
 
 span.moz-smiley-s8 {
-  background-image: url(chrome://autopager/content/images/surprise_n.gif);
+  background-image: url(chrome://autopagerimg/content/surprise_n.gif);
 }
 
 span.moz-smiley-s9 {
-  background-image: url(chrome://autopager/content/images/kiss_n.gif);
+  background-image: url(chrome://autopagerimg/content/kiss_n.gif);
 }
 
 span.moz-smiley-s10 {
-  background-image: url(chrome://autopager/content/images/yell_n.gif);
+  background-image: url(chrome://autopagerimg/content/yell_n.gif);
 }
 
 span.moz-smiley-s11 {
-  background-image: url(chrome://autopager/content/images/cool_n.gif);
+  background-image: url(chrome://autopagerimg/content/cool_n.gif);
 }
 
 span.moz-smiley-s12 {
-  background-image: url(chrome://autopager/content/images/money_n.gif);
+  background-image: url(chrome://autopagerimg/content/money_n.gif);
 }
 
 span.moz-smiley-s13 {
-  background-image: url(chrome://autopager/content/images/foot_n.gif);
+  background-image: url(chrome://autopagerimg/content/foot_n.gif);
 }
 
 span.moz-smiley-s14 {
-  background-image: url(chrome://autopager/content/images/innocent_n.gif);
+  background-image: url(chrome://autopagerimg/content/innocent_n.gif);
 }
 
 span.moz-smiley-s15 {
-  background-image: url(chrome://autopager/content/images/cry_n.gif);
+  background-image: url(chrome://autopagerimg/content/cry_n.gif);
 }
 
 span.moz-smiley-s16 {
-  background-image: url(chrome://autopager/content/images/sealed_n.gif);
+  background-image: url(chrome://autopagerimg/content/sealed_n.gif);
 }
 
 

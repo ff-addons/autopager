@@ -135,6 +135,8 @@ var splitbrowse = {
         var xbrowser = document.getElementById("browser");
         var xappcontent = document.getElementById("appcontent");
 
+        if (xappcontent)
+        {
           //xbrowser.appendChild(splitBox);
           //xbrowser.appendChild(splitSplitter);
           //xbrowser.insertBefore(splitBox,xappcontent);
@@ -146,7 +148,7 @@ var splitbrowse = {
           splitBox.setAttribute("flex","0");
           splitSplitter.setAttribute("orient", "vertical");
           splitSplitter.setAttribute("flex","0");
-    
+        }
   },
   getSplitKey :function ()
   {

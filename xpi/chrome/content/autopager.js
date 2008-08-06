@@ -103,8 +103,8 @@ function enableSelector(doc,setMenuStatus) {
         doc.removeEventListener("mouseover", onXPathMouseOver, false);
         doc.removeEventListener("keyup", escToExitCreateModel, false);
         de.autoPagerSelectorEnabled = false;
-        removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorContent.css");
-        removeStyleSheetFromDoc(doc,"chrome://autopager/content/EditorAllTags.css");
+        removeStyleSheetFromDoc(doc,"chrome://autopagerimg/content/EditorContent.css");
+        removeStyleSheetFromDoc(doc,"chrome://autopagerimg/content/EditorAllTags.css");
         hiddenRegionDivs(doc,"");
         hiddenDiv(doc.getElementById("autoPagerLabel"),true);
 
@@ -117,9 +117,9 @@ function enableSelector(doc,setMenuStatus) {
         doc.addEventListener("keyup", escToExitCreateModel, false);
         de.autoPagerSelectorEnabled = true;
         
-        addStyleSheetToDoc(doc,"chrome://autopager/content/EditorContent.css");
+        addStyleSheetToDoc(doc,"chrome://autopagerimg/content/EditorContent.css");
         if (loadBoolPref('showtags'))
-          addStyleSheetToDoc(doc,"chrome://autopager/content/EditorAllTags.css");
+          addStyleSheetToDoc(doc,"chrome://autopagerimg/content/EditorAllTags.css");
     }
     if (setMenuStatus) {
         if (de.autoPagerSelectorEnabled ) {
@@ -192,11 +192,14 @@ function onContentLoad(event) {
         document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
     }catch(e){}
     
-    var browser = splitbrowse.getBrowserNode(doc);
-    if (!browser.getAttribute(splitbrowse.getSplitKey()))
+    if (splitbrowse)
     {
-        handleDocLoad(doc,false);
-     }
+      var browser = splitbrowse.getBrowserNode(doc);
+      if (browser && !browser.getAttribute(splitbrowse.getSplitKey()))
+      {
+          handleDocLoad(doc,false);
+      }
+    }
   }
   function onSplitDocLoaded(doc,safe) {
     var browser = splitbrowse.getBrowserNode(doc);
@@ -1616,7 +1619,7 @@ function getPagingOptionDiv(doc)
 +"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%' "+ overEvent + ">"
 +"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='90%'><a  href='javascript:showConfirmTip();'><b class='autoPagerS'>"
 +autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'><a href='javascript:enabledInThisSession(false)'>"
-+ "<img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopager/content/images/vx.png'></a></td></tr></tbody></table></div> "
++ "<img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
 + "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;' "+ overEvent + ">"
 +"<li class='autoPagerS'><a href='javascript:HighlightNextLinks()''>"+ autopagerGetString("highlightnextlinks") +"</a></li>"
 +"<li class='autoPagerS'><a href='javascript:HighlightAutoPagerContents()''>"+ autopagerGetString("highlightcontents") +"</a></li>"
@@ -2127,7 +2130,8 @@ function setGlobalEnabled(enabled) {
     else
         logInfo(autopagerGetString("autopagedisabled"),autopagerGetString("autopagedisabledTip"));
     var enableMenuItem = document.getElementById("autopager-enabled");
-    enableMenuItem.setAttribute("checked",enabled);	  		  
+    if (enableMenuItem)
+      enableMenuItem.setAttribute("checked",enabled);	  		  
 }
 function logInfo(status,tip) {
     if (autopagerDebug) {

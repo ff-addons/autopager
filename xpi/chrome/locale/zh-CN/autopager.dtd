@@ -31,7 +31,7 @@
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
 <!ENTITY autopager.status.update "在线更新">
 <!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
-<!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
+<!ENTITY autopager.toolbarLabel "自动翻页">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
 <!ENTITY caption.results-caption.label "结果">
 <!ENTITY caption.results-caption2.label "结果">

@@ -6,11 +6,15 @@
 
 const autopagerUtils = {
     log: (location.protocol=="chrome:") ? function(message) {
+        if (autopagerPref.loadBoolPref("debug"))
+        {
         var consoleService = Components.classes['@mozilla.org/consoleservice;1']
                 .getService(Components.interfaces.nsIConsoleService);
-        consoleService.logStringMessage(message)
+        consoleService.logStringMessage(message)            
+        }
       } : function(message) {
-        debug(message)
+        if (autopagerPref.loadBoolPref("debug"))
+           debug(message)
     },
     currentDocument: function()
     {
@@ -24,7 +28,7 @@ const autopagerUtils = {
 
 	return browserWindow;  
     },
-      cloneBrowser: function(targetB, originalB)
+    cloneBrowser: function(targetB, originalB)
   {
       var webNav = targetB.webNavigation;
     var newHistory = webNav.sessionHistory;

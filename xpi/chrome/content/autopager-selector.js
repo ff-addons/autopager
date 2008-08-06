@@ -163,28 +163,11 @@ autopagerSelector.start = function(browser) {
 
 autopagerSelector.doCommand = function(command, event) {
 	if (this[command](this.selectedElem)) {
-		this.showCommandLabel(this.commands[command + "_key"], this.commands[command + "_label"]);
 		if (event)
 			event.stopPropagation();
 	}
 	if (event)
 		event.preventDefault();
-}
-
-autopagerSelector.showCommandLabel = function(key, label) {
-	if (this.commandLabelTimeout)
-		clearTimeout(this.commandLabelTimeout);
-
-	document.getElementById("ehh-commandlabel-key").setAttribute("value", key);
-	document.getElementById("ehh-commandlabel-label").setAttribute("value", label);
-
-	var commandLabel = document.getElementById("ehh-commandlabel");
-	commandLabel.showPopup(document.documentElement, this.mouseX, this.mouseY, "tooltip", "topleft", "topleft");
-
-	this.commandLabelTimeout = setTimeout(function() {
-		commandLabel.hidePopup();
-		autopagerSelector.commandLabelTimeout = 0;
-	}, 400);
 }
 
 autopagerSelector.initHelpBox = function() {
