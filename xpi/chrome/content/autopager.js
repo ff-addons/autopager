@@ -1315,7 +1315,7 @@ function getSplitBrowserForDoc(doc,clone) {
         browse.auotpagerContentDoc = doc;
     return browse;
 }
-function simulateClick(win,node) {
+function autopagerSimulateClick(win,node) {
     var evt = node.ownerDocument.createEvent("MouseEvents");
     evt.initMouseEvent("click", true, true, win,
                 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -1335,10 +1335,10 @@ function processInSplitWin(doc){
         if (node.constructor == String)
             b.loadURI(doc.documentElement.autopagernextUrl,null,null);
         else {
-            //alert("simulateClick");
+            //alert("autopagerSimulateClick");
             if (node.tagName == "A")
                 node.target = "_self";
-            simulateClick(b.contentWindow, node);
+            autopagerSimulateClick(b.contentWindow, node);
         }
     }catch (e){
         alertErr("unable to load url:" + e);
