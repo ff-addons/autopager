@@ -11,6 +11,8 @@ var AutoPagerize= {
                 info[RegExp.$1] = strip(RegExp.$2)
             }
         }
+        if (info["url"]=="^https?://.*")
+            return false;
         info.remainHeight = parseInt(info.remainHeight)
         var isValid = function(info) {
             var infoProp = ['nextLink', 'insertBefore', 'pageElement']

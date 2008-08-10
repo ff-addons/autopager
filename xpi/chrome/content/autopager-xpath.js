@@ -43,16 +43,55 @@ const autopagerXPath = {
             }          
         }
         //get others
+        //
+        
+        
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 12;
+        item.xpath = "//a[contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1]";
+        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 14;
+        item.xpath = "(//a[contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 12;
+        item.xpath = "//a[contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1]";
+        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 14;
+        item.xpath = "(//a[contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
         //try the links next to this page
         item = new autopagerXPathItem();
         item.authority = 10;
-        item.xpath = "//a[contains(%href% , @href)]/following-sibling::a[1]";
+        item.xpath = "//a[contains(@href , %href%)]/following-sibling::a[1]";
         this.addItem(doc,links,item);
         
         //try the links next to this page
         item = new autopagerXPathItem();
         item.authority = 12;
-        item.xpath = "(//a[contains(%href% , @href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        item.xpath = "(//a[contains(@href , %href%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 1;
+        item.xpath = "//a[contains(@href , %filename%)]/following-sibling::a[1]";
+        this.addItem(doc,links,item);
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 6;
+        item.xpath = "(//a[contains(@href , %filename%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
         //try to find the page navigator, then find next links
@@ -180,7 +219,7 @@ const autopagerXPath = {
         if (nodes != null && nodes.length >0)
         {
             item.matchCount = nodes.length;
-            item.authority = 1/item.matchCount;
+            item.authority = item.authority/item.matchCount;
             links.push(item);            
         }
       
@@ -278,7 +317,12 @@ const autopagerXPath = {
                  xpaths.push (xpath );
            }
         }
-        //todo
+        if (xpaths.length==0 && nodes.length>0)
+        {
+          xpath = this.getXPathForObjectBySibling(nodes[0],3,level);
+                 if (xpath!= null && xpath.length>0)
+                 xpaths.push (xpath );
+        }
         return xpaths;     
     },
     getLinkXpathFromNode : function (parents,node,level)
@@ -702,6 +746,9 @@ appendOrCondition: function(base,newStr) {
         newPath = newPath.replace(/\%host\%/g,"'" + host + "'");
         newPath = newPath.replace(/\%hostname\%/g,"'" + host+ "'");
         newPath = newPath.replace(/\%pathname\%/g,"'" + doc.location.pathname+ "'");
+        var pathname = doc.location.pathname;
+        var filename = pathname.substr(pathname.lastIndexOf(pathname,"/"))
+        newPath = newPath.replace(/\%filename\%/g,"'" + filename+ "'");
         if (!doc.location.port)
             port = doc.location.port;
         newPath = newPath.replace(/\%port\%/g,			port);
