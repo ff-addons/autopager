@@ -73,7 +73,7 @@ function addStyleSheetToDoc(doc,styleSheet) {
     }		
 }
 function removeStyleSheetFromDoc(doc,styleSheet) {
-    var nodes = evaluateXPath(doc.getElementsByTagName("head")[0],"link[@href ='" + styleSheet + "']",false);
+    var nodes = autopagerEvaluateXPath(doc.getElementsByTagName("head")[0],"link[@href ='" + styleSheet + "']",false);
     for (var i=0;i<nodes.length;++i)
         doc.getElementsByTagName("head")[0].removeChild(nodes[i]);
 }
@@ -1414,7 +1414,7 @@ function processNextDocUsingXMLHttpRequest(doc,url){
 // or Document object (aNode), returning the results as an array
 // thanks wanderingstan at morethanwarm dot mail dot com for the
 // initial work.
-function evaluateXPath(aNode, path,enableJS) {
+function autopagerEvaluateXPath(aNode, path,enableJS) {
     var doc = (aNode.ownerDocument == null) ? aNode : aNode.ownerDocument;
     //var aNode = doc.documentElement;
     var aExpr = preparePath(doc,path,enableJS);
@@ -1640,7 +1640,7 @@ function getPagingOptionDiv(doc)
         if (div.style.width == "")
             div.style.width = "190px";
         div.innerHTML = str;//"<b>Loading ...</b>";
-        var links=evaluateXPath(div,".//a",false);
+        var links=autopagerEvaluateXPath(div,".//a",false);
         for(var i=0;i<links.length;i++)
         {
             links[i].addEventListener("click",onConfirmClick,true);
@@ -1866,11 +1866,11 @@ function fixUrl(doc,url) {
 function findNodeInDoc(doc,path,enableJS) {
     xpath = path;
     if (xpath[0].length == 1)
-        return evaluateXPath(doc,xpath,enableJS);
+        return autopagerEvaluateXPath(doc,xpath,enableJS);
     else {
-        var result = evaluateXPath(doc,xpath[0],enableJS);
+        var result = autopagerEvaluateXPath(doc,xpath[0],enableJS);
         for(var i=1;i<xpath.length;i++) {
-            var nodes = evaluateXPath(doc,xpath[i],enableJS);
+            var nodes = autopagerEvaluateXPath(doc,xpath[i],enableJS);
             for(var k=0;k<nodes.length;++k) {
                 result.push( nodes[k]);
             }
@@ -1898,7 +1898,7 @@ function xTestXPath(doc,path) {
     if (!newpath || newpath.length==0)
         return null;
     xpath = newpath;
-    var found = evaluateXPath(doc,xpath,false);
+    var found = autopagerEvaluateXPath(doc,xpath,false);
     if (found==null || found.length ==0) {
         //try on all frame
          if (document.autopagerXPathModel != "wizard") {
@@ -1906,7 +1906,7 @@ function xTestXPath(doc,path) {
                 //alert(doc.defaultView.frames.length);
                 var i=0;
                 for(i=0;i<doc.defaultView.frames.length;++i) {
-                    found = evaluateXPath(doc.defaultView.frames[i].document,xpath,false);
+                    found = autopagerEvaluateXPath(doc.defaultView.frames[i].document,xpath,false);
                     if (found!=null && found.length >0)
                         break;
                 }
