@@ -222,6 +222,7 @@ function onContentLoad(event) {
                         container.documentElement.autopagernextUrl = nextUrl;
                         browser.autopagerSplitWinFirstDocloaded = true;
                         container.documentElement.autopagerSplitDocInited = true;
+                        container.documentElement.autopagerEnabled = true;
                         scrollWatcher();
                     }
                     else {
@@ -510,6 +511,8 @@ function onInitDoc(doc,safe) {
                 var autopagerEnabled =	(insertPoint != null) && (nextUrl != null) 
                 && workingAutoSites[i].enabled && !(tooManyLinks);
                 de.autopagerEnabled = autopagerEnabled;
+                de.autopagerProcessed = true;
+                
                 //alert(doc.autopagerEnabled);
                 de.autoPagerPage = 1;
                 de.autopagerinsertPoint = insertPoint;
@@ -533,7 +536,7 @@ function onInitDoc(doc,safe) {
                     try{
                         if (workingAutoSites[i].enableJS || loadBoolPref("alwaysEnableJavaScript")) {
                             //doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
-                            var splitbrowser = getSplitBrowserForDoc(doc,true);
+                            //var splitbrowser = getSplitBrowserForDoc(doc,true);
                             //splitbrowser.autopagerSplitWinFirstDocloaded = false;
                             //splitbrowser.autopagerSplitWinFirstDocSubmited = true;
                         }
@@ -588,11 +591,19 @@ function do_request(doc){
     }
 };
 
+function getAllowCheckpagingAutopagingPage(doc) {
+//    if (!doc.documentElement.autopagerProcessed)
+//      onInitDoc(doc,false);
+    var enabled =doc.documentElement.autopagerEnabled && getGlobalEnabled();
+    //enabled = enabled && ( !(doc.documentElement.getAttribute('enableJS') == 'true')  || doc.documentElement.autopagerSplitDocInited );
+    return  enabled;
+};
 function getEnabledAutopagingPage(doc) {
     var enabled =doc.documentElement.autopagerEnabled && getGlobalEnabled();
     enabled = enabled && ( !(doc.documentElement.getAttribute('enableJS') == 'true')  || doc.documentElement.autopagerSplitDocInited );
     return  enabled;
 };
+
 var count=0;
 function  scrollWatcher() {
     
@@ -607,8 +618,9 @@ function  scrollWatcher() {
                 var doc = de.autopagerEnabledDoc[i];
                 if (doc.location != null)
                {
-                    var Enable = getEnabledAutopagingPage(doc);
+                    var Enable = getAllowCheckpagingAutopagingPage(doc);
                     if (Enable) {
+                        var readyToPaging = getEnabledAutopagingPage(doc);
                         if (autopagerDebug)
                             logInfo(count+ "Enabled " + doc.location.href,count+ "Enabled " + doc.location.href);
                         try{
@@ -668,7 +680,21 @@ function  scrollWatcher() {
                                     && ( doc.documentElement.autopagerAllowedPageCount < 0
                                                 ||  doc.documentElement.autopagerAllowedPageCount> doc.documentElement.autoPagerPage)
                                 )
-                                    do_request(doc);
+                                {
+                                if (readyToPaging){
+                                     do_request(doc);   
+                                }
+                                else
+                               {
+                                   if (!doc.documentElement.autopagerSplitCreated)
+                                   {
+                                       doc.documentElement.autopagerSplitCreated = true;
+                                      var splitbrowser = getSplitBrowserForDoc(doc,true);
+                                   }
+                               }
+                               }
+                               
+                                    
                                 
                                     
                             }
