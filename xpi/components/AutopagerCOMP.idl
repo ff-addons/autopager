@@ -1,0 +1,11 @@
+#include "nsISupports.idl"
+#include "nsIASN1Sequence.idl"
+
+[scriptable, uuid(93AFF2EE-79AA-11DD-8660-026156D89593)]
+interface nsIAutopagerCOMP : nsISupports
+{
+  nsIMutableArray loadAll();
+  void setAll(in nsIMutableArray setting);
+  nsISupports getUpdateDate();
+  void setUpdateDate(in nsISupports date);
+};

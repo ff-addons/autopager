@@ -313,7 +313,7 @@ var autopagerSidebar =
             if (url.indexOf("?")>0)
                 urlPattern = url.substring(0,url.indexOf("?")) + "*";
             
-            var site = newSite(urlPattern,url
+            var site = autopagerConfig.newSite(urlPattern,url
                 ,linkXPath,contentXPath);
             site.createdByYou = true;
             site.owner = autopagerPref.loadMyName();
@@ -328,12 +328,12 @@ var autopagerSidebar =
             
             //enable this by default for best compatibility
                 site.enableJS = true;
-            workingAutoSites = loadConfig();
-            insertAt(workingAutoSites,0,site);
-            saveConfig(workingAutoSites);
+            autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
+            autopagerConfig.insertAt(autopagerMain.workingAutoSites,0,site);
+            autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
             document.autopagerXPathModel = "";
             document.autopagerWizardStep = "";
-            openSetting(urlPattern);
+            autopagerConfig.openSetting(urlPattern);
         
     },
         pickupLink : function ()

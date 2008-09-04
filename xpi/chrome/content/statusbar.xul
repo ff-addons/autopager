@@ -23,9 +23,9 @@
                     <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
                 <label value="&autopager.label.value;"></label>
             </tooltip>  
-        <!--  onclick="enableSelector(_content.document);" -->
+        <!--  onclick="autopagerMain.enableSelector(_content.document);" -->
         <statusbarpanel id="autopager_status"
-                        onclick="statusClicked(event);"
+                        onclick="autopagerMain.statusClicked(event);"
                         hidden="false"
                         class="statusbarpanel-menu-iconic"
                         src="chrome://autopager/skin/autopager-small.off.gif"
@@ -40,7 +40,7 @@
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="openSettingForDoc(content.document);"
+                    oncommand="autopagerMain.openSettingForDoc(content.document);"
                 />
                 <menuitem
                     label="&autopager.status.update;"
@@ -51,29 +51,29 @@
                 <menuitem 
                     label="&autopager.status.importurl;"
                     tooltiptext="&autopager.status.importurlTip;"
-                    oncommand="importFromURL();"
+                    oncommand="autopagerConfig.importFromURL();"
                 />
                 <menuitem 
                     label="&autopager.status.importfile;"
                     tooltiptext="&autopager.status.importfileTip;"
-                    oncommand="importFromFile();"
+                    oncommand="autopagerConfig.importFromFile();"
                 />
                 <menuitem 
                     label="&autopager.status.importclip;"
                     tooltiptext="&autopager.status.importclipTip;"
-                    oncommand="importFromClip();"
+                    oncommand="autopagerConfig.importFromClip();"
                 />
 
                 <menuitem 
                     label="&autopager.status.export;"
                     tooltiptext="&autopager.status.exportTip;"
-                    oncommand="exportSetting();"
+                    oncommand="autopagerConfig.exportSetting();"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
-                    oncommand="sitewizard( content.document);"
+                    oncommand="autopagerMain.sitewizard( content.document);"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autoPagerCreateXPath"
@@ -81,18 +81,18 @@
                           tooltiptext="&autopager.status.createXPathTip;"
                           type="checkbox"
                           autocheck="false" 
-                          oncommand="createXpath( content.document);"
+                          oncommand="autopagerMain.createXpath( content.document);"
                 /> 
                 <menuitem 
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="toggleSidebar('viewautopagerSidebar');/*xPathTest( content.document);*/"
+                    oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-myname"
                           label="&autopager.status.myname;"
                           tooltiptext="&autopager.status.mynameTip;"
-                          oncommand="changeMyName();"
+                          oncommand="autopagerMain.changeMyName();"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-hidden-panel-menu" class="autopager-menu-class" 
@@ -111,14 +111,14 @@
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
                           tooltiptext="&autopager.status.showoptionTip;"
-                          oncommand="showAllPagingOptions()"
+                          oncommand="autopagerMain.showAllPagingOptions()"
                 />
                 <menuitem id="autopager-enabled"
                           label="&autopager.status.enabled;"
                           type="checkbox"
                           autocheck="false" 
                           tooltiptext="&autopager.status.enabledTip;"
-                          oncommand="onEnable();"
+                          oncommand="autopagerMain.onEnable();"
                 />
                 <!--
         <menuseparator class="autopager-sep-global"/>
@@ -142,7 +142,7 @@
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="openSettingForDoc(content.document);"
+                    oncommand="autopagerMain.openSettingForDoc(content.document);"
                 />
                 <menuitem
                     label="&autopager.status.update;"
@@ -153,23 +153,23 @@
                 <menuitem 
                     label="&autopager.status.importurl;"
                     tooltiptext="&autopager.status.importurlTip;"
-                    oncommand="importFromURL();"
+                    oncommand="autopagerConfig.importFromURL();"
                 />
                 <menuitem 
                     label="&autopager.status.importfile;"
                     tooltiptext="&autopager.status.importfileTip;"
-                    oncommand="importFromFile();"
+                    oncommand="autopagerConfig.importFromFile();"
                 />
                 <menuitem 
                     label="&autopager.status.export;"
                     tooltiptext="&autopager.status.exportTip;"
-                    oncommand="exportSetting();"
+                    oncommand="autopagerConfig.exportSetting();"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
-                    oncommand="sitewizard( content.document);"
+                    oncommand="autopagerMain.sitewizard( content.document);"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autoPagerCreateXPath"
@@ -177,18 +177,18 @@
                           tooltiptext="&autopager.status.createXPathTip;"
                           type="checkbox"
                           autocheck="false" 
-                          oncommand="createXpath( content.document);"
+                          oncommand="autopagerMain.createXpath( content.document);"
                 /> 
                 <menuitem 
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="toggleSidebar('viewautopagerSidebar');/*xPathTest( content.document);*/"
+                    oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
                           tooltiptext="&autopager.status.showoptionTip;"
-                          oncommand="UpdateSites.updateOnline();showAllPagingOptions()"
+                          oncommand="UpdateSites.updateOnline();autopagerMain.showAllPagingOptions()"
                 />
                 
       </menupopup>

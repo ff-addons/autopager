@@ -17,27 +17,37 @@
     var contentXPath;
 	var xpath="";
 	var siteSearch;
-    
+
     window.addEventListener("DOMContentLoaded", function(ev) {
         var self = arguments.callee;
         window.removeEventListener("DOMContentLoaded",self,false);
-        loadControls();
-	 {
+        loadControls();     
+	{
+            
+            setTimeout(function (){
             populateChooser("",true);
-            chooseSite(0);
             var url = window.opener.autopagerSelectUrl;
-	        if (url != null )
-	        {
-                    window.autopagerSelectUrl = url;
-                    //window.addEventListener("focus", function(ev) 
-                    {
-                        var self = arguments.callee;
-                        window.removeEventListener("focus",self,false);
-	          	var index = getMatchedIndex(window.autopagerSelectUrl);
+            //window.autopagerSelectUrl = url;
+            if (url != null )
+            {
+                    var index = getMatchedIndex(url);
         	        chooseSite(index);
-                    }
-                    //,false);
-	        }
+            }else
+                chooseSite(0);
+            },60);
+            
+//	        
+//	        if (url != null )
+//	        {
+//                    window.autopagerSelectUrl = url;
+//                    //window.addEventListener("focus", function(ev) 
+//                    {
+//                        var self = arguments.callee;
+//                        window.removeEventListener("focus",self,false);
+
+//                    }
+//                    //,false);
+//	        }
         }
     }, false);
     function getMatchedIndex(url)
@@ -54,7 +64,7 @@
 		    for(index=0; index<treeSites.view.rowCount; ++index)
 		    {
                           var treerow = treeSites.view.getItemAtIndex(index);
-                          if (treerow.site != null && getRegExp(treerow.site).test(url))
+                          if (treerow.site != null && autopagerMain.getRegExp(treerow.site).test(url))
                               return index;
 		    }
 	      	
@@ -65,34 +75,44 @@
     }
 
     function handleOkButton() {
-       	saveConfig(sites);
-		autoSites = loadConfig();
+       	autopagerConfig.saveConfig(sites);      
+        //autopagerConfig.autoSites = autopagerConfig.loadConfig();
 
-	saveMyName(mynameText.value);
-        saveBoolPref("smartenable",smartenable.checked);
-	saveUTF8Pref("smarttext",smarttext.value);
-        savePref("smartlinks",smartlinks.value);
-	savePref("smartMargin",smartMargin.value);
+	autopagerMain.saveMyName(mynameText.value);
+        autopagerMain.saveBoolPref("smartenable",smartenable.checked);
+	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
+        autopagerMain.savePref("smartlinks",smartlinks.value);
+	autopagerMain.savePref("smartMargin",smartMargin.value);
 
-        savePref("discoverytext",discoverytext.value);
-        saveBoolPref("showtags",showtags.checked);
-        saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
+        autopagerMain.savePref("discoverytext",discoverytext.value);
+        autopagerMain.saveBoolPref("showtags",showtags.checked);
+        autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
         
 	        
-		//savePref("timeout",txtTimeout.value);
-         setCtrlKey(chkCtrl.checked);
-         setAltKey(chkAlt.checked );
-         setShiftKey(chkShift.checked);
-         setLoadingStyle(txtLoading.value);
-         saveUTF8Pref("pagebreak",txtPagebreak.value);
-         saveUTF8Pref("optionstyle",txtConfirmStyle.value);
-         savePref("update",mnuUpdate.value);
+		//autopagerMain.savePref("timeout",txtTimeout.value);
+         autopagerMain.setCtrlKey(chkCtrl.checked);
+         autopagerMain.setAltKey(chkAlt.checked );
+         autopagerMain.setShiftKey(chkShift.checked);
+         autopagerMain.setLoadingStyle(txtLoading.value);
+         autopagerMain.saveUTF8Pref("pagebreak",txtPagebreak.value);
+         autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
+         autopagerMain.savePref("update",mnuUpdate.value);
          
-		return true;
+         
+//        // Step 1: Create new event which has detail of the command.
+//        var newCmdEvent = document.createEvent('Events');
+//        newCmdEvent.initEvent('AutoPagerRefreshPage',true, true);         
+//        var newEvent = document.createEvent('XULCommandEvents');
+//        newEvent.initCommandEvent('AutoPagerRefreshPage', true, true,window.opener, 0, false, false, false, false,  newCmdEvent);
+//        window.opener.document.dispatchEvent(newEvent);
+//        //         autopagerMain.onContentLoad(parentWindow.gBrowser.contentDocument);
+
+    window.opener.gBrowser.contentDocument.location.reload();
+        return true;
     }
     function onSiteChange(treeitem,site)
     {
-    	site.changedByYou = isChanged(site);
+    	site.changedByYou = autopagerConfig.isChanged(site);
         var treerow = treeitem.childNodes[0];
         var treecell = treerow.childNodes[0];
         treecell.setAttribute("properties","status" + getColor(site));
@@ -133,49 +153,49 @@
         siteSearch  = document.getElementById("siteSearch");
         
         mynameText = document.getElementById("myname");
-        mynameText.value = loadMyName();
+        mynameText.value = autopagerMain.loadMyName();
         txtLoading = document.getElementById("loading");
-        txtLoading.value = getLoadingStyle();
+        txtLoading.value = autopagerMain.getLoadingStyle();
         mnuUpdate = document.getElementById("updatePeriod");
-        mnuUpdate.value = loadPref("update");
+        mnuUpdate.value = autopagerMain.loadPref("update");
         txtPagebreak = document.getElementById("pagebreak");
-        txtPagebreak.value = loadUTF8Pref("pagebreak");
+        txtPagebreak.value = autopagerMain.loadUTF8Pref("pagebreak");
         
         txtConfirmStyle = document.getElementById("confirm");
-        txtConfirmStyle.value = loadUTF8Pref("optionstyle");
+        txtConfirmStyle.value = autopagerMain.loadUTF8Pref("optionstyle");
         //var chkCtrl,chkAlt,chkShift;
         chkCtrl = document.getElementById("chkCtrl");
         chkAlt = document.getElementById("chkAlt");
         chkShift = document.getElementById("chkShift");
-        chkCtrl.checked = getCtrlKey();
-        chkAlt.checked = getAltKey();
-        chkShift.checked = getShiftKey();
+        chkCtrl.checked = autopagerMain.getCtrlKey();
+        chkAlt.checked = autopagerMain.getAltKey();
+        chkShift.checked = autopagerMain.getShiftKey();
         
         showtags = document.getElementById("showtags");
-        showtags.checked = loadBoolPref("showtags");
+        showtags.checked = autopagerMain.loadBoolPref("showtags");
         
         alwaysEnableJavaScript = document.getElementById("alwaysEnableJavaScript");
-        alwaysEnableJavaScript.checked = loadBoolPref("alwaysEnableJavaScript");
+        alwaysEnableJavaScript.checked = autopagerMain.loadBoolPref("alwaysEnableJavaScript");
         
         smartenable = document.getElementById("smartenable");
-        smartenable.checked = loadBoolPref("smartenable");
+        smartenable.checked = autopagerMain.loadBoolPref("smartenable");
 
 		grpSmart = document.getElementById("grpSmart");
 		
 		smarttext = document.getElementById("smarttext");
-        smarttext.value = loadUTF8Pref("smarttext");
+        smarttext.value = autopagerMain.loadUTF8Pref("smarttext");
         
         smartlinks = document.getElementById("smartlinks");
-        smartlinks.value = loadPref("smartlinks");
+        smartlinks.value = autopagerMain.loadPref("smartlinks");
         
         discoverytext = document.getElementById("discoverytext");
-        discoverytext.value = loadPref("discoverytext");
+        discoverytext.value = autopagerMain.loadPref("discoverytext");
         
         smartMargin = document.getElementById("smartMargin");
-        smartMargin.value = loadPref("smartMargin");
+        smartMargin.value = autopagerMain.loadPref("smartMargin");
         
         //txtTimeout = document.getElementById("timeout");
-        //txtTimeout.value = loadPref("timeout");
+        //txtTimeout.value = autopagerMain.loadPref("timeout");
 
         enableSmartControl(smartenable.checked);
         
@@ -260,9 +280,9 @@
         }, false);
         margin.addEventListener("change", function() {
            if (selectedSite != null) {
-           	if (!isNumeric( margin.value))
+           	if (!autopagerConfig.isNumeric( margin.value))
            	{
-           		alert(autopagerGetString("inputnumber"));
+           		alert(autopagerConfig.autopagerGetString("inputnumber"));
            		margin.focus();
            		return;
            	}
@@ -277,7 +297,7 @@
         }, false);
 		
         btnAddPath.addEventListener("command", function() {
-           xpath = prompt(autopagerGetString("inputxpath"),xpath);
+           xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
            {
            		addContentXPath(xpath);
@@ -356,7 +376,7 @@
 			if (contentXPath.selectedCount > 0) {
                             treeitem = contentXPath.getSelectedItem(0);
                             xpath = treeitem.label;
-                            xpath = prompt(autopagerGetString("inputxpath"),xpath);
+                            xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
                             if (btnAddPath.disabled)
                                 return;
                             if (xpath!=null && xpath.length>0)
@@ -499,10 +519,10 @@
 		var myname = mynameText.value;
     	if (myname==null || myname.length == 0)
     	{
-    		myname = changeMyName();
+    		myname = autopagerMain.changeMyName();
     		if (myname==null || myname.length == 0)
     		{
-    			alert(autopagerGetString("mustinput"));
+    			alert(autopagerConfig.autopagerGetString("mustinput"));
     			return "";
     		}
     	}
@@ -514,12 +534,12 @@
     	if (myname==null || myname.length == 0)
     		return;
     		
-        var site = newSite("http://yourhost/*","your desc"
+        var site = autopagerConfig.newSite("http://yourhost/*","your desc"
   				,"//a[contains(.//text(),'Next')]","//body/*");
 		site.createdByYou = true;
 		site.owner = myname;
 		addSite(site,sites.length -1);
-                insertAt(sites,0,site);
+                autopagerConfig.insertAt(sites,0,site);
                 onSiteFilter(siteSearch.value,false);
 	}
     function handleCopySiteButton() {
@@ -531,9 +551,9 @@
             selectedSite = treeSites.view.getItemAtIndex(treeSites.currentIndex).site;
             if (selectedSite == null)
                 return;
-            var site = cloneSite(selectedSite);
+            var site = autopagerConfig.cloneSite(selectedSite);
             
-            insertAt(sites,0,site);
+            autopagerConfig.insertAt(sites,0,site);
             onSiteFilter(siteSearch.value,false);
         }
     }
@@ -558,7 +578,7 @@
             if (exportSites.length > 0) {
                 var file = null;
                 if (!exportToClipboard)
-                    file = selectFile(autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                    file = autopagerConfig.selectFile(autopagerConfig.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
                 else
                 {
                     file = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -573,10 +593,10 @@
                 
                 if (file)
                 {
-                     saveConfigToFile(exportSites,file,false);
+                     autopagerConfig.saveConfigToFile(exportSites,file,false);
                       if (exportToClipboard)
                       {
-                          var contentStr = autopagerGetContents(Components.classes["@mozilla.org/network/io-service;1"]
+                          var contentStr = autopagerConfig.autopagerGetContents(Components.classes["@mozilla.org/network/io-service;1"]
                                             .getService(Components.interfaces.nsIIOService)
                                              .newFileURI(file));
                           
@@ -662,7 +682,7 @@
                if (node==null)
                    node = treeitem.parentNode.parentNode;
                //var site = treeitem.site;
-               removeFromArrayByIndex(sites,treeitem.siteIndex);
+               autopagerConfig.removeFromArray(sites,treeitem.site);
                treeitem.parentNode.removeChild(treeitem);
            }
 
@@ -732,7 +752,7 @@
             }
             if (userSites == null)
                 userSites = new Array();
-            sites = cloneSites(userSites);
+            sites = autopagerConfig.cloneSites(userSites);
             sites.updateSite = userSites.updateSite;
             allSites["autopager.xml"] = sites;
                 
@@ -742,14 +762,16 @@
 
         var key;
         for ( key in allSites){
+            if (key=="smartpaging.xml")
+                continue;
                     tmpsites = allSites[key];
                     var treechildren = addTreeParent(treebox,tmpsites.updateSite);
                     if (userSites.updateSite == tmpsites.updateSite)
                         userModifiableTreeChildren = treechildren;
                     for (var i = 0; i < tmpsites.length; i++) {
                             var site = tmpsites[i];
-                            if (site.urlPattern.toLowerCase().indexOf(filter) != -1
-	        		|| site.desc.toLowerCase().indexOf(filter) != -1)
+                            if (filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
+	        		|| site.desc.toLowerCase().indexOf(filter) != -1))
                                 addTreeItem(treechildren,site,i);    
                     }
             };

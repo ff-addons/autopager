@@ -50,8 +50,8 @@ var AutoPagerUpdateTypes =
         
         var configContents="";
         try{
-            configContents= autopagerGetContents(getConfigFileURI("all-sites.xml"));
-            var doc = autopagerDomParser.parseFromString(configContents, "text/xml");
+            configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("all-sites.xml"));
+            var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
                       
             var sites= null;
             sites = this.loadSitesFromDoc(configContents);
@@ -100,55 +100,55 @@ function UpdateSite(owner,locales,url,type,desc,filename,callback)
             for (var i = 0, childNode = null; (childNode = childNodes[i]) ; i++) {
                 var nodeName = childNode.nodeName;
                 if (nodeName == "urlPattern") {
-                    site.urlPattern = getValue(childNode);
+                    site.urlPattern = autopagerConfig.getValue(childNode);
                 }else  if (nodeName == "guid") {
-                    site.guid = getValue(childNode);
+                    site.guid = autopagerConfig.getValue(childNode);
                 }else if (nodeName == "urlIsRegex") {
-                    site.isRegex	= (getValue(childNode) == 'true');
+                    site.isRegex	= (autopagerConfig.getValue(childNode) == 'true');
                 }
                 else if (nodeName == "margin") {
-                    var val = getValue(childNode);
-                    if (isNumeric(val))
+                    var val = autopagerConfig.getValue(childNode);
+                    if (autopagerConfig.isNumeric(val))
                         site.margin = val;
                 }
                 else if (nodeName == "desc") {
-                    site.desc	= getValue(childNode);
+                    site.desc	= autopagerConfig.getValue(childNode);
                 }
                 else if (nodeName == "linkXPath") {
-                    site.linkXPath	= getValue(childNode);
+                    site.linkXPath	= autopagerConfig.getValue(childNode);
                 }
                 else if (nodeName == "contentXPath") {
-                    site.contentXPath.push(getValue(childNode));
+                    site.contentXPath.push(autopagerConfig.getValue(childNode));
                 }
                 else if (nodeName == "enabled") {
-                    site.enabled	= (getValue(childNode) == 'true');
+                    site.enabled	= (autopagerConfig.getValue(childNode) == 'true');
                 }
                 else if (nodeName == "enableJS") {
-                    site.enableJS	= (getValue(childNode) == 'true');
+                    site.enableJS	= (autopagerConfig.getValue(childNode) == 'true');
                     //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
                 }
                 else if (nodeName == "quickLoad") {
-                    site.quickLoad	= (getValue(childNode) == 'true');
+                    site.quickLoad	= (autopagerConfig.getValue(childNode) == 'true');
                     hasQuickLoad = true;
                 }
                 else if (nodeName == "fixOverflow") {
-                    site.fixOverflow	= (getValue(childNode) == 'true');
+                    site.fixOverflow	= (autopagerConfig.getValue(childNode) == 'true');
                     //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
                 }
                 else if (nodeName == "createdByYou") {
-                    site.createdByYou	= (getValue(childNode) == 'true');
+                    site.createdByYou	= (autopagerConfig.getValue(childNode) == 'true');
                 }
                 else if (nodeName == "changedByYou") {
-                    site.changedByYou	= (getValue(childNode) == 'true');
+                    site.changedByYou	= (autopagerConfig.getValue(childNode) == 'true');
                 }else if (nodeName == "owner") {
-                    site.owner	= getValue(childNode) ;
+                    site.owner	= autopagerConfig.getValue(childNode) ;
                 }
     
             }
             if (!hasQuickLoad)
                 site.quickLoad = false;
             if (site.guid.length == 0 && site.createdByYou)
-                site.guid = generateGuid();
+                site.guid = autopagerConfig.generateGuid();
             sites.push(site);
         }
         return sites;

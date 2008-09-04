@@ -385,7 +385,7 @@ const autopagerXPath = {
                 }
             }
         }catch(e) {
-            alertErr(e);
+            autopagerMain.alertErr(e);
         }
         return xi;
     },
@@ -642,7 +642,7 @@ const autopagerXPath = {
                 found.push(res);
             //alert(found.length);
         }catch(e) {
-            autopagerUtils.log("unableevaluator");//TODO: autopagerFormatString("unableevaluator",[aExpr,e]));
+            autopagerUtils.log("unableevaluator");//TODO: autopagerConfig.autopagerFormatString("unableevaluator",[aExpr,e]));
         }
         return found;
     },
@@ -758,7 +758,7 @@ appendOrCondition: function(base,newStr) {
         //newPath = newPath.replace(/\%referrer\%/g,"'" + doc.referrer+ "'");
         //newPath = newPath.replace(/\%baseURI\%/g,"'" + doc.baseURI+ "'");
     }catch(e) {
-        alertErr(e);
+        autopagerMain.alertErr(e);
     }
     return newPath;
     

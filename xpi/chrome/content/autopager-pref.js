@@ -36,7 +36,7 @@ loadPref : function(name) {
         
         return this.autopagerPrefs.getCharPref("." +  name); // get a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }
     return "";
 },
@@ -46,7 +46,7 @@ getDatePrefs : function(name){
         var timestamp = this.autopagerPrefs.getCharPref("." +  name); // get a pref
           date.setTime(timestamp);
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }     
     return date;
 },
@@ -55,7 +55,7 @@ setDatePrefs : function(name,date){
         
         this.autopagerPrefs.setCharPref("." +  name,date.getTime()); // get a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }     
 },
 
@@ -64,7 +64,7 @@ loadBoolPref : function(name) {
         
         return this.autopagerPrefs.getBoolPref("." +  name); // get a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }
     return "";
 },
@@ -73,7 +73,7 @@ savePref : function(name,value) {
         
         return this.autopagerPrefs.setCharPref("." +  name,value); // set a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }
     return "";
 },
@@ -82,7 +82,7 @@ saveBoolPref : function(name,value) {
         
         return this.autopagerPrefs.setBoolPref("." +  name,value); // get a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }
     return "";
 },
@@ -94,20 +94,20 @@ loadMyName : function() {
         
         return this.loadUTF8Pref("myname"); // get a pref
     }catch(e) {
-        //alertErr(e);
+        //autopagerMain.alertErr(e);
     }
     return "";
 },
   showMyName : function(){
     try{
         var myname = document.getElementById("autopager-myname");
-        myname.label = autopagerFormatString("myname" ,[this.loadMyName()]);
+        myname.label = autopagerConfig.autopagerFormatString("myname" ,[this.loadMyName()]);
     }catch(e) {
         
     }
 },
  changeMyName : function() {
-    var name = prompt(autopagerGetString("inputname"),this.loadMyName());
+    var name = prompt(autopagerConfig.autopagerGetString("inputname"),this.loadMyName());
     if (name!=null && name.length>0) {
         this.saveMyName(name);
         this.showMyName();

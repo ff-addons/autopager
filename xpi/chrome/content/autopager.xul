@@ -70,17 +70,17 @@
                                         <menuitem 
                                             label="&autopager.status.importurl;"
                                             tooltiptext="&autopager.status.importurlTip;"
-                                            oncommand="saveConfig(sites);importFromURL();onSiteFilter(siteSearch.value,true);"
+                                            oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromURL();onSiteFilter(siteSearch.value,true);"
                                         />
                                         <menuitem 
                                             label="&autopager.status.importfile;"
                                             tooltiptext="&autopager.status.importfileTip;"
-                                            oncommand="saveConfig(sites);importFromFile();onSiteFilter(siteSearch.value,true);"
+                                            oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromFile();onSiteFilter(siteSearch.value,true);"
                                         />
                                         <menuitem 
                                             label="&autopager.status.importclip;"
                                             tooltiptext="&autopager.status.importclipTip;"
-                                            oncommand="saveConfig(sites);importFromClip();onSiteFilter(siteSearch.value,true);"
+                                            oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromClip();onSiteFilter(siteSearch.value,true);"
                                         />
                                     </popup>
                                     <popup id="export-settings" position="before_start">

@@ -396,7 +396,7 @@ var splitbrowse = {
   done : function(doc) 
   {
       //alert("done");
-      onSplitDocLoaded(doc,true);
+      autopagerMain.onSplitDocLoaded(doc,true);
   }
 };
 var splitpanelProgressListener = {    
