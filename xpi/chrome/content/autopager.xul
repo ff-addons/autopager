@@ -20,6 +20,8 @@
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
@@ -107,6 +109,7 @@
                         </hbox>
                     </vbox>
                     <splitter/>
+                    <deck id="settingDeck" selectedIndex="1">
                     <vbox flex="1">
                         <hbox align="center">
                             <label control="lblOwner" value="&setting.label.lblOwner;"/>
@@ -161,7 +164,55 @@
                             <textbox multiline="true" id="desc" rows="4" flex="1"/>
                         </hbox>
                     </vbox>
-                    
+                    <vbox>
+                    <vbox flex="1">
+                        <descrition>
+                            &setting.label.lblSetting;
+                        </descrition>
+                        <checkbox id="chkSettingEnabled" label="&setting.label.chkEnabled;" checked="true" />
+                        
+                        <hbox align="center">
+                            <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;"/>
+                            <textbox id="lbSettinglOwner" value=""/>
+                        </hbox>
+                        <hbox align="center">
+                            <label control="settingurl" value="&setting.label.lblSettingUrl;"/>
+                            <textbox id="settingurl" flex="1"/>
+                        </hbox>
+                        <hbox align="center">
+                            <label control="settingtype" value="&setting.label.lblSettingType;"/>
+                            <menulist id="settingtype" flex="1">
+                                <menupopup>
+                                    <menuitem label="&setting.type.autopager;" value="autopager-xml" selected="true"/>
+                                    <menuitem label="&setting.type.autopagertext;" value="autopager-freetext"/>
+                                    <menuitem label="&setting.type.autopagerize;" value="autopagerize"/>
+                                    <menuitem label="&setting.type.autopagerizeJson;" value="autopagerize-json"/>
+                                </menupopup>
+                            </menulist>
+                        </hbox>
+                            <label control="settingUpdatePeriod" value="&setting.label.lblUpdate;"/>
+                            <menulist id="settingUpdatePeriod" >
+                                <menupopup>
+                                    <menuitem label="&setting.update.global;" value="-2"/>
+                                    <menuitem label="&setting.update.startup;" value="-1"/>
+                                    <!-- the value is the hours after last update -->
+                                    <menuitem label="&setting.update.daily;" value="24"/>
+                                    <menuitem label="&setting.update.weekly;" value="168"/>
+                                    <menuitem label="&setting.update.monthly;" value="720"/>
+                                    <menuitem label="&setting.update.never;" value="0"/>
+                                </menupopup>
+                            </menulist>			
+                        <hbox align="center">
+                            <label control="settingxpath" value="&setting.label.lblSettingXPath;"/>
+                            <textbox id="settingxpath" flex="1"/>
+                        </hbox>
+                        <hbox align="center">
+                            <label control="settingdesc" value="&setting.label.lblSettingDesc;"/>
+                            <textbox multiline="true" id="settingdesc" rows="4" flex="1"/>
+                        </hbox>
+                        </vbox>
+                    </vbox>
+                    </deck>
                 </hbox>
                 
             </tabpanel>
@@ -247,6 +298,9 @@
                     <hbox align="center">
                             <checkbox id="alwaysEnableJavaScript" label="&setting.label.allwaysEnableJavaScript;" check="false" flex="1"/>
                     </hbox>
+                    <hbox align="center">
+                            <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
+                    </hbox>
 
                 </vbox>
             </tabpanel>
@@ -254,14 +308,14 @@
                 <vbox flex="1">
                         <hbox align="center">
                             <label control="updatePeriod" value="&setting.label.lblUpdate;"/>
-                            <menulist id="updatePeriod" flex="1">
+                            <menulist id="updatePeriod" flex="1" >
                                 <menupopup>
                                     <menuitem label="&setting.update.startup;" value="-1" selected="true"/>
                                     <!-- the value is the hours after last update -->
                                     <menuitem label="&setting.update.daily;" value="24"/>
                                     <menuitem label="&setting.update.weekly;" value="168"/>
                                     <menuitem label="&setting.update.monthly;" value="720"/>
-                                    <menuitem label="&setting.update.never;" value="0"/>
+                                    <menuitem label="&setting.update.once;" value="0"/>
                                 </menupopup>
                             </menulist>
                         </hbox>

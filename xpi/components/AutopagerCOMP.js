@@ -30,7 +30,8 @@ function AutopagerCOMP() {
 AutopagerCOMP.prototype = {
 
         allSiteSetting: [],
-        date: null,
+        updateSites: [],
+        siteConfirms : [],
         // define the function we want to expose in our interface
         loadAll: function() {
             return this.allSiteSetting;
@@ -38,12 +39,18 @@ AutopagerCOMP.prototype = {
         setAll: function(settings) {
             this.allSiteSetting = settings;
         },
-        // define the function we want to expose in our interface
-        getUpdateDate : function() {
-            return this.date;
+  
+        getUpdateSites : function() {
+            return this.updateSites;
         },
-        setUpdateDate : function(date) {
-            this.date = date;
+        setUpdateSites : function(sites) {
+            this.updateSites = sites;
+        },
+        getSiteConfirms : function() {
+            return this.siteConfirms;
+        },
+        setSiteConfirms : function(sites) {
+            this.siteConfirms = sites;
         },
         QueryInterface: function(aIID)
         {

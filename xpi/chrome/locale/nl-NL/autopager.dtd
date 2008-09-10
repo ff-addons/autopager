@@ -53,7 +53,6 @@
 <!ENTITY setting.button.public "Publiek">
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
@@ -71,9 +70,10 @@
 <!ENTITY setting.label.grpDiscovery "Ontdekking">
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Beschrijving:">
 <!ENTITY setting.label.lblLinkXPath "Koppelings-XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "Gemaakt door:">
 <!ENTITY setting.label.lblURLPattern "URL patroon:">
 <!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">
@@ -82,6 +82,7 @@
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
@@ -89,15 +90,16 @@
 <!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
 <!ENTITY setting.label.update "Bijwerken">
-<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "AutoPager instellingen">
 <!ENTITY setting.tree.Description "Beschrijving">
 <!ENTITY setting.tree.URLPattern "URL patroon">
 <!ENTITY setting.update.daily "Elke dag">
 <!ENTITY setting.update.monthly "Elke maand">
 <!ENTITY setting.update.never "Nooit">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Bij elke keer opstarten">
 <!ENTITY setting.update.weekly "Elke week">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site toevoegen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Alles wissen">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Ontdekking">
@@ -106,3 +108,15 @@
 <!ENTITY treecol.authorityCol.label "Authorisatie">
 <!ENTITY treecol.machedCol.label "Aantal matches">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">

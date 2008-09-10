@@ -10,14 +10,20 @@
     var mnuUpdate;
     var linkXPath,containerXPath;
 
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript;
+    var chkSettingEnabled,lbSettinglOwner,settingurl
+    var settingtype,settingUpdatePeriod,settingxpath,settingdesc
+
+    var selectedSource;
+    
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt;
     var slectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
     var contentXPath;
-	var xpath="";
-	var siteSearch;
+    var xpath="";
+    var siteSearch;
 
+    var settingDeck;
     window.addEventListener("DOMContentLoaded", function(ev) {
         var self = arguments.callee;
         window.removeEventListener("DOMContentLoaded",self,false);
@@ -87,6 +93,8 @@
         autopagerMain.savePref("discoverytext",discoverytext.value);
         autopagerMain.saveBoolPref("showtags",showtags.checked);
         autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
+        autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
+        
         
 	        
 		//autopagerMain.savePref("timeout",txtTimeout.value);
@@ -98,6 +106,7 @@
          autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
          autopagerMain.savePref("update",mnuUpdate.value);
          
+         AutoPagerUpdateTypes.saveAllSettingSiteConfig();
          
 //        // Step 1: Create new event which has detail of the command.
 //        var newCmdEvent = document.createEvent('Events');
@@ -107,7 +116,10 @@
 //        window.opener.document.dispatchEvent(newEvent);
 //        //         autopagerMain.onContentLoad(parentWindow.gBrowser.contentDocument);
 
-    window.opener.gBrowser.contentDocument.location.reload();
+          if (window.opener.getBrowser)
+            window.opener.getBrowser().contentDocument.location.reload();
+          else if (window.opener.gBrowser)
+              window.opener.gBrowser.contentDocument.location.reload();
         return true;
     }
     function onSiteChange(treeitem,site)
@@ -120,6 +132,16 @@
         treecell.setAttribute("properties","status" + getColor(site));
 
     }
+    function onSourceChange(treeitem,site)
+    {
+    	site.changedByYou = autopagerConfig.isChanged(site);
+        var treerow = treeitem.childNodes[0];
+        var treecell = treerow.childNodes[0];
+        treecell.setAttribute("properties","status" + getColor(site));
+        treecell = treerow.childNodes[1];
+        treecell.setAttribute("properties","status" + getColor(site));
+
+    }    
     function loadControls() {
         treeSites = document.getElementById("treeSites");
         treebox = document.getElementById("siteContents");
@@ -150,7 +172,17 @@
         containerXPath  = document.getElementById("containerXPath");
         btnPickLinkPath  = document.getElementById("pickLinkPath");
         
+        settingDeck = document.getElementById("settingDeck");
+        
         siteSearch  = document.getElementById("siteSearch");
+        
+        chkSettingEnabled = document.getElementById("chkSettingEnabled");
+        lbSettinglOwner = document.getElementById("lbSettinglOwner");
+        settingurl = document.getElementById("settingurl");
+        settingtype = document.getElementById("settingtype");
+        settingUpdatePeriod = document.getElementById("settingUpdatePeriod");
+        settingxpath = document.getElementById("settingxpath");
+        settingdesc  = document.getElementById("settingdesc");
         
         mynameText = document.getElementById("myname");
         mynameText.value = autopagerMain.loadMyName();
@@ -176,6 +208,9 @@
         
         alwaysEnableJavaScript = document.getElementById("alwaysEnableJavaScript");
         alwaysEnableJavaScript.checked = autopagerMain.loadBoolPref("alwaysEnableJavaScript");
+        
+        showPrompt = document.getElementById("showPrompt");
+        showPrompt.checked = !autopagerMain.loadBoolPref("noprompt");
         
         smartenable = document.getElementById("smartenable");
         smartenable.checked = autopagerMain.loadBoolPref("smartenable");
@@ -210,6 +245,52 @@
         chkEnabled.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enabled = chkEnabled.checked;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        
+        chkSettingEnabled.addEventListener("command", function() {
+           if (selectedSource != null) {
+             selectedSource.enabled = chkSettingEnabled.checked;
+             onSourceChange(slectedListItem,selectedSource);
+           }
+        }, false);
+        
+        settingtype.addEventListener("command", function() {
+           if (selectedSource != null) {
+             selectedSource.updateType = AutoPagerUpdateTypes.getType( settingtype.value);
+             onSourceChange(slectedListItem,selectedSource);
+           }
+        }, false);
+        settingUpdatePeriod.addEventListener("command", function() {
+           if (selectedSource != null) {
+             selectedSource.updateperiod = settingUpdatePeriod.value;
+             onSourceChange(slectedListItem,selectedSource);
+           }
+        }, false);
+
+        lbSettinglOwner.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.owner = lbSettinglOwner.value;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        settingurl.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.url = settingurl.value;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        settingxpath.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.xpath = settingxpath.value;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+
+        settingdesc.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.desc = settingdesc.value;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -265,6 +346,7 @@
            if (selectedSite != null) {
            	
              selectedSite.urlPattern = urlPattern.value;
+             selectedSite.regex=null;
              var treerow = slectedListItem.childNodes[0];
              var treecell = treerow.childNodes[0];
              treecell.setAttribute("label",urlPattern.value);
@@ -426,6 +508,27 @@
             lblOwner.value = "";
             btnClone.hidden = true;
     }
+    function updateSourceDetail(updateSite)
+    {
+        selectedSource = updateSite
+        chkSettingEnabled.checked = updateSite.enabled;
+        lbSettinglOwner.value = updateSite.owner;
+        settingurl.value = updateSite.url;
+        settingtype.value = updateSite.updateType.type;
+        settingUpdatePeriod.value = updateSite.updateperiod;
+        settingxpath.value = updateSite.xpath;
+        settingdesc.value =  updateSite.desc;
+        
+        var readOnly = updateSite.defaulted;
+        chkSettingEnabled.readOnly = readOnly;
+        lbSettinglOwner.readOnly = readOnly;
+        settingurl.readOnly = readOnly;
+        settingtype.disabled = readOnly;
+        //settingUpdatePeriod.disabled = readOnly;
+        settingxpath.readOnly = readOnly;
+        settingdesc.readOnly = readOnly;
+        
+    }
 	function updateDetails(event) {
             if(treeSites.filterIng)
 			return;
@@ -439,10 +542,13 @@
                var updateSite = itemParent.updateSite;
                if (updateSite == null)
                {
+                   switchDeck(1);
+                   updateSourceDetail(slectedListItem.updateSite);
                    enableSiteEditControls(false);
                    clearInfo();
                    return;
                }
+               switchDeck(0);
                var enableEdit =  (updateSite.url.length == 0);
                if (enableEdit)
                     selectedSite = sites[slectedListItem.siteIndex];
@@ -471,6 +577,10 @@
                 lblOwner.value = selectedSite.owner;
             
         }
+    }
+    function switchDeck(index)
+    {
+        settingDeck.selectedIndex = index;
     }
       function enableSiteEditControls(enableEdit)
       {
@@ -806,6 +916,7 @@
         var boxobject = treeSites.boxObject;
         boxobject.QueryInterface(Components.interfaces.nsITreeBoxObject);
         //boxobject.scrollToRow(index);
+        
         boxobject.ensureRowIsVisible(index);
         treeSites.view.selection.select(index);
         treeSites.focus();

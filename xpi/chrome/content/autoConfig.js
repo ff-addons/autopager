@@ -6,93 +6,75 @@ var UpdateSites=
     AutopagerCOMP:null,
     init:function()
     {
-        function xmlConfigCallback(doc,updatesite)
-        {
-            var sites = autopagerConfig.loadConfigFromDoc(doc);
-            return sites;
-        }
-        function blogConfigCallback(doc,updatesite)
-        {
-            var commentPath="//div[@class='comment even' or @class='comment odd']";
-            var nodes =doc.evaluate(commentPath, doc, null, 0, null);
-                var allSites = new Array();
-                for (var node = null; (node = nodes.iterateNext()); ) {
-
-                        //alert(node.textContent);
-                        var sites = autopagerConfig.loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
-                        //alert(sites.length);
-                        autopagerConfig.mergeArray(allSites,sites,true);
-                }
-            return allSites;
-        }
-try {
-        // this is needed to generally allow usage of components in javascript
-        //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-
-        this.AutopagerCOMP = Components.classes['@www.teesoft.com/AutopagerCOMP;1'].getService().wrappedJSObject;
-
-        //alert(myComponent.loadAll());
-} catch (anError) {
-}
-    
-        if (this.updateSites == null)
-        {
-            this.updateSites =  new Array();
-
-            this.updateSites.push(new UpdateSite("pagerization","all",
-                        "http://userjs.oh.land.to/pagerization/convert.php?file=siteinfo.v4","text/html; charset=utf-8",
-                        "pagerization configurations",
-                        "pagerization.xml",AutoPagerize.onload));
-
-            this.updateSites.push(new UpdateSite("autopagerize","all",
-                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
-                        "autopagerize configurations",
-                        "autopagerize.xml",AutoPagerize.onload));
-
-
-            this.updateSites.push(new UpdateSite("chinalist","all",
-                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
-                        "pagerization chinalist configurations",
-                        "chinalist.xml",AutoPagerize.onload));
-            
-            this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
-                        "configurations added to blog",
-                        "blogcomments.xml",blogConfigCallback));
-
-                    
-            this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
-                        "default configurations on autopager.mozdev.org",
-                        "autopagerMozdev.xml",xmlConfigCallback));
-
-            this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?version=0.1.6.0.28&lastupdate=" + (new Date()).getTime(),"text/xml; charset=utf-8",
-                        "default configurations @ teesoft.info",
-                        "autopagerTee.xml",xmlConfigCallback));
-                                               
-            this.updateSites.push(new UpdateSite("Wind Li","all",
-                        "","text/html; charset=utf-8",
-                        "user created configurations",
-                        "autopager.xml",null));
-
-         }
         
+        if (this.updateSites == null || this.AutopagerCOMP==null)
+        {
+            try {
+                // this is needed to generally allow usage of components in javascript
+                //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                this.AutopagerCOMP = Components.classes['@www.teesoft.com/AutopagerCOMP;1'].getService().wrappedJSObject;
+                //alert(myComponent.loadAll());
+            } catch (anError) {
+            }
+    
+            this.updateSites = this.getUpdateSites();
+        }
     },
-    updateSiteOnline:function (updatesite)
+    getUpdateSites : function()
+    {
+        var sites = this.AutopagerCOMP.getUpdateSites();
+        if (sites==null || sites.length==0)
+        {
+            sites = AutoPagerUpdateTypes.getUpdateSites();
+            this.AutopagerCOMP.setUpdateSites(sites);
+        }
+        return sites;
+    },
+    updateSiteOnline :function (updatesite,force)
     {
         UpdateSites.submitCount ++;
-        apxmlhttprequest.xmlhttprequest(updatesite.url,updatesite.type,this.callback,this.onerror,updatesite);
+        var needUpdate = force;
+        if (!force)
+        {
+        var updateperiod = updatesite.updateperiod;
+        if (updateperiod == -2) //global
+            updateperiod = autopagerMain.loadPref("update");
+        if (updateperiod == "-1")
+            needUpdate = true;
+        else if (0 == updateperiod)
+        {
+            var allSettings = UpdateSites.loadAll();
+            needUpdate = allSettings[updatesite.filename].length<=0;
+        }
+        else
+        {
+            var today = new Date();
+            var lastUpdate = updatesite.lastupdate;
+            if (lastUpdate==null || lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > updateperiod)
+                needUpdate = true;
+            //alert(updatesite.filename + " " + (today.getTime() - lastUpdate) /(1000 * 60 * 60))
+        }
+        }        
+        if (needUpdate)
+        {
+            apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            //alert("update " + updatesite.filename)
+         }
     },
-    updateOnline:function ()
+    getUrl : function (url)
+    {
+        url = url.replace(/\{version\}/,"0.1.6.0.33").replace(/\{timestamp\}/,(new Date()).getTime());
+        return url;
+    },
+    updateOnline :function (force)
     {
         this.init();
         UpdateSites.submitCount=0;
         for(var i=0;i<this.updateSites.length;i++)
         {
             var site= this.updateSites[i];
-            if (site.url.length >0)
-                this.updateSiteOnline(site);
+            if ( (force || site.enabled) && site.url.length >0)
+                this.updateSiteOnline(site,force);
         }
     },
     onerror:function(doc,obj)
@@ -106,21 +88,30 @@ try {
              {
                     obj.triedTime ++;
                     //try 3 times
-                    updateSiteOnline(obj)
+                    UpdateSites.updateSiteOnline(obj)
              }
     },
     callback:function(doc,updatesite)
     {
-            var sites = updatesite.callback(doc,updatesite);
-            var file = autopagerConfig.getConfigFile(updatesite.filename);
-            if (file)
-            {
-                autopagerConfig.saveConfigToFile(sites,file,true);
-             }
-             UpdateSites.submitCount--;
-             //if (UpdateSites.submitCount<=0)
-              autopagerMain.savePref("lastupdate",(new Date()).getTime());
-              UpdateSites.AutopagerCOMP.setAll([]);//notify update
+        var sites = updatesite.callback(doc,updatesite);
+        sites.updateSite = updatesite;
+        var file = autopagerConfig.getConfigFile(updatesite.filename);
+        if (file)
+        {
+            autopagerConfig.saveConfigToFile(sites,file,true);
+        }
+        UpdateSites.submitCount--;
+        //if (UpdateSites.submitCount<=0)
+        autopagerMain.savePref("lastupdate",(new Date()).getTime());
+        updatesite.lastupdate = (new Date()).getTime();
+        var allSites = UpdateSites.loadAll();
+        allSites[updatesite.filename] = sites;
+        UpdateSites.AutopagerCOMP.setAll(allSites);//notify update
+//        alert("start save " + updatesite.filename);
+        var settings = UpdateSites.getUpdateSites();
+        AutoPagerUpdateTypes.saveSettingSiteConfig(settings);
+//        alert("saved " + updatesite.filename);
+        UpdateSites.updateSites = UpdateSites.getUpdateSites();
         autopagerMain.handleCurrentDoc();
     },
     defaultSite : function()
@@ -156,7 +147,8 @@ try {
         var key;
         for ( key in allSites){
                     var tmpsites = allSites[key];
-
+                    if (!tmpsites.updateSite.enabled)
+                        continue;
                     for (var i = 0; i < tmpsites.length; i++) {
                             var site = tmpsites[i];
                              var pattern = autopagerMain.getRegExp(site);
@@ -171,7 +163,6 @@ try {
         
     }
 };
-UpdateSites.init();
 
 function Site()
 {
@@ -196,23 +187,6 @@ function Site()
         this.isTemp = false;
         this.tmpPaths = [];
         this.guid = "";
-}
-
-	
-
-function UpdateSite(owner,locales,url,type,desc,filename,callback)
-{
-    this.owner = owner;
-    this.locales=locales;
-    this.url=url;
-    this.type=type;
-    this.desc=desc;
-    this.filename = filename;
-    this.callback = callback;
-    this.triedTime=0;
-    this.updateType = null;
-    this.enabled = true;
-    this.xpath = "//site";
 }
 
 function SiteConfirm()
@@ -320,14 +294,20 @@ getConfigFile : function(fileName) {
 }
  ,
   loadConfirm : function() {
-  var confirmContents="";
-  try{
-	  confirmContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("site-confim.xml"));
-    }catch(e)
-    {
-    	//alert(e);
-    }
-    return this.loadConfirmFromStr(confirmContents);
+      var confirms = UpdateSites.AutopagerCOMP.getSiteConfirms();
+     if (confirms == null || confirms.length==0)
+     {
+         var confirmContents="";
+         try{
+             confirmContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("site-confim.xml"));
+         }catch(e)
+         {
+             //alert(e);
+         }
+         confirms = this.loadConfirmFromStr(confirmContents);
+         UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
+     }
+     return confirms;
  }
  ,
   findConfirm : function(confirmSites,guid,host)
@@ -361,6 +341,7 @@ getConfigFile : function(fileName) {
      site.AllowedPageCount = countNumber;
      site.UserAllowed = enabled;
      confirmSites.push(site);
+     UpdateSites.AutopagerCOMP.setSiteConfirms(confirmSites);
  },
  isNumeric : function (strNumber)
 {  
@@ -465,27 +446,27 @@ generateGuid : function()
 }
 
 ,removeFromArrayByIndex : function (array,index) {
-		if (index < array.length)
-		{
-			for(var i = index;i<array.length -1;++i)
-			{
-				array[i] = array[i+1];
-			}
-			array[array.length-1]=null;
-			array.pop();
-		}
-	},
+    if (index < array.length)
+    {
+        for(var i = index;i<array.length -1;++i)
+        {
+            array[i] = array[i+1];
+        }
+        array[array.length-1]=null;
+        array.pop();
+    }
+},
 removeFromArray : function(array,item) {
-		var index = -1;
-		for(index=0;index<array.length 
-				&& array[index]!=item;index++)
-		{	
-		}
-		if (index>=0 && index <array.length)
-		{
-			autopagerConfig.removeFromArrayByIndex(array,index);
-		}
-	}
+    var index = -1;
+    for(index=0;index<array.length 
+        && array[index]!=item;index++)
+    {	
+    }
+    if (index>=0 && index <array.length)
+    {
+        autopagerConfig.removeFromArrayByIndex(array,index);
+    }
+}
 , getUpdateFrame : function(doc)
 {
 	var divName = "autoPagerUpdateDiv";
@@ -506,17 +487,7 @@ removeFromArray : function(array,item) {
 },
  autopagerUpdate : function()
 {
-    var update = autopagerMain.loadPref("update");
-    if (update == "-1")
-        UpdateSites.updateOnline();
-    else if(update != "0")
-    {
-        var today = new Date();
-        var lastUpdate = autopagerMain.loadPref("lastupdate");
-        
-        if (lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > update)
-            UpdateSites.updateOnline();
-    }    
+    UpdateSites.updateOnline(false);
 }, autopagerGetString : function(name)
 {
 	try{
@@ -976,3 +947,4 @@ getWriteStream : function(file) {
   return stream;
 }
 };
+UpdateSites.init();

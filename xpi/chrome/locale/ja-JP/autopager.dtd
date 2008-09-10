@@ -31,7 +31,7 @@
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
 <!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
-<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
 <!ENTITY caption.results-caption2.label "Results">
@@ -53,7 +53,6 @@
 <!ENTITY setting.button.public "公開">
 <!ENTITY setting.button.remove "除去">
 <!ENTITY setting.button.up "上へ">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "編集">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
@@ -71,9 +70,10 @@
 <!ENTITY setting.label.grpDiscovery "ディスカバリ">
 <!ENTITY setting.label.grpSmart "スマートページング">
 <!ENTITY setting.label.hotkeys "有効・無効化ホットキー:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "説明:">
 <!ENTITY setting.label.lblLinkXPath "リンク XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "作成者:">
 <!ENTITY setting.label.lblURLPattern "URL パターン:">
 <!ENTITY setting.label.lblUpdate "サイト設定の自動更新:">
@@ -82,6 +82,7 @@
 <!ENTITY setting.label.marginEnd "未満になったらページングする">
 <!ENTITY setting.label.pagebreak "改ページのスタイル:">
 <!ENTITY setting.label.showtags "要素選択中にノードタグを表示する">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "サイト">
 <!ENTITY setting.label.smartenable "スマートページングを有効にする">
 <!ENTITY setting.label.smartlinks "リンクが">
@@ -89,15 +90,16 @@
 <!ENTITY setting.label.smarttext "次のリンクを探すテキスト・画像の src・ID・class (「|」で分割):">
 <!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
 <!ENTITY setting.label.update "更新">
-<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "Auto Pager 設定">
 <!ENTITY setting.tree.Description "説明">
 <!ENTITY setting.tree.URLPattern "URL パターン">
 <!ENTITY setting.update.daily "毎日">
 <!ENTITY setting.update.monthly "毎月">
 <!ENTITY setting.update.never "しない">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "起動毎">
 <!ENTITY setting.update.weekly "毎週">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "サイトを追加します">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "すべて一掃します">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "ディスカバリ">
@@ -106,3 +108,15 @@
 <!ENTITY treecol.authorityCol.label "権威">
 <!ENTITY treecol.machedCol.label "一致数">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">

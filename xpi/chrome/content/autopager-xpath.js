@@ -104,7 +104,7 @@ const autopagerXPath = {
                      for(i in paths)
                      {
                         item = new autopagerXPathItem();
-                        item.authority = (this.MAXLevel  - level) / 2;
+                        item.authority = (this.MAXLevel  / level);
                         item.xpath = paths[i];
                         this.addItem(doc,links,item);                
                      }
@@ -176,7 +176,7 @@ const autopagerXPath = {
                     {
                         if (links[left].authority < links[right].authority)
                             links[left].authority = links[right].authority;
-                        links[left].authority = links[right].authority + 1 / links[left].matchCount;
+                        links[left].authority = links[left].authority + 1 / links[right].matchCount;
                     }
                 }
             }
@@ -211,7 +211,17 @@ const autopagerXPath = {
         {
             if (links[i].xpath == item.xpath)
             {
-                links[i].authority = links[i].authority + (item.authority /links[i].matchCount);
+                if (links[i].matchCount>1)
+                {
+                    if (item.xpath[0] != item.xpath[item.xpath.length-1])
+                    {
+                        item.authority = item.authority / item.xpath.length;
+                    }
+                }
+                if (links[i].matchCount>2)
+                    links[i].authority = links[i].authority + (item.authority /links[i].matchCount);
+                else
+                    links[i].authority = links[i].authority + item.authority ;
                 return;
             }
         }
@@ -219,9 +229,25 @@ const autopagerXPath = {
         if (nodes != null && nodes.length >0)
         {
             item.matchCount = nodes.length;
-            item.authority = item.authority/item.matchCount;
+                if (nodes.length>1)
+                {
+                    if (nodes[0] != nodes[nodes.length-1])
+                    {
+                        item.authority = item.authority / nodes.length;
+                    }
+                }            
+            if (item.matchCount>2)
+                item.authority = item.authority/item.matchCount;
+            
+            
+            //if the xpath use possion, lower it's 'authority
+            if (/\d( )*]/.test(item.xpath.replace("following-sibling\:\:a\[1\]","")))
+            {
+                item.authority = item.authority /2;
+            }
             links.push(item);            
         }
+      
       
     },
     getLinkXPathItemFromNodes : function (node,urlNodes,level)
@@ -233,26 +259,26 @@ const autopagerXPath = {
         {
             item = new autopagerXPathItem();
             item.xpath = this.getLinkXpathFromNode(node,urlNodes[0],level);
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level) ;
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByParent(urlNodes[0],3,level);
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level) ;
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectBySibling(urlNodes[0],3,level);
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level) ;
             items.push(item);
             
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByPosition(urlNodes[0],3,level);
-            item.authority = (this.MAXLevel  - level) / 2.2;
+            item.authority = (this.MAXLevel  / level) /1.2;
             items.push(item);
         }
         else if (urlNodes.length <= 4)
         {
             item = new autopagerXPathItem();
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level) ;
             item.xpath = this.getLinkXpathFromTwoNodes(node,urlNodes[0],urlNodes[1],level);            
             items.push(item);
         }
@@ -262,7 +288,7 @@ const autopagerXPath = {
             for(i in paths)
             {
                 item = new autopagerXPathItem();
-                item.authority = (this.MAXLevel  - level) / 2;
+                item.authority = (this.MAXLevel  / level);
                 item.xpath = paths[i];
                 items.push(item);                
             }
@@ -582,11 +608,11 @@ const autopagerXPath = {
             
             item = new autopagerXPathItem();
             item.xpath = this.getLinkXpathFromNode(node,contentNode,level);
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level);
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByParent(contentNode,3,level);
-            item.authority = (this.MAXLevel  - level) / 2;
+            item.authority = (this.MAXLevel  / level);
             items.push(item);                  
             
         }

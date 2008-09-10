@@ -31,7 +31,7 @@
 <!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.update "Atualizar Configurações Online">
 <!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
 <!ENTITY caption.results-caption2.label "Results">
@@ -53,7 +53,6 @@
 <!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.up "Cima">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Editar">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
@@ -71,9 +70,10 @@
 <!ENTITY setting.label.grpDiscovery "Discovery">
 <!ENTITY setting.label.grpSmart "Paginação Inteligente">
 <!ENTITY setting.label.hotkeys "Habilitar/Desabilitar teclas de atalho:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Descrição:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "Criado Por:">
 <!ENTITY setting.label.lblURLPattern "Padrão URL:">
 <!ENTITY setting.label.lblUpdate "Configurações da Atualização Automática:">
@@ -82,6 +82,7 @@
 <!ENTITY setting.label.marginEnd "altura da janela">
 <!ENTITY setting.label.pagebreak "estilo de quebra de página:">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
 <!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
@@ -89,15 +90,16 @@
 <!ENTITY setting.label.smarttext "Procurar Texto/Imagem Src/ID/Class(Separado por &quot;|&quot;) nos links Próximo (Next):">
 <!ENTITY setting.label.timeout "tempo esgotado de carregamento de página(segundos):">
 <!ENTITY setting.label.update "Atualizar">
-<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "Configurações do Auto Pager">
 <!ENTITY setting.tree.Description "Descrição">
 <!ENTITY setting.tree.URLPattern "Padrão URL:">
 <!ENTITY setting.update.daily "Todo Dia">
 <!ENTITY setting.update.monthly "Todo Mês">
 <!ENTITY setting.update.never "Nunca">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Cada Início">
 <!ENTITY setting.update.weekly "Toda Semana">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
@@ -106,3 +108,15 @@
 <!ENTITY treecol.authorityCol.label "Authority">
 <!ENTITY treecol.machedCol.label "Matched Count">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">

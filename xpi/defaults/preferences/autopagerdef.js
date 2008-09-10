@@ -20,5 +20,6 @@ pref("autopager.pagebreak", "clear:both; line-height:20px; background:#E6E6E6; t
 pref("autopager.timeout", "120");
 pref("autopager.update", "24");
 pref("autopager.settingupdatedate", "");
+pref("autopager.noprompt", false);
 pref("extensions.autopager@mozilla.org.description", "chrome://autopager/locale/autopager.properties");  
 

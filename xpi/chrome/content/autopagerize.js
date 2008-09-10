@@ -25,11 +25,67 @@ var AutoPagerize= {
         }
         return isValid(info) ? info : null
     },
-    onload:function(doc,obj)
+    onJsonLoad :function(doc,updatesite)
+    {
+        var info = null;
+        //try native json first
+        
+        var Ci = Components.interfaces;
+        var Cc = Components.classes;
+
+        if (Cc["@mozilla.org/dom/json;1"])
+        {
+            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
+            info = nativeJSON.decode(doc);
+        }
+        else
+            info = autopagerJSON.parse(doc);
+        //alert(info)
+        var sites = new Array();
+        for(var i=0;i<info.length;i++){
+            var ifo = info[i]
+            var site = ifo.data;
+            if (site["url"]=="^https?://.*" || site["url"]=="^https?://.")
+                continue;
+            var newSite = new Site();
+            newSite.urlPattern  = site["url"];
+            newSite.guid  = ifo.resource_url;
+            newSite.isRegex  = true;
+            if (!isNaN(site["remainHeight"] ))
+                newSite.margin  = site["remainHeight"] / 500;
+            newSite.enabled  = true;
+            newSite.enableJS  = false;
+            newSite.quickLoad  = false;
+            newSite.fixOverflow  = false;
+            newSite.createdByYou  = false;
+            newSite.changedByYou  = false;
+            newSite.owner  = ifo.created_by;
+            newSite.contentXPath=new Array();
+            newSite.contentXPath.push(site["pageElement"]);
+
+            newSite.linkXPath = site["nextLink"];
+            //if (site["desc"] && site["exampleUrl"])
+            newSite.desc = site["exampleUrl"];
+            if (site["desc"])
+                newSite.desc = newSite.desc + "\n" + site["desc"];
+//            else if (site["exampleUrl"])
+//                newSite.desc = site["exampleUrl"];
+//            else if (site["desc"])
+//                newSite.desc = site["desc"];
+//            
+            newSite.oldSite = null;
+            sites.push(newSite);
+	}
+        
+        return sites;        
+    },
+    onload:function(doc,updatesite)
     {
         var info = []
+        // '//*[@class="autopagerize_data"]'
         var textareas = apxmlhttprequest.getElementsByXPath(
-            '//*[@class="autopagerize_data"]', doc) || []
+            updatesite.xpath, doc) || [];
+            
         for(var i=0;i<textareas.length;i++)
         {
             var textarea = textareas[i];
@@ -40,7 +96,10 @@ var AutoPagerize= {
                 info.push(d)
             }
         }
-        var sites = new Array();
+        return AutoPagerize.handleInfos(info,updatesite);
+    },
+    handleInfos :function(info,updatesite)
+    {    var sites = new Array();
         for(var i=0;i<info.length;i++){
             var site = info[i];
             var newSite = new Site();
@@ -52,10 +111,10 @@ var AutoPagerize= {
             newSite.enabled  = true;
             newSite.enableJS  = false;
             newSite.quickLoad  = false;
-            newSite.fixOverflow  = true;
+            newSite.fixOverflow  = false;
             newSite.createdByYou  = false;
             newSite.changedByYou  = false;
-            newSite.owner  = obj.owner;
+            newSite.owner  = updatesite.owner;
             newSite.contentXPath=new Array();
             newSite.contentXPath.push(site["pageElement"]);
 
@@ -63,7 +122,7 @@ var AutoPagerize= {
             newSite.desc = site["desc"];
             newSite.oldSite = null;
             sites.push(newSite);
-	};
+	}
         
         return sites;
     },

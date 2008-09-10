@@ -73,7 +73,7 @@
 <!ENTITY setting.label.lblDesc "Desciption:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">
-<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "Created By:">
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
@@ -96,8 +96,10 @@
 <!ENTITY setting.update.daily "Every Day">
 <!ENTITY setting.update.monthly "Every Month">
 <!ENTITY setting.update.never "Never">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Every Startup">
 <!ENTITY setting.update.weekly "Every Week">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
@@ -106,3 +108,15 @@
 <!ENTITY treecol.authorityCol.label "Authority">
 <!ENTITY treecol.machedCol.label "Matched Count">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">

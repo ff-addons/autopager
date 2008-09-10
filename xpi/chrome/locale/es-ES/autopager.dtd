@@ -75,12 +75,20 @@
 <!ENTITY setting.label.lblDesc "Desciption:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
 <!ENTITY setting.label.lblOwner "Created By:">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
 <!ENTITY setting.label.loading "loading notification style:">
 <!ENTITY setting.label.margin "Paging when space less then">
 <!ENTITY setting.label.marginEnd "window hight">
 <!ENTITY setting.label.pagebreak "page break style:">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
@@ -93,9 +101,15 @@
 <!ENTITY setting.title "Auto Pager Setting">
 <!ENTITY setting.tree.Description "Description">
 <!ENTITY setting.tree.URLPattern "URL Pattern">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "Every Day">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "Every Month">
 <!ENTITY setting.update.never "Never">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Every Startup">
 <!ENTITY setting.update.weekly "Every Week">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">

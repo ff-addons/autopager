@@ -6,6 +6,8 @@ interface nsIAutopagerCOMP : nsISupports
 {
   nsIMutableArray loadAll();
   void setAll(in nsIMutableArray setting);
-  nsISupports getUpdateDate();
-  void setUpdateDate(in nsISupports date);
+  nsIMutableArray getUpdateSites();
+  void setUpdateSites(in nsIMutableArray sites);
+  nsIMutableArray getSiteConfirms();
+  void setSiteConfirms(in nsIMutableArray sites);
 };

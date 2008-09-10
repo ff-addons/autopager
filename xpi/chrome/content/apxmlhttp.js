@@ -166,22 +166,28 @@ _handleParse: function (event) {
             {
                     if(xmlhttp.status == 200)
                     {
-                        doc=xmlhttp.responseXML;
-                        if (doc == null)
+                        if (obj.contenttype.indexOf("text\/plain")>-1)
+                            loadCallBack(xmlhttp.responseText,obj)
+                        else
                         {
-                            try{
-                                var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-                                .createInstance(Components.interfaces.nsIDOMParser);
-                                doc = domParser.parseFromString(xmlhttp.responseText, "text/xml");
-                                if (doc != null && doc.childNodes[0].localName == "parsererror")
+                            doc=xmlhttp.responseXML;
+                            if (doc == null)
+                            {
+                                try{
+                                    var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
+                                    .createInstance(Components.interfaces.nsIDOMParser);
+                                    doc = domParser.parseFromString(xmlhttp.responseText, "text/xml");
+                                    if (doc != null && doc.childNodes[0].localName == "parsererror")
+                                        doc = null;
+                                }catch(e){
                                     doc = null;
-                            }catch(e){
-                                doc = null;
+                                }
                             }
+                            if (doc == null)
+                                doc = apxmlhttprequest.createHTMLDocumentByString(xmlhttp.responseText);
+                            loadCallBack(doc,obj);
+                            
                         }
-                        if (doc == null)
-                            doc = apxmlhttprequest.createHTMLDocumentByString(xmlhttp.responseText);
-                        loadCallBack(doc,obj);
                     }
                     else
                     {

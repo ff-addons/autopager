@@ -31,7 +31,7 @@
 <!ENTITY autopager.status.testXPathTip "在當前頁面上測試XPath">
 <!ENTITY autopager.status.update "在綫升級設置">
 <!ENTITY autopager.status.updateTip "從http://blogs.sun.com/wind/entry/autopager_site_config.中升級自動翻頁設置">
-<!ENTITY autopager.toolbarLabel "AutoPager Site Setting Workshop">
+<!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
 <!ENTITY caption.results-caption2.label "Results">
@@ -53,7 +53,6 @@
 <!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "移除">
 <!ENTITY setting.button.up "上">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "編輯">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
@@ -71,9 +70,10 @@
 <!ENTITY setting.label.grpDiscovery "Discovery">
 <!ENTITY setting.label.grpSmart "智能翻頁">
 <!ENTITY setting.label.hotkeys "啓用/禁用熱鍵">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "描述">
 <!ENTITY setting.label.lblLinkXPath "鏈接到XPath">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "創建者">
 <!ENTITY setting.label.lblURLPattern "地址通配符">
 <!ENTITY setting.label.lblUpdate "自動更新站點配置">
@@ -82,6 +82,7 @@
 <!ENTITY setting.label.marginEnd "窗體高度">
 <!ENTITY setting.label.pagebreak "頁面分頁符風格">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "站點列表">
 <!ENTITY setting.label.smartenable "啓用智能翻頁">
 <!ENTITY setting.label.smartlinks "匹配鏈接不多於：">
@@ -89,15 +90,16 @@
 <!ENTITY setting.label.smarttext "搜尋下一鏈接的字符串/圖像">
 <!ENTITY setting.label.timeout "頁面載入超時（秒）">
 <!ENTITY setting.label.update "升級">
-<!ENTITY setting.text.tipContainerXPath "Don't change it if you don't know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "自動翻頁設置">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "URL通配符">
 <!ENTITY setting.update.daily "每天">
 <!ENTITY setting.update.monthly "每月">
 <!ENTITY setting.update.never "從不">
+<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "每次啓動">
 <!ENTITY setting.update.weekly "每星期">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
@@ -106,3 +108,15 @@
 <!ENTITY treecol.authorityCol.label "Authority">
 <!ENTITY treecol.machedCol.label "Matched Count">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">

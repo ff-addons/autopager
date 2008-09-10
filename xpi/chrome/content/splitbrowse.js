@@ -25,13 +25,17 @@ const XULDOMUtils = {
     const lm = this.lookupMethod;
     if(!(ctx instanceof ci.nsIDOMWindow)) {
       if(ctx instanceof ci.nsIDOMDocument) {
-        ctx = lm(ctx, "defaultView")();
+        ctx = ctx.defaultView;
+        //ctx = lm(ctx, "defaultView")();
       } else if(ctx instanceof ci.nsIDOMNode) {
-        ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
+        //ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
+        ctx = ctx.ownerDocument.defaultView;        
       } else return null; 
     }
-    if(!ctx) return null;
-    ctx = lm(ctx, "top")();
+    if(!ctx) 
+        return null;
+    //ctx = lm(ctx, "top")();
+    ctx = ctx.top;
     
     return ctx;
   },
@@ -143,11 +147,11 @@ var splitbrowse = {
           //xbrowser.insertBefore(splitSplitter,xappcontent);
           xappcontent.appendChild(splitSplitter);
           xappcontent.appendChild(splitBox);
-          splitBox.setAttribute("position", "bottom");
-          splitBox.setAttribute("height", "0");
-          splitBox.setAttribute("flex","0");
+          //splitBox.setAttribute("position", "bottom");
+          //splitBox.setAttribute("height", "0");
+          splitBox.setAttribute("collapsed","true");
           splitSplitter.setAttribute("orient", "vertical");
-          splitSplitter.setAttribute("flex","0");
+          splitSplitter.setAttribute("collapsed","true");
         }
   },
   getSplitKey :function ()
@@ -241,6 +245,7 @@ var splitbrowse = {
   	var id = this.autopagerPrefix + "-split-browser-" + subfix;
     var splitBrowser = document.getElementById(id);
     
+    this.hidden = !autopagerMain.loadBoolPref("debug");
     if (!splitBrowser && createNew)
     {
         
@@ -262,9 +267,9 @@ var splitbrowse = {
               Components.interfaces.nsIWebProgress.NOTIFY_ALL);
         splitBrowser.autopagerSplitWinFirstDocSubmited = false;
         splitBrowser.loadURI("about:",null,null);
-    	if (!browser.getAttribute("flex"))
-	    		browser.setAttribute("flex", "1");
-        this.setVisible(splitBrowser,!this.hidden);      
+//    	if (!browser.getAttribute("flex"))
+//	    		browser.setAttribute("flex", "1");
+        //this.setVisible(splitBrowser,!this.hidden);      
                    
         browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",this.onclose,false);
     }
@@ -283,7 +288,7 @@ var splitbrowse = {
  
 	//splitBrowser.parentNode.hidden = hidden;
 //	splitBrowser.hidden = hidden; 
-  	
+  	//this.setVisible(splitBrowser,!this.hidden);  
   	return splitBrowser;
   },
   show :function(splitBrowser)
@@ -297,21 +302,13 @@ var splitbrowse = {
   setVisible: function (splitBrowser,visible)
   {
       var hidden = !visible;
-    this.hidden = hidden;
-    if (splitBrowser == null)
-        return;
-            var splitBar = document.getElementById("autopager-split-splitter");
-	    if (!this.hidden)
-	    {
-	  		splitBrowser.parentNode.setAttribute("flex", "1");
-	  		splitBrowser.setAttribute("flex", "1");
-	    }
-	  	else
-	  	{
-	  		splitBrowser.parentNode.setAttribute("flex", "0");
-	  		splitBrowser.setAttribute("flex", "1");
-	  	}
-    splitBar.hidden = hidden;
+      this.hidden = hidden;
+      if (splitBrowser == null)
+          return;
+      var splitBar = document.getElementById("autopager-split-splitter");
+      splitBrowser.parentNode.collapsed=hidden;
+      splitBrowser.collapsed=hidden;
+      splitBar.collapsed = hidden;
   	
   },
   open : function(doc,hidden) 
