@@ -210,6 +210,7 @@ var splitbrowse = {
   },  
   cloneBrowser: function(targetB, originalB)
   {
+      
       var webNav = targetB.webNavigation;
     var newHistory = webNav.sessionHistory;
 
@@ -230,6 +231,37 @@ var splitbrowse = {
 
     webNav.gotoIndex(0);
     
+//    //
+//    //targetB.contentDocument.documentElement.innerHTML = originalB.contentDocument.documentElement.innerHTML
+//    
+//    // Convert the HTML text into an input stream.
+//    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+//                    createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+//    converter.charset = originalB.contentDocument.characterSet;
+//    var stream = converter.convertToInputStream(
+//    "<html>" + 
+//    originalB.contentDocument.documentElement.innerHTML
+//+ "</html>"
+//);
+//
+//    // Set up a channel to load the input stream.
+//    var channel = Components.classes["@mozilla.org/network/input-stream-channel;1"].
+//                  createInstance(Components.interfaces.nsIInputStreamChannel);
+//    channel.setURI(originalB.contentDocument.documentElement.location);
+//    channel.contentStream = stream;
+//
+//    var request = channel.QueryInterface(Components.interfaces.nsIRequest);
+//    request.loadFlags |= Components.interfaces.nsIRequest.LOAD_BACKGROUND;
+//
+//    var baseChannel = channel.QueryInterface(Components.interfaces.nsIChannel);
+//    baseChannel.contentType = "text/html";
+//
+//    baseChannel.contentCharset = originalB.contentDocument.characterSet;
+//
+//    var uriLoader = Components.classes["@mozilla.org/uriloader;1"].getService(Components.interfaces.nsIURILoader);
+//    uriLoader.openURI(channel, true, targetB.docShell);
+//    
+//    var html = targetB.contentDocument.documentElement.innerHTML
   },
   getSplitBrowser : function (doc,createNew,clone)
   {
@@ -266,6 +298,7 @@ var splitbrowse = {
         splitBrowser.addProgressListener(splitpanelProgressListener,
               Components.interfaces.nsIWebProgress.NOTIFY_ALL);
         splitBrowser.autopagerSplitWinFirstDocSubmited = false;
+        splitBrowser.autopagerSplitWinFirstDocloaded = false;
         splitBrowser.loadURI("about:",null,null);
 //    	if (!browser.getAttribute("flex"))
 //	    		browser.setAttribute("flex", "1");
@@ -273,13 +306,18 @@ var splitbrowse = {
                    
         browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",this.onclose,false);
     }
-       if (splitBrowser != null && clone)
+
+    if (splitBrowser != null)
+    {
+        splitBrowser.docShell.allowPlugins = false;
+    }
+    if (splitBrowser != null && clone)
         {
             //splitBrowser.auotpagerContentDoc = doc;
-            splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
-            if (!doc.documentElement.autopagerUseSafeEvent)
+            //alert(doc.documentElement.autopagerUseSafeEvent)
+            if (!doc.documentElement.autopagerUseSafeEvent )
                 this.cloneBrowser(splitBrowser,browser);
             else
                 splitBrowser.loadURI( doc.location.href, null, null );

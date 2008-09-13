@@ -55,6 +55,7 @@
 <!ENTITY setting.button.up "Up">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Edit">
+<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">

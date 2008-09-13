@@ -57,6 +57,7 @@
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
+<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
 <!ENTITY setting.label.chkEnabled "Enabled">
 <!ENTITY setting.label.chkFixOverflow "Disable the overflow setting of loaded page.">
 <!ENTITY setting.label.chkIsRegex "Is RegExp?">

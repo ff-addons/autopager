@@ -131,6 +131,7 @@
                             <label control="margin" value="&setting.label.marginEnd;"/>
                         </hbox>
                         <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="false" />
+                        <checkbox id="chkAjax" label="&setting.label.chkAjax;" checked="false" />
                         <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
                         <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
                         <vbox id="auto-xpath" flex="1">

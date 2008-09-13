@@ -63,7 +63,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.1.6.0.33").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
     updateOnline :function (force)
@@ -187,6 +187,7 @@ function Site()
         this.isTemp = false;
         this.tmpPaths = [];
         this.guid = "";
+        this.ajax=false;
 }
 
 function SiteConfirm()
@@ -384,6 +385,7 @@ generateGuid : function()
 	newSite.margin  = site.margin;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
+        newSite.ajax  = site.ajax;
         newSite.quickLoad  = site.quickLoad;
 	newSite.fixOverflow  = site.fixOverflow;
 	newSite.createdByYou  = site.createdByYou;
@@ -414,6 +416,7 @@ generateGuid : function()
 						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
+						|| oldSite.ajax  != site.ajax
 						|| oldSite.quickLoad  != site.quickLoad
 						|| oldSite.fixOverflow  != site.fixOverflow
 						|| oldSite.owner  != site.owner
@@ -772,7 +775,14 @@ loadConfigFromUrl : function(url) {
   var hasQuickLoad = false;
   for (var node = null; (node = nodes.iterateNext()); ) {
     var site = new Site();
-
+    var ajax = false;
+    var enabled = true;
+    var enableJS = true;
+    var quickLoad = false;
+    var fixOverflow = false;
+    var isRegex = false;
+    var createdByYou = false;
+    var changedByYou = false;
     var childNodes = node.childNodes;
     //childNode = childNodes[i]
     for (var i = 0, childNode = null; (childNode = childNodes[i]) ; i++) {
@@ -783,7 +793,7 @@ loadConfigFromUrl : function(url) {
       else  if (nodeName == "guid") {
                         site.guid = autopagerConfig.getValue(childNode);
       }else if (nodeName == "urlIsRegex") {
-                        site.isRegex	= (autopagerConfig.getValue(childNode) == 'true');
+                        isRegex	= (autopagerConfig.getValue(childNode) == 'true');
       }
       else if (nodeName == "margin") {
                 var val = autopagerConfig.getValue(childNode);
@@ -803,31 +813,40 @@ loadConfigFromUrl : function(url) {
                         site.contentXPath.push(autopagerConfig.getValue(childNode));
       }
       else if (nodeName == "enabled") {
-                        site.enabled	= (autopagerConfig.getValue(childNode) == 'true');
+                        enabled	= (autopagerConfig.getValue(childNode) == 'true');
       }
       else if (nodeName == "enableJS") {
-                        site.enableJS	= (autopagerConfig.getValue(childNode) == 'true');
+                        enableJS	= (autopagerConfig.getValue(childNode) == 'true');
                         //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
       }
+      else if (nodeName == "ajax") {
+                        ajax	= (autopagerConfig.getValue(childNode) == 'true');
+      }
       else if (nodeName == "quickLoad") {
-                        site.quickLoad	= (autopagerConfig.getValue(childNode) == 'true');
-                        hasQuickLoad = true;
+                        quickLoad	= (autopagerConfig.getValue(childNode) == 'true');
       }
       else if (nodeName == "fixOverflow") {
-                        site.fixOverflow	= (autopagerConfig.getValue(childNode) == 'true');
+                        fixOverflow	= (autopagerConfig.getValue(childNode) == 'true');
                         //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
       }
       else if (nodeName == "createdByYou") {
-                        site.createdByYou	= (autopagerConfig.getValue(childNode) == 'true');
+                        createdByYou	= (autopagerConfig.getValue(childNode) == 'true');
       }
       else if (nodeName == "changedByYou") {
-                        site.changedByYou	= (autopagerConfig.getValue(childNode) == 'true');
+                        changedByYou	= (autopagerConfig.getValue(childNode) == 'true');
       }else if (nodeName == "owner") {
                         site.owner	= autopagerConfig.getValue(childNode) ;
       }
     }
-     if (!hasQuickLoad)
-         site.quickLoad = false;
+    site.ajax = ajax;
+    site.enabled = enabled;
+    site.enableJS = enableJS;
+    site.quickLoad = quickLoad;
+    site.fixOverflow = fixOverflow;
+    site.isRegex = isRegex;
+    site.createdByYou = createdByYou;
+    site.changedByYou = changedByYou;
+
      if (site.guid.length == 0 && site.createdByYou)
         site.guid = autopagerConfig.generateGuid();
      sites.push(site);
@@ -897,15 +916,28 @@ if (sites!=null)
                 siteObj.guid = autopagerConfig.generateGuid();
 	    autopagerConfig.createNode(siteNode,"urlPattern",siteObj.urlPattern);
 	    autopagerConfig.createNode(siteNode,"guid",siteObj.guid);
-	    autopagerConfig.createNode(siteNode,"urlIsRegex",siteObj.isRegex);
-	    autopagerConfig.createNode(siteNode,"margin",siteObj.margin);
-	    autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
-	    autopagerConfig.createNode(siteNode,"enableJS",siteObj.enableJS);
-	    autopagerConfig.createNode(siteNode,"quickLoad",siteObj.quickLoad);
-	    autopagerConfig.createNode(siteNode,"fixOverflow",siteObj.fixOverflow);
+            if (siteObj.margin!=2)
+                autopagerConfig.createNode(siteNode,"margin",siteObj.margin);
 	    autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
-	
 
+            if (siteObj.isRegex)
+                autopagerConfig.createNode(siteNode,"urlIsRegex",siteObj.isRegex);
+            if (!siteObj.enabled)
+                autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
+            
+	    if (!siteObj.enableJS)
+                autopagerConfig.createNode(siteNode,"enableJS",siteObj.enableJS);
+            
+	    if (siteObj.quickLoad)
+                autopagerConfig.createNode(siteNode,"quickLoad",siteObj.quickLoad);
+            
+	    if (siteObj.fixOverflow)
+                autopagerConfig.createNode(siteNode,"fixOverflow",siteObj.fixOverflow);
+            
+            if (siteObj.ajax)
+                autopagerConfig.createNode(siteNode,"ajax",siteObj.ajax);
+
+    
 	    var x=0;
 	    for(x=0;x<siteObj.contentXPath.length;++x)
 	    {
@@ -913,14 +945,18 @@ if (sites!=null)
 		}
 	    
 	    autopagerConfig.createNode(siteNode,"linkXPath",siteObj.linkXPath);
-	    autopagerConfig.createNode(siteNode,"containerXPath",siteObj.containerXPath);
+            if (siteObj.containerXPath!=null && siteObj.containerXPath.length>0)
+                autopagerConfig.createNode(siteNode,"containerXPath",siteObj.containerXPath);
             
-	    autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
+	    if (siteObj.desc!=null && siteObj.desc.length>0)
+                autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
 	
-		if (includeChangeInfo)
+   	    if (includeChangeInfo)
 	    {
-		    autopagerConfig.createNode(siteNode,"createdByYou",siteObj.createdByYou);
-		    autopagerConfig.createNode(siteNode,"changedByYou",siteObj.changedByYou);
+                if (siteObj.createdByYou)
+            	    autopagerConfig.createNode(siteNode,"createdByYou",siteObj.createdByYou);
+                if (siteObj.changedByYou)
+            	    autopagerConfig.createNode(siteNode,"changedByYou",siteObj.changedByYou);
 	    }
 	    	    
 	    doc.firstChild.appendChild(siteNode);

@@ -2,7 +2,8 @@
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
-    var chkEnabled, chkEnableJS,chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
+    var chkEnabled, chkEnableJS,chkAjax
+    var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
@@ -166,6 +167,7 @@
         contentXPath = document.getElementById("lstContentXPath");
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
+        chkAjax = document.getElementById("chkAjax");
         chkQuickLoad = document.getElementById("chkQuickLoad");
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
@@ -299,9 +301,18 @@
            enableSmartControl(smartenable.checked);
         }, false);
         
+        
         chkEnableJS.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enableJS = chkEnableJS.checked;
+             onSiteChange(slectedListItem,selectedSite);
+           }
+        }, false);
+        chkAjax.addEventListener("command", function() {
+           if (selectedSite != null) {
+             selectedSite.ajax = chkAjax.checked;
+             if (selectedSite.ajax)
+                 chkEnableJS.checked = true;
              onSiteChange(slectedListItem,selectedSite);
            }
         }, false);
@@ -503,6 +514,7 @@
             description.value = " ";
             chkEnabled.checked = true;
             chkEnableJS.checked = false;
+            chkAjax.checked = false;
             chkQuickLoad.checked = false;
             chkFixOverflow.checked = true;
             lblOwner.value = "";
@@ -568,6 +580,7 @@
                 description.value = selectedSite.desc;
                 chkEnabled.checked = selectedSite.enabled;
                 chkEnableJS.checked = selectedSite.enableJS;
+                chkAjax.checked = selectedSite.ajax
                 chkQuickLoad.checked = selectedSite.quickLoad;
                 chkFixOverflow.checked = selectedSite.fixOverflow;
 
@@ -601,6 +614,7 @@
         contentXPath.readOnly =disabled;
         chkEnabled.disabled =disabled;
         chkEnableJS.disabled =disabled;
+        chkAjax.disabled =disabled;
         chkQuickLoad.disabled =disabled;
         chkFixOverflow.disabled =disabled;
         linkXPath.readOnly =disabled;
@@ -881,7 +895,7 @@
                     for (var i = 0; i < tmpsites.length; i++) {
                             var site = tmpsites[i];
                             if (filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
-	        		|| site.desc.toLowerCase().indexOf(filter) != -1))
+	        		||  (site.desc != null && site.desc.toLowerCase().indexOf(filter) != -1)))
                                 addTreeItem(treechildren,site,i);    
                     }
             };

@@ -53,7 +53,9 @@
 <!ENTITY setting.button.public "Öffentlich">
 <!ENTITY setting.button.remove "Löschen">
 <!ENTITY setting.button.up "Nach oben">
+<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bearbeiten">
+<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Strg">
 <!ENTITY setting.label.chkEnableJS "JavaScript beim Laden der Seite aktivieren.">
@@ -70,19 +72,25 @@
 <!ENTITY setting.label.grpDiscovery "Erkennung">
 <!ENTITY setting.label.grpSmart "Intelligenter Modus">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Beschreibung:">
 <!ENTITY setting.label.lblLinkXPath "XPath des Links:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
-<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.label.lblOwner "Erstellt von:">
+<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingDesc "Desc:">
+<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "Adressregel:">
 <!ENTITY setting.label.lblUpdate "Seitenkonfigurationen aktualisieren:">
 <!ENTITY setting.label.loading "CSS-Stil für Laden der nächsten Seite:">
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
 <!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
+<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showtags "IDs beim Auswählen der Elemente anzeigen">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.sites "Regeln">
 <!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">
 <!ENTITY setting.label.smartlinks "Diesen Link verwenden, wenn nicht mehr als">
@@ -90,16 +98,21 @@
 <!ENTITY setting.label.smarttext "Text des Links zur nächsten Seite/Pfad des verlinkenden Bildes/ID oder CSS-Class des Links (getrennt durch &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Maximale Wartezeit beim Laden einer Seite (Sekunden):">
 <!ENTITY setting.label.update "Aktualisierung">
+<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "AutoPager - Einstellungen">
 <!ENTITY setting.tree.Description "Beschreibung">
 <!ENTITY setting.tree.URLPattern "Adressregel">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "Täglich">
+<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "Monatlich">
 <!ENTITY setting.update.never "Nie">
 <!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Bei jedem Start">
 <!ENTITY setting.update.weekly "Wöchentlich">
-<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site hinzufügen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Liste leeren">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Durchsuchen">
@@ -108,15 +121,3 @@
 <!ENTITY treecol.authorityCol.label "Wahrscheinlichkeitswert">
 <!ENTITY treecol.machedCol.label "Anzahl">
 <!ENTITY treecol.xpathCol.label "XPath">
-<!ENTITY setting.label.lblSettingOwner "Maintained By:">
-<!ENTITY setting.label.lblSettingDesc "Desc:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingContext "Context Type:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagertext "autopager text">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.label.lblSetting "AutoPager setting source">
-<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
