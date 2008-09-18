@@ -1,0 +1,57 @@
+#Modified By Foxbeans
+#Mon Sep 15 19:59:01 CST 2008
+nextpages=Pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3ximas %S P\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1ginas
+inputurl=Por favor entre com o endere\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7o para importar as prefer\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AAncias\:
+optiontitle=Op\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B5es do Auto Pager
+xpathconfirm=Voc\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA acha que o pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3ximo link xpath est\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1 OK?
+errorload=Erro ao carregar a p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina\:
+alwaysdisableshort=SD
+extensions.autopager@mozilla.org.description=AutoPager \u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A9 uma extens\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o para o firefox que faz download da pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3xima p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina em segundo plano. Voc\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA pode us\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-la como um gerador de XPath tamb\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A9m.
+selectcontentxpath=Please select the content
+modifyxpath=Please modify the xpath if you want\:
+LinkXPathcannotbenull=Link XPath can't be null\!
+selectlinkxpath=Por favor selecione o link para pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3xima p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina.
+thissite=Este Site
+testprompt=Input A XPath Or Double a XPath in the list to see the effect.
+pagebreak=Quebra de p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina adicionada pelo auto pager.P\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina(<a href\='%S'> %S </a>).
+globaldisabled=Seu AutoPager esta desabilitado. Habilite ele para iniciar o auto start em %S.
+matchesfound=matches found
+autopageOn=Auto page conclu\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00ADdo em %S. D\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para desabilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.
+enableshort=H
+outputfile=Por favor digite um nome para o arquivo de exporta\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o\:
+contentxpathconfirm=Do you think this content xpath is OK?
+nomatchedconfig=Nenhuma configura\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o encontrada para esta p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina.
+ShowOnNewSite=Show On New Site
+myname=Meu Nome\:%S
+enableurl=Habilitar auto pager em %S.
+autopagedisabledTip=Auto pager desabilitado.\nD\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para habilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.
+inputxpath=Por favor digite o xpath\:
+inputname=Por favor digite seu nome, ele ser\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1 adicionado na configura\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o.
+importdone=Importa\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o conclu\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00ADda. %S novos sites, %S sites atualizados e %S sites ignorados.
+thissession=Esta Sess\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o
+inputfile=Por favor selecione o arquivo de prefer\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AAncias do auto pager\:
+ContentXPathcannotbenull=Content XPath can't be null\!
+enableinfo=Habilitar auto pager em %S \nlinkXPath\=%S\ncontentXPath\=%S
+xpathreturnnothing=xpath retornou nada
+esctoabort=Aperte ESC para abortar.
+highlightcontents=Highlight Contents
+optionexplain=H\: Habilitado, D\:Disabilitado, SH\:Sempre Habilitado,SD\:Sempre Desabilitado
+autopaging=carregando pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3xima p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina, por favor aguarde...
+autopageOnTip=Auto page conclu\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00ADdo em %S.\nD\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para desabilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.
+moveover=Passe o mouse em %S, XPathe para ele\:%S
+mustinput=Voc\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA deve digitar seu nome.
+autopageenabled=Auto pager Habilitado. D\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para desabilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.
+alwaysenableshort=SH
+inputnumber=Por favor digite um n\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00BAmero positivo
+Onematchfound=One match found
+unableload=n\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3o foi poss\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00ADvel carregar a p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina\:
+tryagain=Deseja tentar novamente?
+thistime=Este Tempo
+highlightnextlinks=Real\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A7ar links Pr\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00B3ximo
+Resultsfrom=Results from
+autopagedisabled=Auto pager desabilitado. D\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para habilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.
+unableevaluator=Imposs\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00ADvel verificar xpath\:%S.\n%S
+loading=<b>Carregando...</b>
+Nomatchesfound=No matches found
+disableshort=D
+autopageenabledTip=Auto pager Habilitado.\nD\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00AA um duplo clique na p\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1gina para desabilit\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A1-lo.

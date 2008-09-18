@@ -45,13 +45,27 @@ var autopagerMain =
 autopagerOnLoad : function() {
     window.addEventListener("DOMContentLoaded", autopagerMain.onContentLoad, false);
     //window.addEventListener("beforeunload", autopagerMain.onPageUnLoad, true);
-    window.addEventListener("select", autopagerMain.onSelect, true);
+    //window.addEventListener("select", autopagerMain.onSelect, true);
     autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
     
     //window.onscroll = autopagerMain.scrollWatcher;
     window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
     window.addEventListener('AutoPagerRefreshPage', this.AutoPagerRefreshPage, true, true);
-    
+
+    //autopagerMain.log("dbclick " + new Date().getTime())
+        window.addEventListener(
+        'dblclick',function(event){
+            if (event.clientX + 20 < window.innerWidth &&
+            event.clientY + 20 < window.innerHeight &&
+            event.clientX > 20 &&
+            event.clientY > 20) {
+                if (event.ctrlKey == autopagerMain.getCtrlKey() && event.altKey == autopagerMain.getAltKey() && event.shiftKey == autopagerMain.getShiftKey())
+                    autopagerMain.setGlobalEnabled(!autopagerMain.getGlobalEnabled());
+            }
+        },true
+        );
+    //autopagerMain.log("dbclick enabled" + new Date().getTime())
+
 },
 AutoPagerRefreshPage : function(evt){
    switch (evt.type)
@@ -185,7 +199,8 @@ onPageUnLoad : function(event) {
 },
 handleCurrentDoc : function()
 {
-    this.onContentLoad(content.document);
+    if (content && content.document)
+        this.onContentLoad(content.document);
 },
 onContentLoad : function(event) {
     var doc = event;
@@ -223,6 +238,7 @@ onContentLoad : function(event) {
           autopagerMain.handleDocLoad(doc,false);
       }
     }
+    autopagerMain.scrollWatcher();
   },
   Copy : function (container,doc)
   {
@@ -253,9 +269,14 @@ onContentLoad : function(event) {
                         var nextUrl = null;
                         
                         var container = browser.auotpagerContentDoc;
+                        var de = container.documentElement.QueryInterface(Components.interfaces.nsIDOMElement);
+                        var reg = this.getRegExp (container.documentElement.autoSiteSetting)
+                        var url = this.getDocURL(container,de.getAttribute('enableJS') == 'true');
+                        if (! reg.test(url))
+                            return;
+            
                         if (container.documentElement.getAttribute('autopagerAjax') == "true")
                             autopagerMain.Copy(container,doc);
-                        var de = container.documentElement.QueryInterface(Components.interfaces.nsIDOMElement);
                         //var doc = browser.webNavigation.document;
                         if (container.documentElement.getAttribute('fixOverflow') == 'true')
                             autopagerMain.fixOverflow(doc);
@@ -363,15 +384,44 @@ convertStringToXPath : function(str,dir) {
     
     if (str.length>0) {
         xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("text()") + " ='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("@id") + "='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("@name") + "='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("@class") + "='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("img/@src") + "='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("substring(img/@src,string-length(img/@src) - " 
-        + str.length + ")") + "='" + str + "'");
+        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@id and " +    autopagerMain.xpathToLowerCase(dir +"@id") + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@name and " + autopagerMain.xpathToLowerCase(dir + "@name") + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@class and " + autopagerMain.xpathToLowerCase(dir + "@class") + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "img and (" +   autopagerMain.xpathToLowerCase(dir +"img/@src") + "='" + str + "' or " + 
+         autopagerMain.xpathToLowerCase("substring(" + dir + "img/@src,1, " + str.length + ")") + "='" + str + "'))");
     }
     return xi;
 },
+getCapString : function(str)
+{
+    return str.substring(0,1).toUpperCase() + str.substring(1);
+},
+convertStringToXPath2 : function(str,dir) {
+    var xi="";
+    
+    if (str.length>0) {
+       xi = autopagerMain.doConvertStringToXPath (str,dir)
+        var cap = autopagerMain.getCapString(str);
+       if (cap != str)
+        xi = autopagerMain.appendOrCondition(xi,autopagerMain.doConvertStringToXPath (cap,dir));
+    }
+    return xi;
+},
+doConvertStringToXPath : function(str,dir) {
+    var xi="";
+    
+    if (str.length>0) {
+        xi = autopagerMain.appendOrCondition(xi,  dir + ("text()") + " ='" + str + "'");
+        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@id and " + dir + "@id" + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@name and " + dir + "@name" + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@class and " + dir + "@class" + "='" + str + "')");
+        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "img and ("  + dir + "img/@src" + "='" + str + "' " +
+        				" or substring(" + dir + "img/@src,1," + str.length + ")" + "='" + str + "'))");
+
+    }
+    return xi;
+},
+
 appendOrCondition : function(base,newStr) {
     if (base.length > 0) {
         if (newStr.length > 0)
@@ -445,56 +495,54 @@ getRegExp :function(site)
 	return site.regex;
 },
 onInitDoc : function(doc,safe) {
+    var t  = new Date().getTime();
+    //autopagerMain.log("1 " + new Date().getTime())
     try{
-        this.autopagerDebug=autopagerMain.getAutopagerPrefs().getBoolPref(".autopagerDebug");
+    //autopagerMain.log("1.1 " + new Date().getTime())
+        this.autopagerDebug=autopagerMain.getAutopagerPrefs().getBoolPref(".debug");
         document.getElementById("autopager-hidden-panel-menu").hidden = !this.autopagerDebug;
         document.getElementById("autopager-hidden-panel-menu").nextSibling.hidden = !this.autopagerDebug;
+    //autopagerMain.log("1.2 " + new Date().getTime())
     }catch(e) {
-//        autopagerMain.alertErr(e);
+        autopagerMain.alertErr(e);
     }
     if (doc.location == null)
         return;
     
-    var dim = this.myGetWindowDimensions(doc)
-    if (dim.width<250 || dim.height<250)
+    if (doc.defaultView.innerWidth <200 || doc.defaultView.innerHeight<200)
         return;
     
-    if(doc.body.attachEvent){
-        doc.body.attachEvent(
-        'ondblclick',function(){
-            autopagerMain.setGlobalEnabled(!autopagerMain.getGlobalEnabled());
-        }
-        );
-    }else{
-        doc.documentElement.addEventListener(
-        'dblclick',function(event){
-            if (event.clientX + 20 < window.innerWidth &&
-            event.clientY + 20 < window.innerHeight &&
-            event.clientX > 20 &&
-            event.clientY > 20) {
-                if (event.ctrlKey == autopagerMain.getCtrlKey() && event.altKey == autopagerMain.getAltKey() && event.shiftKey == autopagerMain.getShiftKey())
-                    autopagerMain.setGlobalEnabled(!autopagerMain.getGlobalEnabled());
-            }
-        },true
-        );
-    }	
+//    if(doc.body.attachEvent){
+//        doc.body.attachEvent(
+//        'ondblclick',function(){
+//            autopagerMain.setGlobalEnabled(!autopagerMain.getGlobalEnabled());
+//        }
+//        );
+//    }else{
+    //}	
+    //autopagerMain.log("2 " + new Date().getTime())
+
     var url = doc.location.href;
     if (url == "about:blank")
         return;
     var i=0;
-	var tryTime = 0;
-	for(tryTime=0;i<2;tryTime++)
-	{
-		if (tryTime==0)
-				autopagerMain.workingAutoSites= UpdateSites.getMatchedSiteConfig(autopagerMain.workingAllSites,url,1);
-		else
-		{
-				if (autopagerMain.workingAutoSites==null || autopagerMain.workingAutoSites.length==0 || autopagerMain.workingAutoSites[0].urlPattern == "*")
-						return;
-				autopagerMain.workingAutoSites= UpdateSites.getMatchedSiteConfig(autopagerMain.workingAllSites,url,10);
+    
+    var tryTime = 0;
+    for(tryTime=0;tryTime<2;tryTime++)
+    {
+    //autopagerMain.log("3 " + new Date().getTime())
+
+        if (tryTime==0)
+            autopagerMain.workingAutoSites= UpdateSites.getMatchedSiteConfig(autopagerMain.workingAllSites,url,1);
+        else
+        {
+            if (autopagerMain.workingAutoSites==null || autopagerMain.workingAutoSites.length==0 || autopagerMain.workingAutoSites[0].urlPattern == "*")
+                return;
+            autopagerMain.workingAutoSites= UpdateSites.getMatchedSiteConfig(autopagerMain.workingAllSites,url,10);
         }
     for(i=0;i<autopagerMain.workingAutoSites.length;++i)
     {
+    //autopagerMain.log("4 " + new Date().getTime()) 
         var pattern = autopagerMain.getRegExp(autopagerMain.workingAutoSites[i]);
         if (pattern.test(url)) {
             //should not equal
@@ -508,17 +556,72 @@ onInitDoc : function(doc,safe) {
                 de.patternRegExp = pattern;
                 var insertPoint = null;
                 var nextUrl = null;
-                
+
+    //autopagerMain.log("5 " + new Date().getTime()) 
+                var urlNodes = null;
+                if (autopagerMain.workingAutoSites[i].isTemp )
+                    tryTime = 2;
+                if (!autopagerMain.workingAutoSites[i].isTemp)
+                    urlNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].linkXPath,autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")));
+                else{
+                    autopagerMain.workingAutoSites[i].linkXPath = null;
+                    for(var t=0;t<autopagerMain.workingAutoSites[i].tmpPaths.length; ++t) {
+    //autopagerMain.log("6.1 " + new Date().getTime()) 
+    autopagerMain.log(autopagerMain.workingAutoSites[i].tmpPaths[t])
+                        urlNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].tmpPaths[t],autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")));
+    //autopagerMain.log("6 " + new Date().getTime()) 
+                        if ( urlNodes != null  && urlNodes.length >0
+                        && urlNodes.length <= autopagerMain.workingAutoSites[i].maxLinks) {
+                            autopagerMain.workingAutoSites[i].linkXPath = autopagerMain.workingAutoSites[i].tmpPaths[t];
+                            //alert(autopagerMain.workingAutoSites[i].linkXPath);
+                            break;
+                        }
+                    }       
+                }
+    //autopagerMain.log("7 " + new Date().getTime()) 
+                if (urlNodes == null || urlNodes.length ==0)
+                {
+                    if (autopagerMain.workingAutoSites[i].isTemp )
+                        de.autopagerEnabled = false ;                    
+                    break;
+                }
+    //autopagerMain.log("8 " + new Date().getTime()) 
+                var visible = false;
+                for(var l in urlNodes)
+                {
+                    var style = doc.defaultView.getComputedStyle(urlNodes[l],null);
+                    //alert(urlNodes[l].offsetLeft)
+                    if (!(style.display=="none" || style.display=="hidden"  || style.visibility=="invisible"))
+                    {
+                        var pos = autopagerMain.myGetPos(urlNodes[l]);
+                        var left = pos.x;
+                        var top = pos.y;
+
+                        visible = !((left +urlNodes[l].offsetWidth)<= 0 || (top + urlNodes[l].offsetHeight) <=0);
+                        if (visible)
+                            break;
+                    }
+                        
+                }
+                if (!visible)
+                {
+                    de.autopagerEnabled = false ;
+                    break;
+                }
+    //autopagerMain.log("9 " + new Date().getTime()) 
+
                 de.autoPagerRunning = true;
-                var oldNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].contentXPath,autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript"));
+                var oldNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].contentXPath,autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")));
                 
                 de.contentXPath = autopagerMain.workingAutoSites[i].contentXPath;
+                de.removeXPath = autopagerMain.workingAutoSites[i].removeXPath;
+                
                 de.autopagerGUID = autopagerMain.workingAutoSites[i].guid;
                 de.margin = autopagerMain.workingAutoSites[i].margin;
                 de.enabled = autopagerMain.workingAutoSites[i].enabled;
                 //if (autopagerMain.workingAutoSites[i].enabled)
                 de.autopagerSplitDocInited = false;
-                de.setAttribute('enableJS', autopagerMain.workingAutoSites[i].enableJS ||autopagerMain.workingAutoSites[i].ajax || autopagerMain.loadBoolPref("alwaysEnableJavaScript"));
+                de.setAttribute('enableJS', autopagerMain.workingAutoSites[i].enableJS ||autopagerMain.workingAutoSites[i].ajax || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")));
                 de.setAttribute('autopagerAjax', autopagerMain.workingAutoSites[i].ajax);
                 if (!de.autopagerPagingCount)
                     de.autopagerPagingCount = 0;
@@ -534,6 +637,7 @@ onInitDoc : function(doc,safe) {
                     de.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
                     de.autopagerUserAllowed=siteConfirm.UserAllowed;
                 }
+    //autopagerMain.log("10 " + new Date().getTime()) 
 
                 if (oldNodes!= null && oldNodes.length >0)
                     insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
@@ -542,20 +646,6 @@ onInitDoc : function(doc,safe) {
                 //alert(oldNodes[oldNodes.length - 1]);
                 if (this.autopagerDebug)
                     autopagerMain.logInfo(insertPoint, "go");
-                var urlNodes = null;
-                if (!autopagerMain.workingAutoSites[i].isTemp)
-                    urlNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].linkXPath,autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript"));
-                else{
-                    autopagerMain.workingAutoSites[i].linkXPath = null;
-                    for(var t=0;t<autopagerMain.workingAutoSites[i].tmpPaths.length; ++t) {
-                        urlNodes = autopagerMain.findNodeInDoc(doc,autopagerMain.workingAutoSites[i].tmpPaths[t],autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript"));
-                        if ( urlNodes != null  && urlNodes.length >0
-                        && urlNodes.length <= autopagerMain.workingAutoSites[i].maxLinks) {
-                            autopagerMain.workingAutoSites[i].linkXPath = autopagerMain.workingAutoSites[i].tmpPaths[t];
-                            break;
-                        }
-                    }       
-                }
                 de.setAttribute('linkXPath',autopagerMain.workingAutoSites[i].linkXPath);
                 
                 var tooManyLinks = false;
@@ -565,7 +655,7 @@ onInitDoc : function(doc,safe) {
                 
                 //alert(urlNodes);
                 if (urlNodes != null && urlNodes.length >0) {
-                    nextUrl = autopagerMain.getNextUrl(doc,autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript"),urlNodes[0]);
+                    nextUrl = autopagerMain.getNextUrl(doc,autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")),urlNodes[0]);
                 }else
                     nextUrl = null;
                 //alert(insertPoint);
@@ -574,11 +664,11 @@ onInitDoc : function(doc,safe) {
                 && autopagerMain.workingAutoSites[i].enabled && !(tooManyLinks);
                 de.autopagerEnabled = autopagerEnabled;
                 de.autopagerProcessed = true;
-                
+                de.autoSiteSetting = autopagerMain.workingAutoSites[i];
                 //alert(doc.autopagerEnabled);
                 de.autoPagerPage = 1;
                 de.autopagerinsertPoint = insertPoint;
-                if (autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript"))
+                if (autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")))
                     de.autopagernextUrl= null;
                 else
                     de.autopagernextUrl = nextUrl;
@@ -588,6 +678,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
                 de.autopagerSplitCreated = false;
                 
+    //autopagerMain.log("11 " + new Date().getTime()) 
                                 if (autopagerMain.workingAutoSites[i].containerXPath != "")
                                 {
                                     
@@ -609,7 +700,7 @@ onInitDoc : function(doc,safe) {
                         topDoc.documentElement.autopagerEnabledDoc = new Array();
                     topDoc.documentElement.autopagerEnabledDoc.push( doc);
                     try{
-                        if (autopagerMain.workingAutoSites[i].enableJS || autopagerMain.loadBoolPref("alwaysEnableJavaScript")) {
+                        if (autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript"))) {
                             //doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
                             //var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true);
                             //splitbrowser.autopagerSplitWinFirstDocloaded = false;
@@ -625,6 +716,8 @@ onInitDoc : function(doc,safe) {
                     msg = autopagerConfig.autopagerFormatString("globaldisabled",[url]);
                     info = msg;
                 }
+    //autopagerMain.log("11 " + new Date().getTime()) 
+
                 if (msg.length>0)
                     autopagerMain.logInfo(msg, info);				
                 setTimeout(autopagerMain.scrollWatcher,1000);
@@ -711,7 +804,7 @@ getEnabledAutopagingPage : function(doc) {
 count:0,
 scrollWatching: false,
 scrollWatcher : function() {
-    setTimeout(autopagerMain.doScrollWatcher,3);
+    autopagerMain.doScrollWatcher();
     setTimeout(autopagerMain.doScrollWatcher,2000);
 },
 doScrollWatcher : function() {
@@ -829,9 +922,6 @@ doScrollWatcher : function() {
                                         }
                                     }
                                 }
-                               
-                                    
-                                
                                     
                             }
                         }catch(e){
@@ -973,20 +1063,21 @@ getSelectorLoadFrame : function(doc) {
         frame.autoPagerInited = false;
         //create a empty div in target
         autopagerMain.getLastDiv(doc);
-        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
+//        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
 //        doc.ownerDocument.autopagerFrame = frame;
     }
     //fix for enable to work at restored session
     try{
-     //       frame.removeEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
-//            frame.removeEventListener("load", autopagerMain.onFrameLoad, false);
+            frame.removeEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
+            frame.removeEventListener("load", autopagerMain.onFrameLoad, false);
          frame.contentDocument.clear();
-        //frame.normalize();
+        frame.normalize();
         frame.contentDocument.documentElement.innerHTML = "<html><body>autopaging</body></html>";
     }catch(e){}
-   // if (doc.documentElement.autopagerUseSafeEvent)
-  //  else
-  //      frame.addEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
+    if (doc.documentElement.autopagerUseSafeEvent)
+        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
+    else
+        frame.addEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
     return frame;
 },
 getLastDiv: function(doc) {
@@ -1433,7 +1524,8 @@ processNextDoc : function(doc,url) {
     }
 },
 headEndMark:/<[ ]*\/[ ]*[Hh][Ee][Aa][Dd]>/,
-getHtmlInnerHTML : function(html,enableJS,url) {
+htmlEndMark:/<[ ]*\/[ ]*[Hh][Tt][Mm][Ll]>/,
+getHtmlInnerHTML : function(html,enableJS,url,type) {
     var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
     if (!enableJS) {
         //<base href="http://bbs.chinaunix.net/forumdisplay.php?fid=46">
@@ -1441,9 +1533,17 @@ getHtmlInnerHTML : function(html,enableJS,url) {
 //        var headEnd = s.indexOf("</head>");
 //        if (headEnd == -1)
         headEnd = s.search(autopagerMain.headEndMark);
+        var htmlEnd = s.search(autopagerMain.htmlEndMark);
+        if (htmlEnd>0)
+            s = s.substring(0,htmlEnd);
+        
+        var h = "<head><base href='" + url +
+            "'><meta http-equiv='Content-Type' content='" + type +"'/></head> ";
+
         if (headEnd >0)
-            s = "<html><head><base href='" + url +
-            "'></head> "+ s.slice(headEnd + "</head>".length);
+            s = h + s.slice(headEnd + "</head>".length);
+        else
+            s = h+s;
         //s = s.replace(/<script/g,"<!-- script");
         s = s.replace(/<[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]/g,"<! -- script");
         s = s.replace(/ -- script/g,"-- script");
@@ -1473,7 +1573,15 @@ getHtmlBody  : function(html,enableJS) {
     return s;
 },
 getContentType : function(doc) {
-    var nodes = doc.getElementsByTagName("meta");
+    //var nodes = doc.getElementsByTagName("meta");
+    var nodes  = doc.evaluate("//head/meta[@http-equiv]", doc, null, 0, null);
+    
+    for (var node = null; (node = nodes.iterateNext()); ) {
+        if (node.content != "")
+        {
+            return node.content;
+        }
+    }
     var type= doc.contentType + "; charset=" + doc.characterSet;
     return type;
 },
@@ -1809,7 +1917,8 @@ processNextDocUsingXMLHttpRequest : function(doc,url){
         }catch(e){
             xmlhttp = new XMLHttpRequest();
         }
-        xmlhttp.overrideMimeType(autopagerMain.getContentType(doc));
+        var type = autopagerMain.getContentType(doc);
+        xmlhttp.overrideMimeType(type);
         xmlhttp.onreadystatechange = function (aEvt) {
             if (this.autopagerDebug)
                 autopagerMain.logInfo(xmlhttp.readyState + " " + xmlhttp.status,
@@ -1821,21 +1930,30 @@ processNextDocUsingXMLHttpRequest : function(doc,url){
                         frame.contentDocument.clear();
                         frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
                         //alert(xmlhttp.responseText);
+                        var html = autopagerMain.getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url,type);
                         //frame.contentDocument.write(autopagerMain.getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url));
-                        frame.contentDocument.documentElement.innerHTML = autopagerMain.getHtmlInnerHTML(xmlhttp.responseText,doc.documentElement.getAttribute('enableJS') == 'true',url);
-                        //frame.contentDocument.close();
+                        try
+                        {
+                            frame.contentDocument.documentElement.innerHTML = html
+                            //frame.contentDocument.open("about:blank");
+                            //frame.contentDocument.write(html);
+                        }catch(e)
+                        {
+                            alert(e)
+                        }
                         //autopagerMain.loadChannelToFrame(frame,xmlhttp.channel,true);
                         setTimeout(function (){
                             if (!frame.autoPagerInited) {
                                 //autopagerMain.fireFrameDOMContentLoaded(frame);
                                 var newDoc = frame.contentDocument;
+                                var s = newDoc.documentElement.innerHTML
                                 //
                                 frame.autoPagerInited = true;
                                 autopagerMain.scrollWindow(doc,newDoc);
                                 autopagerMain.onStopPaging(doc);
                             }
                         }
-                        ,60);
+                        ,100);
                         //xmlhttp.abort();
                 }
                 else {
@@ -1884,6 +2002,28 @@ autopagerEvaluateXPath : function(aNode, path,enableJS) {
         autopagerMain.alertErr(autopagerConfig.autopagerFormatString("unableevaluator",[aExpr,e]));
     }
     return found;
+},
+getDocURL : function(doc,enableJS)
+{
+    var href = "";
+    if (enableJS) {
+        href = doc.location.href;
+    }
+    else {
+        href = doc.baseURI;
+    }    
+//    if (href=="about:blank")
+//    {
+//        var nodes =doc.evaluate("//head/base", doc, null, 0, null);
+//        for (var node = null; (node = nodes.iterateNext()); ) {
+//            if (node.href != "about:blank")
+//            {
+//                href = node.href;
+//                break;
+//            }
+//        }
+//    }        
+    return href;
 },
 preparePath : function(doc,path,enableJS) {
     //host
@@ -1936,6 +2076,42 @@ preparePath : function(doc,path,enableJS) {
     return newPath;
     
 },
+removeElements : function (node,xpath,enableJS)
+{
+    if (xpath==null || xpath.length==0)
+        return;
+    var doc = (node.ownerDocument == null) ? node : node.ownerDocument;
+    var xpe = new XPathEvaluator();
+    var nsResolver = xpe.createNSResolver(node);
+    
+//    alert(node.innerHTML)
+    var aExpr
+    for(var i=0;i<xpath.length;i++)
+    {
+       try{
+        aExpr = autopagerMain.preparePath(doc,xpath[i],enableJS);
+        aExpr = aExpr.replace(/^\/\//g,"*//");
+        aExpr = aExpr.replace(/\|( )*\/\//g,"| *//");
+        var xpathExpr = xpe.createExpression(aExpr,nsResolver)
+        var result = xpathExpr.evaluate( node, 0, null);
+        var res;
+        var nodes = [];
+        while (res = result.iterateNext())
+        {
+            nodes.push(res);
+        }
+  for(var k=0;k<nodes.length;++k) {
+        nodes[k].parentNode.removeChild(nodes[k])
+    }  
+        }catch(e)
+       {
+             autopagerMain.alertErr(e)
+       }
+    }
+//   alert(node.innerHTML)
+//    var nodes = autopagerMain.findNodeInDoc(node,xpath,enableJS);
+  
+},
 xpath :"//table[tbody/tr/td/@class='f']",
 ////a[contains(font/text(),'Next')]
 ///a[.//text() = '?????????']
@@ -1951,8 +2127,13 @@ scrollWindow : function(container,doc) {
     try{
         if (this.autopagerDebug)
             autopagerMain.logInfo("autopagerMain.scrollWindow","autopagerMain.scrollWindow");
-
-
+        //validate the url first
+        var site = de.autoSiteSetting;
+        var reg = this.getRegExp (site)
+        var url = this.getDocURL(doc,de.getAttribute('enableJS') == 'true');
+        if (de.getAttribute('enableJS') != 'true' || reg.test(url))
+        {
+        
         var nextUrl=de.autopagernextUrl;
         var xpath = de.contentXPath;
         
@@ -1972,13 +2153,17 @@ scrollWindow : function(container,doc) {
             var divStyle = autopagerMain.loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
             var div= autopagerMain.createDiv(container,"",divStyle); 
 
-            div.innerHTML = "<span>" + autopagerConfig.autopagerFormatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</span>";
+            div.innerHTML = "<span><a target='_black' href='http://autopager.teesoft.info/help.html'>"  + autopagerConfig.autopagerFormatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</a></span>";
             var insertPoint =	de.autopagerinsertPoint;
 
             insertPoint.parentNode.insertBefore(div,insertPoint);
             for(i=0;i<nodes.length;++i) {
                 try{
-                    var newNode = insertPoint.parentNode.insertBefore(container.importNode (nodes[i],true),insertPoint);
+                    var newNode = nodes[i];
+                    newNode = container.importNode (newNode,true);
+                    autopagerMain.removeElements(newNode,de.removeXPath,de.getAttribute('enableJS') == 'true')
+                    newNode = insertPoint.parentNode.insertBefore(newNode,insertPoint);
+                    
                 }catch(e) {
                     autopagerMain.alertErr(e);
                 }
@@ -1993,6 +2178,7 @@ scrollWindow : function(container,doc) {
             //alert(nextUrl);
             de.autopagernextUrl = nextUrl;
             //container.close();
+            }
         }
     }catch(e) {
         autopagerMain.alertErr(e);
@@ -2186,7 +2372,10 @@ HighlightNextLinks : function()
         return;
     for(var i=0;i<urlNodes.length;i++)
         autopagerMain.createRegionDivs(doc,urlNodes[i],i);
-    doc.documentElement.autopagerHighlightedNextLinkCount = urlNodes.length;
+    if (doc.documentElement.autopagerHighlightedNextLinkCount==null)
+        doc.documentElement.autopagerHighlightedNextLinkCount = 0;
+    if (doc.documentElement.autopagerHighlightedNextLinkCount<urlNodes.length)
+        doc.documentElement.autopagerHighlightedNextLinkCount = urlNodes.length;
     if(doc.documentElement.autopagerHighlightedNextLinkNumber == null)
         doc.documentElement.autopagerHighlightedNextLinkNumber = 0;
     if (doc.documentElement.autopagerHighlightedNextLinkNumber >= urlNodes.length)
@@ -2208,6 +2397,10 @@ HighlightAutoPagerContents : function()
         return;
     for(var i=0;i<urlNodes.length;i++)
         autopagerMain.createRegionDivs(doc,urlNodes[i],i);
+    if (doc.documentElement.autopagerHighlightedNextLinkCount==null)
+        doc.documentElement.autopagerHighlightedNextLinkCount = 0;
+    if (doc.documentElement.autopagerHighlightedNextLinkCount<urlNodes.length)
+        doc.documentElement.autopagerHighlightedNextLinkCount = urlNodes.length;
 },
 enabledInNextPagesAlways : function(always)
 {
@@ -2250,8 +2443,15 @@ hiddenOptionDiv : function(doc)
     autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),true);
     autopagerMain.hiddenDiv(doc.getElementById("autoPagerLabel"),true);
     
+    //alert(doc.documentElement.autopagerHighlightedNextLinkCount)
     for(var i=0;i<doc.documentElement.autopagerHighlightedNextLinkCount;i++)
+    {
+    try{
         autopagerMain.hiddenRegionDivs(doc,i);
+    }catch(e)
+    {}
+    }
+    doc.documentElement.autopagerHighlightedNextLinkCount = 0;
 },
 enabledThisSite : function(enabled)
 {

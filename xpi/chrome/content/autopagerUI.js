@@ -1,4 +1,7 @@
-    var allSites = null;
+const CI = Components.interfaces;
+const CC = Components.classes;
+
+var allSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
@@ -17,12 +20,14 @@
     var selectedSource;
     
     var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt;
-    var slectedListItem = null;
+    var selectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
     var contentXPath;
     var xpath="";
     var siteSearch;
+    
+    var btnAddRemovePath, btnEditRemovePath, btnDeleteRemovePath, lstRemoveXPath
 
     var settingDeck;
     window.addEventListener("DOMContentLoaded", function(ev) {
@@ -32,15 +37,19 @@
 	{
             
             setTimeout(function (){
+            //var t = new Date().getTime();
             populateChooser("",true);
             var url = window.opener.autopagerSelectUrl;
             //window.autopagerSelectUrl = url;
             if (url != null )
             {
-                    var index = getMatchedIndex(url);
-        	        chooseSite(index);
+                chooseInView(treeSites.view.wrappedJSObject,url);
+//                    var index = getMatchedIndex(url);
+//        	        chooseSite(index);
             }else
                 chooseSite(0);
+            
+            //alert(new Date().getTime() -t)
             },60);
             
 //	        
@@ -60,27 +69,73 @@
     function getMatchedIndex(url)
     {
     	var index = -1;
-		for(index=0; index<treeSites.view.rowCount; ++index)
-	    {
-		  var treerow = treeSites.view.getItemAtIndex(index);
+        var view = treeSites.view;
+        for(index=0; index<treeSites.view.rowCount; ++index)
+	{
+		  var treerow = treeSites.view.wrappedJSObject.getItemAtIndex(index);
                   if (treerow.site != null && treerow.site.urlPattern == url)
                       return index;
-	    }
-	    if(index>=treeSites.view.rowCount)
-	    {
-		    for(index=0; index<treeSites.view.rowCount; ++index)
-		    {
-                          var treerow = treeSites.view.getItemAtIndex(index);
-                          if (treerow.site != null && autopagerMain.getRegExp(treerow.site).test(url))
-                              return index;
-		    }
-	      	
-	    }
+	}
+        if(index>=treeSites.view.rowCount)
+        {
+            for(index=0; index<treeSites.view.rowCount; ++index)
+            {
+                var treerow = treeSites.view.wrappedJSObject.getItemAtIndex(index);
+                if (treerow.site != null && autopagerMain.getRegExp(treerow.site).test(url))
+                    return index;
+            }
+            
+        }
         if(index>=treeSites.view.rowCount)
         	 index =0;
 	    return index;
     }
+    function chooseInView(view,url)
+    {
+        for(var index=0; index<view.getChildCount(); ++index)
+	{
+		  var treerow = view.wrappedJSObject.getChildAtIndex(index);
+                  if (treerow.site != null && (treerow.site.urlPattern == url ||  autopagerMain.getRegExp(treerow.site).test(url)))
+                  {
+                          treeSites.view.wrappedJSObject.selectItem(treerow);
+                          return true;
+                  }
+                  var ret = chooseInView(treerow,url);
+                  if (ret)
+                      return true;
+                  
+	}
+        return false;
+    }
 
+
+function autopagerOpenIntab(url,obj)
+{
+    var wm =  CC['@mozilla.org/appshell/window-mediator;1'].getService(CI.nsIWindowMediator);
+    var w = wm && wm.getMostRecentWindow('navigator:browser', true);
+    if(w && !w.closed) {
+        var browser = null;
+
+        if (window.opener.getBrowser)
+            browser =  window.opener.getBrowser();
+          else if (window.opener.gBrowser)
+              browser = window.opener.gBrowser ;
+
+
+        var ioService = Components.classes["@mozilla.org/network/io-service;1"]
+                      .getService(Components.interfaces.nsIIOService);
+        var ops = ioService.newURI(url, null, null);
+        var tab = browser.addTab(url,ops);
+        browser.selectedTab = tab;
+        return tab;
+    } else {
+        return window.open(url, "_blank");
+    }        
+}
+    function handleHelpButton()
+    {
+        autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
+    }
     function handleOkButton() {
        	autopagerConfig.saveConfig(sites);      
         //autopagerConfig.autoSites = autopagerConfig.loadConfig();
@@ -91,7 +146,7 @@
         autopagerMain.savePref("smartlinks",smartlinks.value);
 	autopagerMain.savePref("smartMargin",smartMargin.value);
 
-        autopagerMain.savePref("discoverytext",discoverytext.value);
+        autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
         autopagerMain.saveBoolPref("showtags",showtags.checked);
         autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
         autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
@@ -121,26 +176,25 @@
             window.opener.getBrowser().contentDocument.location.reload();
           else if (window.opener.gBrowser)
               window.opener.gBrowser.contentDocument.location.reload();
+          else if (window.opener.autopagerOpenerObj)
+              window.opener.autopagerOpenerObj.contentDocument.location.reload();
         return true;
     }
     function onSiteChange(treeitem,site)
     {
     	site.changedByYou = autopagerConfig.isChanged(site);
-        var treerow = treeitem.childNodes[0];
-        var treecell = treerow.childNodes[0];
-        treecell.setAttribute("properties","status" + getColor(site));
-        treecell = treerow.childNodes[1];
-        treecell.setAttribute("properties","status" + getColor(site));
+//        var treerow = treeitem.childNodes[0];
+//        var treecell = treerow.childNodes[0];
+//        treecell.setAttribute("properties","status" + getColor(site));
+//        treecell = treerow.childNodes[1];
+//        treecell.setAttribute("properties","status" + getColor(site));
+        treeSites.view.wrappedJSObject.invalidateRow();
 
     }
     function onSourceChange(treeitem,site)
     {
     	site.changedByYou = autopagerConfig.isChanged(site);
-        var treerow = treeitem.childNodes[0];
-        var treecell = treerow.childNodes[0];
-        treecell.setAttribute("properties","status" + getColor(site));
-        treecell = treerow.childNodes[1];
-        treecell.setAttribute("properties","status" + getColor(site));
+        treeSites.view.wrappedJSObject.invalidateRow();
 
     }    
     function loadControls() {
@@ -165,6 +219,12 @@
         btnSiteDown = document.getElementById("btnSiteDown");
         btnDeletePath = document.getElementById("btnDeletePath");
         contentXPath = document.getElementById("lstContentXPath");
+        
+        btnAddRemovePath = document.getElementById("btnAddRemovePath");
+        btnEditRemovePath = document.getElementById("btnEditRemovePath");
+        btnDeleteRemovePath = document.getElementById("btnDeleteRemovePath");
+        lstRemoveXPath = document.getElementById("lstRemoveXPath");
+        
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
         chkAjax = document.getElementById("chkAjax");
@@ -226,7 +286,7 @@
         smartlinks.value = autopagerMain.loadPref("smartlinks");
         
         discoverytext = document.getElementById("discoverytext");
-        discoverytext.value = autopagerMain.loadPref("discoverytext");
+        discoverytext.value = autopagerMain.loadUTF8Pref("discoverytext");
         
         smartMargin = document.getElementById("smartMargin");
         smartMargin.value = autopagerMain.loadPref("smartMargin");
@@ -237,6 +297,19 @@
         enableSmartControl(smartenable.checked);
         
         treeSites.addEventListener("select", updateDetails, false);
+        treeSites.addEventListener("focus",function(e)
+        {
+//            alert(document.commandDispatcher.focusedElement);
+//            if (e.explicitOriginalTarget!=null)
+//            {
+//                var node = e.explicitOriginalTarget
+//                //alert(node);
+//                var newCmdEvent = document.createEvent('Events');
+//                newCmdEvent.initEvent('change',true, true);
+//                node.dispatchEvent(newCmdEvent);
+//            }
+        },true);
+
         treeSites.filterIng=false;
         
         btnAdd.addEventListener("command", handleAddSiteButton, false);
@@ -247,53 +320,53 @@
         chkEnabled.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enabled = chkEnabled.checked;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         
         chkSettingEnabled.addEventListener("command", function() {
            if (selectedSource != null) {
              selectedSource.enabled = chkSettingEnabled.checked;
-             onSourceChange(slectedListItem,selectedSource);
+             onSourceChange(selectedListItem,selectedSource);
            }
         }, false);
         
         settingtype.addEventListener("command", function() {
            if (selectedSource != null) {
              selectedSource.updateType = AutoPagerUpdateTypes.getType( settingtype.value);
-             onSourceChange(slectedListItem,selectedSource);
+             onSourceChange(selectedListItem,selectedSource);
            }
         }, false);
         settingUpdatePeriod.addEventListener("command", function() {
            if (selectedSource != null) {
              selectedSource.updateperiod = settingUpdatePeriod.value;
-             onSourceChange(slectedListItem,selectedSource);
+             onSourceChange(selectedListItem,selectedSource);
            }
         }, false);
 
         lbSettinglOwner.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.owner = lbSettinglOwner.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         settingurl.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.url = settingurl.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         settingxpath.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.xpath = settingxpath.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
 
         settingdesc.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.desc = settingdesc.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         
@@ -305,7 +378,7 @@
         chkEnableJS.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.enableJS = chkEnableJS.checked;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         chkAjax.addEventListener("command", function() {
@@ -313,31 +386,31 @@
              selectedSite.ajax = chkAjax.checked;
              if (selectedSite.ajax)
                  chkEnableJS.checked = true;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         chkQuickLoad.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.quickLoad = chkQuickLoad.checked;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         chkFixOverflow.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.fixOverflow = chkFixOverflow.checked;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
-        linkXPath.addEventListener("change", function() {
+        linkXPath.addEventListener("change", function(evt) {
            if (selectedSite != null) {
              selectedSite.linkXPath = linkXPath.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         containerXPath.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.containerXPath = containerXPath.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         siteSearch.addEventListener("change", function() {
@@ -350,7 +423,7 @@
         description.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.desc = description.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         urlPattern.addEventListener("change", function() {
@@ -358,17 +431,17 @@
            	
              selectedSite.urlPattern = urlPattern.value;
              selectedSite.regex=null;
-             var treerow = slectedListItem.childNodes[0];
+             var treerow = selectedListItem.childNodes[0];
              var treecell = treerow.childNodes[0];
              treecell.setAttribute("label",urlPattern.value);
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         isRegex.addEventListener("command", function() {
            if (selectedSite != null) {
            	
              selectedSite.isRegex = isRegex.checked;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         margin.addEventListener("change", function() {
@@ -380,7 +453,7 @@
            		return;
            	}
              selectedSite.margin = margin.value;
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
         contentXPath.addEventListener("change", function() {
@@ -388,59 +461,68 @@
            	 onPathChange();
            }
         }, false);
-		
+        lstRemoveXPath.addEventListener("change", function() {
+           if (selectedSite != null) {
+           	 onRemovePathChange();
+           }
+        }, false);
+			
         btnAddPath.addEventListener("command", function() {
            xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
            {
-           		addContentXPath(xpath);
+           		addContentXPath(xpath,contentXPath);
            		onPathChange();
            }
         }, false);
+
+        btnAddRemovePath.addEventListener("command", function() {
+           xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+           if (xpath!=null && xpath.length>0)
+           {
+           		addContentXPath(xpath,lstRemoveXPath);
+           		onRemovePathChange();
+           }
+        }, false);
+
         btnSiteUp.addEventListener("command", function() {
            if (treeSites.currentIndex > 0) {
-               var treeitem = treeSites.view.getItemAtIndex(treeSites.currentIndex);
+               var index = treeSites.currentIndex;
+               var treeitem = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex);
                if (treeitem.updateSite != null)
                    return;
-               var itemParent = treeitem.parentNode.parentNode;
+               var itemParent = treeitem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite.url.length > 0)
                    return;
-               //todo:notify users that he can't modify these online imported configurations
-               if (treeitem.previousSibling == null || treeitem.previousSibling.localName.toLowerCase() != "treeitem")
+               var siteIndex = autopagerConfig.getSiteIndex(sites,treeitem.site)
+               if (siteIndex<=0)
                    return;
-               var siteIndex = treeitem.siteIndex;
-               var node = treeitem.previousSibling;
-               treeitem.siteIndex = node.siteIndex;
-               node.siteIndex = siteIndex;
-               sites[node.siteIndex] = node.site;
-               sites[treeitem.siteIndex] = treeitem.site;
+               sites[siteIndex] = sites[siteIndex-1];
+               sites[siteIndex-1] = treeitem.site;
                
-               node.parentNode.insertBefore(treeitem,node);
-               chooseTreeItem(treeitem);
+               onSiteFilter(siteSearch.value,false);
+               treeSites.view.selection.select(index-1);
            }
         }, false);
         btnSiteDown.addEventListener("command", function() {
            if (treeSites.currentIndex > 0) {
-               var treeitem = treeSites.view.getItemAtIndex(treeSites.currentIndex);
+               var index = treeSites.currentIndex;
+               var treeitem = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex);
                if (treeitem.updateSite != null)
                    return;
-               var itemParent = treeitem.parentNode.parentNode;
+               var itemParent = treeitem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite.url.length > 0)
                    return;
-               //todo:notify users that he can't modify these online imported configurations
-               if (treeitem.nextSibling == null || treeitem.nextSibling.localName.toLowerCase() != "treeitem")
+               var siteIndex = autopagerConfig.getSiteIndex(sites,treeitem.site)
+               if (siteIndex<0 || siteIndex>=sites.length-1)
                    return;
-               var siteIndex = treeitem.siteIndex;
-               var node = treeitem.nextSibling;
-               treeitem.siteIndex = node.siteIndex;
-               node.siteIndex = siteIndex;
-               sites[node.siteIndex] = node.site;
-               sites[treeitem.siteIndex] = treeitem.site;
+               sites[siteIndex] = sites[siteIndex+1];
+               sites[siteIndex+1] = treeitem.site;
                
-               node.parentNode.insertBefore(node,treeitem);
-               chooseTreeItem(treeitem);
+               onSiteFilter(siteSearch.value,false);
+               treeSites.view.selection.select(index+1);
            }
         }, false);
         btnUp.addEventListener("command", function() {
@@ -485,6 +567,27 @@
 				onPathChange();
            	}
         }, false);
+        btnEditRemovePath.addEventListener("command", function() {
+			if (lstRemoveXPath.selectedCount > 0) {
+                            treeitem = lstRemoveXPath.getSelectedItem(0);
+                            xpath = treeitem.label;
+                            xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+                            if (btnAddPath.disabled)
+                                return;
+                            if (xpath!=null && xpath.length>0)
+                            {
+                                    treeitem.label = xpath;
+                                    onRemovePathChange();
+                            }
+           	}
+        }, false);
+        btnDeleteRemovePath.addEventListener("command", function() {
+			if (lstRemoveXPath.selectedCount > 0) {
+				lstRemoveXPath.removeChild(lstRemoveXPath.childNodes[lstRemoveXPath.selectedIndex]);
+				onRemovePathChange();
+           	}
+        }, false);
+
 
     }
     function enableSmartControl(enabled)
@@ -502,13 +605,24 @@
            	 {
              	selectedSite.contentXPath.push(contentXPath.childNodes[i].label);
            	 }
-             onSiteChange(slectedListItem,selectedSite);
+             onSiteChange(selectedListItem,selectedSite);
+           }    	
+    }
+    function onRemovePathChange()
+    {
+		if (selectedSite != null) {
+           	 selectedSite.removeXPath = new Array();
+           	 for(var i =0;i<lstRemoveXPath.childNodes.length;++i)
+           	 {
+             	selectedSite.removeXPath.push(lstRemoveXPath.childNodes[i].label);
+           	 }
+             onSiteChange(selectedListItem,selectedSite);
            }    	
     }
     function clearInfo()
     {
     	selectedSite = null;
-            slectedListItem = null;
+            selectedListItem = null;
             urlPattern.value = " ";
             margin.value = "2";
             description.value = " ";
@@ -542,6 +656,9 @@
         
     }
 	function updateDetails(event) {
+            setTimeout(doUdateDetails,10);
+        }
+        function doUdateDetails(event) {
             if(treeSites.filterIng)
 			return;
             if (treeSites.view.selection.getRangeCount() == 0) {
@@ -549,28 +666,28 @@
             }
             else {
                 
-                slectedListItem = treeSites.view.getItemAtIndex (treeSites.currentIndex);
-                var itemParent = slectedListItem.parentNode.parentNode;
+                selectedListItem = treeSites.view.wrappedJSObject.getItemAtIndex (treeSites.currentIndex);
+                var itemParent = selectedListItem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite == null)
                {
                    switchDeck(1);
-                   updateSourceDetail(slectedListItem.updateSite);
+                   updateSourceDetail(selectedListItem.updateSite);
                    enableSiteEditControls(false);
                    clearInfo();
                    return;
                }
                switchDeck(0);
                var enableEdit =  (updateSite.url.length == 0);
-               if (enableEdit)
-                    selectedSite = sites[slectedListItem.siteIndex];
-                else
-                    selectedSite = slectedListItem.site;
+//               if (enableEdit)
+//                    selectedSite = sites[selectedListItem.siteIndex];
+//                else
+                    selectedSite = selectedListItem.site;
                
                enableSiteEditControls(enableEdit);
                 if (selectedSite == null)
                 {
-                    slectedListItem = null;
+                    selectedListItem = null;
                     return;
                 }
                 urlPattern.value = selectedSite.urlPattern;
@@ -584,9 +701,11 @@
                 chkQuickLoad.checked = selectedSite.quickLoad;
                 chkFixOverflow.checked = selectedSite.fixOverflow;
 
-                populateXPath(selectedSite.contentXPath);
+                populateXPath(selectedSite.contentXPath,contentXPath);
                 linkXPath.value    = selectedSite.linkXPath;
                 containerXPath.value    = selectedSite.containerXPath;
+                populateXPath(selectedSite.removeXPath,lstRemoveXPath);
+                lstRemoveXPath.value    = selectedSite.removeXPath;
                 lblOwner.value = selectedSite.owner;
             
         }
@@ -605,6 +724,10 @@
         btnAddPath.disabled =disabled;
         //btnEditPath.disabled =disabled;
         btnDeletePath.disabled =disabled;
+        btnAddRemovePath.disabled =disabled;
+        //btnEditPath.disabled =disabled;
+        btnDeleteRemovePath.disabled =disabled;
+        
         btnUp.disabled =disabled;
         btnDown.disabled =disabled;
         btnSiteUp.disabled =disabled;
@@ -622,22 +745,23 @@
         btnPickLinkPath.disabled = disabled;
         btnClone.hidden = enableEdit;
       }
-	function populateXPath(paths)
+	function populateXPath(paths,lst)
 	{
 		//clear
-		while (contentXPath.hasChildNodes()) {
-        	contentXPath.removeChild(contentXPath.childNodes[0]);
+		while (lst.hasChildNodes()) {
+        	lst.removeChild(lst.childNodes[0]);
         }
 		for (var i = 0, path = null; (path = paths[i]); i++) {
-	        addContentXPath( path);
+	        addContentXPath( path,lst);
 		}
 	}
-	function addContentXPath(path)
+	function addContentXPath(path,lst)
 	{
 	    var listitem = document.createElement("listitem");
 	    listitem.setAttribute("label", path);
-	    contentXPath.appendChild(listitem);
+	    lst.appendChild(listitem);
 	}
+
 	function checkMyName()
 	{
 		var myname = mynameText.value;
@@ -662,7 +786,7 @@
   				,"//a[contains(.//text(),'Next')]","//body/*");
 		site.createdByYou = true;
 		site.owner = myname;
-		addSite(site,sites.length -1);
+		//addSite(site,sites.length -1);
                 autopagerConfig.insertAt(sites,0,site);
                 onSiteFilter(siteSearch.value,false);
 	}
@@ -672,7 +796,7 @@
             if (myname==null || myname.length == 0)
                     return;
 
-            selectedSite = treeSites.view.getItemAtIndex(treeSites.currentIndex).site;
+            selectedSite = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex).site;
             if (selectedSite == null)
                 return;
             var site = autopagerConfig.cloneSite(selectedSite);
@@ -693,7 +817,7 @@
         for (var t = 0; t < numRanges; t++){
           treeSites.view.selection.getRangeAt(t,start,end);
           for (var v = start.value; v <= end.value; v++){
-            var treeitem = treeSites.view.getItemAtIndex(v);
+            var treeitem = treeSites.view.wrappedJSObject.getItemAtIndex(v);
             if (treeitem.site != null)
                 exportSites.push(treeitem.site);
           }
@@ -741,7 +865,7 @@
         for (var t = 0; t < numRanges; t++){
           treeSites.view.selection.getRangeAt(t,start,end);
           for (var v = start.value; v <= end.value; v++){
-              items.push(treeSites.view.getItemAtIndex(v));
+              items.push(treeSites.view.wrappedJSObject.getItemAtIndex(v));
           }
         }
         if (items.length ==0)
@@ -751,14 +875,16 @@
         var treeitem = items[0];
         if (treeitem.updateSite != null)
           return;
-        var site = sites[treeitem.siteIndex];
+        var site = treeitem.site;
       
         window.autopagerPublicSite=site;
+//        window.opener.autopagerPublicSite=site;
+        
         //
         
         //var browser = window.open("http://localhost:8080/WebApplication1/");
+//        autopagerOpenIntab("http://www.teesoft.info/component/option,com_autopager/Itemid,47/")
         var browser = window.open("http://www.teesoft.info/component/option,com_autopager/Itemid,47/");
-
 
     }
     
@@ -767,26 +893,27 @@
         var end = new Object();
         var numRanges = treeSites.view.selection.getRangeCount();
         var items = new Array();
+        var minIndex = 100000;
         for (var t = 0; t < numRanges; t++){
           treeSites.view.selection.getRangeAt(t,start,end);
           for (var v = start.value; v <= end.value; v++){
-              items.push(treeSites.view.getItemAtIndex(v));
+                if (start.value<minIndex)
+                    minIndex = start.value;
+              items.push(treeSites.view.wrappedJSObject.getItemAtIndex(v));
           }
         }
         if (items.length ==0)
             return;
-        var treeitem = items[items.length-1];
-       var node = treeitem.nextSibling;
-       if (node==null)
-           node = treeitem.previousSibling;
-       if (node==null)
-           node = treeitem.parentNode.parentNode;
+       var nodeIndex = minIndex-1;
+       
        for(var i=items.length-1;i>=0;i--)
        {
-           var item = items[i];
-            deleteItem(item);
-       };
-        chooseTreeItem(node);
+           var item = items[i].site;
+           autopagerConfig.removeFromArray(sites,item);
+       }
+       onSiteFilter(siteSearch.value,false);
+       treeSites.view.selection.select(nodeIndex);
+        //chooseTreeItem(node);
 
     }
     function deleteItem(item)
@@ -795,7 +922,7 @@
                var treeitem = item;
                if (treeitem.updateSite != null)
                    return;
-               var itemParent = treeitem.parentNode.parentNode;
+               var itemParent = treeitem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite.url.length > 0)
                    return;
@@ -804,7 +931,7 @@
                if (node==null)
                    node = treeitem.previousSibling;
                if (node==null)
-                   node = treeitem.parentNode.parentNode;
+                   node = treeitem.parentItem();
                //var site = treeitem.site;
                autopagerConfig.removeFromArray(sites,treeitem.site);
                treeitem.parentNode.removeChild(treeitem);
@@ -822,14 +949,16 @@
     	}
         populateChooser(filter,reload);
     	treeSites.filterIng = false;
-	    var index = getMatchedIndex(url);
-	    if ( treeSites.view.rowCount > 0)
-	    	chooseSite(index);
-	    else
-	    {
-	    	//alert("clear");
-	    	clearInfo();
-	    }
+        
+        chooseInView(treeSites.view.wrappedJSObject,url);
+//	    var index = getMatchedIndex(url);
+//	    if ( treeSites.view.rowCount > 0)
+//	    	chooseSite(index);
+//	    else
+//	    {
+//	    	//alert("clear");
+//	    	clearInfo();
+//	    }
 	    
     }
 
@@ -864,13 +993,13 @@
             return treeitem;
     }
     function populateChooser(filter,reload) {
-
-        var userSites = null;
+//            var t = new Date().getTime();
+var userSites = null;
         if(reload)
         {
             allSites = UpdateSites.loadAll();
             try{
-                userSites = allSites["autopager.xml"] ;
+                userSites = autopagerConfig.reLoadConfig(allSites["autopager.xml"].updateSite);//  allSites["autopager.xml"] ;
             }catch(e)
             {
             }
@@ -878,27 +1007,18 @@
                 userSites = new Array();
             sites = autopagerConfig.cloneSites(userSites);
             sites.updateSite = userSites.updateSite;
-            allSites["autopager.xml"] = sites;
+            //allSites["autopager.xml"] = sites;
                 
          }
         else
-            userSites = allSites["autopager.xml"] ;
+            userSites = allSites["autopager.xml"] ;            
 
-        var key;
-        for ( key in allSites){
-            if (key=="smartpaging.xml")
-                continue;
-                    tmpsites = allSites[key];
-                    var treechildren = addTreeParent(treebox,tmpsites.updateSite);
-                    if (userSites.updateSite == tmpsites.updateSite)
-                        userModifiableTreeChildren = treechildren;
-                    for (var i = 0; i < tmpsites.length; i++) {
-                            var site = tmpsites[i];
-                            if (filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
-	        		||  (site.desc != null && site.desc.toLowerCase().indexOf(filter) != -1)))
-                                addTreeItem(treechildren,site,i);    
-                    }
-            };
+        //allSites["autopager.xml"]  = sites
+        var levels = getLevels(allSites,sites,filter);
+            treeSites.view = levels[0].wrappedJSObject;
+//            treeSites.view.selection.select(0);
+//            setTimeout(function(){treeSites.view.wrappedJSObject.invalidateRow();},100);
+////            alert(new Date().getTime() -t)
     }
     function addNode(pNode,name)
     {
@@ -912,19 +1032,20 @@
         var addedItem = addTreeItem(treebox,site,siteIndex);
         chooseTreeItem(addedItem);
      }
-	function getColor(site)
-	{	var color='';
-		if (!site.enabled) {
+     function getColor(site)
+    {
+	var color='';
+        if (!site.enabled) {
             color = 'gray';
         }else if(site.createdByYou)
         {
-        	color = "green";
+            color = "green";
         }else if(site.changedByYou)
         {
-        	color = "blue";
+            color = "blue";
         }
         return color;
-	}
+    }
     function chooseSite(index) {
         //treeSites.boxObject.ensureRowIsVisible(index);
         var boxobject = treeSites.boxObject;

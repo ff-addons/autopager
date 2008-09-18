@@ -70,6 +70,7 @@
 <!ENTITY setting.label.general "Algemeen">
 <!ENTITY setting.label.grpContentXPath "XPath naar content:">
 <!ENTITY setting.label.grpDiscovery "Ontdekking">
+<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">

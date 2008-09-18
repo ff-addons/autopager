@@ -138,7 +138,15 @@ var autopagerSidebar =
         docShell.allowPlugins = false
         docShell.allowSubframes = false
 
-        document.getElementById(captionID).label = this.getString("Resultsfrom") + ":" + url;
+        var cap = document.getElementById(captionID);
+        //cap.label = this.getString("Resultsfrom") + ":" + url;
+        cap.tooltip = url
+        if(url.length>30)
+            url = url.substring(0,15)+ "..." + url.substring(url.length - 15 )
+
+        cap.label = this.getString("Resultsfrom") + ":" +url;
+        
+        
     },
 
     onTextChangeInXPathBox:function(xpathID,statusID) {
@@ -333,7 +341,7 @@ var autopagerSidebar =
             autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
             document.autopagerXPathModel = "";
             document.autopagerWizardStep = "";
-            autopagerConfig.openSetting(urlPattern);
+            autopagerConfig.openSetting(urlPattern,autopagerUtils.currentBrowser());
         
     },
         pickupLink : function ()

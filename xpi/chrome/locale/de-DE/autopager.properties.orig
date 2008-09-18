@@ -1,0 +1,57 @@
+#Modified By Foxbeans
+#Mon Sep 15 19:59:01 CST 2008
+nextpages=N\u00C3\u00A4chste %S Seiten
+inputurl=Bitte die Adresse f\u00C3\u00BCr den Import der Konfiguarationsdatei angeben\:\:
+optiontitle=AutoPager - Einstellungen
+xpathconfirm=Soll dieser XPath als Link zur n\u00C3\u00A4chsten Seite verwendet werden?
+errorload=Fehler beim Laden der Seite\:
+alwaysdisableshort=ID
+extensions.autopager@mozilla.org.description=Automatisches Laden der n\u00C3\u0083\u00C2\u00A4chsten Seite und Anf\u00C3\u0083\u00C2\u00BCgen an die aktuelle Seite (kann auch als XPath-Generator benutzt werden)
+LinkXPathcannotbenull=Link XPath can't be null\!
+modifyxpath=XPath bearbeiten\:
+selectcontentxpath=Bitte w\u00C3\u00A4hlen Sie den gew\u00C3\u00BCnschten Inhalt
+selectlinkxpath=Bitte den Link zur n\u00C3\u00A4chsten Seite ausw\u00C3\u00A4hlen.
+thissite=Diese Seite
+testprompt=Input A XPath Or Double a XPath in the list to see the effect.
+pagebreak=Seitengrenze von AutoPager eingef\u00C3\u00BCgt. Seite (<a href\='%S'> %S </a>).
+globaldisabled=AutoPager ist momentan deaktiviert. Zum automatischen Laden der n\u00C3\u00A4chsten Seite auf %S bitte aktivieren.
+matchesfound=matches found
+autopageOn=N\u00C3\u00A4chste Seite auf %S automatisch geladen. Doppelklick auf die Seite deaktiviert AutoPager.
+enableshort=A
+outputfile=Bitte einen Dateinamen f\u00C3\u00BCr die zu exportierende Konfiguration eingeben\:
+nomatchedconfig=Keine Seitenkonfiguration f\u00C3\u00BCr diese Seite gefunden.
+contentxpathconfirm=Ist dies der gew\u00C3\u00BCnschte XPath?
+ShowOnNewSite=Show On New Site
+myname=Ihr Name\:%S
+enableurl=AutoPager auf %S aktivieren
+autopagedisabledTip=AutoPager ist deaktiviert.\nDoppelklick auf die Seite aktiviert AutoPager.
+inputxpath=Bitte den XPath angeben\:
+inputname=Bitte hier Ihren Namen eingeben. Dieser wird zu der von Ihnen erstellten Konfiguration hinzugef\u00C3\u00BCgt.
+importdone=Import abgeschlossen\: %S neue Seiten, %S aktualisierte Seiten und %S ignorierte Seiten.
+thissession=Diese Sitzung
+inputfile=Bitte die AutoPager-Konfigurationsdatei ausw\u00C3\u00A4hlen\:
+ContentXPathcannotbenull=Content XPath can't be null\!
+enableinfo=AutoPager auf %S \nlinkXPath\=%S\ncontentXPath\=%S aktivieren
+xpathreturnnothing=Der XPath liefert kein Ergebnis
+esctoabort=ESC dr\u00C3\u00BCcken um abzubrechen.
+highlightcontents=Inhalt hervorheben
+optionexplain=A\: Aktiviert, D\: Deaktiviert, IA\: Immer aktiviert, ID\: Immer deaktiviert
+autopaging=N\u00C3\u00A4chste Seite wird geladen, bitte warten ...
+autopageOnTip=N\u00C3\u00A4chste Seite auf %S automatisch geladen.\nDoppelklick auf die Seite deaktiviert AutoPager.
+moveover=Mauszeiger befindet sich \u00C3\u00BCber %S, der XPath daf\u00C3\u00BCr lautet\: %S
+mustinput=Sie m\u00C3\u00BCssen einen Namen eingeben.
+autopageenabled=AutoPager ist aktiviert. Doppelklick auf die Seite deaktiviert AutoPager.
+alwaysenableshort=IA
+inputnumber=Bitte eine positive Zahl angeben.
+Onematchfound=One match found
+unableload=Seite konnte nicht geladen werden\:
+tryagain=M\u00C3\u00B6chten Sie es erneut versuchen?
+thistime=Nur dieses Mal
+highlightnextlinks=Links zur n\u00C3\u00A4chsten Seite hervorheben
+Resultsfrom=Results from
+autopagedisabled=AutoPager ist deaktiviert. Doppelklick auf die Seite aktiviert AutoPager.
+unableevaluator=Der XPath konnte nicht ausgewertet werden\:%S.\n%S
+loading=<b>Laden ...</b>
+Nomatchesfound=No matches found
+disableshort=D
+autopageenabledTip=AutoPager ist aktiviert.\nDoppelklick auf die Seite deaktiviert AutoPager.

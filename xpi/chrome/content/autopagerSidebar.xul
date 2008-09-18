@@ -72,8 +72,8 @@
             <treechildren flex="1" id="autoLinkPathTreeBody" ondblclick="autopagerSidebar.setLinkXPath();"/>
         </tree>
         <splitter />
-        <groupbox flex="3">
-            <caption id="results-caption" label="&caption.results-caption.label;"/>
+        <groupbox flex="1" pack="center">
+            <caption id="results-caption" label="&caption.results-caption.label;" crop="center"/>
             <vbox flex="1">
                 <label id="status"/>
                     <iframe id="resultsFrame" width="100px" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
@@ -100,8 +100,8 @@
             <treechildren id="autoContentPathTreeBody" ondblclick="autopagerSidebar.setContentXPath();"/>
         </tree>
         <splitter />
-        <groupbox flex="3">
-            <caption id="results-caption2" label="&caption.results-caption2.label;"/>
+        <groupbox flex="1" pack="center">
+            <caption id="results-caption2" label="&caption.results-caption2.label;" crop="center"/>
             <vbox flex="1">
                 <label id="status2"/>
                     <iframe id="resultsFrame2" width="100px" type="content" flex="1" src="chrome://autopager/content/empty.html"/>

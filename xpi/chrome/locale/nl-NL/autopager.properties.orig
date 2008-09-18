@@ -1,0 +1,57 @@
+#Modified By Foxbeans
+#Mon Sep 15 19:59:01 CST 2008
+nextpages=Volgende %S pagina's
+inputurl=Voer a.u.b. de URL in waarvan de instellingen moeten worden ge\u00C3\u00AFmporteerd\:
+optiontitle=AutoPager opties
+xpathconfirm=Denk u dat het XPath van de koppeling naar de volgende pagina in orde is?
+errorload=Fout bij laden pagina\:
+alwaysdisableshort=AU
+extensions.autopager@mozilla.org.description=AutoPager is een Firefox/Mozilla extensie om volgende pagina's automatisch op de achtergrond te laden. U kunt het ook gebruiken als een XPath generator.
+modifyxpath=Wijzig indien gewenst het XPath\:
+selectcontentxpath=Selecteer a.u.b. de inhoud
+LinkXPathcannotbenull=Het koppelings-XPath kan niet leeg zijn\!
+selectlinkxpath=Selecteer a.u.b. de koppeling naar de volgende pagina.
+thissite=Deze site
+testprompt=Voer of kopieer een XPath in de lijst om het effect te bekijken.
+pagebreak=Pagina-afbreking ingevoegd door AutoPager. Pagina (<a href\='%S'> %S </a>).
+globaldisabled=AutoPager is momenteel uitgeschakeld. U kunt het inschakelen door automatisch starten te starten op %S.
+autopageOn=Automatisch pagineren uitgevoerd op %S. Dubbelklik op de pagina om AutoPager uit te schakelen.
+matchesfound=matches gevonden
+enableshort=I
+outputfile=Voer a.u.b. een exportbestandsnaam in\:
+nomatchedconfig=Er is geen site geconfigureerd voor deze pagina.
+contentxpathconfirm=Denkt u dat dit inhouds-XPath OK is?
+ShowOnNewSite=Show On New Site
+myname=Mijn naam\: %S
+enableurl=AutoPager inschakelen voor %S.
+autopagedisabledTip=AutoPager uitgeschakeld.\nDubbelklik op de pagina om AutoPager in te schakelen.
+inputxpath=Voer a.u.b. het XPath in\:
+inputname=Voer a.u.b. uw naam in, deze wordt toegevoegd aan de door u aangemaakte configuratie.
+importdone=Importeren afgerond met %S nieuwe sites, %S bijgewerkte sites en %S genegeerde sites.
+thissession=Deze sessie
+inputfile=Selecteer a.u.b. het instellingenbestand van AutoPager\:
+enableinfo=AutoPager inschakelen voor %S \nlinkXPath\=%S\ncontentXPath\=%S
+ContentXPathcannotbenull=Het inhouds-XPath kan niet leeg zijn\!
+xpathreturnnothing=XPath geeft geen resultaat
+esctoabort=Druk op ESC om af te breken.
+highlightcontents=Inhoud accentueren
+optionexplain=I\: Inschakelen, U\: Uitschakelen, AI\: Altijd inschakelen, AU\: Altijd uitschakelen
+autopaging=Volgende pagina wordt geladen, een moment a.u.b....
+autopageOnTip=Automatisch pagineren uitgevoerd op %S.\nDubbelklik op de pagina om AutoPager uit te schakelen.
+moveover=Muis bewegen over een %S, XPath hiervoor is\: %S
+mustinput=U dient uw naam in te geven.
+autopageenabled=AutoPager ingeschakeld. Dubbelklik op de pagina om AutoPager uit te schakelen.
+alwaysenableshort=AI
+inputnumber=Voer a.u.b. een positief getal in
+unableload=URL kan niet geladen worden\:
+Onematchfound=E\u00C3\u00A9n match gevonden
+tryagain=Wilt u het opnieuw proberen?
+thistime=Deze keer
+highlightnextlinks=Volgende koppelingen accentueren
+autopagedisabled=AutoPager uitgeschakeld. Dubbelklik op de pagina om AutoPager in te schakelen.
+Resultsfrom=Resultaten van
+unableevaluator=Evaluator XPath niet mogelijk\: %S.\n%S
+loading=<b>Laden...</b>
+disableshort=U
+Nomatchesfound=Geen matches gevonden
+autopageenabledTip=AutoPager ingeschakeld.\nDubbelklik op de pagina om AutoPager uit te schakelen.

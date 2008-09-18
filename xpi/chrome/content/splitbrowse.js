@@ -445,6 +445,7 @@ var splitpanelProgressListener = {
         return;
     } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
       aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
+       //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
         splitbrowse.done( aWebProgress.DOMWindow.document);
         
         return;

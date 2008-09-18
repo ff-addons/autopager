@@ -70,6 +70,7 @@
 <!ENTITY setting.label.general "General">
 <!ENTITY setting.label.grpContentXPath "Content XPath:">
 <!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "Smart Paging">
 <!ENTITY setting.label.hotkeys "Enable/Disable hotkeys:">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">

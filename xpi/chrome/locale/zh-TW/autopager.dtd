@@ -70,6 +70,7 @@
 <!ENTITY setting.label.general "普通">
 <!ENTITY setting.label.grpContentXPath "XPath内容：">
 <!ENTITY setting.label.grpDiscovery "Discovery">
+<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "智能翻頁">
 <!ENTITY setting.label.hotkeys "啓用/禁用熱鍵">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">

@@ -1,0 +1,57 @@
+#Modified By Foxbeans
+#Mon Sep 15 19:59:01 CST 2008
+nextpages=pour les %S pages suivantes
+inputurl=Merci d'entrer l'URL pour importer les param\u00C3\u00A8tres \:
+optiontitle=Options d'AutoPager
+xpathconfirm=Pensez-vous que ce lien XPath est correct ?
+errorload=Erreur de chargement de page \:
+alwaysdisableshort=TD
+extensions.autopager@mozilla.org.description=AutoPager est une extension pour Firefox / Mozilla, permettant de charger automatiquement la page suivante en arri\u00C3\u00A8re-plan. Elle est aussi utilisable en tant que g\u00C3\u00A9n\u00C3\u00A9rateur XPath.
+modifyxpath=Merci de modifier le XPath si vous le souhaitez \:
+selectcontentxpath=Merci de s\u00C3\u00A9lectionner le contenu
+LinkXPathcannotbenull=Le lien XPath ne peut \u00C3\u00AAtre vide \!
+selectlinkxpath=Merci de s\u00C3\u00A9lectionner le lien vers la page suivante.
+thissite=pour ce site
+testprompt=Entrez un XPath dans la liste (ou doublez-en un) afin de voir l'effet que cela a.
+pagebreak=Coupure de page ins\u00C3\u00A9r\u00C3\u00A9e par AutoPager. Page (<a href\='%S'> %S </a>).
+globaldisabled=Votre AutoPager est actuellement d\u00C3\u00A9sactiv\u00C3\u00A9. Activez-le afin de faire un lancement automatique avec %S.
+autopageOn=Chargement automatique fait pour %S. Double-cliquez sur la page pour d\u00C3\u00A9sactiver AutoPager.
+matchesfound=correspondances ont \u00C3\u00A9t\u00C3\u00A9 trouv\u00C3\u00A9es
+enableshort=A
+outputfile=Merci de fournir un nom au fichier export\u00C3\u00A9 \:
+nomatchedconfig=Aucune configuration n'a \u00C3\u00A9t\u00C3\u00A9 trouv\u00C3\u00A9e pour cette page.
+contentxpathconfirm=Pensez-vous que ce contenu XPath est correct ?
+ShowOnNewSite=Show On New Site
+myname=Mon nom \: %S
+enableurl=Activer AutoPager sur %S.
+autopagedisabledTip=AutoPager est d\u00C3\u00A9sactiv\u00C3\u00A9.\nDouble-cliquez sur la page afin de l'activer.
+inputxpath=Merci d'entrer l'expression XPath \:
+inputname=Merci de pr\u00C3\u00A9ciser votre nom, il sera ajout\u00C3\u00A9 \u00C3\u00A0  la configuration que vous avez cr\u00C3\u00A9\u00C3\u00A9e.
+importdone=Importation faite avec %S nouveau(x) site(s), %S site(s) mis \u00C3\u00A0 jour, et %S site(s) ignor\u00C3\u00A9(s).
+thissession=pour cette session
+inputfile=S\u00C3\u00A9lectionner le fichier contenant les param\u00C3\u00A8tres d'AutoPager
+enableinfo=AutoPager activ\u00C3\u00A9 sur %S\nLien XPath \= %S\nContenu XPath \= %S
+ContentXPathcannotbenull=Le contenu XPath ne peut \u00C3\u00AAtre vide \!
+xpathreturnnothing=L'expression XPath n'a rien retourn\u00C3\u00A9.
+esctoabort=Appuyez sur \u00C3\u0089chap pour abandonner.
+highlightcontents=Contenus surlign\u00C3\u00A9s
+optionexplain=A \: Activer, D \: D\u00C3\u00A9sactiver, TA \: Toujours activer, TD \: Toujours d\u00C3\u00A9sactiver
+autopaging=Chargement de la page suivante, merci de patienter\u2026
+autopageOnTip=Chargement automatique fait pour %S.\nDouble-cliquez sur la page pour d\u00C3\u00A9sactiver AutoPager.
+moveover=Pointeur sur une balise %S, dont l'expression XPath est %S
+mustinput=Vous devez pr\u00C3\u00A9ciser votre nom.
+autopageenabled=AutoPager est activ\u00C3\u00A9. Double-cliquez sur la page afin de le d\u00C3\u00A9sactiver.
+alwaysenableshort=TA
+inputnumber=Merci d'entrer un nombre positif
+unableload=Impossibilit\u00C3\u00A9 de charger l'URL \:
+Onematchfound=Une correspondance a \u00C3\u00A9t\u00C3\u00A9 trouv\u00C3\u00A9e
+tryagain=D\u00C3\u00A9sirez-vous r\u00C3\u00A9essayer ?
+thistime=pour cette fois-ci
+highlightnextlinks=Mettre en \u00C3\u00A9vidence le(s) lien(s) vers la page suivante
+autopagedisabled=AutoPager est d\u00C3\u00A9sactiv\u00C3\u00A9. Double-cliquez sur la page afin de l'activer.
+Resultsfrom=R\u00C3\u00A9sultats de
+unableevaluator=Impossible d'\u00C3\u00A9valuer l'expression XPath %S.\n%S
+loading=<b>Chargement\u2026</b>
+disableshort=D
+Nomatchesfound=Aucune correspondance
+autopageenabledTip=AutoPager est activ\u00C3\u00A9.\nDouble-cliquez sur la page afin de le d\u00C3\u00A9sactiver.

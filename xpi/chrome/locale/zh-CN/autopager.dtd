@@ -70,6 +70,7 @@
 <!ENTITY setting.label.general "一般">
 <!ENTITY setting.label.grpContentXPath "内容选择XPath路径:">
 <!ENTITY setting.label.grpDiscovery "自动识别">
+<!ENTITY setting.label.grpRemoveXPath "过滤XPath(追加时自动删除匹配项):">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
 <!ENTITY setting.label.lblContainerXPath "容器XPath:">

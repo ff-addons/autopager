@@ -7,8 +7,9 @@
 
 <dialog id="autopager" 
         title="&setting.title;"
-        buttons="accept,cancel"
+        buttons="help,accept,cancel"
         ondialogaccept="return handleOkButton()"
+	ondialoghelp="return handleHelpButton()"
         orient="vertical"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     
@@ -24,6 +25,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopagerTreeView.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
     
     
@@ -72,7 +74,7 @@
                                         <menuitem 
                                             label="&autopager.status.importurl;"
                                             tooltiptext="&autopager.status.importurlTip;"
-                                            oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromURL();onSiteFilter(siteSearch.value,true);"
+                                            oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromURL(function(){onSiteFilter(siteSearch.value,true)});"
                                         />
                                         <menuitem 
                                             label="&autopager.status.importfile;"
@@ -114,12 +116,12 @@
                         <hbox align="center">
                             <label control="lblOwner" value="&setting.label.lblOwner;"/>
                             <label id="lblOwner" value=""/>
+	                        <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
                             <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;" 
                                     hidden="true" flex="1" style="color:red;"
                                      tooltiptext="&setting.button.cloneToEditTip;"/>                                
                         </hbox>
                         
-                        <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
                         <hbox align="center">
                             <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
                             <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
@@ -135,10 +137,19 @@
                         <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
                         <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
                         <vbox id="auto-xpath" flex="1">
+                            <hbox align="center">
+                                <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
+                                <textbox id="linkXPath" flex="1"/>
+                                <button id="pickLinkPath" label="&setting.button.pick;" />
+                            </hbox>
+                            <hbox align="center">
+                                <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
+                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
+                            </hbox>
                             <groupbox id="grpContentXPath" orient="vertical" flex="1">
                                 <caption label="&setting.label.grpContentXPath;" />
                                 <hbox style="margin-bottom:.5em;" flex="1">
-                                    <listbox id="lstContentXPath" flex="1" />
+                                    <listbox id="lstContentXPath" flex="1" rows="3"/>
                                     <vbox>
                                         <button id="btnAddPath" label="&setting.button.add;" />
                                         <button id="btnEditPath" label="&setting.button.edit;" />
@@ -149,16 +160,18 @@
                                     </vbox>
                                 </hbox>
                             </groupbox>
-                            
-                            <hbox align="center">
-                                <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
-                                <textbox id="linkXPath" flex="1"/>
-                                <button id="pickLinkPath" label="&setting.button.pick;" />
-                            </hbox>
-                            <hbox align="center">
-                                <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
-                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
-                            </hbox>
+
+                            <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
+                                <caption label="&setting.label.grpRemoveXPath;" />
+                                <hbox style="margin-bottom:.5em;" flex="1">
+                                    <listbox id="lstRemoveXPath" flex="1"  rows="3"/>
+                                    <vbox>
+                                        <button id="btnAddRemovePath" label="&setting.button.add;" />
+                                        <button id="btnEditRemovePath" label="&setting.button.edit;" />
+                                        <button id="btnDeleteRemovePath" label="&setting.button.remove;"/>
+                                    </vbox>
+                                </hbox>
+                            </groupbox>
                         </vbox>
                         <hbox flex="2">
                             <label control="desc" value="&setting.label.lblDesc;"/>
@@ -170,11 +183,11 @@
                         <descrition>
                             &setting.label.lblSetting;
                         </descrition>
-                        <checkbox id="chkSettingEnabled" label="&setting.label.chkEnabled;" checked="true" />
                         
                         <hbox align="center">
                             <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;"/>
                             <textbox id="lbSettinglOwner" value=""/>
+	                    <checkbox id="chkSettingEnabled" label="&setting.label.chkEnabled;" checked="true" />
                         </hbox>
                         <hbox align="center">
                             <label control="settingurl" value="&setting.label.lblSettingUrl;"/>

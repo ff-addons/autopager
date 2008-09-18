@@ -166,7 +166,7 @@ _handleParse: function (event) {
             {
                     if(xmlhttp.status == 200)
                     {
-                        if (obj.contenttype.indexOf("text\/plain")>-1)
+                        if (obj.contenttype != null && obj.contenttype.indexOf("text\/plain")>-1)
                             loadCallBack(xmlhttp.responseText,obj)
                         else
                         {
