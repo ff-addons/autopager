@@ -372,7 +372,8 @@ var autopagerSidebar =
                   document.getElementById("xpathDeck").selectedIndex = 0;
 
                 
-            });
+            })
+			
             autopagerSelector.registorStartFunction(function (){
               document.getElementById("xpathDeck").selectedIndex = 1;
             });

@@ -53,7 +53,7 @@
 <!ENTITY setting.button.public "Publiek">
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
 <!ENTITY setting.label.chkAlt "Alt">
@@ -73,14 +73,14 @@
 <!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container-XPath:">
 <!ENTITY setting.label.lblDesc "Beschrijving:">
 <!ENTITY setting.label.lblLinkXPath "Koppelings-XPath:">
 <!ENTITY setting.label.lblOwner "Gemaakt door:">
-<!ENTITY setting.label.lblSetting "AutoPager setting source">
-<!ENTITY setting.label.lblSettingContext "Context Type:">
-<!ENTITY setting.label.lblSettingDesc "Desc:">
-<!ENTITY setting.label.lblSettingOwner "Maintained By:">
+<!ENTITY setting.label.lblSetting "AutoPager instellingenbron">
+<!ENTITY setting.label.lblSettingContext "Contexttype:">
+<!ENTITY setting.label.lblSettingDesc "Beschrijving:">
+<!ENTITY setting.label.lblSettingOwner "Onderhouden door:">
 <!ENTITY setting.label.lblSettingType "Type:">
 <!ENTITY setting.label.lblSettingUrl "URL:">
 <!ENTITY setting.label.lblSettingXPath "XPath:">
@@ -90,7 +90,7 @@
 <!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
-<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
+<!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
@@ -99,19 +99,19 @@
 <!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
 <!ENTITY setting.label.update "Bijwerken">
-<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
+<!ENTITY setting.text.tipContainerXPath "Wijzig dit niet als dit u niets zegt.\nDit helpt als de voornaamste inhoud van de site een container heeft met overflow-y en een schuifbalk. Kijk bijvoorbeeld op www.cuil.com.">
 <!ENTITY setting.title "AutoPager instellingen">
 <!ENTITY setting.tree.Description "Beschrijving">
 <!ENTITY setting.tree.URLPattern "URL patroon">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.type.autopager "AutoPager XML">
+<!ENTITY setting.type.autopagerize "Automatisch pagineren">
+<!ENTITY setting.type.autopagerizeJson "Automatisch pagineren josn">
+<!ENTITY setting.type.autopagertext "AutoPager tekst">
 <!ENTITY setting.update.daily "Elke dag">
-<!ENTITY setting.update.global "Use Global Setting">
+<!ENTITY setting.update.global "Algemene instelling gebruiken">
 <!ENTITY setting.update.monthly "Elke maand">
 <!ENTITY setting.update.never "Nooit">
-<!ENTITY setting.update.once "First Time">
+<!ENTITY setting.update.once "Eerste keer">
 <!ENTITY setting.update.startup "Bij elke keer opstarten">
 <!ENTITY setting.update.weekly "Elke week">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site toevoegen">

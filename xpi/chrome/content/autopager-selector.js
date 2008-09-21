@@ -30,6 +30,7 @@
 
 var autopagerSelector = {
 	browser: null,
+	paused: false,
 	selectedElem: null,
 	commentElem : null,
 	mouseX: -1,
@@ -110,7 +111,7 @@ autopagerSelector.removeEventListener = function(browser,name,func,user)
 autopagerSelector.start = function(browser) {
 	if (!this.CanSelect(browser))
 		return;
-
+	this.paused = false;
 	if (!("viewSourceURL" in this)) {
 		// Firefox/Thunderbird and SeaMonkey have different viewPartialSource URLs
 		var urls = [
@@ -139,6 +140,7 @@ autopagerSelector.start = function(browser) {
 	this.addEventListener(browser,"keypress", this.keyPress, true);
 	this.addEventListener(browser,"mousemove", this.mouseMove, true);
 	this.addEventListener(browser,"pagehide", this.pageHide, true);
+	this.addEventListener(browser,"resize", this.resize, true);
 
 	browser.contentWindow.focus();
 
@@ -207,6 +209,8 @@ autopagerSelector.initHelpBox = function() {
 }
 
 autopagerSelector.onMouseClick = function(event) {
+	if (this.paused)
+			return;
 	if (event.button != 0 || event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
 		return;
 
@@ -214,6 +218,8 @@ autopagerSelector.onMouseClick = function(event) {
 }
 
 autopagerSelector.onMouseOver = function(event) {
+	if (this.paused)
+			return;
 	var elem = event.originalTarget;
 	var aardvarkLabel = elem;
 	while (aardvarkLabel && !("autopagerSelectorLabel" in aardvarkLabel))
@@ -256,6 +262,13 @@ autopagerSelector.onPageHide = function(event) {
 	this.doCommand("quit", null);
 }
 
+autopagerSelector.onResize = function(event) {
+	if (this.selectedElem == null)
+		return;
+
+	this.showBoxAndLabel (this.selectedElem, this.makeElementLabelString (this.selectedElem));
+}
+
 autopagerSelector.onMouseMove = function(event) {
 	this.mouseX = event.screenX;
 	this.mouseY = event.screenY;
@@ -274,7 +287,7 @@ autopagerSelector.generateEventHandlers = function(handlers) {
 		this[handlers[i]] = generator(handler);
 	}
 }
-autopagerSelector.generateEventHandlers(["mouseClick", "mouseOver", "keyPress", "pageHide", "mouseMove"]);
+autopagerSelector.generateEventHandlers(["mouseClick", "mouseOver", "keyPress", "pageHide","resize", "mouseMove"]);
 
 autopagerSelector.appendDescription = function(node, value, className) {
 	var descr = document.createElement("description");
@@ -493,6 +506,7 @@ autopagerSelector.setElementStyleDefault = function (elem, bgColor)
 // 0: name, 1: needs element
 autopagerSelector.commands = [
 	"select",
+	"pause",
 	"wider",
 	"narrower",
 	"quit",
@@ -566,6 +580,7 @@ autopagerSelector.quit = function ()
 	this.removeEventListener(this.browser,"keypress", this.keyPress, true);
 	this.removeEventListener(this.browser,"mousemove", this.mouseMove, true);
 	this.removeEventListener(this.browser,"pagehide", this.pageHide, true);
+	this.removeEventListener(this.browser,"resize", this.resize, true);
 
 	this.selectedElem = null;
 	this.browser = null;
@@ -608,6 +623,12 @@ autopagerSelector.blinkElement = function (elem)
 			autopagerSelector.stopBlinking();
 	}, 250);
 
+	return true;
+}
+//------------------------------------------------------------
+autopagerSelector.pause = function (elem)
+{
+	this.paused = !this.paused;
 	return true;
 }
 autopagerSelector.stopBlinking = function() {

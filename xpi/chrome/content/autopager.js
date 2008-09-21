@@ -2089,10 +2089,30 @@ removeElements : function (node,xpath,enableJS)
     for(var i=0;i<xpath.length;i++)
     {
        try{
-        aExpr = autopagerMain.preparePath(doc,xpath[i],enableJS);
-        aExpr = aExpr.replace(/^\/\//g,"*//");
-        aExpr = aExpr.replace(/\|( )*\/\//g,"| *//");
-        var xpathExpr = xpe.createExpression(aExpr,nsResolver)
+			var orgPath = autopagerMain.preparePath(doc,xpath[i],enableJS);
+			aExpr = orgPath;
+			aExpr = aExpr.replace(/^( )*\/\//g,"*//");
+			aExpr = aExpr.replace(/\|( )*\/\//g,"| *//");
+			//autopagerMain.removeElementByXPath(xpe,aExpr,nsResolver,node);
+			var aExpr2 = orgPath;
+			aExpr2 = aExpr2.replace(/^( )*\/\//g,"");
+			aExpr2 = aExpr2.replace(/\|( )*\/\//g,"| ");
+			if (aExpr != aExpr2)
+					aExpr = aExpr + " | " + aExpr2;
+			autopagerMain.removeElementByXPath(xpe,aExpr,nsResolver,node);
+        }catch(e)
+       {
+             autopagerMain.alertErr(e)
+       }
+    }
+//   alert(node.innerHTML)
+//    var nodes = autopagerMain.findNodeInDoc(node,xpath,enableJS);
+  
+},
+removeElementByXPath : function (xpe,aExpr,nsResolver,node)
+{
+	try{
+	    var xpathExpr = xpe.createExpression(aExpr,nsResolver)
         var result = xpathExpr.evaluate( node, 0, null);
         var res;
         var nodes = [];
@@ -2102,15 +2122,12 @@ removeElements : function (node,xpath,enableJS)
         }
   for(var k=0;k<nodes.length;++k) {
         nodes[k].parentNode.removeChild(nodes[k])
-    }  
+    }
         }catch(e)
        {
              autopagerMain.alertErr(e)
        }
-    }
-//   alert(node.innerHTML)
-//    var nodes = autopagerMain.findNodeInDoc(node,xpath,enableJS);
-  
+
 },
 xpath :"//table[tbody/tr/td/@class='f']",
 ////a[contains(font/text(),'Next')]
@@ -2259,9 +2276,10 @@ getPagingOptionDiv : function(doc)
         var str = "<div style='cursor:move;height:18px;background-color: gray;margin:0px;' class='autoPagerS' "
   + overEvent + " >"
 +"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%' "+ overEvent + ">"
-+"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='90%'><a alt='" + autopagerConfig.autopagerGetString("optionexplain") +"'  href='javascript:autopagerMain.showConfirmTip();'><b class='autoPagerS'>"
-+autopagerConfig.autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'><a href='javascript:autopagerMain.enabledInThisSession(false)'>"
-+ "<img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
++"<tbody class='autoPagerS'><tr class='autoPagerS' ><th class='autoPagerS'  width='80%'><a alt='" + autopagerConfig.autopagerGetString("optionexplain") +"'  href='javascript:autopagerMain.showConfirmTip();'><b class='autoPagerS'>"
++autopagerConfig.autopagerGetString("optiontitle") + "</b></a></th><td class='autoPagerS'  width='20%' align='right'>"
++ "<a id='autopagerOptionHelp' target='_black' title='Help' href='http://autopager.teesoft.info/help.html'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Help'  src='chrome://autopagerimg/content/question.gif'></a>"
++ "&nbsp; <a title='Close'  href='javascript:autopagerMain.enabledInThisSession(false)'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></th></tr></tbody></table></div> "
 + "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;' "+ overEvent + ">"
 +"<li class='autoPagerS'><a href='javascript:autopagerMain.HighlightNextLinks()''>"+ autopagerConfig.autopagerGetString("highlightnextlinks") +"</a></li>"
 +"<li class='autoPagerS'><a href='javascript:autopagerMain.HighlightAutoPagerContents()''>"+ autopagerConfig.autopagerGetString("highlightcontents") +"</a></li>"
@@ -2284,7 +2302,7 @@ getPagingOptionDiv : function(doc)
         if (div.style.width == "")
             div.style.width = "190px";
         div.innerHTML = str;//"<b>Loading ...</b>";
-        var links=autopagerMain.autopagerEvaluateXPath(div,".//a",false);
+        var links=autopagerMain.autopagerEvaluateXPath(div,".//a[not (@id='autopagerOptionHelp')]",false);
         for(var i=0;i<links.length;i++)
         {
             links[i].addEventListener("click",autopagerMain.onConfirmClick,true);
