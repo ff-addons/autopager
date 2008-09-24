@@ -49,7 +49,8 @@ autopagerOnLoad : function() {
     autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
     
     //window.onscroll = autopagerMain.scrollWatcher;
-    window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
+	if (autopagerMain.getGlobalEnabled())
+		window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
     window.addEventListener('AutoPagerRefreshPage', this.AutoPagerRefreshPage, true, true);
 
     //autopagerMain.log("dbclick " + new Date().getTime())
@@ -200,7 +201,10 @@ onPageUnLoad : function(event) {
 handleCurrentDoc : function()
 {
     if (content && content.document)
+    {
+		document.autoPagerInited = false;
         this.onContentLoad(content.document);
+    }
 },
 onContentLoad : function(event) {
     var doc = event;
@@ -225,6 +229,8 @@ onContentLoad : function(event) {
         window.setTimeout(function(){autopagerConfig.autopagerUpdate();},400);
    }
     autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+	if (!autopagerMain.loadEnableStat())
+			return;
     try{
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
         document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
@@ -2635,6 +2641,12 @@ showAutoPagerMenu : function() {
 onEnable : function() {
     var enabled = !autopagerMain.getGlobalEnabled();
     autopagerMain.setGlobalEnabled( enabled);
+	if (enabled)
+		window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
+	else
+		window.removeEventListener("scroll",autopagerMain.scrollWatcher,false);
+
+	this.handleCurrentDoc();
 },
 statusClicked : function(event) {
     if(event.currentTarget != event.target) return;
@@ -2647,8 +2659,7 @@ statusClicked : function(event) {
         popup.hidden=true;
         popup.hidePopup();
         var image = document.getElementById("autopager_status");
-        var enabled = !autopagerMain.getGlobalEnabled();
-        autopagerMain.setGlobalEnabled( enabled);
+        autopagerMain.onEnable();
     }
 },
 setGlobalImageByStatus : function(enabled) {

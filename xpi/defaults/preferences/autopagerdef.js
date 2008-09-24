@@ -1,7 +1,7 @@
 pref("autopager.enabled", true);
 pref("autopager.debug", false);
 pref("autopager.myname", "");
-pref("autopager.smartenable", true);
+pref("autopager.smartenable", false);
 pref("autopager.smarttext", "next|>|下一页|次を表示");
 pref("autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页");
 

@@ -1,5 +1,3 @@
-const CI = Components.interfaces;
-const CC = Components.classes;
 function addAutopagerButton() {
     var toolbox = document.getElementById("navigator-toolbox");
     var toolboxDocument = toolbox.ownerDocument;
@@ -49,14 +47,14 @@ function autopagerToobarInit() {
     var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
     var prefBranch = prefService.getBranch("autopager.");
     if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-        prefBranch.setCharPref("last_version", "0.2.0.9");
+        prefBranch.setCharPref("last_version", "0.2.0.11");
         autopagerOpenIntab(autopagerHome,null);
         addAutopagerButton();
     } else { // check for upgrade
         var lastVersion = prefBranch.getCharPref("last_version");
-        if (lastVersion != "0.2.0.9")
+        if (lastVersion != "0.2.0.11")
         {
-            prefBranch.setCharPref("last_version", "0.2.0.9");
+            prefBranch.setCharPref("last_version", "0.2.0.11");
             autopagerOpenIntab(autopagerHome,null);
             //addAutopagerButton();
         }
@@ -65,7 +63,7 @@ function autopagerToobarInit() {
 
 function autopagerOpenIntab(url,obj)
 {
-    var wm =  CC['@mozilla.org/appshell/window-mediator;1'].getService(CI.nsIWindowMediator);
+    var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
     var w = wm && wm.getMostRecentWindow('navigator:browser', true);
     if(w && !w.closed) {
         var browser = getBrowser();//w.getBrowser();
