@@ -20,7 +20,6 @@ function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,e
         this.url=url;
         this.contenttype=contenttype;
         this.filename = filename;
-        this.triedTime=0;
         this.enabled = enabled;
         this.xpath = xpath;
         this.desc=desc;
@@ -28,6 +27,7 @@ function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,e
         this.callback = this.updateType.callback;
         this.updateperiod = updateperiod;//use global setting
     }
+    this.triedTime=0;
     this.defaulted = true;
     this.lastupdate =null;
 }

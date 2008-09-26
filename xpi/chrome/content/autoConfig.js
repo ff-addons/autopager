@@ -4,6 +4,7 @@ var UpdateSites=
     allSiteSetting: null,
     submitCount:0,
     AutopagerCOMP:null,
+	updatedCount: 0,
     init:function()
     {
         
@@ -63,20 +64,24 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.11").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.13").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
-    updateOnline :function (force)
-    {
-        this.init();
-        UpdateSites.submitCount=0;
-        for(var i=0;i<this.updateSites.length;i++)
-        {
-            var site= this.updateSites[i];
-            if ( (force || site.enabled) && site.url.length >0)
-                this.updateSiteOnline(site,force);
-        }
-    },
+	updateOnline :function (force)
+	{
+			if (force || UpdateSites.updatedCount<=0)
+			{
+					UpdateSites.updatedCount=0;
+					this.init();
+					UpdateSites.submitCount=0;
+					for(var i=0;i<this.updateSites.length;i++)
+					{
+							var site= this.updateSites[i];
+							if ( (force || site.enabled) && site.url.length >0)
+									this.updateSiteOnline(site,force);
+					}
+			}
+	},
     onerror:function(doc,obj)
     {
             //TODO:notification the update failed
@@ -112,7 +117,8 @@ var UpdateSites=
         AutoPagerUpdateTypes.saveSettingSiteConfig(settings);
 //        alert("saved " + updatesite.filename);
         UpdateSites.updateSites = UpdateSites.getUpdateSites();
-        autopagerMain.handleCurrentDoc();
+        //autopagerMain.handleCurrentDoc();
+		UpdateSites.updatedCount++;
     },
     defaultSite : function()
     {

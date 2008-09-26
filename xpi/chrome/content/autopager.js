@@ -49,8 +49,7 @@ autopagerOnLoad : function() {
     autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
     
     //window.onscroll = autopagerMain.scrollWatcher;
-	if (autopagerMain.getGlobalEnabled())
-		window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
+	window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
     window.addEventListener('AutoPagerRefreshPage', this.AutoPagerRefreshPage, true, true);
 
     //autopagerMain.log("dbclick " + new Date().getTime())
@@ -2642,7 +2641,10 @@ onEnable : function() {
     var enabled = !autopagerMain.getGlobalEnabled();
     autopagerMain.setGlobalEnabled( enabled);
 	if (enabled)
+	{
+		window.removeEventListener("scroll",autopagerMain.scrollWatcher,false);
 		window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
+    }
 	else
 		window.removeEventListener("scroll",autopagerMain.scrollWatcher,false);
 
