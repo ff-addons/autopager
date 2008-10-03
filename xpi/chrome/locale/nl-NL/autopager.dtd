@@ -1,6 +1,17 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Paginahouder">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-hidden.label "verborgen">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "weergeven">
 <!ENTITY autopager.sidebarTitle "AutoPager site-instellingen workshop">
 <!ENTITY autopager.status.createXPath "XPath aanmaken">
@@ -53,11 +64,13 @@
 <!ENTITY setting.button.public "Publiek">
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
+<!ENTITY setting.key "u">
+<!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
+<!ENTITY setting.label.chkAjax "Dit is een AJAX-site. Niet geladen.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Javascript inschakelen bij het laden van de pagina.">
-<!ENTITY setting.label.chkAjax "Dit is een AJAX-site. Niet geladen.">
 <!ENTITY setting.label.chkEnabled "Ingeschakeld">
 <!ENTITY setting.label.chkFixOverflow "Overflow instelling van de geladen pagina uitschakelen.">
 <!ENTITY setting.label.chkIsRegex "Reguliere expressie?">
@@ -68,23 +81,29 @@
 <!ENTITY setting.label.doubleclick "+dubbelklik">
 <!ENTITY setting.label.general "Algemeen">
 <!ENTITY setting.label.grpContentXPath "XPath naar content:">
-<!ENTITY setting.label.grpRemoveXPath "XPath filteren (onderdelen van de nieuwe pagina’s negeren):">
 <!ENTITY setting.label.grpDiscovery "Ontdekking">
+<!ENTITY setting.label.grpRemoveXPath "XPath filteren (onderdelen van de nieuwe pagina’s negeren):">
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
+<!ENTITY setting.label.lblContainerXPath "Container-XPath:">
 <!ENTITY setting.label.lblDesc "Beschrijving:">
 <!ENTITY setting.label.lblLinkXPath "Koppelings-XPath:">
-<!ENTITY setting.label.lblContainerXPath "Container-XPath:">
-<!ENTITY setting.text.tipContainerXPath "Wijzig dit niet als dit u niets zegt.\nDit helpt als de voornaamste inhoud van de site een container heeft met overflow-y en een schuifbalk. Kijk bijvoorbeeld op www.cuil.com.">
 <!ENTITY setting.label.lblOwner "Gemaakt door:">
+<!ENTITY setting.label.lblSetting "AutoPager instellingenbron">
+<!ENTITY setting.label.lblSettingContext "Contexttype:">
+<!ENTITY setting.label.lblSettingDesc "Beschrijving:">
+<!ENTITY setting.label.lblSettingOwner "Onderhouden door:">
+<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "URL patroon:">
 <!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">
 <!ENTITY setting.label.loading "Stijl van laadbericht:">
 <!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
+<!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
-<!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
@@ -92,16 +111,21 @@
 <!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
 <!ENTITY setting.label.update "Bijwerken">
+<!ENTITY setting.text.tipContainerXPath "Wijzig dit niet als dit u niets zegt.\nDit helpt als de voornaamste inhoud van de site een container heeft met overflow-y en een schuifbalk. Kijk bijvoorbeeld op www.cuil.com.">
 <!ENTITY setting.title "AutoPager instellingen">
 <!ENTITY setting.tree.Description "Beschrijving">
 <!ENTITY setting.tree.URLPattern "URL patroon">
+<!ENTITY setting.type.autopager "AutoPager XML">
+<!ENTITY setting.type.autopagerize "Automatisch pagineren">
+<!ENTITY setting.type.autopagerizeJson "Automatisch pagineren josn">
+<!ENTITY setting.type.autopagertext "AutoPager tekst">
 <!ENTITY setting.update.daily "Elke dag">
+<!ENTITY setting.update.global "Algemene instelling gebruiken">
 <!ENTITY setting.update.monthly "Elke maand">
 <!ENTITY setting.update.never "Nooit">
 <!ENTITY setting.update.once "Eerste keer">
 <!ENTITY setting.update.startup "Bij elke keer opstarten">
 <!ENTITY setting.update.weekly "Elke week">
-<!ENTITY setting.update.global "Algemene instelling gebruiken">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site toevoegen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Alles wissen">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Ontdekking">
@@ -110,15 +134,3 @@
 <!ENTITY treecol.authorityCol.label "Authorisatie">
 <!ENTITY treecol.machedCol.label "Aantal matches">
 <!ENTITY treecol.xpathCol.label "XPath">
-<!ENTITY setting.label.lblSettingOwner "Onderhouden door:">
-<!ENTITY setting.label.lblSettingDesc "Beschrijving:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingContext "Contexttype:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
-<!ENTITY setting.type.autopager "AutoPager XML">
-<!ENTITY setting.type.autopagertext "AutoPager tekst">
-<!ENTITY setting.type.autopagerize "Automatisch pagineren">
-<!ENTITY setting.type.autopagerizeJson "Automatisch pagineren josn">
-<!ENTITY setting.label.lblSetting "AutoPager instellingenbron">
-<!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">

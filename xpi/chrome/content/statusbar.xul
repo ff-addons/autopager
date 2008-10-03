@@ -108,6 +108,38 @@
                         />
                     </menupopup>	
                 </menu>
+                <menuseparator id="autopager-hidden-panel-separator" class="autopager-sep-global" hidden='true'/>
+                <menu id="autopager-immedialate-load" class="autopager-menu-class"
+                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-immedialate-load.label;"
+                      accesskey="&autopager.menu.autopager-immedialate-load.key;"
+                      >
+                    <menupopup id="autopager-menupopup" >
+                        <menuitem id="autopager-load-3" label="&autopager.menuitem.autopager-load-3.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,3);"
+                                  accesskey="&autopager.menuitem.autopager-load-3.key;"
+                                  observes="load3pages"
+                                  key="key_load3pages"
+                        />
+                        <menuitem id="autopager-load-5" label="&autopager.menuitem.autopager-load-5.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,5);"
+                                  accesskey="&autopager.menuitem.autopager-load-5.key;"
+                                  observes="load5pages"
+                                  key="key_load5pages"
+                        />
+                        <menuitem id="autopager-load-10" label="&autopager.menuitem.autopager-load-10.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10);"
+                                  accesskey="&autopager.menuitem.autopager-load-10.key;"
+                                  observes="load10pages"
+                                  key="key_load10pages"
+                        />
+                        <menuitem id="autopager-load-all" label="&autopager.menuitem.autopager-load-all.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10000);"
+                                  accesskey="&autopager.menuitem.autopager-load-all.key;"
+                                  observes="loadALLpages"
+                                  key="key_loadALLpages"
+                        />
+                    </menupopup>
+                </menu>
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
@@ -137,9 +169,12 @@
     </statusbar>
 
    <menupopup id="menu_ToolsPopup">
-    <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator">
+    <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
         <menupopup id="autopager-popup-tool">
-        	<menuitem key="key_openautopagerSidebar" observes="viewautopagerSidebar" position="1"/>
+                <menuitem
+                    key="key_openautopagerSidebar"
+                    observes="viewautopagerSidebar"
+                    position="1"/>
                 <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
@@ -186,6 +221,39 @@
                     oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
                 />
                 <menuseparator class="autopager-sep-global"/>
+                <menu id="autopager-immedialate-load" class="autopager-menu-class"
+                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-immedialate-load.label;"
+                      accesskey="&autopager.menu.autopager-immedialate-load.key;"
+                      >
+                    <menupopup id="autopager-menupopup" >
+                        <menuitem id="autopager-load-3" label="&autopager.menuitem.autopager-load-3.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,3);"
+                                  accesskey="&autopager.menuitem.autopager-load-3.key;"
+                                  observes="load3pages"
+                                  key="key_load3pages"
+                        />
+                        <menuitem id="autopager-load-5" label="&autopager.menuitem.autopager-load-5.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,5);"
+                                  accesskey="&autopager.menuitem.autopager-load-5.key;"
+                                  observes="load5pages"
+                                  key="key_load5pages"
+                        />
+                        <menuitem id="autopager-load-10" label="&autopager.menuitem.autopager-load-10.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10);"
+                                  accesskey="&autopager.menuitem.autopager-load-10.key;"
+                                  observes="load10pages"
+                                  key="key_load10pages"
+                        />
+                        <menuitem id="autopager-load-all" label="&autopager.menuitem.autopager-load-all.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10000);"
+                                  accesskey="&autopager.menuitem.autopager-load-all.key;"
+                                  observes="loadALLpages"
+                                  key="key_loadALLpages"
+                        />
+                    </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
+
                 <menuitem id="autopager-showoption"
                           label="&autopager.status.showoption;"
                           tooltiptext="&autopager.status.showoptionTip;"
@@ -204,6 +272,18 @@
 		<key id="key_openautopagerSidebar" command="viewautopagerSidebar"
 			key="&openautopagerSidebar.commandkey;"
 			modifiers="&openautopagerSidebar.modifiersKey;"/>
+		<key id="key_load3pages" oncommand="autopagerMain.loadPages(content.document,3);"
+			key="&autopager.menuitem.autopager-load-3.key;"
+			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
+		<key id="key_load5pages" oncommand="autopagerMain.loadPages(content.document,5);"
+			key="&autopager.menuitem.autopager-load-5.key;"
+			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
+		<key id="key_load10pages" oncommand="autopagerMain.loadPages(content.document,10);"
+			key="&autopager.menuitem.autopager-load-10.key;"
+			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
+		<key id="key_loadALLpages" oncommand="autopagerMain.loadPages(content.document,10000);"
+			key="&autopager.menuitem.autopager-load-all.key;"
+			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
 	</keyset>
 
 	<broadcasterset id="mainBroadcasterSet">

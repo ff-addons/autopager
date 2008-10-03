@@ -1,6 +1,17 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Seitenhalter">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-hidden.label "ausgeblendet">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "angezeigt">
 <!ENTITY autopager.sidebarTitle "AutoPager">
 <!ENTITY autopager.status.createXPath "XPath erstellen">
@@ -53,6 +64,7 @@
 <!ENTITY setting.button.public "Öffentlich">
 <!ENTITY setting.button.remove "Löschen">
 <!ENTITY setting.button.up "Nach oben">
+<!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bearbeiten">
 <!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">

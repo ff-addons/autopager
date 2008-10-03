@@ -1,6 +1,17 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Détenteur de la page">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-hidden.label "masqué">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "visible">
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
@@ -53,6 +64,7 @@
 <!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "Supprimer">
 <!ENTITY setting.button.up "Monter">
+<!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.btnEdit "Éditer">
 <!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">

@@ -228,8 +228,10 @@ onContentLoad : function(event) {
         window.setTimeout(function(){autopagerConfig.autopagerUpdate();},400);
    }
     autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
-	if (!autopagerMain.loadEnableStat())
-			return;
+	if (doc.documentElement.forceLoadPage==null)
+		doc.documentElement.forceLoadPage = 0;
+	if (!autopagerMain.loadEnableStat() && doc.documentElement.forceLoadPage==0)
+		return;
     try{
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
         document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
@@ -506,7 +508,7 @@ onInitDoc : function(doc,safe) {
     //autopagerMain.log("1.1 " + new Date().getTime())
         this.autopagerDebug=autopagerMain.getAutopagerPrefs().getBoolPref(".debug");
         document.getElementById("autopager-hidden-panel-menu").hidden = !this.autopagerDebug;
-        document.getElementById("autopager-hidden-panel-menu").nextSibling.hidden = !this.autopagerDebug;
+        document.getElementById("autopager-hidden-panel-separator").hidden = !this.autopagerDebug;
     //autopagerMain.log("1.2 " + new Date().getTime())
     }catch(e) {
         autopagerMain.alertErr(e);
@@ -799,12 +801,24 @@ getAllowCheckpagingAutopagingPage : function(doc) {
 //      autopagerMain.onInitDoc(doc,false);
     var enabled =doc.documentElement.autopagerEnabled && autopagerMain.getGlobalEnabled();
     //enabled = enabled && ( !(doc.documentElement.getAttribute('enableJS') == 'true')  || doc.documentElement.autopagerSplitDocInited );
-    return  enabled;
+    return  enabled ||  doc.documentElement.forceLoadPage>0;
 },
 getEnabledAutopagingPage : function(doc) {
-    var enabled =doc.documentElement.autopagerEnabled && autopagerMain.getGlobalEnabled();
+    var enabled =doc.documentElement.autopagerEnabled && (autopagerMain.getGlobalEnabled() ||  doc.documentElement.forceLoadPage>0);
     enabled = enabled && ( !(doc.documentElement.getAttribute('enableJS') == 'true')  || doc.documentElement.autopagerSplitDocInited );
-    return  enabled;
+    return  enabled ;
+},
+loadPages : function (doc,pages)
+{
+	doc.documentElement.forceLoadPage = pages;
+	if (doc.documentElement.autoPagerPage!=null && doc.documentElement.autoPagerPage!=0)
+		doc.documentElement.forceLoadPage += doc.documentElement.autoPagerPage;
+	if (doc.documentElement.autopagerEnabledDoc == null)
+	{
+		autopagerMain.onContentLoad(doc);
+    }
+	doc.documentElement.autopagerEnabled = true;
+	autopagerMain.scrollWatcher();
 },
 count:0,
 scrollWatching: false,
@@ -833,50 +847,58 @@ doScrollWatcher : function() {
                         if (this.autopagerDebug)
                             autopagerMain.logInfo(this.count+ "Enabled " + doc.location.href,this.count+ "Enabled " + doc.location.href);
                         try{
-                            var scrollDoc =doc; 
+							var needLoad = false;
+							if (doc.documentElement.forceLoadPage> doc.documentElement.autoPagerPage)
+								needLoad = true;
+						    else
+							{
+								if (doc.documentElement.forceLoadPage>0)
+									doc.documentElement.forceLoadPage = 0;
+								var scrollDoc =doc;
 
-                            var wh = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
-                            
-                            var scrollContainer = null;
-                            if (scrollDoc.documentElement.getAttribute("containerXPath"))
-                            {
-                                containerXPath = scrollDoc.documentElement.getAttribute("containerXPath");
-                                var autopagerContainer = null;
-                                if (containerXPath != "")
-                                {
-                                    autopagerContainer = autopagerMain.findNodeInDoc(doc,containerXPath,false);
-                                    if (autopagerContainer!=null)
-                                    {
-                                        scrollContainer = autopagerContainer[0];
-                                        wh = autopagerContainer[0].clientHeight;                                        
-                                    }
-                                }
-                                
-                            }   
-                            if (scrollContainer==null)
-                                scrollContainer = scrollDoc.documentElement;
-                            var sc = (scrollContainer && scrollContainer.scrollTop)
-                                    ? scrollContainer.scrollTop : scrollDoc.body.scrollTop;
-                            var sh = (scrollContainer && scrollContainer.scrollHeight)
-                                    ? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
-                            if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
-                                sh = scrollDoc.body.scrollHeight;
+								var wh = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
+
+								var scrollContainer = null;
+								if (scrollDoc.documentElement.getAttribute("containerXPath"))
+								{
+										containerXPath = scrollDoc.documentElement.getAttribute("containerXPath");
+										var autopagerContainer = null;
+										if (containerXPath != "")
+										{
+												autopagerContainer = autopagerMain.findNodeInDoc(doc,containerXPath,false);
+												if (autopagerContainer!=null)
+												{
+														scrollContainer = autopagerContainer[0];
+														wh = autopagerContainer[0].clientHeight;
+												}
+										}
+
+								}
+								if (scrollContainer==null)
+										scrollContainer = scrollDoc.documentElement;
+								var sc = (scrollContainer && scrollContainer.scrollTop)
+								? scrollContainer.scrollTop : scrollDoc.body.scrollTop;
+								var sh = (scrollContainer && scrollContainer.scrollHeight)
+								? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
+								if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
+										sh = scrollDoc.body.scrollHeight;
 
 
-                            var remain = sh - sc - scrollContainer.offsetTop - wh;
-                            this.count++;
-                            if (this.autopagerDebug)
-                                autopagerMain.logInfo(this.count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain,
-                                    "sh=" + sh + " sc = " + sc + " wh= " + wh + " Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
+								var remain = sh - sc - scrollContainer.offsetTop - wh;
+								this.count++;
+								if (this.autopagerDebug)
+										autopagerMain.logInfo(this.count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain,
+												"sh=" + sh + " sc = " + sc + " wh= " + wh + " Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
 
-                            //alert(wh);
-                            if (this.autopagerDebug)
-                                wh = wh * (doc.documentElement.margin*1 + 1.5);
-                            else
-                                wh = wh * (doc.documentElement.margin * 1);
-                            //alert(wh);
-
-                            if(remain < wh ){
+								//alert(wh);
+								if (this.autopagerDebug)
+										wh = wh * (doc.documentElement.margin*1 + 1.5);
+								else
+										wh = wh * (doc.documentElement.margin * 1);
+								//alert(wh);
+								needLoad = remain < wh;
+							}
+                            if( needLoad){
                                 if (de.autoPagerPage==null || de.autoPagerPage<2)
                                  {
                                     //test the contetXPATH first
@@ -897,8 +919,10 @@ doScrollWatcher : function() {
                                     doc.documentElement.autopagerAllowedPageCount = -1;
                                 }
                                 
-                                var needConfirm =  (!autopagerMain.loadBoolPref("noprompt")) && (!doc.documentElement.autopagerUserConfirmed
-                                    || (doc.documentElement.autopagerSessionAllowed && doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage));
+                                var needConfirm =  (!autopagerMain.loadBoolPref("noprompt"))
+										&& (!doc.documentElement.autopagerUserConfirmed || (doc.documentElement.autopagerSessionAllowed
+																&& doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage))
+										&& (doc.documentElement.forceLoadPage==0);
                                   
                                 if (needConfirm)
                                 {
@@ -906,11 +930,11 @@ doScrollWatcher : function() {
                                     autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),false || !autopagerMain.loadEnableStat());
                                 }
                                 else
-                                    if (doc.documentElement.autopagerUserConfirmed
+                                    if ((doc.documentElement.autopagerUserConfirmed
                                     && doc.documentElement.autopagerUserAllowed
                                     && ( doc.documentElement.autopagerAllowedPageCount < 0
                                     ||  doc.documentElement.autopagerAllowedPageCount> doc.documentElement.autoPagerPage)
-                                       )
+                                       ) || doc.documentElement.forceLoadPage>0)
                                 {
                                     if (readyToPaging){
                                         if (doc.defaultView){
@@ -2503,7 +2527,7 @@ pagingWatcher : function() {
     var doc = content.document;
     var de = doc.documentElement;
     try{
-        if(autopagerMain.getGlobalEnabled() && de.autopagerEnabledDoc!=null) {
+        if((autopagerMain.getGlobalEnabled() ||  de.forceLoadPage>0) && de.autopagerEnabledDoc!=null) {
     	    var i =0;
             var Enable = false;
             var loading = false;

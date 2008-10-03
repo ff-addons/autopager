@@ -40,6 +40,7 @@
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY setting.appname "Auto Pager">
+<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "Add...">
 <!ENTITY setting.button.cloneToEdit "Clone To Edit">
 <!ENTITY setting.button.cloneToEditTip "This item is from a ready source. You can only edit the cloned version if needed.">
@@ -122,3 +123,16 @@
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.label.lblSetting "AutoPager setting source">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
+
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
