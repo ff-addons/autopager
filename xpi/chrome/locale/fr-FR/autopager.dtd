@@ -1,16 +1,16 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Détenteur de la page">
-<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "i">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Chargement immédiat">
 <!ENTITY autopager.menuitem.autopager-hidden.label "masqué">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 pages">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 pages">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
-<!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 pages">
+<!ENTITY autopager.menuitem.autopager-load-all.key "T">
+<!ENTITY autopager.menuitem.autopager-load-all.label "Toutes les pages">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "visible">
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d&apos;AutoPager">
@@ -67,7 +67,7 @@
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.btnEdit "Éditer">
-<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
+<!ENTITY setting.label.chkAjax "C&apos;est un site AJAX. Aucun événement chargé.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
@@ -82,7 +82,7 @@
 <!ENTITY setting.label.general "Général">
 <!ENTITY setting.label.grpContentXPath "Contenu XPath :">
 <!ENTITY setting.label.grpDiscovery "Identification">
-<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
+<!ENTITY setting.label.grpRemoveXPath "Filtre XPath (ignore les éléments des nouvelles pages) :">
 <!ENTITY setting.label.grpSmart "Pagination intelligente">
 <!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
 <!ENTITY setting.label.lblContainerXPath "Conteneur XPath :">

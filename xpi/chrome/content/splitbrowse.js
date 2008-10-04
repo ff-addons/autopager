@@ -399,7 +399,7 @@ var splitbrowse = {
                 splitBrowser.removeProgressListener(splitpanelProgressListener);
                 var parent = splitBrowser.parentNode;
                 parent.removeChild(splitBrowser);
-                splitBrowser.destroy();
+                //splitBrowser.destroy();
          }
   	 
   },

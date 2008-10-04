@@ -33,6 +33,6 @@
     </hbox>
     <hbox  id="confirm-hbox">
         <button id="confirmReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{autopagerMain.getAutopagerPrefs().clearUserPref('.optionstyle');}catch(e){};txtConfirmStyle.value = autopagerMain.loadUTF8Pref('optionstyle');}catch(e){}"/>
+            oncommand="try{autopagerMain.getAutopagerPrefs().clearUserPref('.optionstyle');}catch(e){};try{txtConfirmStyle.value = autopagerMain.loadUTF8Pref('optionstyle');}catch(e){}"/>
     </hbox>
 </overlay>

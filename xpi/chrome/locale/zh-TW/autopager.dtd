@@ -1,16 +1,16 @@
 <!ENTITY autopager.label.value "Auto Pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "頁面存放區">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "立刻載入">
 <!ENTITY autopager.menuitem.autopager-hidden.label "隱藏">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 頁">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 頁">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 頁">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "全部">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "顯示">
 <!ENTITY autopager.sidebarTitle "AutoPager 網站設定工作室">

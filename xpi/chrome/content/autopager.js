@@ -708,10 +708,10 @@ onInitDoc : function(doc,safe) {
                     topDoc.documentElement.autopagerEnabledDoc.push( doc);
                     try{
                         if (autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript"))) {
-                            //doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
-                            //var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true);
-                            //splitbrowser.autopagerSplitWinFirstDocloaded = false;
-                            //splitbrowser.autopagerSplitWinFirstDocSubmited = true;
+                            doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
+                            var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true);
+                            splitbrowser.autopagerSplitWinFirstDocloaded = false;
+                            splitbrowser.autopagerSplitWinFirstDocSubmited = true;
                         }
                     }catch(e)
                     {}				
@@ -1616,7 +1616,15 @@ getContentType : function(doc) {
 },
 getSplitBrowserForDoc : function(doc,clone) {
     
-    var browse = splitbrowse.getSplitBrowser(doc,true,clone);
+	var doClone = clone;
+	if (clone && (doc.documentElement.autopagerSplitCloning==true))
+	{
+		doClone = false;
+    }else
+	{
+		doc.documentElement.autopagerSplitCloning = clone;
+    }
+    var browse = splitbrowse.getSplitBrowser(doc,true,doClone);
     //splitbrowse.setVisible(browse,this.loadBoolPref("debug"));
     if (clone)
         browse.auotpagerContentDoc = doc;
@@ -2035,7 +2043,7 @@ autopagerEvaluateXPath : function(aNode, path,enableJS) {
 getDocURL : function(doc,enableJS)
 {
     var href = "";
-    if (enableJS) {
+    if (enableJS && doc.location!=null) {
         href = doc.location.href;
     }
     else {
@@ -2300,27 +2308,30 @@ getPagingOptionDiv : function(doc)
 {
 	var divName = "autoPagerBorderOptions";
     var div = doc.getElementById(divName);
-    if (!div) {
+    var showonnew = doc.getElementById("autopagerSowOnNewSiteCheckbox");
+    
+	if (!div) {
         var overEvent = "onmouseover='document.documentElement.setAttribute(\"over\",true);' onmouseout='document.documentElement.setAttribute(\"over\",false);'";
-        var str = "<div style='cursor:move;height:18px;background-color: gray;margin:0px;' class='autoPagerS' "
+        var str = "<div style='cursor:move;height:18px;background-color: gray;margin:0px;width:100%;' class='autoPagerS' "
   + overEvent + " >"
 +"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%' "+ overEvent + ">"
-+"<tbody class='autoPagerS'><tr class='autoPagerS' ><th class='autoPagerS'  width='80%'><a alt='" + autopagerConfig.autopagerGetString("optionexplain") +"'  href='javascript:autopagerMain.showConfirmTip();'><b class='autoPagerS'>"
-+autopagerConfig.autopagerGetString("optiontitle") + "</b></a></th><td class='autoPagerS'  width='20%' align='right'>"
++"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='80%'><a alt='" + autopagerConfig.autopagerGetString("optionexplain") +"'  href='javascript:autopagerMain.showConfirmTip();'><b class='autoPagerS'>"
++autopagerConfig.autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'>"
 + "<a id='autopagerOptionHelp' target='_black' title='Help' href='http://autopager.teesoft.info/help.html'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Help'  src='chrome://autopagerimg/content/question.gif'></a>"
-+ "&nbsp; <a title='Close'  href='javascript:autopagerMain.enabledInThisSession(false)'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></th></tr></tbody></table></div> "
-+ "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;' "+ overEvent + ">"
-+"<li class='autoPagerS'><a href='javascript:autopagerMain.HighlightNextLinks()''>"+ autopagerConfig.autopagerGetString("highlightnextlinks") +"</a></li>"
-+"<li class='autoPagerS'><a href='javascript:autopagerMain.HighlightAutoPagerContents()''>"+ autopagerConfig.autopagerGetString("highlightcontents") +"</a></li>"
-+ "<li class='autoPagerS'><a href='javascript:autopagerMain.enabledInThisTime(true)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a href='javascript:autopagerMain.enabledInThisTime(false)'>D</a>:"
++ "</td><td class='autoPagerS'  width='10%' align='right'>"
++ "<a id='autopagerOptionClose' title='Close'  href='javascript:autopagerMain.enabledInThisSession(false)'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
++ "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;width:100%;list-style-type:disc !important;' "+ overEvent + ">"
++"<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.HighlightNextLinks()''>"+ autopagerConfig.autopagerGetString("highlightnextlinks") +"</a></li>"
++"<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.HighlightAutoPagerContents()''>"+ autopagerConfig.autopagerGetString("highlightcontents") +"</a></li>"
++ "<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.enabledInThisTime(true)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a href='javascript:autopagerMain.enabledInThisTime(false)'>D</a>:"
 + autopagerConfig.autopagerGetString("thistime") + "</li>"
-+ "<li class='autoPagerS'><a href='javascript:autopagerMain.enabledInThisSession(true)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a"
++ "<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.enabledInThisSession(true)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a"
 + " href='javascript:autopagerMain.enabledInThisSession(false)'>"+ autopagerConfig.autopagerGetString("disableshort") +"</a>:"
 + autopagerConfig.autopagerGetString("thissession") + "</li>"
-+ "<li class='autoPagerS'><a href='javascript:autopagerMain.enabledInNextPagesAlways(false)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a"
++ "<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.enabledInNextPagesAlways(false)'>"+ autopagerConfig.autopagerGetString("enableshort") +"</a> / <a"
 + " href='javascript:autopagerMain.enabledInNextPagesAlways(true)'>"+ autopagerConfig.autopagerGetString("alwaysenableshort") +"</a>:"
-+ autopagerConfig.autopagerFormatString("nextpages",["<input  class='autoPagerS' maxlength='3' size='1' id='autopagercount' value='3'>"]) +"</li>"
-+ "<li class='autoPagerS'><a href='javascript:autopagerMain.enabledThisSite(true)'>"+ autopagerConfig.autopagerGetString("alwaysenableshort") +"</a> / <a"
++ autopagerConfig.autopagerFormatString("nextpages",["<input style='float:none !important;' class='autoPagerS' maxlength='3' size='1' id='autopagercount' value='3'>"]) +"</li>"
++ "<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.enabledThisSite(true)'>"+ autopagerConfig.autopagerGetString("alwaysenableshort") +"</a> / <a"
 + " href='javascript:autopagerMain.enabledThisSite(false)'>"+ autopagerConfig.autopagerGetString("alwaysdisableshort") +"</a>:"
 + autopagerConfig.autopagerGetString("thissite") + "</li></ul>" +
 "<div class='autoPagerS'><INPUT TYPE='CHECKBOX' id='autopagerSowOnNewSiteCheckbox'/>" + autopagerConfig.autopagerGetString("ShowOnNewSite") + "</div>";
@@ -2331,7 +2342,7 @@ getPagingOptionDiv : function(doc)
         if (div.style.width == "")
             div.style.width = "190px";
         div.innerHTML = str;//"<b>Loading ...</b>";
-        var links=autopagerMain.autopagerEvaluateXPath(div,".//a[not (@id='autopagerOptionHelp')]",false);
+        var links=autopagerMain.autopagerEvaluateXPath(div,".//a[not (@id='autopagerOptionHelp') and not (@id='autopagerOptionClose')]",false);
         for(var i=0;i<links.length;i++)
         {
             links[i].addEventListener("click",autopagerMain.onConfirmClick,true);
@@ -2342,11 +2353,10 @@ getPagingOptionDiv : function(doc)
         doc.addEventListener("mousedown",autopagerMain.initializedrag,false);
         doc.addEventListener("mouseup",autopagerMain.stopdrag,false);
 
-        var showonnew = doc.getElementById("autopagerSowOnNewSiteCheckbox");
+        showonnew = doc.getElementById("autopagerSowOnNewSiteCheckbox");
         showonnew.addEventListener("click",autopagerMain.onNoPrompt,false);
          
     }
-    var showonnew = doc.getElementById("autopagerSowOnNewSiteCheckbox");
     if (!autopagerMain.loadBoolPref("noprompt"))
         showonnew.checked = true;
     
