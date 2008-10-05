@@ -2319,7 +2319,7 @@ getPagingOptionDiv : function(doc)
 +autopagerConfig.autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'>"
 + "<a id='autopagerOptionHelp' target='_black' title='Help' href='http://autopager.teesoft.info/help.html'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Help'  src='chrome://autopagerimg/content/question.gif'></a>"
 + "</td><td class='autoPagerS'  width='10%' align='right'>"
-+ "<a id='autopagerOptionClose' title='Close'  href='javascript:autopagerMain.enabledInThisSession(false)'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
++ "<a id='autopagerOptionClose' title='Close'  href='javascript:autopagerMain.enabledInThisSession(false);'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
 + "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;width:100%;list-style-type:disc !important;' "+ overEvent + ">"
 +"<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.HighlightNextLinks()''>"+ autopagerConfig.autopagerGetString("highlightnextlinks") +"</a></li>"
 +"<li class='autoPagerS' width='100%' style='' ><a href='javascript:autopagerMain.HighlightAutoPagerContents()''>"+ autopagerConfig.autopagerGetString("highlightcontents") +"</a></li>"
@@ -2342,15 +2342,17 @@ getPagingOptionDiv : function(doc)
         if (div.style.width == "")
             div.style.width = "190px";
         div.innerHTML = str;//"<b>Loading ...</b>";
-        var links=autopagerMain.autopagerEvaluateXPath(div,".//a[not (@id='autopagerOptionHelp') and not (@id='autopagerOptionClose')]",false);
+        var links=autopagerMain.autopagerEvaluateXPath(div,".//a[not (@id='autopagerOptionHelp')]",false);
         for(var i=0;i<links.length;i++)
         {
-            links[i].addEventListener("click",autopagerMain.onConfirmClick,true);
-             links[i].title = autopagerConfig.autopagerGetString("optionexplain");
+             links[i].addEventListener("click",autopagerMain.onConfirmClick,true);
+			 if (links[i].getAttribute('id') != 'autopagerOptionClose')
+				links[i].title = autopagerConfig.autopagerGetString("optionexplain");
              links[i].style.color="rgb(0,0,204)";
              links[i].className = 'autoPagerS';
         }
-        doc.addEventListener("mousedown",autopagerMain.initializedrag,false);
+
+		doc.addEventListener("mousedown",autopagerMain.initializedrag,false);
         doc.addEventListener("mouseup",autopagerMain.stopdrag,false);
 
         showonnew = doc.getElementById("autopagerSowOnNewSiteCheckbox");

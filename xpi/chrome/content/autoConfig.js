@@ -64,7 +64,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.16").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.17").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
