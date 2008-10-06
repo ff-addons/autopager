@@ -64,7 +64,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.17").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.18").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -188,7 +188,7 @@ function Site()
         this.removeXPath=[];
 	this.desc = null;
 	this.oldSite = null;
-	this.margin = 2;
+	this.margin = 3;
 	
 	this.maxLinks = -1;
         this.isTemp = false;
@@ -831,7 +831,12 @@ loadConfigFromUrl : function(url) {
       else if (nodeName == "margin") {
                 var val = autopagerConfig.getValue(childNode);
                         if (autopagerConfig.isNumeric(val))
-                                site.margin = val;
+                        {
+								if (val>3)
+								  site.margin = val;
+						        else
+								  site.margin = 3;
+                        }
       }
       else if (nodeName == "desc") {
                         site.desc	= autopagerConfig.getValue(childNode);
@@ -952,7 +957,7 @@ if (sites!=null)
                 siteObj.guid = autopagerConfig.generateGuid();
 	    autopagerConfig.createNode(siteNode,"urlPattern",siteObj.urlPattern);
 	    autopagerConfig.createNode(siteNode,"guid",siteObj.guid);
-            if (siteObj.margin!=2)
+            if (siteObj.margin!=3)
                 autopagerConfig.createNode(siteNode,"margin",siteObj.margin);
 	    autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
 

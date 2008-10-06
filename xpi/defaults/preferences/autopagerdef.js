@@ -6,7 +6,7 @@ pref("autopager.smarttext", "next|>|下一页|次を表示");
 pref("autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页");
 
 pref("autopager.smartlinks", "2");
-pref("autopager.smartMargin", "2");
+pref("autopager.smartMargin", "3");
 pref("autopager.showtags", false);
 pref("autopager.alwaysEnableJavaScript", true);
 

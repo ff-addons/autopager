@@ -1263,7 +1263,7 @@ createLabelDivs : function(doc,target,subfix)
 },
     
 createRegionDivs : function(doc,target,subfix) {
-    var margin = 2;
+    var margin = 3;
     var leftDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
     var rightDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
     var topDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
