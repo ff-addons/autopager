@@ -11,7 +11,7 @@
         title="&setting.title;"
         orient="vertical"
         onload="autopagerSidebar.onLoad();"
-        onunload="autopagerSelector.quit();"
+        onclose="autopagerSelector.quit();"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <stringbundleset id="autopagerStringbundleset">
         <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>

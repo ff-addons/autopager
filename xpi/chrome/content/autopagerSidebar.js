@@ -48,8 +48,22 @@ var autopagerSidebar =
 
     onLoad : function() {
         autopagerUtils.log("onLoad() called");
-        
-        document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status');},false);
+
+		var sidebar = window.top.document.getElementById("sidebar");
+		sidebar.addEventListener("DOMAttrModified",this.changed,false);
+		var sidebarBox = window.top.document.getElementById("sidebar-box");
+		sidebarBox.addEventListener("DOMAttrModified",this.changed,false);
+		var sheets = window.top.document.styleSheets
+		for(var i=0;i<sheets.length;i++)
+		{
+				if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
+				{
+						var sheet = sheets.item(i);
+						sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
+						sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
+				}
+        }
+		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status');},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','status');},false);
         document.getElementById("xpath").addEventListener('keypress',
                     function(event){if (event.keyCode == event.DOM_VK_RETURN)
@@ -435,6 +449,33 @@ var autopagerSidebar =
         document.getElementById("xpath").value = "";
         document.getElementById("contentXPath").value = "";
         document.getElementById("xpathDeck").selectedIndex = 0;
+    },
+	changed: function(e)
+	{
+		if ((e.attrName == "hidden" && e.newValue == "true") ||
+				(e.attrName == "src" && e.newValue != document.location.href))
+			autopagerSidebar.quit();
+    },
+	quit: function()
+	{
+
+		var sidebar = window.top.document.getElementById("sidebar");
+		sidebar.removeEventListener("DOMAttrModified",this.changed,false);
+		var sidebarBox = window.top.document.getElementById("sidebar-box");
+		sidebarBox.removeEventListener("DOMAttrModified",this.changed,false);
+
+		var sheets = window.top.document.styleSheets
+		for(var i=0;i<sheets.length;i++)
+		{
+				if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
+				{
+						var sheet = sheets.item(i);
+						//sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
+						//sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
+						sheet.deleteRule(sheet.cssRules.length-1)
+						sheet.deleteRule(sheet.cssRules.length-1)
+				}
+        }
     }
 
 
