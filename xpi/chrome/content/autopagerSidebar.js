@@ -336,7 +336,7 @@ var autopagerSidebar =
                 urlPattern = url.substring(0,url.indexOf("?")) + "*";
             
             var site = autopagerConfig.newSite(urlPattern,url
-                ,linkXPath,contentXPath);
+                ,linkXPath,contentXPath,[url]);
             site.createdByYou = true;
             site.owner = autopagerPref.loadMyName();
             while (site.owner.length == 0)
@@ -476,9 +476,8 @@ var autopagerSidebar =
 						sheet.deleteRule(sheet.cssRules.length-1)
 				}
         }
+		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);
     }
-
-
 };
 autopagerUtils.log("loading window.js");
 

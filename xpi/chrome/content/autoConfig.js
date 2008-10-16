@@ -64,7 +64,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.19").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.21").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -183,12 +183,14 @@ function Site()
 	this.changedByYou  = false;
 	this.owner  = "";
 	this.contentXPath = [];//["//div[@class='g']"];
+
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
         this.containerXPath="";
         this.removeXPath=[];
 	this.desc = null;
+	this.testLink = [];
 	this.oldSite = null;
-	this.margin = 3;
+	this.margin = autopagerMain.getMiniMargin();
 	
 	this.maxLinks = -1;
         this.isTemp = false;
@@ -401,7 +403,10 @@ generateGuid : function()
 	newSite.owner  = site.owner;
 	for(var i=0;i<site.contentXPath.length;++i)
 			newSite.contentXPath[i] = site.contentXPath[i];
-	
+
+	for(var i=0;i<site.testLink.length;++i)
+			newSite.testLink[i] = site.testLink[i];
+
 	for(var i=0;i<site.removeXPath.length;++i)
 			newSite.removeXPath[i] = site.removeXPath[i];
 
@@ -436,7 +441,8 @@ generateGuid : function()
 						|| oldSite.containerXPath != site.containerXPath
 						|| oldSite.removeXPath.length != site.removeXPath.length
 						|| oldSite.desc != site.desc
-						|| oldSite.contentXPath.length != site.contentXPath.length)
+						|| oldSite.contentXPath.length != site.contentXPath.length
+						|| oldSite.testLink.length != site.testLink.length)
 						{
 							return true;
 						}
@@ -444,7 +450,13 @@ generateGuid : function()
 			{
 				if (oldSite.contentXPath[i] != site.contentXPath[i])
 					return true;
-			}				
+			}
+			for(var i=0;i<site.testLink.length;++i)
+			{
+				if (oldSite.testLink[i] != site.testLink[i])
+					return true;
+			}
+
 			for(var i=0;i<site.removeXPath.length;++i)
 			{
 				if (oldSite.removeXPath[i] != site.removeXPath[i])
@@ -832,10 +844,10 @@ loadConfigFromUrl : function(url) {
                 var val = autopagerConfig.getValue(childNode);
                         if (autopagerConfig.isNumeric(val))
                         {
-								if (val>3)
+								if (val>autopagerMain.getMiniMargin())
 								  site.margin = val;
 						        else
-								  site.margin = 3;
+								  site.margin = autopagerMain.getMiniMargin();
                         }
       }
       else if (nodeName == "desc") {
@@ -849,6 +861,9 @@ loadConfigFromUrl : function(url) {
       }      
       else if (nodeName == "contentXPath") {
                         site.contentXPath.push(autopagerConfig.getValue(childNode));
+      }
+      else if (nodeName == "testLink") {
+                        site.testLink.push(autopagerConfig.getValue(childNode));
       }
       else if (nodeName == "removeXPath") {
                         site.removeXPath.push(autopagerConfig.getValue(childNode));
@@ -912,7 +927,7 @@ loadConfigFromStr : function(configContents,remote) {
   }
   return sites;
 },
-newSite : function(urlPattern,desc,linkXPath,contentXPath)
+newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
 {
 	var site = new Site();
 	site.urlPattern = urlPattern;
@@ -925,7 +940,13 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath)
 		for(var i=0;i<contentXPath.length;++i)
 			site.contentXPath[i] = contentXPath[i];
 	}
-	return site;
+	if (testLink[0].length == 1)
+		site.testLink[0] = testLink;
+	else
+	{
+		for(var i=0;i<testLink.length;++i)
+			site.testLink[i] = testLink[i];
+	}	return site;
 },
 saveConfig : function(sites) {
 	autopagerConfig.saveConfigToFile(sites,autopagerConfig.getConfigFile("autopager.xml"),true);
@@ -957,7 +978,7 @@ if (sites!=null)
                 siteObj.guid = autopagerConfig.generateGuid();
 	    autopagerConfig.createNode(siteNode,"urlPattern",siteObj.urlPattern);
 	    autopagerConfig.createNode(siteNode,"guid",siteObj.guid);
-            if (siteObj.margin!=3)
+            if (siteObj.margin>autopagerMain.getMiniMargin())
                 autopagerConfig.createNode(siteNode,"margin",siteObj.margin);
 	    autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
 
@@ -983,11 +1004,15 @@ if (sites!=null)
 	    for(x=0;x<siteObj.contentXPath.length;++x)
 	    {
 		    autopagerConfig.createNode(siteNode,"contentXPath",siteObj.contentXPath[x]);
-            }
+        }
+	    for(x=0;x<siteObj.testLink.length;++x)
+	    {
+		    autopagerConfig.createNode(siteNode,"testLink",siteObj.testLink[x]);
+        }
 	    for(x=0;x<siteObj.removeXPath.length;++x)
 	    {
 		    autopagerConfig.createNode(siteNode,"removeXPath",siteObj.removeXPath[x]);
-            }
+        }
 	    
 	    autopagerConfig.createNode(siteNode,"linkXPath",siteObj.linkXPath);
             if (siteObj.containerXPath!=null && siteObj.containerXPath.length>0)

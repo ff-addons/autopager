@@ -37,6 +37,15 @@ const autopagerHightlight =
         this.count = nodes.length;
 
     },
+	HideAll : function(doc)
+	{
+        for(var i=0; i<this.count;i++)
+        {
+            this.hiddenRegionDivs(doc,i);
+        }
+        this.count = 0;
+
+    },
     createRegionDivs : function(doc,target,subfix) {
         var margin = 2;
         var leftDiv = this.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);

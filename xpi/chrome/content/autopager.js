@@ -356,7 +356,7 @@ loadTempConfig : function() {
         if (smarttext.length>0) {
             var smartlinks = autopagerMain.loadPref("smartlinks");
             var site = autopagerConfig.newSite("*","temp site for smart paging"
-            ,"","//body/*");
+            ,"","//body/*",[]);
             site.maxLinks = smartlinks;
             site.enableJS = true;
             site.isTemp = true;
@@ -633,7 +633,10 @@ onInitDoc : function(doc,safe) {
                 if (!de.autopagerPagingCount)
                     de.autopagerPagingCount = 0;
                 if (!de.autoPagerPage)
-                    de.autoPagerPage = 0;
+                {
+						de.autoPagerPage = 0;
+                		de.autoPagerPageHeight = [];
+                }
                 if (autopagerMain.autopagerConfirmSites == null)
                     autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
                 var siteConfirm = autopagerConfig.findConfirm(autopagerMain.autopagerConfirmSites,autopagerMain.workingAutoSites[i].guid,doc.location.host);
@@ -685,20 +688,11 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
                 de.autopagerSplitCreated = false;
                 
-    //autopagerMain.log("11 " + new Date().getTime()) 
-                                if (autopagerMain.workingAutoSites[i].containerXPath != "")
-                                {
-                                    
-                                    autopagerContainer = autopagerMain.findNodeInDoc(
-                                        de,autopagerMain.workingAutoSites[i].containerXPath,false);
-                                    if (autopagerContainer!=null)
-                                    {
-                                        var scrollContainer = autopagerContainer[0];
-                                        scrollContainer.addEventListener("scroll",autopagerMain.scrollWatcher,true);
-                                        //scrollContainer.onscroll = autopagerMain.scrollWatcher;
-                                    }
-                                }
-                if (autopagerEnabled) {
+    //autopagerMain.log("11 " + new Date().getTime())
+
+				de.autoPagerPageHeight = [];
+				
+				if (autopagerEnabled) {
                      if(autopagerMain.workingAutoSites[i].fixOverflow)
                         autopagerMain.fixOverflow(doc);
 
@@ -896,7 +890,16 @@ doScrollWatcher : function() {
 								else
 										wh = wh * (doc.documentElement.margin * 1);
 								//alert(wh);
-								needLoad = remain < wh;
+								//needLoad = remain < wh;
+								var targetHeight = 0;
+								var a = de.autoPagerPageHeight
+								if (a!=null && a.length >= doc.documentElement.margin)
+								{
+										var pos = a.length - doc.documentElement.margin
+										targetHeight = a[pos];
+								}
+								var currHeight = sc + scrollContainer.offsetTop;// + wh
+								needLoad = (targetHeight < currHeight) || remain < wh;
 							}
                             if( needLoad){
                                 if (de.autoPagerPage==null || de.autoPagerPage<2)
@@ -918,7 +921,17 @@ doScrollWatcher : function() {
                                     doc.documentElement.autopagerUserAllowed = true;
                                     doc.documentElement.autopagerAllowedPageCount = -1;
                                 }
-                                
+                                if (!doc.documentElement.autopagerUserConfirmed)
+								{
+										var siteConfirm = autopagerConfig.findConfirm(autopagerMain.autopagerConfirmSites,de.autopagerGUID,doc.location.host);
+										if (siteConfirm!=null)
+										{
+											de.autopagerUserConfirmed= true;
+											de.autopagerSessionAllowed= siteConfirm.UserAllowed;
+											de.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
+											de.autopagerUserAllowed=siteConfirm.UserAllowed;
+										}
+								}
                                 var needConfirm =  (!autopagerMain.loadBoolPref("noprompt"))
 										&& (!doc.documentElement.autopagerUserConfirmed || (doc.documentElement.autopagerSessionAllowed
 																&& doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage))
@@ -1459,7 +1472,7 @@ onXPathClick : function(event) {
             if (url.indexOf("?")>0)
                 urlPattern = url.substring(0,url.indexOf("?")) + "*";
             var site = autopagerConfig.newSite(urlPattern,url
-                ,document.autopagerWizardLinkXPath,newpath);
+                ,document.autopagerWizardLinkXPath,newpath,[url]);
             site.createdByYou = true;
             site.owner = autopagerMain.loadMyName();
             while (site.owner.length == 0)
@@ -2201,6 +2214,30 @@ scrollWindow : function(container,doc) {
            
             if (this.autopagerDebug)
                 autopagerMain.logInfo(nodes.toString(),nodes.toString());
+
+
+			var scrollContainer = null;
+			if (de.containerXPath != null)
+			{
+					autopagerContainer = autopagerMain.findNodeInDoc(
+							de,de.containerXPath,false);
+					if (autopagerContainer!=null)
+					{
+							scrollContainer = autopagerContainer[0];
+							scrollContainer.addEventListener("scroll",autopagerMain.scrollWatcher,true);
+					//scrollContainer.onscroll = autopagerMain.scrollWatcher;
+					}
+			}
+			var scrollDoc =container;
+			if (scrollContainer==null)
+					scrollContainer = de;
+			var sh = (scrollContainer && scrollContainer.scrollHeight)
+					? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
+			if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
+			{
+					sh = scrollDoc.body.scrollHeight;
+			}
+			de.autoPagerPageHeight.push(sh);
 
             //alert(nodes);
             var i=0;
@@ -2946,6 +2983,10 @@ alertErr : function(e) {
       } : function(message) {
         if (autopagerPref.loadBoolPref("debug"))
            debug(message)
+    }
+	, getMiniMargin : function()
+	{
+			return 2;
     }
 };
 

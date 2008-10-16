@@ -783,7 +783,7 @@ function autopagerOpenIntab(url,obj)
     		return;
     		
         var site = autopagerConfig.newSite("http://yourhost/*","your desc"
-  				,"//a[contains(.//text(),'Next')]","//body/*");
+  				,"//a[contains(.//text(),'Next')]","//body/*",[]);
 		site.createdByYou = true;
 		site.owner = myname;
 		//addSite(site,sites.length -1);
