@@ -123,7 +123,7 @@
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.label.lblSetting "AutoPager setting source">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
-
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
 <!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
@@ -134,5 +134,4 @@
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">

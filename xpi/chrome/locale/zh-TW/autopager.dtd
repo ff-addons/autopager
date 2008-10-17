@@ -103,6 +103,7 @@
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">

@@ -123,6 +123,7 @@
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.label.lblSetting "自动翻页配置更新源">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
+<!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY autopager.menu.autopager-immedialate-load.label "立即加载">
 <!ENTITY autopager.menuitem.autopager-load-3.label "3页">
 <!ENTITY autopager.menuitem.autopager-load-5.label "5页">

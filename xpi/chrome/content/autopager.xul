@@ -315,6 +315,9 @@
                     <hbox align="center">
                             <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
                     </hbox>
+                    <hbox align="center">
+                            <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+                    </hbox>
 
                 </vbox>
             </tabpanel>

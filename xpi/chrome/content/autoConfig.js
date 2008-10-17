@@ -64,7 +64,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.21").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.23").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -940,9 +940,9 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
 		for(var i=0;i<contentXPath.length;++i)
 			site.contentXPath[i] = contentXPath[i];
 	}
-	if (testLink[0].length == 1)
-		site.testLink[0] = testLink;
-	else
+//	if (testLink[0].length == 1)
+//		site.testLink[0] = testLink;
+//	else
 	{
 		for(var i=0;i<testLink.length;++i)
 			site.testLink[i] = testLink[i];

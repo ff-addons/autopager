@@ -22,4 +22,5 @@ pref("autopager.update", "24");
 pref("autopager.settingupdatedate", "");
 pref("autopager.noprompt", false);
 pref("extensions.autopager@mozilla.org.description", "chrome://autopager/locale/autopager.properties");  
+pref("autopager.hide-status", false);
 

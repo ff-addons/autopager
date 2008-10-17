@@ -103,6 +103,7 @@
 <!ENTITY setting.label.marginEnd "Altezza della finestra">
 <!ENTITY setting.label.pagebreak "Stile per le interruzioni di pagina:">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
 <!ENTITY setting.label.sites "Siti web">
 <!ENTITY setting.label.smartenable "Attiva lo Smart Paging">

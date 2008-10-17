@@ -103,6 +103,7 @@
 <!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "IDs beim Auswählen der Elemente anzeigen">
 <!ENTITY setting.label.sites "Regeln">
 <!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">

@@ -19,7 +19,7 @@ var allSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt,showStatusBar;
     var selectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
@@ -150,6 +150,7 @@ function autopagerOpenIntab(url,obj)
         autopagerMain.saveBoolPref("showtags",showtags.checked);
         autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
         autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
+        autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
         
         
 	        
@@ -273,7 +274,10 @@ function autopagerOpenIntab(url,obj)
         
         showPrompt = document.getElementById("showPrompt");
         showPrompt.checked = !autopagerMain.loadBoolPref("noprompt");
-        
+
+        showStatusBar = document.getElementById("showStatusBar");
+        showStatusBar.checked = !autopagerMain.loadBoolPref("hide-status");
+
         smartenable = document.getElementById("smartenable");
         smartenable.checked = autopagerMain.loadBoolPref("smartenable");
 

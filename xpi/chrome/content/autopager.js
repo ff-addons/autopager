@@ -220,6 +220,7 @@ onContentLoad : function(event) {
         {
             return;
         }
+	autopagerMain.showStatus();
     if (doc.defaultView.name=="autoPagerLoadDivifr")
         return;
     if (!document.autoPagerInited) {
@@ -2987,6 +2988,10 @@ alertErr : function(e) {
 	, getMiniMargin : function()
 	{
 			return 2;
+    }
+	, showStatus : function(){
+            var statusBar = document.getElementById("autopager_status");
+            statusBar.hidden = autopagerMain.loadBoolPref("hide-status");
     }
 };
 

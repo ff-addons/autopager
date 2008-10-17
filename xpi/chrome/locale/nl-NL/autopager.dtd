@@ -1,16 +1,16 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Paginahouder">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Direct laden:">
 <!ENTITY autopager.menuitem.autopager-hidden.label "verborgen">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 pagina’s">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 pagina’s">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 pagina’s">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "Alle  pagina’s">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "weergeven">
 <!ENTITY autopager.sidebarTitle "AutoPager site-instellingen workshop">
@@ -103,6 +103,7 @@
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
@@ -114,7 +115,7 @@
 <!ENTITY setting.text.tipContainerXPath "Wijzig dit niet als dit u niets zegt.\nDit helpt als de voornaamste inhoud van de site een container heeft met overflow-y en een schuifbalk. Kijk bijvoorbeeld op www.cuil.com.">
 <!ENTITY setting.title "AutoPager instellingen">
 <!ENTITY setting.tree.Description "Beschrijving">
-<!ENTITY setting.tree.URLPattern "URL patroon">
+<!ENTITY setting.tree.URLPattern "URL-patroon">
 <!ENTITY setting.type.autopager "AutoPager XML">
 <!ENTITY setting.type.autopagerize "Automatisch pagineren">
 <!ENTITY setting.type.autopagerizeJson "Automatisch pagineren josn">

@@ -103,6 +103,7 @@
 <!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
 <!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
+<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Afficher les balises nœud lors de la sélection de l&apos;élément">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Activer la pagination intelligente">
