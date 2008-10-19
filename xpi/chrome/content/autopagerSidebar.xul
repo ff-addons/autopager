@@ -54,20 +54,20 @@
   
     <deck selectedIndex="0" id="xpathDeck" flex="1">
         <vbox flex="1">
+            <hbox align="center">
+                <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+                <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
+                <textbox id="urlPattern" flex="1"/>
+            </hbox>
+            <hbox align="center">
+                <label control="xpath" value="&setting.label.lblLinkXPath;"/>
+                <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
+            </hbox>
+            <hbox align="center">
+                <label control="contentXPath" value="&setting.label.grpContentXPath;"/>
+                <textbox id="contentXPath" flex="1"/>
+            </hbox>
             <tabbox id="autopager-workshop-tabbox" flex="1" selectedIndex="1">
-                <hbox align="center">
-                    <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
-                    <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
-                    <textbox id="urlPattern" flex="1"/>
-                </hbox>
-                <hbox align="center">
-                    <label control="xpath" value="&setting.label.lblLinkXPath;"/>
-                    <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
-                </hbox>
-                <hbox align="center">
-                    <label control="contentXPath" value="&setting.label.grpContentXPath;"/>
-                    <textbox id="contentXPath" flex="1"/>
-                </hbox>
                 <tabs>
                     <tab label="&setting.label.sites;"/>
                     <tab label="&treecol.linkXpathCol.label;"/>

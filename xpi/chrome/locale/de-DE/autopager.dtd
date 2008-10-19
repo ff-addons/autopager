@@ -46,7 +46,6 @@
 <!ENTITY autopager.tooltip "Sidebar zum Erstellen der Regeln für das Anfügen der nächsten Seite">
 <!ENTITY caption.results-caption.label "Ergebnisse">
 <!ENTITY caption.results-caption2.label "Ergebnisse">
-<!ENTITY label.1.value "XPath des Inhalts:">
 <!ENTITY label.Usages.value "Befehle">
 <!ENTITY openautopagerSidebar.commandkey "Q">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">

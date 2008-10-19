@@ -57,7 +57,7 @@ const autopagerXPath = {
 
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 2;
+        item.authority = 0.2;
         item.xpath = "(//a[@href and @href = %href%]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -68,7 +68,7 @@ const autopagerXPath = {
 
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 0.6;
+        item.authority = 0.1;
         item.xpath = "(//a[@href and %href% = concat(%pathname%,@href) ]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -86,7 +86,7 @@ const autopagerXPath = {
 
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 0.6;
+        item.authority = 0.1;
         item.xpath = "(//a[@href and contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -98,7 +98,7 @@ const autopagerXPath = {
 
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 0.6;
+        item.authority = 0.1;
         item.xpath = "(//a[@href and contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -110,7 +110,7 @@ const autopagerXPath = {
         
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 0.8;
+        item.authority = 0.12;
         item.xpath = "(//a[@href and contains(@href , %href%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -121,7 +121,7 @@ const autopagerXPath = {
 //        this.addItem(doc,links,item);
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 0.6;
+        item.authority = 0.1;
         item.xpath = "(//a[@href and contains(@href , %filename%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
@@ -618,7 +618,7 @@ const autopagerXPath = {
         var nodePath = this.getPrecedingDifferentNode(target)
         var count = nodePath[0]
         var node = nodePath[1]
-        if (node==null)
+        if (node==null || !node.tagName)
             return null;
         
         var dir = "";

@@ -433,6 +433,8 @@ var autopagerSidebar =
 		txtbox = document.getElementById('contentXPath');
         txtbox.value = site.contentXPath;
 
+		var urlPattern = document.getElementById("urlPattern");
+		urlPattern.value = site.urlPattern;
         this.searchXPath(site.linkXPath,document.getElementById('resultsFrame'),'status',autopagerSidebar.linkColor);
         this.searchXPath(site.contentXPath,document.getElementById('resultsFrame2'),'status2',autopagerSidebar.contentColor);
     },

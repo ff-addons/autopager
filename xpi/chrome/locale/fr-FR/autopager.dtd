@@ -1,17 +1,6 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Détenteur de la page">
-<!ENTITY autopager.menu.autopager-immedialate-load.key "i">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Chargement immédiat">
 <!ENTITY autopager.menuitem.autopager-hidden.label "masqué">
-<!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 pages">
-<!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 pages">
-<!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 pages">
-<!ENTITY autopager.menuitem.autopager-load-all.key "T">
-<!ENTITY autopager.menuitem.autopager-load-all.label "Toutes les pages">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "visible">
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
@@ -46,11 +35,14 @@
 <!ENTITY autopager.tooltip "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY caption.results-caption.label "Résultats">
 <!ENTITY caption.results-caption2.label "Résultats">
-<!ENTITY label.1.value "Corps du XPath :">
+<!ENTITY treecol.linkXpathCol.label "Lien XPath">
+<!ENTITY treecol.contentXpathCol.label "Contenu XPath">
+<!ENTITY treecol.fileCol.label "Fichier">
 <!ENTITY label.Usages.value "Utilisations">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY setting.appname "AutoPager">
+<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "Ajouter…">
 <!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
 <!ENTITY setting.button.cloneToEditTip "Élément provenant d&apos;une source sûre. N&apos;éditer la version clonée que si nécessaire.">
@@ -64,13 +56,11 @@
 <!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "Supprimer">
 <!ENTITY setting.button.up "Monter">
-<!ENTITY setting.key "u">
-<!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.btnEdit "Éditer">
-<!ENTITY setting.label.chkAjax "C&apos;est un site AJAX. Aucun événement chargé.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Activer Javascript durant le chargement de la page.">
+<!ENTITY setting.label.chkAjax "C&apos;est un site AJAX. Aucun événement chargé.">
 <!ENTITY setting.label.chkEnabled "Activé">
 <!ENTITY setting.label.chkFixOverflow "Désactiver les paramètres de débordement concernant la page chargée.">
 <!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
@@ -81,30 +71,23 @@
 <!ENTITY setting.label.doubleclick "+ double-clic">
 <!ENTITY setting.label.general "Général">
 <!ENTITY setting.label.grpContentXPath "Contenu XPath :">
-<!ENTITY setting.label.grpDiscovery "Identification">
 <!ENTITY setting.label.grpRemoveXPath "Filtre XPath (ignore les éléments des nouvelles pages) :">
+<!ENTITY setting.label.grpDiscovery "Identification">
 <!ENTITY setting.label.grpSmart "Pagination intelligente">
 <!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
-<!ENTITY setting.label.lblContainerXPath "Conteneur XPath :">
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">
+<!ENTITY setting.label.lblContainerXPath "Conteneur XPath :">
+<!ENTITY setting.text.tipContainerXPath "Ne changez rien si vous ne le connaissez pas.\nCela apportera de l&apos;aide si le contenu principal du site a un conteneur disposant de débordement / de barre déroulante. Le site www.cuil.com peut vous servir d&apos;exemple.">
 <!ENTITY setting.label.lblOwner "Créé par :">
-<!ENTITY setting.label.lblSetting "Source de paramétrage d&apos;AutoPager">
-<!ENTITY setting.label.lblSettingContext "Type de contexte :">
-<!ENTITY setting.label.lblSettingDesc "Descr. :">
-<!ENTITY setting.label.lblSettingOwner "Maintenance par :">
-<!ENTITY setting.label.lblSettingType "Type :">
-<!ENTITY setting.label.lblSettingUrl "URL :">
-<!ENTITY setting.label.lblSettingXPath "XPath :">
 <!ENTITY setting.label.lblURLPattern "Format de l&apos;URL :">
 <!ENTITY setting.label.lblUpdate "Mettre à jour automatiquement les configurations de sites :">
 <!ENTITY setting.label.loading "Style du cadre de notification :">
 <!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
 <!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
-<!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
-<!ENTITY setting.label.showStatusBar "Afficher l'icône d'AutoPager dans la barre d'état">
 <!ENTITY setting.label.showtags "Afficher les balises nœud lors de la sélection de l&apos;élément">
+<!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Activer la pagination intelligente">
 <!ENTITY setting.label.smartlinks "Suivre le lien quand il n&apos;y a pas plus de">
@@ -112,29 +95,45 @@
 <!ENTITY setting.label.smarttext "Noms (de textes, d&apos;images, de champs ou de classes) déterminant le lien vers la page suivante. Les séparer avec la barre verticale « | » :">
 <!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
 <!ENTITY setting.label.update "Mise à jour">
-<!ENTITY setting.text.tipContainerXPath "Ne changez rien si vous ne le connaissez pas.\nCela apportera de l&apos;aide si le contenu principal du site a un conteneur disposant de débordement / de barre déroulante. Le site www.cuil.com peut vous servir d&apos;exemple.">
 <!ENTITY setting.title "Paramètres d&apos;AutoPager">
 <!ENTITY setting.tree.Description "Description">
 <!ENTITY setting.tree.URLPattern "Format de l&apos;URL">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "Chaque jour">
-<!ENTITY setting.update.global "Utiliser le paramétrage global">
 <!ENTITY setting.update.monthly "Chaque mois">
 <!ENTITY setting.update.never "Jamais">
 <!ENTITY setting.update.once "Première fois">
 <!ENTITY setting.update.startup "À chaque démarrage">
 <!ENTITY setting.update.weekly "Chaque semaine">
+<!ENTITY setting.update.global "Utiliser le paramétrage global">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Ajouter un site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Tout effacer">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Identification">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Contenu de la fenêtre de sélection">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Lien de la fenêtre de sélection">
 <!ENTITY treecol.authorityCol.label "Autorité">
-<!ENTITY treecol.contentXpathCol.label "Content XPath">
-<!ENTITY treecol.fileCol.label "File">
-<!ENTITY treecol.linkXpathCol.label "Link XPath">
 <!ENTITY treecol.machedCol.label "Compte correspondant">
 <!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "Maintenance par :">
+<!ENTITY setting.label.lblSettingDesc "Descr. :">
+<!ENTITY setting.label.lblSettingUrl "URL :">
+<!ENTITY setting.label.lblSettingType "Type :">
+<!ENTITY setting.label.lblSettingContext "Type de contexte :">
+<!ENTITY setting.label.lblSettingXPath "XPath :">
+<!ENTITY setting.type.autopager "XML AutoPager">
+<!ENTITY setting.type.autopagertext "Texte AutoPager">
+<!ENTITY setting.type.autopagerize "AutoPager-isé">
+<!ENTITY setting.type.autopagerizeJson "AutoPager-isé JSON">
+<!ENTITY setting.label.lblSetting "Source de paramétrage d&apos;AutoPager">
+<!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
+<!ENTITY setting.label.showStatusBar "Afficher l&apos;icône d&apos;AutoPager dans la barre d&apos;état">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Chargement immédiat">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "Toutes les pages">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "i">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-all.key "T">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
