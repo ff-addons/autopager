@@ -3,6 +3,9 @@ var autopagerSidebar =
     initialized: false,
     currentDoc:  autopagerUtils.currentDocument(),
     currUrl : null,
+    tabbox : null,
+	linkColor: "blue",
+	contentColor: "orange",
     loadString: function() {
         // initialization code
         this.initialized = true;
@@ -35,13 +38,13 @@ var autopagerSidebar =
         if (res.linkXPaths.length>0)
         {    
           document.getElementById("xpath").value = res.linkXPaths[0].xpath;
-          this.searchXPath(res.linkXPaths[0].xpath,document.getElementById("resultsFrame"),"status");
+          this.searchXPath(res.linkXPaths[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor);
         }
         
         if (res.contentXPaths.length>0)
         {
             document.getElementById("contentXPath").value = res.contentXPaths[0].xpath;
-            this.searchXPath(res.contentXPaths[0].xpath,document.getElementById("resultsFrame2"),"status2");
+            this.searchXPath(res.contentXPaths[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor);
         }
         document.getElementById("xpathDeck").selectedIndex = 0;
     },
@@ -63,22 +66,69 @@ var autopagerSidebar =
 						sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
 				}
         }
-		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status');},false);
+		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','status');},false);
         document.getElementById("xpath").addEventListener('keypress',
                     function(event){if (event.keyCode == event.DOM_VK_RETURN)
-                             autopagerSidebar.search('xpath','resultsFrame','status');},true);
+                        autopagerSidebar.tabbox.selectedIndex=1;
+						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor);},true);
 
 
-        document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2');},false);
+        document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},false);
         document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','status2');},false);
         document.getElementById("contentXPath").addEventListener('keypress',
                     function(event){if (event.keyCode == event.DOM_VK_RETURN)
-                            autopagerSidebar.search('contentXPath','resultsFrame2','status2');},true);
+                        autopagerSidebar.tabbox.selectedIndex=2;
+                        autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},true);
         
         this.loadXPathForNode(this.currentDoc);
 
+		this.tabbox = document.getElementById("autopager-workshop-tabbox");
+		var urlPattern = document.getElementById("urlPattern");
+		var chkIsRegex = document.getElementById("chkIsRegex");
+		chkIsRegex.addEventListener('command',function(){
+			autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
+		},false);
+
+		urlPattern.addEventListener('input',
+			function()
+			{
+				autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
+			}
+			,false);
+
     },
+	checkurlPattern : function (chkIsRegex,urlPattern)
+	{
+		var url = autopagerSidebar.currUrl;
+		if (!url)
+		{
+			urlPattern.style.color = "";
+		}
+		var regex = null;
+		try{
+			if (chkIsRegex.checked)
+			{
+				regex = new RegExp(urlPattern.value);
+			}else
+			{
+				regex = convert2RegExp(urlPattern.value);
+			}
+			if (url)
+			{
+				if (regex.test(url))
+					urlPattern.style.color = "green";
+				else
+				{
+					urlPattern.style.color = "red";
+				}
+			}
+		}catch(e)
+		{
+			urlPattern.style.color = "red";
+		}
+
+	},
     refreshDoc : function()
     {
         this.loadXPathForNode(autopagerUtils.currentDocument());
@@ -113,7 +163,7 @@ var autopagerSidebar =
             iframe.removeEventListener("DOMContentLoaded",self,false);
             autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
             var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
-            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
+            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));			
         } 
         , false);
         autopagerUtils.cloneBrowser(iframe, browser);
@@ -130,7 +180,24 @@ var autopagerSidebar =
         , false);
         autopagerUtils.cloneBrowser(iframe, browser);
         },1000);
+		var sites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),this.currUrl,10);
 
+		autopagerSidebar.showSettingList(document.getElementById("settingsTreeBody"),sites);
+
+		//The following code are similar to the example from
+		//http://developer.mozilla.org/En/Full_page_zoom
+		//but fullZoom doesn't work, will zoom the whole browser don't know why
+		var iframe = document.getElementById( "resultsFrame");
+		var contViewer = iframe.docShell.contentViewer;
+		var docViewer = contViewer.QueryInterface(Components.interfaces.nsIMarkupDocumentViewer);
+		docViewer.textZoom = 0.8;
+//		docViewer.fullZoom = 0.8
+
+		iframe = document.getElementById( "resultsFrame2");
+		contViewer = iframe.docShell.contentViewer;
+		docViewer = contViewer.QueryInterface(Components.interfaces.nsIMarkupDocumentViewer);
+		docViewer.textZoom = 0.8;
+//		docViewer.fullZoom = 0.8;
     },
 
     getUrl : function() {
@@ -169,13 +236,13 @@ var autopagerSidebar =
         document.getElementById(statusID).value = isValid ? "" : "Syntax error"
     },
 
-    search:function(xpathID,resultFrameID,statusID) {
+    search:function(xpathID,resultFrameID,statusID,color) {
         autopagerUtils.log("search called")
         var xpath = document.getElementById(xpathID).value
-        this.searchXPath(xpath,document.getElementById(resultFrameID),statusID);
+        this.searchXPath(xpath,document.getElementById(resultFrameID),statusID,color);
 
     },
-    searchXPath:function(xpath,contentFrame,statusID) {
+    searchXPath:function(xpath,contentFrame,statusID,color) {
         autopagerUtils.log("search called")
 
         var doc = autopagerSidebar.currentDoc;
@@ -186,13 +253,13 @@ var autopagerSidebar =
         }
 
         var resultList = this.getXPathNodes(doc, xpath)
-        this.showResultList(doc,resultList,contentFrame,statusID)
+        this.showResultList(doc,resultList,contentFrame,statusID,color)
 
     },
-    showResultList:function (doc,resultList,contentFrame,statusID)
+    showResultList:function (doc,resultList,contentFrame,statusID,color)
     {
         this.updateStatus(resultList,statusID)
-        this.updateHtmlResults(resultList,contentFrame)
+        this.updateHtmlResults(resultList,contentFrame,color)
     },
     updateStatus:function(results,statusID) {
         var status;
@@ -205,7 +272,7 @@ var autopagerSidebar =
         }
         document.getElementById(statusID).value = status
     }
-    , updateHtmlResults:function(results,contentFrame) {
+    , updateHtmlResults:function(results,contentFrame,color) {
         var doc = contentFrame.contentDocument;
         autopagerSidebar.clearNoneLink(doc.body);
 
@@ -213,7 +280,7 @@ var autopagerSidebar =
         var tbody = autopagerSidebar.addNode(table,"tbody");
         
 
-        autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1);
+        autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1,color);
         for (var i in results) {
             var node = results[i]
             node.blur = true;
@@ -234,10 +301,8 @@ var autopagerSidebar =
 
 
     , getXPathNodes:function(doc, xpath) {
-
-        return autopagerXPath.evaluate(doc,xpath);
+        return autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]");
     }
-
     ,countProperties:function(obj) {
         var result = 0
         for (p in obj) {
@@ -266,6 +331,47 @@ var autopagerSidebar =
             treecell = this.addNode(treerow,"treecell");
             treecell.setAttribute("label", xpath.matchCount);
         }
+    },
+    showSettingList:function(treeChild,lists)
+    {
+        treeChild.parentNode.xpathes = lists;
+        this.clearNode(treeChild);
+        for (var i in lists)
+        {
+            var site = lists[i];
+            var treeitem = this.addNode(treeChild,"treeitem");
+            treeitem.site = site;
+
+
+            var treerow = this.addNode(treeitem,"treerow");
+            var treecell = this.addNode(treerow,"treecell");
+            treecell.setAttribute("label", site.urlPattern);
+
+            treecell = this.addNode(treerow,"treecell");
+            treecell.setAttribute("label", site.linkXPath);
+
+            treecell = this.addNode(treerow,"treecell");
+            treecell.setAttribute("label", site.contentXPath[0]);
+            treecell = this.addNode(treerow,"treecell");
+            treecell.setAttribute("label", site.updateSite.filename);
+        }
+		var chkIsRegex = document.getElementById("chkIsRegex");
+        var urlPattern = document.getElementById("urlPattern");
+		if (lists.length>0)
+		{
+			var site = lists[0];
+			chkIsRegex.checked = site.isRegex;
+			urlPattern.value = site.urlPattern;
+		}
+		else{
+			chkIsRegex.checked = false;
+            var url = this.currentDoc.documentURI;
+            var urlPatternValue = url;
+            if (url.indexOf("?")>0)
+                urlPatternValue = url.substring(0,url.indexOf("?")) + "*";
+			urlPattern.value = urlPatternValue;
+		}
+		autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
     },
     round:function(num)
     {
@@ -296,13 +402,13 @@ var autopagerSidebar =
     },
     setLinkXPath:function()
     {
-        autopagerSidebar.setXPath('xpath','xpaths','resultsFrame','status','results-caption');
+        autopagerSidebar.setXPath('xpath','xpaths','resultsFrame','status','results-caption',autopagerSidebar.linkColor);
     },
     setContentXPath:function()
     {
-        autopagerSidebar.setXPath('contentXPath','contentXPaths','resultsFrame2','status2','results-caption2');
+        autopagerSidebar.setXPath('contentXPath','contentXPaths','resultsFrame2','status2','results-caption2',autopagerSidebar.contentColor);
     },
-    setXPath:function(txtboxID,treeID,resultFrameID,statusID,captionID)
+    setXPath:function(txtboxID,treeID,resultFrameID,statusID,captionID,color)
     {
         var txtbox = document.getElementById(txtboxID);
         var tree = document.getElementById(treeID);
@@ -312,7 +418,23 @@ var autopagerSidebar =
         //        this.loadIFrame(autopagerSidebar.currentDoc,resultFrameID,captionID);
 
         txtbox.value = xpathItem.xpath;
-        this.searchXPath(xpathItem.xpath,document.getElementById(resultFrameID),statusID);
+        this.searchXPath(xpathItem.xpath,document.getElementById(resultFrameID),statusID,color);
+    },
+	setXPathes:function()
+    {
+        var tree = document.getElementById('setings');
+        var view = tree.view;
+        var list = tree.xpathes;
+        var site = list[view.selection.currentIndex];
+        //        this.loadIFrame(autopagerSidebar.currentDoc,resultFrameID,captionID);
+
+        var txtbox = document.getElementById('xpath');
+        txtbox.value = site.linkXPath;
+		txtbox = document.getElementById('contentXPath');
+        txtbox.value = site.contentXPath;
+
+        this.searchXPath(site.linkXPath,document.getElementById('resultsFrame'),'status',autopagerSidebar.linkColor);
+        this.searchXPath(site.contentXPath,document.getElementById('resultsFrame2'),'status2',autopagerSidebar.contentColor);
     },
     addSite : function()
     {
@@ -331,23 +453,25 @@ var autopagerSidebar =
           return;
         }
         var url = this.currentDoc.documentURI;
-            var urlPattern = url;
-            if (url.indexOf("?")>0)
-                urlPattern = url.substring(0,url.indexOf("?")) + "*";
-            
-            var site = autopagerConfig.newSite(urlPattern,url
+
+			var chkIsRegex = document.getElementById("chkIsRegex");
+			var urlPattern = document.getElementById("urlPattern");
+
+            var site = autopagerConfig.newSite(urlPattern.value,url
                 ,linkXPath,contentXPath,[url]);
             site.createdByYou = true;
+			site.isRegex = chkIsRegex.checked;
             site.owner = autopagerPref.loadMyName();
             while (site.owner.length == 0)
                 site.owner = autopagerPref.changeMyName();
             //general link
-            //var targets = this.getXPathNodes(this.currentDoc,linkXPath);
-            //var target = targets[0];
-            //if (target.tagName == "A" && target.href.toLowerCase().indexOf("javascript") == -1)
-            //    site.enableJS = false;
-            //else
-            
+            var targets = this.getXPathNodes(this.currentDoc,linkXPath);
+            var target = targets[0];
+//            if (target.tagName == "A" && target.hash!=null
+//								&& target.hash.length>0 &&
+//								target.onclick!=null && target.href.toLowerCase().indexOf("#") != -1)
+//                site.ajax = true;
+
             //enable this by default for best compatibility
                 site.enableJS = true;
             autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
@@ -355,7 +479,8 @@ var autopagerSidebar =
             autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
             document.autopagerXPathModel = "";
             document.autopagerWizardStep = "";
-            autopagerConfig.openSetting(urlPattern,autopagerUtils.currentBrowser());
+			window.autopagerSelectUrl = autopagerSidebar.currUrl;
+            autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
         
     },
         pickupLink : function ()
@@ -380,7 +505,7 @@ var autopagerSidebar =
                   if (links.length>0)
                   {    
                     document.getElementById("xpath").value = links[0].xpath;
-                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame"),"status");
+                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor);
                   }
 
                   document.getElementById("xpathDeck").selectedIndex = 0;
@@ -420,7 +545,7 @@ var autopagerSidebar =
                   if (links.length>0)
                   {    
                     document.getElementById("contentXPath").value = links[0].xpath;
-                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame2"),"status2");
+                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor);
                   }
 
                   document.getElementById("xpathDeck").selectedIndex = 0;
@@ -446,9 +571,11 @@ var autopagerSidebar =
         this.showXPathList(document.getElementById("autoLinkPathTreeBody"),XPaths)
         this.showXPathList(document.getElementById("autoContentPathTreeBody"),XPaths)
         
-        document.getElementById("xpath").value = "";
-        document.getElementById("contentXPath").value = "";
+//        document.getElementById("xpath").value = "";
+//        document.getElementById("contentXPath").value = "";
         document.getElementById("xpathDeck").selectedIndex = 0;
+		autopagerSelector.quit();
+		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);
     },
 	changed: function(e)
 	{
@@ -476,6 +603,7 @@ var autopagerSidebar =
 						sheet.deleteRule(sheet.cssRules.length-1)
 				}
         }
+		autopagerSelector.quit();
 		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);
     }
 };

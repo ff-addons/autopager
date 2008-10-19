@@ -13,8 +13,7 @@ const autopagerXPath = {
     },
     discoveryLink:function(doc)
     {
-        var url = doc.documentURI;
-        
+        var url = doc.documentURI;        
         
         var smarttext = autopagerPref.loadUTF8Pref("smarttext");
         var discoverytext = autopagerPref.loadUTF8Pref("discoverytext");
@@ -45,53 +44,85 @@ const autopagerXPath = {
         //get others
         //
         
+        var existingSites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),url,10);
+		for (var i in existingSites)
+        {
+            var site = existingSites[i];
+			//try the existing site settings
+			item = new autopagerXPathItem();
+			item.authority = 4;
+			item.xpath = site.linkXPath
+			this.addItem(doc,links,item);
+        }
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 2;
+        item.xpath = "(//a[@href and @href = %href%]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+//		item = new autopagerXPathItem();
+//        item.authority = 1;
+//        item.xpath = "//a[@href and @href = %href%]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 0.6;
+        item.xpath = "(//a[@href and %href% = concat(%pathname%,@href) ]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+//		//try the links next to this page
+//        item = new autopagerXPathItem();
+//        item.authority = 0.6;
+//        item.xpath = "//a[@href and %href% = concat(%pathname%,@href) ]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
+//
+//        //try the links next to this page
+//        item = new autopagerXPathItem();
+//        item.authority = 0.6;
+//        item.xpath = "//a[@href and contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 0.6;
+        item.xpath = "(//a[@href and contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+//        //try the links next to this page
+//        item = new autopagerXPathItem();
+//        item.authority = 0.6;
+//        item.xpath = "//a[@href and contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
+
+        //try the links next to this page
+        item = new autopagerXPathItem();
+        item.authority = 0.6;
+        item.xpath = "(//a[@href and contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        this.addItem(doc,links,item);
+
+//        //try the links next to this page
+//        item = new autopagerXPathItem();
+//        item.authority = 0.6;
+//        item.xpath = "//a[@href and contains(@href , %href%)]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
         
-
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 6;
-        item.xpath = "//a[contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1]";
+        item.authority = 0.8;
+        item.xpath = "(//a[@href and contains(@href , %href%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
+//        //try the links next to this page
+//        item = new autopagerXPathItem();
+//        item.authority = 0.1;
+//        item.xpath = "//a[@href and contains(@href , %filename%)]/following-sibling::a[1]";
+//        this.addItem(doc,links,item);
         //try the links next to this page
         item = new autopagerXPathItem();
-        item.authority = 7;
-        item.xpath = "(//a[contains(@href , concat(%pathname% , %search%))]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
-        this.addItem(doc,links,item);
-
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 6;
-        item.xpath = "//a[contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1]";
-        this.addItem(doc,links,item);
-
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 7;
-        item.xpath = "(//a[contains(concat(%pathname% , %search%),@href)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
-        this.addItem(doc,links,item);
-
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 5;
-        item.xpath = "//a[contains(@href , %href%)]/following-sibling::a[1]";
-        this.addItem(doc,links,item);
-        
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 6;
-        item.xpath = "(//a[contains(@href , %href%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
-        this.addItem(doc,links,item);
-
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 1;
-        item.xpath = "//a[contains(@href , %filename%)]/following-sibling::a[1]";
-        this.addItem(doc,links,item);
-        //try the links next to this page
-        item = new autopagerXPathItem();
-        item.authority = 4;
-        item.xpath = "(//a[contains(@href , %filename%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
+        item.authority = 0.6;
+        item.xpath = "(//a[@href and contains(@href , %filename%)]/following-sibling::a[1])[translate(text(),'0123456789','')='']";
         this.addItem(doc,links,item);
 
         //try to find the page navigator, then find next links
@@ -118,7 +149,13 @@ const autopagerXPath = {
 
         
         links = this.mergeXPath(links);
-        links = this.sortItems(links);
+		var newlinks = [];
+		for(var i=0;i<links.length;++i)
+        {
+            if (links[i].authority > 0.5 && links[i].matchCount<20)
+                newlinks.push(links[i])
+        }
+        links = this.sortItems(newlinks);
         return links;
     },
     discoveryMoreLinks:function(doc,links,nodes)
@@ -167,6 +204,7 @@ const autopagerXPath = {
     },
     mergeXPath : function (links)
     {
+		//return links;
         for(var i=0;i<links.length;++i)
         {
             var item = links[i];
@@ -231,7 +269,9 @@ const autopagerXPath = {
         //ignore
         if (item.xpath == "//a")
             return;
-        
+
+		autopagerUtils.log("Start " + item.xpath + " " + item.authority);
+		item.authority = this.modifyAuthoryByDeep(item);
         for(var i in links)
         {
             if (links[i].xpath == item.xpath)
@@ -272,6 +312,7 @@ const autopagerXPath = {
             }
             links.push(item);            
         }
+		autopagerUtils.log("End " + item.xpath + " " + item.authority);
       
       
     },
@@ -673,27 +714,23 @@ const autopagerXPath = {
         }
         return result
     },
-    
-    discoveryContent:function(doc)
-    {
-        var node = doc.body;
-        var len = 0;
+	discoveryBigContent : function(node,items)
+	{
         var contentNode = null;
+		var len = 0;
         for(var i=0;i<node.childNodes.length;i++)
         {
-            var child = node.childNodes[i]; 
+            var child = node.childNodes[i];
             if (child.nodeType == 1 && child.innerHTML.length > len)
             {
                 contentNode = child;
                 len = child.innerHTML.length;
             }
         }
-        var links = [];//this.evaluate(doc,"//a[@href]");
         var item = null;
-        var items = [];
         for(var level=1;level<this.MAXLevel;level+=1)
         {
-            
+
             item = new autopagerXPathItem();
             item.xpath = this.getLinkXpathFromNode(node,contentNode,level);
             item.authority = (this.MAXLevel  / level);
@@ -701,16 +738,39 @@ const autopagerXPath = {
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByParent(contentNode,3,level);
             item.authority = (this.MAXLevel  / level);
-            items.push(item);                  
-            
+            items.push(item);
+
         }
-        for(var i in items)
+		return contentNode;
+    },
+    discoveryContent:function(doc)
+    {
+        var node = doc.body;
+        var url = doc.documentURI;
+		var items = [];
+		var links = [];//this.evaluate(doc,"//a[@href]");
+        var item = null;
+
+        var existingSites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),url,10);
+		for (var i in existingSites)
         {
-            item = items[i];                  
-            if (item!=null)
-                this.addItem(doc,links,item);                
+            var site = existingSites[i];
+			//try the existing site settings
+			item = new autopagerXPathItem();
+			item.authority = 4;
+			item.xpath = site.contentXPath[0]
+			this.addItem(doc,links,item);
         }
 
+		var contentNode = this.discoveryBigContent(node,items);
+		contentNode = this.discoveryBigContent(contentNode,items);
+
+        for(var i in items)
+        {
+            item = items[i];
+            if (item!=null)
+                this.addItem(doc,links,item);
+        }
 
         item = new autopagerXPathItem();
         item.authority = 1;

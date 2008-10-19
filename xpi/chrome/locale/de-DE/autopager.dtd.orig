@@ -1,17 +1,11 @@
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Seitenhalter">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-hidden.label "ausgeblendet">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "angezeigt">
 <!ENTITY autopager.sidebarTitle "AutoPager">
 <!ENTITY autopager.status.createXPath "XPath erstellen">
@@ -49,7 +43,6 @@
 <!ENTITY label.1.value "XPath des Inhalts:">
 <!ENTITY label.Usages.value "Befehle">
 <!ENTITY openautopagerSidebar.commandkey "Q">
-<!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY setting.appname "AutoPager">
 <!ENTITY setting.button.add "Hinzufügen...">
 <!ENTITY setting.button.cloneToEdit "Duplizieren und Bearbeiten">
@@ -65,10 +58,7 @@
 <!ENTITY setting.button.remove "Löschen">
 <!ENTITY setting.button.up "Nach oben">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Bearbeiten">
-<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
-<!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Strg">
 <!ENTITY setting.label.chkEnableJS "JavaScript beim Laden der Seite aktivieren.">
 <!ENTITY setting.label.chkEnabled "Aktiviert">
@@ -82,28 +72,17 @@
 <!ENTITY setting.label.general "Allgemein">
 <!ENTITY setting.label.grpContentXPath "XPath des Inhalts:">
 <!ENTITY setting.label.grpDiscovery "Erkennung">
-<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "Intelligenter Modus">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Beschreibung:">
 <!ENTITY setting.label.lblLinkXPath "XPath des Links:">
 <!ENTITY setting.label.lblOwner "Erstellt von:">
-<!ENTITY setting.label.lblSetting "AutoPager setting source">
-<!ENTITY setting.label.lblSettingContext "Context Type:">
-<!ENTITY setting.label.lblSettingDesc "Desc:">
-<!ENTITY setting.label.lblSettingOwner "Maintained By:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "Adressregel:">
 <!ENTITY setting.label.lblUpdate "Seitenkonfigurationen aktualisieren:">
 <!ENTITY setting.label.loading "CSS-Stil für Laden der nächsten Seite:">
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
 <!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
-<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
-<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "IDs beim Auswählen der Elemente anzeigen">
 <!ENTITY setting.label.sites "Regeln">
 <!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">
@@ -112,19 +91,12 @@
 <!ENTITY setting.label.smarttext "Text des Links zur nächsten Seite/Pfad des verlinkenden Bildes/ID oder CSS-Class des Links (getrennt durch &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Maximale Wartezeit beim Laden einer Seite (Sekunden):">
 <!ENTITY setting.label.update "Aktualisierung">
-<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "AutoPager - Einstellungen">
 <!ENTITY setting.tree.Description "Beschreibung">
 <!ENTITY setting.tree.URLPattern "Adressregel">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "Täglich">
-<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "Monatlich">
 <!ENTITY setting.update.never "Nie">
-<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Bei jedem Start">
 <!ENTITY setting.update.weekly "Wöchentlich">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site hinzufügen">
@@ -133,8 +105,4 @@
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Inhalt auswählen">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Link auswählen">
 <!ENTITY treecol.authorityCol.label "Wahrscheinlichkeitswert">
-<!ENTITY treecol.contentXpathCol.label "Content XPath">
-<!ENTITY treecol.fileCol.label "File">
-<!ENTITY treecol.linkXpathCol.label "Link XPath">
 <!ENTITY treecol.machedCol.label "Anzahl">
-<!ENTITY treecol.xpathCol.label "XPath">

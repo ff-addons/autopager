@@ -1,0 +1,11 @@
+#Modified By Foxbeans
+#Sun Oct 19 16:02:38 CST 2008
+alwaysdisableshort=AD
+alwaysenableshort=AE
+autopagedisabled=Auto pager disabled. Double Click On Page to enable auto pager.
+autopagedisabledTip=Auto pager disabled.\nDouble Click On Page to enable auto pager.
+autopageenabled=Auto pager enabled.Double Click On Page to disable auto pager.
+autopageenabledTip=Auto pager enabled.\nDouble Click On Page to disable auto pager.
+disableshort=D
+enableshort=E
+pagebreak=Page break inserted by auto pager.Page(<a href\='%S'> %S </a>).

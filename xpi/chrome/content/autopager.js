@@ -2991,7 +2991,8 @@ alertErr : function(e) {
     }
 	, showStatus : function(){
             var statusBar = document.getElementById("autopager_status");
-            statusBar.hidden = autopagerMain.loadBoolPref("hide-status");
+            if (statusBar!=null)
+				statusBar.hidden = autopagerMain.loadBoolPref("hide-status");
     }
 };
 

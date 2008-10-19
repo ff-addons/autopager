@@ -435,10 +435,15 @@ function autopagerOpenIntab(url,obj)
            	
              selectedSite.urlPattern = urlPattern.value;
              selectedSite.regex=null;
-             var treerow = selectedListItem.childNodes[0];
-             var treecell = treerow.childNodes[0];
-             treecell.setAttribute("label",urlPattern.value);
              onSiteChange(selectedListItem,selectedSite);
+			 checkurlPattern(isRegex,urlPattern,selectedSite);
+           }
+        }, false);
+        urlPattern.addEventListener("input", function() {
+           if (selectedSite != null) {
+			 window.setTimeout(function(){
+				checkurlPattern(isRegex,urlPattern,selectedSite);
+			 },10);
            }
         }, false);
         isRegex.addEventListener("command", function() {
@@ -446,6 +451,7 @@ function autopagerOpenIntab(url,obj)
            	
              selectedSite.isRegex = isRegex.checked;
              onSiteChange(selectedListItem,selectedSite);
+			 checkurlPattern(isRegex,urlPattern,selectedSite);
            }
         }, false);
         margin.addEventListener("change", function() {
@@ -1064,3 +1070,43 @@ var userSites = null;
         var index = treeSites.view.getIndexOfItem(treeitem);
         chooseSite(index);
     }
+	function checkurlPattern  (chkIsRegex,urlPattern,site)
+	{
+		var url = null;
+		if (site.testLink && site.testLink.length>0)
+		{
+			url = site.testLink[0];
+		}
+		if (!url && window.opener)
+		{
+			url = window.opener.autopagerSelectUrl;
+		}
+		if (!url)
+		{
+			urlPattern.style.color = "";
+		}
+
+		var regex = null;
+		try{
+			if (chkIsRegex.checked)
+			{
+				regex = new RegExp(urlPattern.value);
+			}else
+			{
+				regex = convert2RegExp(urlPattern.value);
+			}
+			if (url)
+			{
+				if (regex.test(url))
+					urlPattern.style.color = "green";
+				else
+				{
+					urlPattern.style.color = "red";
+				}
+			}
+		}catch(e)
+		{
+			urlPattern.style.color = "red";
+		}
+
+	}

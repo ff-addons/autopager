@@ -35,7 +35,9 @@
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
 <!ENTITY caption.results-caption2.label "Results">
-<!ENTITY label.1.value "Body XPath:">
+<!ENTITY treecol.linkXpathCol.label "Link XPath">
+<!ENTITY treecol.contentXpathCol.label "Content XPath">
+<!ENTITY treecol.fileCol.label "File">
 <!ENTITY label.Usages.value "Usages">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">

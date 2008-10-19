@@ -64,7 +64,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.23").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.25").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -159,7 +159,9 @@ var UpdateSites=
                             var site = tmpsites[i];
                              var pattern = autopagerMain.getRegExp(site);
                             if (pattern.test(url)) { 
-                                newSites.push(site);
+                                var newSite = autopagerConfig.cloneSite (site);
+								newSite.updateSite = tmpsites.updateSite;
+								newSites.push(newSite);
 								if (count == newSites.length)
 										return newSites;
                             }

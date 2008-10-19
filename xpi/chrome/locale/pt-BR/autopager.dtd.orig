@@ -1,19 +1,8 @@
-<!ENTITY autopager.label.value "auto pager">
-<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
-<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
-<!ENTITY autopager.menuitem.autopager-show.label "show">
-<!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Criar XPath">
 <!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
 <!ENTITY autopager.status.enabled "Habilitado">
@@ -42,15 +31,8 @@
 <!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.update "Atualizar Configurações Online">
 <!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.toolbarLabel "AutoPager">
-<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
-<!ENTITY caption.results-caption.label "Results">
-<!ENTITY caption.results-caption2.label "Results">
 <!ENTITY label.1.value "Body XPath:">
-<!ENTITY label.Usages.value "Usages">
 <!ENTITY openautopagerSidebar.commandkey "S">
-<!ENTITY openautopagerSidebar.modifiersKey "alt">
-<!ENTITY setting.appname "Auto Pager">
 <!ENTITY setting.button.add "Adicionar...">
 <!ENTITY setting.button.cloneToEdit "Clonar para Editar">
 <!ENTITY setting.button.cloneToEditTip "Este item é de uma fonte somente leitura. Você somente poderá editar uma cópia se necessário.">
@@ -61,80 +43,40 @@
 <!ENTITY setting.button.exportTip "Exportar Itens Selecionados">
 <!ENTITY setting.button.import "Importar">
 <!ENTITY setting.button.pick "Escolher...">
-<!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.up "Cima">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Editar">
-<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
 <!ENTITY setting.label.chkEnabled "Habilitar">
 <!ENTITY setting.label.chkFixOverflow "Desabilitar a sobreposição de configurações da página carregada.">
 <!ENTITY setting.label.chkIsRegex "É RegExp?">
 <!ENTITY setting.label.chkQuickLoad "Carregamento Rápido (Não seguro para todos os sites).">
-<!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "estilo de confirmação:">
-<!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+Duplo-clique">
 <!ENTITY setting.label.general "Geral">
 <!ENTITY setting.label.grpContentXPath "Conteúdo XPath:">
-<!ENTITY setting.label.grpDiscovery "Discovery">
-<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
 <!ENTITY setting.label.grpSmart "Paginação Inteligente">
 <!ENTITY setting.label.hotkeys "Habilitar/Desabilitar teclas de atalho:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Descrição:">
-<!ENTITY setting.label.lblLinkXPath "Link XPath:">
 <!ENTITY setting.label.lblOwner "Criado Por:">
-<!ENTITY setting.label.lblSetting "AutoPager setting source">
-<!ENTITY setting.label.lblSettingContext "Context Type:">
-<!ENTITY setting.label.lblSettingDesc "Desc:">
-<!ENTITY setting.label.lblSettingOwner "Maintained By:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "Padrão URL:">
 <!ENTITY setting.label.lblUpdate "Configurações da Atualização Automática:">
 <!ENTITY setting.label.loading "carregando estilo de notificação:">
 <!ENTITY setting.label.margin "Paginar quando o espaço for menor que">
 <!ENTITY setting.label.marginEnd "altura da janela">
 <!ENTITY setting.label.pagebreak "estilo de quebra de página:">
-<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
-<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
-<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
-<!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
 <!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
 <!ENTITY setting.label.smartlinksEnd "encontrar links.">
 <!ENTITY setting.label.smarttext "Procurar Texto/Imagem Src/ID/Class(Separado por &quot;|&quot;) nos links Próximo (Next):">
 <!ENTITY setting.label.timeout "tempo esgotado de carregamento de página(segundos):">
 <!ENTITY setting.label.update "Atualizar">
-<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
 <!ENTITY setting.title "Configurações do Auto Pager">
 <!ENTITY setting.tree.Description "Descrição">
 <!ENTITY setting.tree.URLPattern "Padrão URL:">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "Todo Dia">
-<!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "Todo Mês">
 <!ENTITY setting.update.never "Nunca">
-<!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Cada Início">
 <!ENTITY setting.update.weekly "Toda Semana">
-<!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
-<!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
-<!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
-<!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
-<!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
-<!ENTITY treecol.authorityCol.label "Authority">
-<!ENTITY treecol.contentXpathCol.label "Content XPath">
-<!ENTITY treecol.fileCol.label "File">
-<!ENTITY treecol.linkXpathCol.label "Link XPath">
-<!ENTITY treecol.machedCol.label "Matched Count">
-<!ENTITY treecol.xpathCol.label "XPath">

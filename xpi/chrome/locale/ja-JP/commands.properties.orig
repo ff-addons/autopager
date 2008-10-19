@@ -1,0 +1,19 @@
+#Modified By Foxbeans
+#Sun Oct 19 16:02:38 CST 2008
+command.blinkElement.key=b
+command.blinkElement.label=\u8981\u7D20\u3092\u70B9\u6EC5
+command.narrower.key=n
+command.narrower.label=\u72ED\u3081\u308B
+command.pause.key=p
+command.quit.key=q
+command.quit.label=\u9078\u629E\u7D42\u4E86
+command.select.key=s
+command.select.label=\u8981\u7D20\u3092\u9078\u629E
+command.showMenu.key=h
+command.showMenu.label=\u30D8\u30EB\u30D7\u3092\u8868\u793A\u30FB\u975E\u8868\u793A
+command.viewSource.key=v
+command.viewSource.label=\u30BD\u30FC\u30B9\u3092\u8868\u793A
+command.viewSourceWindow.key=u
+command.viewSourceWindow.label=\u30BD\u30FC\u30B9\u3092\u8868\u793A (\u5225\u30A6\u30A3\u30F3\u30C9\u30A6)
+command.wider.key=w
+command.wider.label=\u5E83\u3052\u308B

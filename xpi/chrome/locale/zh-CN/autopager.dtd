@@ -1,6 +1,17 @@
 <!ENTITY autopager.label.value "自动翻页">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "页容器">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "立即加载">
 <!ENTITY autopager.menuitem.autopager-hidden.label "隐藏">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10页">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3页">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5页">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+<!ENTITY autopager.menuitem.autopager-load-all.label "所有页">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "显示">
 <!ENTITY autopager.sidebarTitle "自动翻页设置工作室">
 <!ENTITY autopager.status.createXPath "创建XPath路径">
@@ -40,7 +51,6 @@
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY setting.appname "自动翻页">
-<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "添加">
 <!ENTITY setting.button.cloneToEdit "编辑克隆版">
 <!ENTITY setting.button.cloneToEditTip "这条记录来自于一个只读的配置，如果需要你可以编辑它的一个克隆版。">
@@ -54,11 +64,13 @@
 <!ENTITY setting.button.public "发布">
 <!ENTITY setting.button.remove "删除">
 <!ENTITY setting.button.up "上移">
+<!ENTITY setting.key "u">
+<!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">
+<!ENTITY setting.label.chkAjax "这是个Ajax站点(没有重新加载事件)">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "加载下一页时启用Javascript">
-<!ENTITY setting.label.chkAjax "这是个Ajax站点(没有重新加载事件)">
 <!ENTITY setting.label.chkEnabled "启用">
 <!ENTITY setting.label.chkFixOverflow "取消页面溢出控制">
 <!ENTITY setting.label.chkIsRegex "使用正则表达式">
@@ -69,23 +81,30 @@
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.general "一般">
 <!ENTITY setting.label.grpContentXPath "内容选择XPath路径:">
-<!ENTITY setting.label.grpRemoveXPath "过滤XPath(追加时自动删除匹配项):">
 <!ENTITY setting.label.grpDiscovery "自动识别">
+<!ENTITY setting.label.grpRemoveXPath "过滤XPath(追加时自动删除匹配项):">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
+<!ENTITY setting.label.lblContainerXPath "容器XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "下一页XPath路径:">
-<!ENTITY setting.label.lblContainerXPath "容器XPath:">
-<!ENTITY setting.text.tipContainerXPath "只监视这个容器中的滚动。请参考对于www.cuil.com的配置。">
 <!ENTITY setting.label.lblOwner "创建人:">
+<!ENTITY setting.label.lblSetting "自动翻页配置更新源">
+<!ENTITY setting.label.lblSettingContext "内容格式:">
+<!ENTITY setting.label.lblSettingDesc "描述:">
+<!ENTITY setting.label.lblSettingOwner "维护者:">
+<!ENTITY setting.label.lblSettingType "类型">
+<!ENTITY setting.label.lblSettingUrl "地址:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "地址通配符:">
 <!ENTITY setting.label.lblUpdate "自动更新站点配置:">
 <!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
 <!ENTITY setting.label.pagebreak "分页符样式:">
+<!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
+<!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY setting.label.showtags "选择页面元素时显示元素标签">
-<!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.sites "站点列表">
 <!ENTITY setting.label.smartenable "启用智能翻页">
 <!ENTITY setting.label.smartlinks "仅当匹配不多于:">
@@ -93,45 +112,29 @@
 <!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用&apos;|&apos;分割):">
 <!ENTITY setting.label.timeout "载入超时(秒):">
 <!ENTITY setting.label.update "自动更新">
+<!ENTITY setting.text.tipContainerXPath "只监视这个容器中的滚动。请参考对于www.cuil.com的配置。">
 <!ENTITY setting.title "自动翻页 Setting">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "地址通配符">
+<!ENTITY setting.type.autopager "autopager xml">
+<!ENTITY setting.type.autopagerize "autopagerize">
+<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.daily "每天">
+<!ENTITY setting.update.global "使用全局设置">
 <!ENTITY setting.update.monthly "每月">
 <!ENTITY setting.update.never "从不">
 <!ENTITY setting.update.once "仅第一次">
 <!ENTITY setting.update.startup "每次启动">
 <!ENTITY setting.update.weekly "每周">
-<!ENTITY setting.update.global "使用全局设置">
 <!ENTITY toolbarbutton.addSite.tooltiptext "添加站点配置">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "清除当前设置">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自动识别">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "选择内容">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "选择链接">
 <!ENTITY treecol.authorityCol.label "权威性">
+<!ENTITY treecol.contentXpathCol.label "内容XPath路径">
+<!ENTITY treecol.fileCol.label "文件">
+<!ENTITY treecol.linkXpathCol.label "下一页XPath路径">
 <!ENTITY treecol.machedCol.label "匹配数">
 <!ENTITY treecol.xpathCol.label "XPath">
-<!ENTITY setting.label.lblSettingOwner "维护者:">
-<!ENTITY setting.label.lblSettingDesc "描述:">
-<!ENTITY setting.label.lblSettingUrl "地址:">
-<!ENTITY setting.label.lblSettingType "类型">
-<!ENTITY setting.label.lblSettingContext "内容格式:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
-<!ENTITY setting.type.autopager "autopager xml">
-<!ENTITY setting.type.autopagertext "autopager text">
-<!ENTITY setting.type.autopagerize "autopagerize">
-<!ENTITY setting.type.autopagerizeJson "autopagerize josn">
-<!ENTITY setting.label.lblSetting "自动翻页配置更新源">
-<!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
-<!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "立即加载">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3页">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5页">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10页">
-<!ENTITY autopager.menuitem.autopager-load-all.label "所有页">
-<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">

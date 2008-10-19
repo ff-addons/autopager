@@ -133,5 +133,8 @@
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
 <!ENTITY treecol.authorityCol.label "Authority">
+<!ENTITY treecol.contentXpathCol.label "Content XPath">
+<!ENTITY treecol.fileCol.label "File">
+<!ENTITY treecol.linkXpathCol.label "Link XPath">
 <!ENTITY treecol.machedCol.label "Matched Count">
 <!ENTITY treecol.xpathCol.label "XPath">

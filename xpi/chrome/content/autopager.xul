@@ -37,14 +37,6 @@
         </tabs>
         <tabpanels  flex="1">
             <tabpanel id="site-setting"  flex="1">
-                <!--
-<groupbox flex="1">
-  <caption label="Mozilla homepage"/>
-  <notificationbox flex="1">
-  	<browser src="http://www.mozilla.org" flex="2"/>
-  	<browser type="content" src="file:///usr/share/ubuntu-artwork/home/index.html" flex="0"/>
-  </notificationbox>
-</groupbox>		-->	
                 <hbox flex="1">
                     <vbox flex="2" orient="vertical">
                         <textbox id="siteSearch"/>

@@ -7,8 +7,8 @@
 const autopagerHightlight =
     {
     
-    count : 0,
-    HighlightNodes : function(doc,nodes,selected )
+    counts : [],
+    HighlightNodes : function(doc,nodes,selected ,color)
     {
         var first = true;
         if (nodes == null || nodes.length == 0)
@@ -16,7 +16,7 @@ const autopagerHightlight =
         for(var i=0;i<nodes.length;i++)
         {
             var node = nodes[i];
-            this.createRegionDivs(doc,node,i);
+            this.createRegionDivs(doc,node,i,color);
             if (selected == -1 || selected == i)
             {
                 var left = this.getOffsetLeft(node);
@@ -24,34 +24,40 @@ const autopagerHightlight =
                 if (first)
                 {
                     first = false;
-                    doc.defaultView.scrollTo(left,top);
+					if (doc.defaultView)
+						doc.defaultView.scrollTo(left,top);
                     node.focus();
                 }
     
             }
         }
-        for(var i=nodes.length; i<this.count;i++)
+        for(var i=nodes.length; i<this.counts[color];i++)
         {
-            this.hiddenRegionDivs(doc,i);
+            this.hiddenRegionDivs(doc,i,color);
         }
-        this.count = nodes.length;
+        this.counts[color] = nodes.length;
 
     },
 	HideAll : function(doc)
 	{
-        for(var i=0; i<this.count;i++)
-        {
-            this.hiddenRegionDivs(doc,i);
+        var nodes =doc.evaluate("//div[@class='autoPagerS' and contains(@id,'autoPagerBorder')]", doc, null, 0, null);
+		if (!nodes)
+				return;
+		var datas=[];
+        for (var node = null; (node = nodes.iterateNext()); ) {
+				datas.push(node);
+        }
+        for (var i = 0; i<datas.length;++i ) {
+				this.hiddenDiv(datas[i],true);
         }
         this.count = 0;
-
     },
-    createRegionDivs : function(doc,target,subfix) {
+    createRegionDivs : function(doc,target,subfix,color) {
         var margin = 2;
-        var leftDiv = this.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
-        var rightDiv =this.getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
-        var topDiv =this.getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
-        var bottomDiv =this.getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
+        var leftDiv = this.getSelectorDiv(doc,"autoPagerBorderLeft" + color + subfix,color);
+        var rightDiv =this.getSelectorDiv(doc,"autoPagerBorderRight" +color + subfix,color);
+        var topDiv =this.getSelectorDiv(doc,"autoPagerBorderTop" + color + subfix,color);
+        var bottomDiv =this.getSelectorDiv(doc,"autoPagerBorderBottom" + color +subfix,color);
         var left = this.getOffsetLeft(target);
         var top = this.getOffsetTop(target);
     
@@ -96,19 +102,28 @@ const autopagerHightlight =
             div.style.cssText = style;
         return div;
     },
-    getSelectorDiv :function (doc,divName) {
+    getSelectorDiv :function (doc,divName,color) {
         var div = doc.getElementById(divName);
+        var style ="border: 2px solid " + color + "; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;";
         if (!div) {
-            var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;"; 
             div = this.createDiv(doc,divName,style);
-        }
+        }else
+		{
+				//alert(div.style.cssText)
+				div.style.cssText = style;
+				//div.style.border = "2px solid " + color;
+		}
         return div;
     },
-    hiddenRegionDivs : function (doc,subfix) {
-        var leftDiv =this.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
-        var rightDiv =this.getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
-        var topDiv =this.getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
-        var bottomDiv =this.getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
+    getSelectorDivReadonly :function (doc,divName) {
+        var div = doc.getElementById(divName);
+        return div;
+    },
+    hiddenRegionDivs : function (doc,subfix,color) {
+        var leftDiv =this.getSelectorDivReadonly(doc,"autoPagerBorderLeft" + color + subfix);
+        var rightDiv =this.getSelectorDivReadonly(doc,"autoPagerBorderRight" + color + subfix);
+        var topDiv =this.getSelectorDivReadonly(doc,"autoPagerBorderTop" + color + subfix);
+        var bottomDiv =this.getSelectorDivReadonly(doc,"autoPagerBorderBottom" + color + subfix);
         this.hiddenDiv(leftDiv,true);
         this.hiddenDiv(rightDiv,true);
         this.hiddenDiv(topDiv,true);

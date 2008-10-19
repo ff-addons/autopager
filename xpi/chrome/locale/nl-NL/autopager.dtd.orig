@@ -11,7 +11,6 @@
 <!ENTITY autopager.menuitem.autopager-load-5.label "5 pagina’s">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Alle  pagina’s">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "weergeven">
 <!ENTITY autopager.sidebarTitle "AutoPager site-instellingen workshop">
 <!ENTITY autopager.status.createXPath "XPath aanmaken">
@@ -49,7 +48,6 @@
 <!ENTITY label.1.value "XPath tekstgedeelte:">
 <!ENTITY label.Usages.value "Gebruik">
 <!ENTITY openautopagerSidebar.commandkey "b">
-<!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY setting.appname "AutoPager">
 <!ENTITY setting.button.add "Toevoegen...">
 <!ENTITY setting.button.cloneToEdit "Kopiëren voor bewerking">
@@ -68,14 +66,11 @@
 <!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAjax "Dit is een AJAX-site. Niet geladen.">
-<!ENTITY setting.label.chkAlt "Alt">
-<!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Javascript inschakelen bij het laden van de pagina.">
 <!ENTITY setting.label.chkEnabled "Ingeschakeld">
 <!ENTITY setting.label.chkFixOverflow "Overflow instelling van de geladen pagina uitschakelen.">
 <!ENTITY setting.label.chkIsRegex "Reguliere expressie?">
 <!ENTITY setting.label.chkQuickLoad "Snel laden (niet voor alle sites veilig).">
-<!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "Stijl bevestigen:">
 <!ENTITY setting.label.discoverytext "Ontdekking">
 <!ENTITY setting.label.doubleclick "+dubbelklik">
@@ -93,9 +88,6 @@
 <!ENTITY setting.label.lblSettingContext "Contexttype:">
 <!ENTITY setting.label.lblSettingDesc "Beschrijving:">
 <!ENTITY setting.label.lblSettingOwner "Onderhouden door:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
-<!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "URL patroon:">
 <!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">
 <!ENTITY setting.label.loading "Stijl van laadbericht:">
@@ -103,9 +95,7 @@
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
-<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
-<!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
 <!ENTITY setting.label.smartlinksEnd "koppelingen worden gevonden.">
@@ -133,8 +123,4 @@
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Inhoud oppikken">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Koppeling oppikken">
 <!ENTITY treecol.authorityCol.label "Authorisatie">
-<!ENTITY treecol.contentXpathCol.label "Content XPath">
-<!ENTITY treecol.fileCol.label "File">
-<!ENTITY treecol.linkXpathCol.label "Link XPath">
 <!ENTITY treecol.machedCol.label "Aantal matches">
-<!ENTITY treecol.xpathCol.label "XPath">

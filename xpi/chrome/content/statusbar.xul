@@ -103,7 +103,7 @@
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-hidden-panel-menu" class="autopager-menu-class"
-                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-hidden-panel-menu.label;"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-hidden-panel-menu.label;"
                       hidden='true'>
                     <menupopup id="autopager-menupopup" >
                         <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
@@ -116,7 +116,7 @@
                 </menu>
                 <menuseparator id="autopager-hidden-panel-separator" class="autopager-sep-global" hidden='true'/>
                 <menu id="autopager-immedialate-load" class="autopager-menu-class"
-                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-immedialate-load.label;"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-immedialate-load.label;"
                       accesskey="&autopager.menu.autopager-immedialate-load.key;"
                       >
                     <menupopup id="autopager-menupopup" >
@@ -229,7 +229,7 @@
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-immedialate-load" class="autopager-menu-class"
-                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-immedialate-load.label;"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-immedialate-load.label;"
                       accesskey="&autopager.menu.autopager-immedialate-load.key;"
                       >
                     <menupopup id="autopager-menupopup" >
@@ -324,7 +324,7 @@
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-immedialate-load" class="autopager-menu-class"
-                      onpopupshowing="javascript:void();" label="&autopager.menu.autopager-immedialate-load.label;"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-immedialate-load.label;"
                       accesskey="&autopager.menu.autopager-immedialate-load.key;"
                       >
                     <menupopup id="autopager-menupopup" >

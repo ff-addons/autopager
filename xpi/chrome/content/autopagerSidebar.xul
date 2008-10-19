@@ -53,67 +53,105 @@
     </toolbox>
   
     <deck selectedIndex="0" id="xpathDeck" flex="1">
-    <vbox flex="1">
-     <vbox flex="1">
-        <hbox align="center">
-            <label control="xpath" value="&label.1.value;"/>
-            <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
-        </hbox>
-        <tree id="xpaths" width="100px" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
-            <treecols>
-                <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" 
-                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
-                <splitter ordinal="2" class="tree-splitter"/>
-                <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
-                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
-                <splitter ordinal="4" class="tree-splitter"/>
-                <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
-                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
-            </treecols>
-            <treechildren flex="1" id="autoLinkPathTreeBody" ondblclick="autopagerSidebar.setLinkXPath();"/>
-        </tree>
-        <splitter />
-        <groupbox flex="1" pack="center">
-            <caption id="results-caption" label="&caption.results-caption.label;" crop="center"/>
-            <vbox flex="1">
-                <label id="status"/>
-                    <iframe id="resultsFrame" width="100px" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
-            </vbox>
-        </groupbox>
-        </vbox>
-        <splitter />
         <vbox flex="1">
-        <hbox align="center">
-            <label control="xpath" value="&label.1.value;"/>
-            <textbox id="contentXPath" flex="1"/>
-        </hbox>
-        <tree width="100px" id="contentXPaths" flex="3" seltype="single" enableColumnDrag="true" context="contentXPathsContext">
-            <treecols>
-                <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="1" class="sortDirectionIndicator"
-             ignoreincolumnpicker="true" persist="hidden width ordinal sortDirection"/>
-                <splitter ordinal="2" class="tree-splitter"/>
-                <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
+            <tabbox id="autopager-workshop-tabbox" flex="1" selectedIndex="1">
+                <hbox align="center">
+                    <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+                    <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
+                    <textbox id="urlPattern" flex="1"/>
+                </hbox>
+                <hbox align="center">
+                    <label control="xpath" value="&setting.label.lblLinkXPath;"/>
+                    <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
+                </hbox>
+                <hbox align="center">
+                    <label control="contentXPath" value="&setting.label.grpContentXPath;"/>
+                    <textbox id="contentXPath" flex="1"/>
+                </hbox>
+                <tabs>
+                    <tab label="&setting.label.sites;"/>
+                    <tab label="&treecol.linkXpathCol.label;"/>
+                    <tab label="&treecol.contentXpathCol.label;"/>
+                </tabs>
+                <tabpanels  flex="1">
+                    <tabpanel id="site-setting"  flex="1">
+                        <vbox flex="1">
+                            <tree id="setings" width="100px" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
+                                <treecols>
+                                    <treecol ordinal="1" id="urlPatternCol" label="&setting.tree.URLPattern;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                                    <splitter ordinal="2" class="tree-splitter"/>
+                                    <treecol ordinal="3" id="linkXpathCol" label="&treecol.linkXpathCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                                    <splitter ordinal="4" class="tree-splitter"/>
+                                    <treecol ordinal="5" id="contentXpathCol" label="&treecol.contentXpathCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                                    <splitter ordinal="6" class="tree-splitter"/>
+                                    <treecol ordinal="7" id="fileCol" label="&treecol.fileCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection" hidden="true"/>
+                                </treecols>
+                                <treechildren flex="1" id="settingsTreeBody" ondblclick="autopagerSidebar.setXPathes();"/>
+                            </tree>
+                        </vbox>
+                    </tabpanel>
+                    <tabpanel id="links" >
+
+                        <vbox flex="1">
+                            <tree id="xpaths" width="100px" flex="3" seltype="single" enableColumnDrag="true" context="xpathsContext">
+                                <treecols>
+                                    <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="2"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                                    <splitter ordinal="2" class="tree-splitter"/>
+                                    <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection" hidden="true"/>
+                                    <splitter ordinal="4" class="tree-splitter"/>
+                                    <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
+                        class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
+                                </treecols>
+                                <treechildren flex="1" id="autoLinkPathTreeBody" ondblclick="autopagerSidebar.setLinkXPath();"/>
+                            </tree>
+                            <splitter />
+                            <groupbox flex="1" pack="center">
+                                <caption id="results-caption" label="&caption.results-caption.label;" crop="center"/>
+                                <vbox flex="1">
+                                    <label id="status"/>
+                                    <iframe id="resultsFrame" type="content" flex="1"  src="chrome://autopager/content/empty.html"/>
+                                </vbox>
+                            </groupbox>
+                        </vbox>
+                    </tabpanel>
+                    <tabpanel id="Content">
+                        <vbox flex="1">
+                            <tree width="100px" id="contentXPaths" flex="3" seltype="single" enableColumnDrag="true" context="contentXPathsContext">
+                                <treecols>
+                                    <treecol ordinal="1" id="xpathCol" label="&treecol.xpathCol.label;" flex="2" class="sortDirectionIndicator"
+                                    persist="hidden width ordinal sortDirection"/>
+                                    <splitter ordinal="2" class="tree-splitter"/>
+                                    <treecol ordinal="3" id="authorityCol" label="&treecol.authorityCol.label;" flex="1"
+             class="sortDirectionIndicator" persist="hidden width ordinal sortDirection" hidden="true"/>
+                                    <splitter ordinal="4" class="tree-splitter"/>
+                                    <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
              class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
-                <splitter ordinal="4" class="tree-splitter"/>
-                <treecol ordinal="5" id="machedCol" label="&treecol.machedCol.label;" flex="1"
-             class="sortDirectionIndicator" persist="hidden width ordinal sortDirection"/>
-            </treecols>
-            <treechildren id="autoContentPathTreeBody" ondblclick="autopagerSidebar.setContentXPath();"/>
-        </tree>
-        <splitter />
-        <groupbox flex="1" pack="center">
-            <caption id="results-caption2" label="&caption.results-caption2.label;" crop="center"/>
-            <vbox flex="1">
-                <label id="status2"/>
-                    <iframe id="resultsFrame2" width="100px" type="content" flex="1" src="chrome://autopager/content/empty.html"/>
-            </vbox>
-        </groupbox>
+                                </treecols>
+                                <treechildren id="autoContentPathTreeBody" ondblclick="autopagerSidebar.setContentXPath();"/>
+                            </tree>
+                            <splitter />
+                            <groupbox flex="1" pack="center">
+                                <caption id="results-caption2" label="&caption.results-caption2.label;" crop="center"/>
+                                <vbox flex="1">
+                                    <label id="status2"/>
+                                    <iframe id="resultsFrame2" type="content" flex="1" src="chrome://autopager/content/empty.html"/>
+                                </vbox>
+                            </groupbox>
+                        </vbox>
+                    </tabpanel>
+                </tabpanels>
+            </tabbox>
         </vbox>
-    </vbox>
-    <vbox>
-      <label id="Usages" value="&label.Usages.value;"/>
-      <rows id="autopager-helpbox-rows"/>
-        <tooltip id="autopager-viewsource" noautohide="true" orient="vertical"/>
-    </vbox>
+        <vbox>
+            <label id="Usages" value="&label.Usages.value;"/>
+            <rows id="autopager-helpbox-rows"/>
+            <tooltip id="autopager-viewsource" noautohide="true" orient="vertical"/>
+        </vbox>
     </deck>
 </page>
