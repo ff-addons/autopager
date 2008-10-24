@@ -62,9 +62,14 @@ var UpdateSites=
             //alert("update " + updatesite.filename)
          }
     },
+    updateSiteOnlineBackup :function (updatesite)
+    {
+		if (updatesite.backupUrls!=null &&  updatesite.triedBackup < updatesite.backupUrls.length)
+			apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup]),updatesite.contenttype,this.callback,this.onerror,updatesite);
+    },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.26").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.2.0.28").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -78,23 +83,33 @@ var UpdateSites=
 					{
 							var site= this.updateSites[i];
 							if ( (force || site.enabled) && site.url.length >0)
-									this.updateSiteOnline(site,force);
+							{
+								site.triedTime = 0;
+								site.triedBackup = 0;
+								this.updateSiteOnline(site,force);
+							}
 					}
 			}
 	},
     onerror:function(doc,obj)
     {
-            //TODO:notification the update failed
-             UpdateSites.submitCount--;
-             if (UpdateSites.submitCount<=0)
-                 autopagerMain.savePref("lastupdate",(new Date()).getTime());
+		//TODO:notification the update failed
+		UpdateSites.submitCount--;
+		if (UpdateSites.submitCount<=0)
+			autopagerMain.savePref("lastupdate",(new Date()).getTime());
              
-             if (obj.triedTime < 3)
-             {
-                    obj.triedTime ++;
-                    //try 3 times
-                    UpdateSites.updateSiteOnline(obj)
-             }
+		if (obj.triedTime < 2)
+		{
+			obj.triedTime ++;
+			//try 2 times
+			UpdateSites.updateSiteOnline(obj,true)
+		}
+		else
+		if (obj.backupUrls!=null &&  obj.triedBackup < obj.backupUrls.length)
+		{
+			UpdateSites.updateSiteOnlineBackup(obj)
+			obj.triedBackup ++;
+		}
     },
     callback:function(doc,updatesite)
     {

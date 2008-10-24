@@ -11,7 +11,7 @@ function AutoPagerUpdateType(type,defaultLocales,defaultUrl,contentType,filename
     this.desc=desc;
 }
 
-function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,enabled,typeName,updateperiod)
+function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,enabled,typeName,updateperiod,backupUrls)
 {
     if (owner!=null)
     {
@@ -26,8 +26,11 @@ function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,e
         this.updateType = AutoPagerUpdateTypes.getType(typeName);
         this.callback = this.updateType.callback;
         this.updateperiod = updateperiod;//use global setting
+
+		this.backupUrls = backupUrls;
     }
     this.triedTime=0;
+	this.triedBackup = 0;
     this.defaulted = true;
     this.lastupdate =null;
 }
@@ -36,13 +39,15 @@ var AutoPagerUpdateTypes =
 {
     types : null,
     updateSites: null,
+	backupUrls: [],
+	triedBackup: 0,
     init : function (){
         if (this.types == null)
         {
             this.types =  new Array();
 
             this.types.push(new AutoPagerUpdateType("autopager-xml","all",
-            "http://www.teesoft.info/components/com_autopager/export.php?version={version}&lastupdate={timestamp}",
+            "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
             "text/xml; charset=utf-8",
             "ap-",this.xmlConfigCallback,"//site",
             "default configurations on autopager.mozdev.org"));
@@ -90,48 +95,48 @@ var AutoPagerUpdateTypes =
             sites.push(new AutoPagerUpdateSite("pagerization","all",
                         "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
                         "pagerization configurations",
-                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0));
+                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
                         "autopagerize configurations",
-                        "autopagerize.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",0));
+                        "autopagerize.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
                         "autopagerize new configurations",
-                        "autopagerizeJson.xml",'',true,"autopagerize-json",168));
+                        "autopagerizeJson.xml",'',true,"autopagerize-json",168,[]));
 
             sites.push(new AutoPagerUpdateSite("chinalist","all",
                         "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
                         "pagerization chinalist configurations",
-                        "chinalist.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",168));
+                        "chinalist.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",168,[]));
             
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
                         "configurations added to blog",
-                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",true,"autopager-freetext",0));
+                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",true,"autopager-freetext",0,[]));
 
                     
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
                         "default configurations on autopager.mozdev.org",
-                        "autopagerMozdev.xml","//site",true,"autopager-xml",0));
+                        "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
+                        "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
-                        "autopagerTee.xml","//site",true,"autopager-xml",-2));
+                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://teesoft.co.cc/autopager/?version={version}&lastupdate={timestamp}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/components/com_autopager/export.php?approvedOnly=0&version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
+                        "http://www.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
                         "Experimental configurations @ teesoft.info",
-                        "autopagerBeta.xml","//site",false,"autopager-xml",-2));
+                        "autopagerBeta.xml","//site",false,"autopager-xml",-2,["http://teesoft.co.cc/autopager/?approvedOnly=0&version={version}&lastupdate={timestamp}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
                         "user created configurations",
-                        "autopager.xml","//site",true,"autopager-xml",-2));
+                        "autopager.xml","//site",true,"autopager-xml",-2,[]));
            return sites;
         
     },
@@ -158,14 +163,31 @@ var AutoPagerUpdateTypes =
         var configContents="";
         var sites= null;
         try{
-            
             configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("all-sites.xml"));
             var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
             sites = this.loadSettingSitesFromDoc(doc);
-//            for(var i in sites)
-//            {
-//                this.allUpdateSites[sites[i].filename] = sites[i];
-//            }
+			var defaultSites = this.getDefaultSites();
+			var changed = false;
+            for(var i in sites)
+            {
+				var site = sites[i];
+				for(var h in defaultSites)
+				{
+					var defaultSite = defaultSites[h]
+					if (defaultSite.filename == site.filename &&
+					(defaultSite.backupUrls!=null && defaultSite.backupUrls.length>0)
+						&& (site.backupUrls==null || site.backupUrls.length==0))
+					{
+						site.backupUrls = defaultSite.backupUrls;
+						site.url = defaultSite.url;
+						changed = true;
+					}
+				}
+				if (changed)
+				{
+					this.saveSettingSiteConfig(sites);
+				}
+            }
                       
         }catch(e)
         {
@@ -225,6 +247,12 @@ var AutoPagerUpdateTypes =
                 else if (nodeName == "defaulted") {
                     site.defaulted	= autopagerConfig.getValue(childNode) ;
                 }                
+                else if (nodeName == "backupUrl") {
+					if (site.backupUrls==null)
+						site.backupUrls = [];
+
+                    site.backupUrls.push(autopagerConfig.getValue(childNode));
+                }
                 
             }
             sites.push(site);
@@ -294,6 +322,13 @@ var AutoPagerUpdateTypes =
                     autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);
                     autopagerConfig.createNode(siteNode,"lastupdate",siteObj.lastupdate);
                     autopagerConfig.createNode(siteNode,"defaulted",siteObj.defaulted);
+
+					if (siteObj.backupUrls!=null)
+					{
+						for(var u=0;u<siteObj.backupUrls.length;u++)
+							autopagerConfig.createNode(siteNode,"backupUrl",siteObj.backupUrls[u]);
+					}
+
 
                     doc.firstChild.appendChild(siteNode);
                     doc.firstChild.appendChild(doc.createTextNode("\n"));

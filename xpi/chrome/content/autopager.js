@@ -2627,7 +2627,7 @@ fixUrl : function(doc,url) {
 },
 findNodeInDoc : function(doc,path,enableJS) {
     autopagerMain.xpath = path;
-    if (autopagerMain.xpath[0].length == 1)
+    if (autopagerMain.xpath.length>0 && autopagerMain.xpath[0].length == 1)
         return autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath,enableJS);
     else {
         var result = autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath[0],enableJS);

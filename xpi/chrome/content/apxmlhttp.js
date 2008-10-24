@@ -191,7 +191,7 @@ _handleParse: function (event) {
                     }
                     else
                     {
-                        //errorCallBack(doc,obj);
+                        errorCallBack(doc,obj);
                     }
             }
           };
