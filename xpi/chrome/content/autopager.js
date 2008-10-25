@@ -2245,7 +2245,7 @@ scrollWindow : function(container,doc) {
             var divStyle = autopagerMain.loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
             var div= autopagerMain.createDiv(container,"",divStyle); 
 
-            div.innerHTML = "<span><a target='_black' href='http://autopager.teesoft.info/help.html'>"  + autopagerConfig.autopagerFormatString("pagebreak",[nextUrl,++de.autoPagerPage]) + "</a></span>";
+            div.innerHTML = "<span><a target='_blank' href='http://autopager.teesoft.info/help.html'>"  + autopagerConfig.autopagerFormatString("pagebreak",[nextUrl,"&nbsp;&nbsp;&nbsp;" + (++de.autoPagerPage) + "&nbsp;&nbsp;&nbsp;"]) + "</a></span>";
             var insertPoint =	de.autopagerinsertPoint;
 
             insertPoint.parentNode.insertBefore(div,insertPoint);
@@ -2355,7 +2355,7 @@ getPagingOptionDiv : function(doc)
 +"<table valign='top' cellpadding='0' cellspacing='0' id='autoPagerBorderOptionsTitle' class='autoPagerS' style='margin:0px;width:100%' "+ overEvent + ">"
 +"<tbody class='autoPagerS'><tr class='autoPagerS' ><td class='autoPagerS'  width='80%'><a alt='" + autopagerConfig.autopagerGetString("optionexplain") +"'  href='javascript:autopagerMain.showConfirmTip();'><b class='autoPagerS'>"
 +autopagerConfig.autopagerGetString("optiontitle") + "</b></a></td><td class='autoPagerS'  width='10%' align='right'>"
-+ "<a id='autopagerOptionHelp' target='_black' title='Help' href='http://autopager.teesoft.info/help.html'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Help'  src='chrome://autopagerimg/content/question.gif'></a>"
++ "<a id='autopagerOptionHelp' target='_blank' title='Help' href='http://autopager.teesoft.info/help.html'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Help'  src='chrome://autopagerimg/content/question.gif'></a>"
 + "</td><td class='autoPagerS'  width='10%' align='right'>"
 + "<a id='autopagerOptionClose' title='Close'  href='javascript:autopagerMain.enabledInThisSession(false);'><img  class='autoPagerS'  style='border: 0px solid ; width: 9px; height: 7px;' alt='Close'  src='chrome://autopagerimg/content/vx.png'></a></td></tr></tbody></table></div> "
 + "<ul class='autoPagerS' style='margin-left:0;margin-top:0; margin-bottom:0;width:100%;list-style-type:disc !important;' "+ overEvent + ">"

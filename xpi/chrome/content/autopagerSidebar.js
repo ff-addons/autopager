@@ -6,6 +6,8 @@ var autopagerSidebar =
     tabbox : null,
 	linkColor: "blue",
 	contentColor: "orange",
+	maxWidth: '',
+	orgPriority: '',
     loadString: function() {
         // initialization code
         this.initialized = true;
@@ -53,6 +55,10 @@ var autopagerSidebar =
         autopagerUtils.log("onLoad() called");
 
 		var sidebar = window.top.document.getElementById("sidebar");
+		autopagerSidebar.orgPriority = sidebar.style.getPropertyPriority ("max-width");
+		autopagerSidebar.maxWidth = sidebar.style.getPropertyValue ("max-width");
+
+		sidebar.style.removeProperty("max-width");
 		sidebar.addEventListener("DOMAttrModified",this.changed,false);
 		var sidebarBox = window.top.document.getElementById("sidebar-box");
 		sidebarBox.addEventListener("DOMAttrModified",this.changed,false);
@@ -589,7 +595,12 @@ var autopagerSidebar =
 	{
 
 		var sidebar = window.top.document.getElementById("sidebar");
+
 		sidebar.removeEventListener("DOMAttrModified",this.changed,false);
+
+		//restore max-width
+		autopagerSidebar.orgPriority = sidebar.style.setProperty  ("max-width",autopagerSidebar.maxWidth,autopagerSidebar.orgPriority);
+
 		var sidebarBox = window.top.document.getElementById("sidebar-box");
 		sidebarBox.removeEventListener("DOMAttrModified",this.changed,false);
 
