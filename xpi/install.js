@@ -1,7 +1,7 @@
 const APP_DISPLAY_NAME = "autopager";
 const APP_NAME = "autopager";
 const APP_PACKAGE = "/informaction/autopager";
-const APP_VERSION = "0.3.0";
+const APP_VERSION = "0.3.0.1";
 
 const APP_PREFS_FILE="defaults/preferences/autopagerdef.js";
 const APP_XPCOM_SERVICE="components/AutopagerCOMP.js";

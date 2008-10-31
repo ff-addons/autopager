@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.3.0").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.3.0.1").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -998,7 +998,9 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
 	{
 		for(var i=0;i<testLink.length;++i)
 			site.testLink[i] = testLink[i];
-	}	return site;
+	}
+	site.guid = autopagerConfig.generateGuid();
+	return site;
 },
 saveConfig : function(sites) {
 	autopagerConfig.saveConfigToFile(sites,autopagerConfig.getConfigFile("autopager.xml"),true);

@@ -93,11 +93,32 @@ var allSites = null;
     function getMatchedByGuid(guid)
     {
     	var index = -1;
-        var view = treeSites.view;
-        for(index=1; index<treeSites.view.rowCount; ++index)
+		var allSites = UpdateSites.loadAll();
+        var key;
+        for ( key in allSites){
+			        var tmpsites = allSites[key];
+                    if (tmpsites==null || tmpsites.updateSite.filename=="autopager.xml")
+                        continue;
+                    for (var i = 0; i < tmpsites.length; i++) {
+                            var site = tmpsites[i];
+                             if (site.guid == guid) {
+                                return site;
+                            }
+                    }
+            }
+        return null;
+		
+	 var view = treeSites.view;
+        for(index=0; index<treeSites.view.rowCount; ++index)
 	    {
 		  var treerow = treeSites.view.wrappedJSObject.getItemAtIndex(index);
-                  if (treerow.site != null && treerow.site.guid == guid)
+		  var parentItem = treerow.parentItem();
+		  var updateSite = null
+		  if (parentItem!=null)
+			  updateSite =parentItem.updateSite
+		  alert(updateSite)
+          if (treerow.site != null && parentItem!=null && updateSite != null &&
+						  updateSite.filename != "autopager.xml" && treerow.site.guid == guid)
                       return index;
 	    }
         if(index>=treeSites.view.rowCount)
@@ -908,10 +929,10 @@ function autopagerOpenIntab(url,obj)
         if (treeitem.updateSite != null)
           return;
         var site = treeitem.site;
-		if (site.published ||  getMatchedByGuid(site.guid)!=-1)
+		if (site.published ||  getMatchedByGuid( site.guid)!=null)
 		{
 			var msg  = autopagerConfig.autopagerFormatString("alreadpubliced",[ site.urlPattern ]);
-			if (!confirm("Site setting for \"" + site.urlPattern + "\" seems already existing in the online repository, do you still want to submit?" ))
+			if (!confirm(msg))
 			{
 				return;
 			}

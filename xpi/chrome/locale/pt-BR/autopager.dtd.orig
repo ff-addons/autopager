@@ -1,8 +1,3 @@
-<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.status.createXPath "Criar XPath">
 <!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
 <!ENTITY autopager.status.enabled "Habilitado">
@@ -31,8 +26,8 @@
 <!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.update "Atualizar Configurações Online">
 <!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY label.1.value "Body XPath:">
 <!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "Adicionar...">
 <!ENTITY setting.button.cloneToEdit "Clonar para Editar">
 <!ENTITY setting.button.cloneToEditTip "Este item é de uma fonte somente leitura. Você somente poderá editar uma cópia se necessário.">
@@ -45,7 +40,6 @@
 <!ENTITY setting.button.pick "Escolher...">
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.up "Cima">
-<!ENTITY setting.key "u">
 <!ENTITY setting.label.btnEdit "Editar">
 <!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
 <!ENTITY setting.label.chkEnabled "Habilitar">
@@ -80,3 +74,8 @@
 <!ENTITY setting.update.never "Nunca">
 <!ENTITY setting.update.startup "Cada Início">
 <!ENTITY setting.update.weekly "Toda Semana">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">

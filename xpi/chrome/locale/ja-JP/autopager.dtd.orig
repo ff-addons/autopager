@@ -1,8 +1,3 @@
-<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.sidebarTitle "AutoPager サイト設定 作業場">
 <!ENTITY autopager.status.createXPath "XPath を作成">
 <!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
@@ -32,8 +27,8 @@
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
 <!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
-<!ENTITY label.1.value "Body XPath:">
 <!ENTITY openautopagerSidebar.commandkey "S">
+<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "追加...">
 <!ENTITY setting.button.cloneToEdit "複製して編集">
 <!ENTITY setting.button.cloneToEditTip "この項目は元々用意されています。必要に応じて複製版を編集することができます。">
@@ -47,7 +42,6 @@
 <!ENTITY setting.button.public "公開">
 <!ENTITY setting.button.remove "除去">
 <!ENTITY setting.button.up "上へ">
-<!ENTITY setting.key "u">
 <!ENTITY setting.label.btnEdit "編集">
 <!ENTITY setting.label.chkEnableJS "読み込み中に JavaScript を有効にします。">
 <!ENTITY setting.label.chkEnabled "有効">
@@ -93,3 +87,8 @@
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "リンクを収集します">
 <!ENTITY treecol.authorityCol.label "権威">
 <!ENTITY treecol.machedCol.label "一致数">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">

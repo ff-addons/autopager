@@ -1,19 +1,17 @@
-#Modified By Foxbeans
-#Sun Oct 19 16:02:38 CST 2008
-command.blinkElement.key=b
-command.blinkElement.label=Element blinken lassen
+command.select.key=s
+command.select.label=Element auswÃÂ¤hlen
+command.pause.key=p
+command.wider.key=w
+command.wider.label=erweitern
 command.narrower.key=k
 command.narrower.label=verkleinern
-command.pause.key=p
 command.quit.key=q
 command.quit.label=Auswahl abbrechen
-command.select.key=s
-command.select.label=Element ausw\u00C3\u0083\u00C2\u00A4hlen
-command.showMenu.key=h
-command.showMenu.label=Hilfe anzeigen/verstecken
+command.blinkElement.key=b
+command.blinkElement.label=Element blinken lassen
 command.viewSource.key=v
 command.viewSource.label=Quelltext anzeigen
 command.viewSourceWindow.key=u
 command.viewSourceWindow.label=Quelltext anzeigen (im anderen Fenster)
-command.wider.key=w
-command.wider.label=erweitern
+command.showMenu.key=h
+command.showMenu.label=Hilfe anzeigen/verstecken

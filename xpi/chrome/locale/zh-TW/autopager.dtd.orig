@@ -1,17 +1,6 @@
 <!ENTITY autopager.label.value "Auto Pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "頁面存放區">
-<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "立刻載入">
 <!ENTITY autopager.menuitem.autopager-hidden.label "隱藏">
-<!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 頁">
-<!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 頁">
-<!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 頁">
-<!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "全部">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "顯示">
 <!ENTITY autopager.sidebarTitle "AutoPager 網站設定工作室">
 <!ENTITY autopager.status.createXPath "建立 XPath">
@@ -46,11 +35,14 @@
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">
 <!ENTITY caption.results-caption.label "結果">
 <!ENTITY caption.results-caption2.label "結果">
-<!ENTITY label.1.value "Content XPath:">
+<!ENTITY treecol.linkXpathCol.label "Link XPath">
+<!ENTITY treecol.contentXpathCol.label "Content XPath">
+<!ENTITY treecol.fileCol.label "檔案">
 <!ENTITY label.Usages.value "用法">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY setting.appname "Auto Pager">
+<!ENTITY setting.key "u">
 <!ENTITY setting.button.add "加入...">
 <!ENTITY setting.button.cloneToEdit "複製後編輯">
 <!ENTITY setting.button.cloneToEditTip "這個設定值的來源是唯讀的，你必須複製先一份後才可以編輯。">
@@ -64,13 +56,11 @@
 <!ENTITY setting.button.public "發佈">
 <!ENTITY setting.button.remove "移除">
 <!ENTITY setting.button.up "向上移">
-<!ENTITY setting.key "u">
-<!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
 <!ENTITY setting.label.btnEdit "編輯">
-<!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件。">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "載入下一頁時使用 Javascript">
+<!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件。">
 <!ENTITY setting.label.chkEnabled "啟用">
 <!ENTITY setting.label.chkFixOverflow "取消頁面溢位設定">
 <!ENTITY setting.label.chkIsRegex "使用正規表示式">
@@ -80,48 +70,41 @@
 <!ENTITY setting.label.discoverytext "自動辨識">
 <!ENTITY setting.label.doubleclick "+按兩下">
 <!ENTITY setting.label.general "一般">
-<!ENTITY setting.label.grpDiscovery "自動辨識">
+<!ENTITY setting.label.grpContentXPath "Content XPath:">
 <!ENTITY setting.label.grpRemoveXPath "過濾 XPath (加入時將符合的項目自動刪除):">
+<!ENTITY setting.label.grpDiscovery "自動辨識">
 <!ENTITY setting.label.grpSmart "智慧翻頁">
 <!ENTITY setting.label.hotkeys "啟用／停用快捷鍵:">
 <!ENTITY setting.label.lblDesc "描述:">
+<!ENTITY setting.label.lblLinkXPath "Link XPath:">
+<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.text.tipContainerXPath "若你不知道此選項的用途，請勿亂動。\n若網站主要內容位於有 overflow-y 及 scrollbar 屬性的 Container 中時，將只監視這個 Container 中的頁面捲動。請參考 www.cuil.com 的設定範例。">
 <!ENTITY setting.label.lblOwner "建立者:">
-<!ENTITY setting.label.lblSetting "AutoPager 設定值來源">
-<!ENTITY setting.label.lblSettingContext "內容型態:">
-<!ENTITY setting.label.lblSettingDesc "描述:">
-<!ENTITY setting.label.lblSettingOwner "維護者:">
-<!ENTITY setting.label.lblSettingType "類型:">
-<!ENTITY setting.label.lblSettingUrl "網址:">
 <!ENTITY setting.label.lblURLPattern "網址樣式:">
 <!ENTITY setting.label.lblUpdate "自動更新網站組態設定:">
 <!ENTITY setting.label.loading "「載入中」通知樣式:">
 <!ENTITY setting.label.margin "頁面空間剩下">
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
-<!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
-<!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
 <!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">
+<!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
+<!ENTITY setting.label.sites "網站">
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
 <!ENTITY setting.label.smartlinks "只在符合的連結少於">
 <!ENTITY setting.label.smartlinksEnd "個連結時才自動翻頁。">
 <!ENTITY setting.label.smarttext "尋找下個連結搜尋的文字／圖片、來源／ID／Class 連結 (用 &apos;|&apos; 分隔):">
 <!ENTITY setting.label.timeout "頁面載入逾時設定 (秒):">
 <!ENTITY setting.label.update "自動更新">
-<!ENTITY setting.text.tipContainerXPath "若你不知道此選項的用途，請勿亂動。\n若網站主要內容位於有 overflow-y 及 scrollbar 屬性的 Container 中時，將只監視這個 Container 中的頁面捲動。請參考 www.cuil.com 的設定範例。">
 <!ENTITY setting.title "Auto Pager 設定">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "網址樣式">
-<!ENTITY setting.type.autopager "Aautopager XML">
-<!ENTITY setting.type.autopagerize "Autopagerize">
-<!ENTITY setting.type.autopagerizeJson "Autopagerize JSON">
-<!ENTITY setting.type.autopagertext "Autopager Text">
 <!ENTITY setting.update.daily "每天">
-<!ENTITY setting.update.global "使用全域設定">
 <!ENTITY setting.update.monthly "每月">
 <!ENTITY setting.update.never "不更新">
 <!ENTITY setting.update.once "初次啟動時">
 <!ENTITY setting.update.startup "每次啟動時">
 <!ENTITY setting.update.weekly "每週">
+<!ENTITY setting.update.global "使用全域設定">
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自動辨識">
@@ -129,3 +112,28 @@
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "選取連結">
 <!ENTITY treecol.authorityCol.label "權威性">
 <!ENTITY treecol.machedCol.label "符合數">
+<!ENTITY treecol.xpathCol.label "XPath">
+<!ENTITY setting.label.lblSettingOwner "維護者:">
+<!ENTITY setting.label.lblSettingDesc "描述:">
+<!ENTITY setting.label.lblSettingUrl "網址:">
+<!ENTITY setting.label.lblSettingType "類型:">
+<!ENTITY setting.label.lblSettingContext "內容型態:">
+<!ENTITY setting.label.lblSettingXPath "XPath:">
+<!ENTITY setting.type.autopager "Aautopager XML">
+<!ENTITY setting.type.autopagertext "Autopager Text">
+<!ENTITY setting.type.autopagerize "Autopagerize">
+<!ENTITY setting.type.autopagerizeJson "Autopagerize JSON">
+<!ENTITY setting.label.lblSetting "AutoPager 設定值來源">
+<!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
+<!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "立刻載入">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 頁">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 頁">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 頁">
+<!ENTITY autopager.menuitem.autopager-load-all.label "全部">
+<!ENTITY autopager.menu.autopager-immedialate-load.key "L">
+<!ENTITY autopager.menuitem.autopager-load-3.key "3">
+<!ENTITY autopager.menuitem.autopager-load-5.key "5">
+<!ENTITY autopager.menuitem.autopager-load-10.key "0">
+<!ENTITY autopager.menuitem.autopager-load-all.key "A">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">

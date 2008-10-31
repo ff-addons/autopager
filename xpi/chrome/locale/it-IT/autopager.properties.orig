@@ -1,13 +1,11 @@
-#Modified By Foxbeans
-#Sun Oct 19 16:02:38 CST 2008
-alwaysdisableshort=AD
-alwaysenableshort=AE
-autopageenabled=Auto pager enabled.\u00C3\u0083\u00C2\u0083\u00C3\u0082\u00C2\u00A3\u00C3\u0083\u00C2\u0082\u00C3\u0082\u00C2\u0080\u00C3\u0083\u00C2\u0082\u00C3\u0082\u00C2\u0081Double Click On Page to disable auto pager.
-disableshort=D
-enableshort=E
-errorload=Errore durante il caricamento della pagina
-extensions.autopager@mozilla.org.description=AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too.
-inputfile=Selezionare il file delle impostazioni di Auto Pager
-inputurl=Inserire l'URL da cui importare le impostazioni
-outputfile=Assegnare un nome al file
 unableload=Impossibile caricare l'URL
+errorload=Errore durante il caricamento della pagina
+inputurl=Inserire l'URL da cui importare le impostazioni
+inputfile=Selezionare il file delle impostazioni di Auto Pager
+outputfile=Assegnare un nome al file
+autopageenabled=Auto pager enabled.ÃÂÃÂ£ÃÂÃÂÃÂÃÂDouble Click On Page to disable auto pager.
+enableshort=E
+disableshort=D
+alwaysenableshort=AE
+alwaysdisableshort=AD
+extensions.autopager@mozilla.org.description=AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too.

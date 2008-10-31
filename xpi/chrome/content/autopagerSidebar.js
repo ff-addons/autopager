@@ -481,8 +481,7 @@ var autopagerSidebar =
 //                site.ajax = true;
 
             //enable this by default for best compatibility
-                site.enableJS = true;
-				siteObj.guid = autopagerConfig.generateGuid();
+            site.enableJS = true;
             autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
             autopagerConfig.insertAt(autopagerMain.workingAutoSites,0,site);
             autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
@@ -518,6 +517,7 @@ var autopagerSidebar =
             site.createdByYou = true;
 			site.isRegex = chkIsRegex.checked;
             site.owner = autopagerPref.loadMyName();
+			site.guid=""
             while (site.owner.length == 0)
                 site.owner = autopagerPref.changeMyName();
             //general link
