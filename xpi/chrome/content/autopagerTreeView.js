@@ -365,7 +365,7 @@ function getLevels(allSites,firstItem,filter)
     var k = 1;
     var parent = 0;
     for ( key in allSites){
-        if (key=="smartpaging.xml")
+        if (key=="smartpaging.xml" || key=="testing.xml")
             continue;
         var sites = null;
         if (key == "autopager.xml")

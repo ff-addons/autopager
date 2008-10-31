@@ -11,6 +11,9 @@ toolbarbutton.autopager_button .toolbarbutton-text {
 #addSite {
 	list-style-image:	url("chrome://autopager/skin/apply.png") !important;
 }
+#testSite {
+	list-style-image:	url("chrome://autopager/skin/autopager-small.png") !important;
+}
 #clearAllPath {
 	list-style-image:	url("chrome://autopager/skin/clear.png") !important;
 }

@@ -19,7 +19,7 @@ var allSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt,showStatusBar;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar;
     var selectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
@@ -90,6 +90,20 @@ var allSites = null;
         	 index =0;
 	    return index;
     }
+    function getMatchedByGuid(guid)
+    {
+    	var index = -1;
+        var view = treeSites.view;
+        for(index=1; index<treeSites.view.rowCount; ++index)
+	    {
+		  var treerow = treeSites.view.wrappedJSObject.getItemAtIndex(index);
+                  if (treerow.site != null && treerow.site.guid == guid)
+                      return index;
+	    }
+        if(index>=treeSites.view.rowCount)
+        	 index = -1;
+	    return index;
+    }
     function chooseInView(view,url)
     {
         for(var index=0; index<view.getChildCount(); ++index)
@@ -137,33 +151,7 @@ function autopagerOpenIntab(url,obj)
         autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
     }
     function handleOkButton() {
-       	autopagerConfig.saveConfig(sites);      
-        //autopagerConfig.autoSites = autopagerConfig.loadConfig();
-
-	autopagerMain.saveMyName(mynameText.value);
-        autopagerMain.saveBoolPref("smartenable",smartenable.checked);
-	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
-        autopagerMain.savePref("smartlinks",smartlinks.value);
-	autopagerMain.savePref("smartMargin",smartMargin.value);
-
-        autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
-        autopagerMain.saveBoolPref("showtags",showtags.checked);
-        autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
-        autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
-        autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
-        
-        
-	        
-		//autopagerMain.savePref("timeout",txtTimeout.value);
-         autopagerMain.setCtrlKey(chkCtrl.checked);
-         autopagerMain.setAltKey(chkAlt.checked );
-         autopagerMain.setShiftKey(chkShift.checked);
-         autopagerMain.setLoadingStyle(txtLoading.value);
-         autopagerMain.saveUTF8Pref("pagebreak",txtPagebreak.value);
-         autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
-         autopagerMain.savePref("update",mnuUpdate.value);
-         
-         AutoPagerUpdateTypes.saveAllSettingSiteConfig();
+       	handleApplyButton();
          
 //        // Step 1: Create new event which has detail of the command.
 //        var newCmdEvent = document.createEvent('Events');
@@ -180,6 +168,37 @@ function autopagerOpenIntab(url,obj)
           else if (window.opener.autopagerOpenerObj)
               window.opener.autopagerOpenerObj.contentDocument.location.reload();
         return true;
+    }
+    function handleApplyButton() {
+       	autopagerConfig.saveConfig(sites);
+        //autopagerConfig.autoSites = autopagerConfig.loadConfig();
+
+	autopagerMain.saveMyName(mynameText.value);
+        autopagerMain.saveBoolPref("smartenable",smartenable.checked);
+	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
+        autopagerMain.savePref("smartlinks",smartlinks.value);
+	autopagerMain.savePref("smartMargin",smartMargin.value);
+
+        autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
+        autopagerMain.saveBoolPref("showtags",showtags.checked);
+        autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
+        autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
+        autopagerMain.saveBoolPref("modalprompt",simpleModalPrompt.checked);
+        autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
+
+
+
+		//autopagerMain.savePref("timeout",txtTimeout.value);
+         autopagerMain.setCtrlKey(chkCtrl.checked);
+         autopagerMain.setAltKey(chkAlt.checked );
+         autopagerMain.setShiftKey(chkShift.checked);
+         autopagerMain.setLoadingStyle(txtLoading.value);
+         autopagerMain.saveUTF8Pref("pagebreak",txtPagebreak.value);
+         autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
+         autopagerMain.savePref("update",mnuUpdate.value);
+
+         AutoPagerUpdateTypes.saveAllSettingSiteConfig();
+	     return true;
     }
     function onSiteChange(treeitem,site)
     {
@@ -274,6 +293,9 @@ function autopagerOpenIntab(url,obj)
         
         showPrompt = document.getElementById("showPrompt");
         showPrompt.checked = !autopagerMain.loadBoolPref("noprompt");
+
+        simpleModalPrompt = document.getElementById("simpleModalPrompt");
+        simpleModalPrompt.checked = autopagerMain.loadBoolPref("modalprompt");
 
         showStatusBar = document.getElementById("showStatusBar");
         showStatusBar.checked = !autopagerMain.loadBoolPref("hide-status");
@@ -880,13 +902,21 @@ function autopagerOpenIntab(url,obj)
         }
         if (items.length ==0)
             return;
-        //public the first one
-        
+
+		//public the first one
         var treeitem = items[0];
         if (treeitem.updateSite != null)
           return;
         var site = treeitem.site;
-      
+		if (site.published ||  getMatchedByGuid(site.guid)!=-1)
+		{
+			var msg  = autopagerConfig.autopagerFormatString("alreadpubliced",[ site.urlPattern ]);
+			if (!confirm("Site setting for \"" + site.urlPattern + "\" seems already existing in the online repository, do you still want to submit?" ))
+			{
+				return;
+			}
+		}
+		site.published = true;
         window.autopagerPublicSite=site;
 //        window.opener.autopagerPublicSite=site;
         
@@ -1044,9 +1074,13 @@ var userSites = null;
      }
      function getColor(site)
     {
-	var color='';
+		var color='';
         if (!site.enabled) {
             color = 'gray';
+        }
+		else if(site.published)
+        {
+            color = "darkgreen";
         }else if(site.createdByYou)
         {
             color = "green";

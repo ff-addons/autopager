@@ -21,6 +21,7 @@ pref("autopager.timeout", "120");
 pref("autopager.update", "24");
 pref("autopager.settingupdatedate", "");
 pref("autopager.noprompt", false);
+pref("autopager.modalprompt", true);
 pref("extensions.autopager@mozilla.org.description", "chrome://autopager/locale/autopager.properties");  
 pref("autopager.hide-status", false);
 

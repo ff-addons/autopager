@@ -316,15 +316,29 @@ handleDocLoad : function(doc,safe)
 {
     //autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
     autopagerMain.workingAllSites = UpdateSites.loadAll();
+
+	var tmpSites = autopagerMain.loadTempConfig();
+
+	tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
+						"","text/html; charset=utf-8",
+						"smart paging configurations",
+						"smartpaging.xml","//site",true,"autopager-xml",0);
+	autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
+    autopagerMain.onInitDoc(doc,safe);
+},
+testDoc : function(doc,site)
+{
+	//autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
+    autopagerMain.workingAllSites = UpdateSites.loadAll();
             
-    var tmpSites = autopagerMain.loadTempConfig();
-    
+    var tmpSites = [site];
     tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
-                        "smart paging configurations",
-                        "smartpaging.xml","//site",true,"autopager-xml",0);
+                        "test paging configurations",
+                        "testing.xml","//site",true,"autopager-xml",0);
+	tmpSites.testing = true;
     autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
-    autopagerMain.onInitDoc(doc,safe);
+    doc.location.reload();
 },
 getNextUrlIncludeFrames : function(container,doc)
 {
@@ -687,6 +701,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('fixOverflow',autopagerMain.workingAutoSites[i].fixOverflow);
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
+				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -941,7 +956,31 @@ doScrollWatcher : function() {
                                 if (needConfirm)
                                 {
                                     doc.documentElement.autopagerEnabled = false;
-                                    autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),false || !autopagerMain.loadEnableStat());
+									var showoption = {value: false};
+									var result = false;
+									if (autopagerMain.loadEnableStat() && autopagerMain.loadBoolPref("modalprompt"))
+									{
+										var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+																.getService(Components.interfaces.nsIPromptService);
+										var host = doc.location.host;
+										var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
+										result = prompts.confirmCheck(window, autopagerConfig.autopagerFormatString("enableurl",[host]),
+											autopagerConfig.autopagerFormatString("enableonsite",[host,owner]),
+																		  autopagerConfig.autopagerFormatString("showoptions",[host,owner]), showoption);
+									    document.autopagerConfirmDoc = doc;
+										if (showoption.value==false)
+										{
+											autopagerMain.enabledThisSite(result);
+										}
+										else
+											autopagerMain.enabledInThisSession(false);
+									    document.autopagerConfirmDoc = null;
+
+									}
+									else if (!autopagerMain.loadBoolPref("modalprompt"))
+										showoption.value = true;
+									if (showoption.value)
+										autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),false || !autopagerMain.loadEnableStat());
                                 }
                                 else
                                     if ((doc.documentElement.autopagerUserConfirmed

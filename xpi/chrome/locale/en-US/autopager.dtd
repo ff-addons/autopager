@@ -96,6 +96,7 @@
 <!ENTITY setting.label.timeout "page loading timeout(Seconds):">
 <!ENTITY setting.label.update "Update">
 <!ENTITY setting.title "Auto Pager Setting">
+<!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.tree.Description "Description">
 <!ENTITY setting.tree.URLPattern "URL Pattern">
 <!ENTITY setting.update.daily "Every Day">
@@ -106,6 +107,7 @@
 <!ENTITY setting.update.weekly "Every Week">
 <!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
+<!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
@@ -126,6 +128,7 @@
 <!ENTITY setting.label.lblSetting "AutoPager setting source">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
+<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
 <!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
 <!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">

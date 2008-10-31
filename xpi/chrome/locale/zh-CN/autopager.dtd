@@ -64,6 +64,7 @@
 <!ENTITY setting.button.public "发布">
 <!ENTITY setting.button.remove "删除">
 <!ENTITY setting.button.up "上移">
+<!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">
@@ -105,6 +106,7 @@
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
 <!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY setting.label.showtags "选择页面元素时显示元素标签">
+<!ENTITY setting.label.simpleModalPrompt "遇到新站点时显示简单模式确认窗口">
 <!ENTITY setting.label.sites "站点列表">
 <!ENTITY setting.label.smartenable "启用智能翻页">
 <!ENTITY setting.label.smartlinks "仅当匹配不多于:">
@@ -132,6 +134,7 @@
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自动识别">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "选择内容">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "选择链接">
+<!ENTITY toolbarbutton.testSite.tooltiptext "测试站点配置">
 <!ENTITY treecol.authorityCol.label "权威性">
 <!ENTITY treecol.contentXpathCol.label "内容XPath路径">
 <!ENTITY treecol.fileCol.label "文件">

@@ -40,6 +40,8 @@
             <toolbarbutton id="pickupContentPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.pickupContent();" tooltiptext="&toolbarbutton.pickupContentPath.tooltiptext;"/>
             
             <toolbarbutton id="clearAllPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.clearAll();" tooltiptext="&toolbarbutton.clearAllPath.tooltiptext;"/>
+            <toolbarbutton id="testSite" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.testSite();" tooltiptext="&toolbarbutton.testSite.tooltiptext;"/>
+            <spacer flex="0"/>
             <toolbarbutton id="addSite" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.addSite();" tooltiptext="&toolbarbutton.addSite.tooltiptext;"/>
             <spacer flex="1"/>
             <!--

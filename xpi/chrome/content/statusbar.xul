@@ -45,6 +45,10 @@
 
             <menupopup id="autopager-popup" hidden="true">
                 <menuitem
+                    key="key_openautopagerSidebar"
+                    observes="viewautopagerSidebar"
+                    position="1"/>
+                <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
                     oncommand="autopagerMain.openSettingForDoc(content.document);"

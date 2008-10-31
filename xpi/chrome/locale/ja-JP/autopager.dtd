@@ -63,6 +63,7 @@
 <!ENTITY setting.button.public "公開">
 <!ENTITY setting.button.remove "除去">
 <!ENTITY setting.button.up "上へ">
+<!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "編集">
@@ -104,6 +105,7 @@
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "要素選択中にノードタグを表示する">
+<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "サイト">
 <!ENTITY setting.label.smartenable "スマートページングを有効にする">
 <!ENTITY setting.label.smartlinks "リンクが">
@@ -131,6 +133,7 @@
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "ディスカバリ">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "コンテンツを収集します">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "リンクを収集します">
+<!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">
 <!ENTITY treecol.authorityCol.label "権威">
 <!ENTITY treecol.contentXpathCol.label "Content XPath">
 <!ENTITY treecol.fileCol.label "File">

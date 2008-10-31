@@ -482,6 +482,7 @@ var autopagerSidebar =
 
             //enable this by default for best compatibility
                 site.enableJS = true;
+				siteObj.guid = autopagerConfig.generateGuid();
             autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
             autopagerConfig.insertAt(autopagerMain.workingAutoSites,0,site);
             autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
@@ -490,6 +491,47 @@ var autopagerSidebar =
 			window.autopagerSelectUrl = autopagerSidebar.currUrl;
             autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
         
+    },
+    testSite : function()
+    {
+        var linkXPath =document.getElementById("xpath").value;
+        if (linkXPath == null || linkXPath.length ==0)
+        {
+          alert(this.getString("LinkXPathcannotbenull"));
+          document.getElementById("xpath").focus();
+          return;
+        }
+        var contentXPath =document.getElementById("contentXPath").value;
+        if (contentXPath == null || contentXPath.length ==0)
+        {
+          alert(this.getString("ContentXPathcannotbenull"));
+          document.getElementById("contentXPath").focus();
+          return;
+        }
+        var url = this.currentDoc.documentURI;
+
+			var chkIsRegex = document.getElementById("chkIsRegex");
+			var urlPattern = document.getElementById("urlPattern");
+
+            var site = autopagerConfig.newSite(urlPattern.value,url
+                ,linkXPath,contentXPath,[url]);
+            site.createdByYou = true;
+			site.isRegex = chkIsRegex.checked;
+            site.owner = autopagerPref.loadMyName();
+            while (site.owner.length == 0)
+                site.owner = autopagerPref.changeMyName();
+            //general link
+            var targets = this.getXPathNodes(this.currentDoc,linkXPath);
+            var target = targets[0];
+//            if (target.tagName == "A" && target.hash!=null
+//								&& target.hash.length>0 &&
+//								target.onclick!=null && target.href.toLowerCase().indexOf("#") != -1)
+//                site.ajax = true;
+
+            //enable this by default for best compatibility
+            site.enableJS = true;
+            autopagerMain.testDoc(autopagerUtils.currentDocument(),site);
+
     },
         pickupLink : function ()
         {
@@ -618,6 +660,12 @@ var autopagerSidebar =
         }
 		autopagerSelector.quit();
 		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);
+		var workingAllSites = UpdateSites.loadAll();
+		workingAllSites["testing.xml"]=null
+
+//		var oldSmart = workingAllSites["smartpaging.xml"]
+//		if (oldSmart!=null)
+//			oldSmart.testing = false;
     }
 };
 autopagerUtils.log("loading window.js");

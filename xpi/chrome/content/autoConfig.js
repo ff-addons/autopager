@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.2.0.30").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.3.0").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -143,7 +143,8 @@ var UpdateSites=
     {
         if (this.AutopagerCOMP.loadAll().length==0)
         {
-          this.allSiteSetting = {};
+            this.allSiteSetting = {};
+			this.allSiteSetting["testing.xml"] = null;
             for(var i=this.updateSites.length-1;i>=0;i--)
             {
                 var configContents="";
@@ -164,11 +165,12 @@ var UpdateSites=
     },
     getMatchedSiteConfig: function(allSites,url,count)
     {
-        var newSites = new Array();
+		var newSites = new Array();
         var key;
         for ( key in allSites){
+			//alert(key)
                     var tmpsites = allSites[key];
-                    if (!tmpsites.updateSite.enabled)
+                    if (tmpsites==null || !tmpsites.updateSite.enabled)
                         continue;
                     for (var i = 0; i < tmpsites.length; i++) {
                             var site = tmpsites[i];
@@ -181,9 +183,34 @@ var UpdateSites=
 										return newSites;
                             }
                     }
-            };
+            }
         return newSites;
         
+    },
+    getMatchedSiteConfigByGUID: function(allSites,guid,includeLocal,count)
+    {
+        var newSites = new Array();
+        var key;
+        for ( key in allSites){
+                    var tmpsites = allSites[key];
+                    if (tmpsites==null || !tmpsites.updateSite.enabled)
+                        continue;
+					if (!includeLocal && (tmpsites.updateSite.filename == 'autopager.xml'))
+                        continue;
+
+                    for (var i = 0; i < tmpsites.length; i++) {
+                            var site = tmpsites[i];
+                             if (site.guid == guid) {
+                                var newSite = autopagerConfig.cloneSite (site);
+								newSite.updateSite = tmpsites.updateSite;
+								newSites.push(newSite);
+								if (count == newSites.length)
+										return newSites;
+                            }
+                    }
+            }
+        return newSites;
+
     }
 };
 
@@ -214,6 +241,7 @@ function Site()
         this.tmpPaths = [];
         this.guid = "";
         this.ajax=false;
+	this.published = false;
 }
 
 function SiteConfirm()
@@ -413,6 +441,7 @@ generateGuid : function()
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
         newSite.ajax  = site.ajax;
+		newSite.published = site.published;
         newSite.quickLoad  = site.quickLoad;
 	newSite.fixOverflow  = site.fixOverflow;
 	newSite.createdByYou  = site.createdByYou;
@@ -450,6 +479,7 @@ generateGuid : function()
 						|| oldSite.margin  != site.margin
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
+						|| oldSite.published  != site.published
 						|| oldSite.ajax  != site.ajax
 						|| oldSite.quickLoad  != site.quickLoad
 						|| oldSite.fixOverflow  != site.fixOverflow
@@ -838,6 +868,7 @@ loadConfigFromUrl : function(url) {
   for (var node = null; (node = nodes.iterateNext()); ) {
     var site = new Site();
     var ajax = false;
+	var published =false;
     var enabled = true;
     var enableJS = true;
     var quickLoad = false;
@@ -910,8 +941,12 @@ loadConfigFromUrl : function(url) {
       }else if (nodeName == "owner") {
                         site.owner	= autopagerConfig.getValue(childNode) ;
       }
+      else if (nodeName == "published") {
+                        published	= (autopagerConfig.getValue(childNode) == 'true');
+      }
     }
     site.ajax = ajax;
+	site.published = published;
     site.enabled = enabled;
     site.enableJS = enableJS;
     site.quickLoad = quickLoad;
@@ -1016,6 +1051,8 @@ if (sites!=null)
             if (siteObj.ajax)
                 autopagerConfig.createNode(siteNode,"ajax",siteObj.ajax);
 
+            if (siteObj.published)
+                autopagerConfig.createNode(siteNode,"published",siteObj.published);
     
 	    var x=0;
 	    for(x=0;x<siteObj.contentXPath.length;++x)

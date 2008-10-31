@@ -63,6 +63,7 @@
 <!ENTITY setting.button.public "Public">
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.up "Cima">
+<!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Editar">
@@ -104,6 +105,7 @@
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
+<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Habilitar Paginação Inteligente">
 <!ENTITY setting.label.smartlinks "Seguir link quando não existirem mais de">
@@ -131,6 +133,7 @@
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
+<!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">
 <!ENTITY treecol.authorityCol.label "Authority">
 <!ENTITY treecol.contentXpathCol.label "Content XPath">
 <!ENTITY treecol.fileCol.label "File">

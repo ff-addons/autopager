@@ -7,10 +7,12 @@
 
 <dialog id="autopager" 
         title="&setting.title;"
-        buttons="help,accept,cancel"
+        buttons="help,accept,extra1,cancel"
         ondialogaccept="return handleOkButton()"
-	ondialoghelp="return handleHelpButton()"
+        ondialoghelp="return handleHelpButton()"
         orient="vertical"
+        buttonlabelextra1="&setting.buttonlabelextra1;"
+        ondialogextra1="return handleApplyButton()"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     
     <stringbundleset id="autopagerStringbundleset">
@@ -308,9 +310,11 @@
                             <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
                     </hbox>
                     <hbox align="center">
+                            <checkbox id="simpleModalPrompt" label="&setting.label.simpleModalPrompt;" check="true" flex="1"/>
+                    </hbox>
+                    <hbox align="center">
                             <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
                     </hbox>
-
                 </vbox>
             </tabpanel>
             <tabpanel id="update-setting">
