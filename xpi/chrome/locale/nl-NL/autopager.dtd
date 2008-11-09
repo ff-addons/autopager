@@ -63,7 +63,7 @@
 <!ENTITY setting.button.public "Publiek">
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
-<!ENTITY setting.buttonlabelextra1 "Apply">
+<!ENTITY setting.buttonlabelextra1 "">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
@@ -105,7 +105,7 @@
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
 <!ENTITY setting.label.showStatusBar "AutoPager-pictogram weergeven in statusbalk">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">
-<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
+<!ENTITY setting.label.simpleModalPrompt "Eenvoudig dialoogvenster laten zien voor individuele nieuwe site">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
@@ -133,7 +133,7 @@
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Ontdekking">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Inhoud oppikken">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Koppeling oppikken">
-<!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">
+<!ENTITY toolbarbutton.testSite.tooltiptext "Site testen">
 <!ENTITY treecol.authorityCol.label "Authorisatie">
 <!ENTITY treecol.contentXpathCol.label "Inhouds-XPath">
 <!ENTITY treecol.fileCol.label "Bestand">

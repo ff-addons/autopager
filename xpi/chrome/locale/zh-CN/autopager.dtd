@@ -46,7 +46,6 @@
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
 <!ENTITY caption.results-caption.label "结果">
 <!ENTITY caption.results-caption2.label "结果">
-<!ENTITY label.1.value "内容路径:">
 <!ENTITY label.Usages.value "使用方法">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
@@ -64,7 +63,7 @@
 <!ENTITY setting.button.public "发布">
 <!ENTITY setting.button.remove "删除">
 <!ENTITY setting.button.up "上移">
-<!ENTITY setting.buttonlabelextra1 "Apply">
+<!ENTITY setting.buttonlabelextra1 "应用">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">

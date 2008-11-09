@@ -63,7 +63,7 @@
 <!ENTITY setting.button.public "發佈">
 <!ENTITY setting.button.remove "移除">
 <!ENTITY setting.button.up "向上移">
-<!ENTITY setting.buttonlabelextra1 "Apply">
+<!ENTITY setting.buttonlabelextra1 "套用">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
 <!ENTITY setting.label.btnEdit "編輯">
@@ -105,7 +105,7 @@
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
 <!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">
-<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
+<!ENTITY setting.label.simpleModalPrompt "於新網站顯示簡單的模型提示">
 <!ENTITY setting.label.sites "網站">
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
 <!ENTITY setting.label.smartlinks "只在符合的連結少於">
@@ -133,7 +133,7 @@
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自動辨識">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "選取內容">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "選取連結">
-<!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">
+<!ENTITY toolbarbutton.testSite.tooltiptext "測試網站">
 <!ENTITY treecol.authorityCol.label "權威性">
 <!ENTITY treecol.contentXpathCol.label "Content XPath">
 <!ENTITY treecol.fileCol.label "檔案">
