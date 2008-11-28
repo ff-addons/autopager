@@ -9,7 +9,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     
     <stringbundleset id="autopagerStringbundleset">
-        <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+        <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
     </stringbundleset>
     
     

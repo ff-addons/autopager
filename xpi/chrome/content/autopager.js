@@ -902,16 +902,16 @@ doScrollWatcher : function() {
 
 								//alert(wh);
 								if (this.autopagerDebug)
-										wh = wh * (doc.documentElement.margin*1 + 1.5);
+										wh = wh * (doc.documentElement.margin*1 + 2);
 								else
-										wh = wh * (doc.documentElement.margin * 1);
+										wh = wh * (doc.documentElement.margin * 1 + 1.5);
 								//alert(wh);
 								//needLoad = remain < wh;
 								var targetHeight = 0;
 								var a = de.autoPagerPageHeight
 								if (a!=null && a.length >= doc.documentElement.margin)
 								{
-										var pos = a.length - doc.documentElement.margin
+										var pos = a.length - 1;//doc.documentElement.margin
 										targetHeight = a[pos];
 								}
 								var currHeight = sc + scrollContainer.offsetTop;// + wh

@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.3.0.3").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.3.0.4").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -573,7 +573,7 @@ removeFromArray : function(array,item) {
 	try{
 		
 		if (autopagerConfig.autopagerStrbundle == null)
-			autopagerConfig.autopagerStrbundle = document.getElementById("autopagerStrings");
+			autopagerConfig.autopagerStrbundle = document.getElementById("autopager-Strings");
 		return autopagerConfig.autopagerStrbundle.getString(name);
 	}catch(e)
 	{
@@ -587,12 +587,12 @@ autopagerFormatString :function(name,parms)
 	
 	try{
 		if (autopagerConfig.autopagerStrbundle == null)
-			autopagerConfig.autopagerStrbundle = document.getElementById("autopagerStrings");
+			autopagerConfig.autopagerStrbundle = document.getElementById("autopager-Strings");
 		return autopagerConfig.autopagerStrbundle.getFormattedString(name, parms);
 	}catch(e)
 	{
-		alert(name + " " + e);
-		return "";
+		//alert(name + " " + e);
+		return name;
 	}
 },
 getConfigFileURI : function(fileName) {

@@ -40,7 +40,7 @@
   	
             
             <stringbundleset id="autopagerStringbundleset">
-                <stringbundle id="autopagerStrings" src="chrome://autopager/locale/autopager.properties"/>
+                <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
             </stringbundleset>
 
             <menupopup id="autopager-popup" hidden="true">
@@ -208,6 +208,11 @@
                     oncommand="autopagerConfig.importFromFile();"
                 />
                 <menuitem
+                    label="&autopager.status.importclip;"
+                    tooltiptext="&autopager.status.importclipTip;"
+                    oncommand="autopagerConfig.importFromClip();"
+                />
+                <menuitem
                     label="&autopager.status.export;"
                     tooltiptext="&autopager.status.exportTip;"
                     oncommand="autopagerConfig.exportSetting();"
@@ -301,6 +306,11 @@
                     label="&autopager.status.importfile;"
                     tooltiptext="&autopager.status.importfileTip;"
                     oncommand="autopagerConfig.importFromFile();"
+                />
+                <menuitem
+                    label="&autopager.status.importclip;"
+                    tooltiptext="&autopager.status.importclipTip;"
+                    oncommand="autopagerConfig.importFromClip();"
                 />
                 <menuitem
                     label="&autopager.status.export;"
