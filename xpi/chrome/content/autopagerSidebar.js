@@ -40,13 +40,13 @@ var autopagerSidebar =
         if (res.linkXPaths.length>0)
         {    
           document.getElementById("xpath").value = res.linkXPaths[0].xpath;
-          this.searchXPath(res.linkXPaths[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor);
+          this.searchXPath(res.linkXPaths[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor,false);
         }
         
         if (res.contentXPaths.length>0)
         {
             document.getElementById("contentXPath").value = res.contentXPaths[0].xpath;
-            this.searchXPath(res.contentXPaths[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor);
+            this.searchXPath(res.contentXPaths[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor,false);
         }
         document.getElementById("xpathDeck").selectedIndex = 0;
     },
@@ -72,20 +72,26 @@ var autopagerSidebar =
 						sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
 				}
         }
-		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
+		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','status');},false);
         document.getElementById("xpath").addEventListener('keypress',
-                    function(event){if (event.keyCode == event.DOM_VK_RETURN)
+                    function(event){
+                        if (event.keyCode == event.DOM_VK_RETURN)
                         autopagerSidebar.tabbox.selectedIndex=1;
-						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor);},true);
+						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);
+                    },true);
+        document.getElementById("xpath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=1;},false);
 
 
-        document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},false);
+        document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);},false);
         document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','status2');},false);
         document.getElementById("contentXPath").addEventListener('keypress',
-                    function(event){if (event.keyCode == event.DOM_VK_RETURN)
+                    function(event){
+                        if (event.keyCode == event.DOM_VK_RETURN)
                         autopagerSidebar.tabbox.selectedIndex=2;
-                        autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},true);
+                        autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);
+                    },true);
+        document.getElementById("contentXPath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=2;},false);
         
         this.loadXPathForNode(this.currentDoc);
 
@@ -237,18 +243,23 @@ var autopagerSidebar =
     },
 
     onTextChangeInXPathBox:function(xpathID,statusID) {
-        var xpath = document.getElementById(xpathID).value
-        var isValid = autopagerXPath.isValidXPath(xpath,autopagerSidebar.currentDoc)
-        document.getElementById(statusID).value = isValid ? "" : "Syntax error"
+        setTimeout(function()
+        {
+            var xpathCtrl = document.getElementById(xpathID)
+            var xpath = xpathCtrl.value
+            var isValid = autopagerXPath.isValidXPath(xpath,autopagerSidebar.currentDoc)
+            document.getElementById(statusID).value = isValid ? "" : "Syntax error"
+            xpathCtrl.style.color = isValid? "green": "red";
+        },10);
     },
 
-    search:function(xpathID,resultFrameID,statusID,color) {
+    search:function(xpathID,resultFrameID,statusID,color,focus) {
         autopagerUtils.log("search called")
         var xpath = document.getElementById(xpathID).value
-        this.searchXPath(xpath,document.getElementById(resultFrameID),statusID,color);
+        this.searchXPath(xpath,document.getElementById(resultFrameID),statusID,color,focus);
 
     },
-    searchXPath:function(xpath,contentFrame,statusID,color) {
+    searchXPath:function(xpath,contentFrame,statusID,color,focus) {
         autopagerUtils.log("search called")
 
         var doc = autopagerSidebar.currentDoc;
@@ -259,13 +270,20 @@ var autopagerSidebar =
         }
 
         var resultList = this.getXPathNodes(doc, xpath)
-        this.showResultList(doc,resultList,contentFrame,statusID,color)
+        if (resultList.length>0)
+        {
+            if (autopagerSidebar.linkColor == color)
+                this.addXPathList(document.getElementById("autoLinkPathTreeBody"),xpath,1,resultList.length);
+            else
+                this.addXPathList(document.getElementById("autoContentPathTreeBody"),xpath,1,resultList.length);
+        }
+        this.showResultList(doc,resultList,contentFrame,statusID,color,focus)
 
     },
-    showResultList:function (doc,resultList,contentFrame,statusID,color)
+    showResultList:function (doc,resultList,contentFrame,statusID,color,focus)
     {
         this.updateStatus(resultList,statusID)
-        this.updateHtmlResults(resultList,contentFrame,color)
+        this.updateHtmlResults(resultList,contentFrame,color,focus)
     },
     updateStatus:function(results,statusID) {
         var status;
@@ -278,7 +296,7 @@ var autopagerSidebar =
         }
         document.getElementById(statusID).value = status
     }
-    , updateHtmlResults:function(results,contentFrame,color) {
+    , updateHtmlResults:function(results,contentFrame,color,focus) {
         var doc = contentFrame.contentDocument;
         autopagerSidebar.clearNoneLink(doc.body);
 
@@ -286,7 +304,7 @@ var autopagerSidebar =
         var tbody = autopagerSidebar.addNode(table,"tbody");
         
 
-        autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1,color);
+        autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1,color,focus);
         for (var i in results) {
             var node = results[i]
             node.blur = true;
@@ -315,6 +333,27 @@ var autopagerSidebar =
             result++
         }
         return result
+    },
+    addXPathList:function(treeChild,xpath,authority,matchCount)
+    {
+        var lists = treeChild.parentNode.xpathes;
+        for (var i in lists)
+        {
+            var xpathNode = lists[i];
+            if (xpathNode.xpath == xpath)
+                return;
+        }
+        var newXpathNode = new autopagerXPathItem();
+        newXpathNode.xpath = xpath;
+        newXpathNode.authority = authority;
+        newXpathNode.matchCount = matchCount;
+
+        var newList = [newXpathNode];
+        for (var i in lists)
+        {
+            newList.push( lists[i]);
+        }
+        this.showXPathList(treeChild,newList)
     },
     showXPathList:function(treeChild,lists)
     {
@@ -414,7 +453,7 @@ var autopagerSidebar =
     {
         autopagerSidebar.setXPath('contentXPath','contentXPaths','resultsFrame2','status2','results-caption2',autopagerSidebar.contentColor);
     },
-    setXPath:function(txtboxID,treeID,resultFrameID,statusID,captionID,color)
+    setXPath:function(txtboxID,treeID,resultFrameID,statusID,captionID,color,focus)
     {
         var txtbox = document.getElementById(txtboxID);
         var tree = document.getElementById(treeID);
@@ -424,7 +463,7 @@ var autopagerSidebar =
         //        this.loadIFrame(autopagerSidebar.currentDoc,resultFrameID,captionID);
 
         txtbox.value = xpathItem.xpath;
-        this.searchXPath(xpathItem.xpath,document.getElementById(resultFrameID),statusID,color);
+        this.searchXPath(xpathItem.xpath,document.getElementById(resultFrameID),statusID,color,focus);
     },
 	setXPathes:function()
     {
@@ -441,8 +480,8 @@ var autopagerSidebar =
 
 		var urlPattern = document.getElementById("urlPattern");
 		urlPattern.value = site.urlPattern;
-        this.searchXPath(site.linkXPath,document.getElementById('resultsFrame'),'status',autopagerSidebar.linkColor);
-        this.searchXPath(site.contentXPath,document.getElementById('resultsFrame2'),'status2',autopagerSidebar.contentColor);
+        this.searchXPath(site.linkXPath,document.getElementById('resultsFrame'),'status',autopagerSidebar.linkColor,false);
+        this.searchXPath(site.contentXPath,document.getElementById('resultsFrame2'),'status2',autopagerSidebar.contentColor,false);
     },
     addSite : function()
     {
@@ -555,7 +594,7 @@ var autopagerSidebar =
                   if (links.length>0)
                   {    
                     document.getElementById("xpath").value = links[0].xpath;
-                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor);
+                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor,false);
                   }
 
                   document.getElementById("xpathDeck").selectedIndex = 0;
@@ -595,7 +634,7 @@ var autopagerSidebar =
                   if (links.length>0)
                   {    
                     document.getElementById("contentXPath").value = links[0].xpath;
-                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor);
+                    autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame2"),"status2",autopagerSidebar.contentColor,false);
                   }
 
                   document.getElementById("xpathDeck").selectedIndex = 0;

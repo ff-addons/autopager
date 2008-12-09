@@ -1,5 +1,6 @@
 pref("autopager.enabled", true);
 pref("autopager.debug", false);
+pref("autopager.showpagehold", false);
 pref("autopager.myname", "");
 pref("autopager.smartenable", false);
 pref("autopager.smarttext", "next|>|下一页|次を表示");

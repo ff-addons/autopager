@@ -15,11 +15,18 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
     <window id="main-window">
-        <vbox id="autopager-split-box" collapsed="true" persist="height">
-
+        <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
+            <spring flex="1"/><grippy/><spring flex="1"/>
+            <image id="autopager-close-toolbar" tooltiptext="Close AutoPager Page Holder" class="tabs-closebutton url" onclick="splitbrowse.open(content.document,true);"
+                />
+        </splitter>
+        <vbox id="autopager-split-box" collapsed="false" persist="height" style="min-height: 0px !important;">
         </vbox>
-        <splitter id="autopager-split-splitter" orient="vertical" collapsed="true"/>
     </window>
+    <stringbundleset id="stringbundleset">
+        <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
+    </stringbundleset>
+
     <script type="application/x-javascript">
         window.addEventListener("load", function(){
             autopagerMain.showStatus();
@@ -39,13 +46,9 @@
                         tooltip="autopager_tip">
   	
             
-            <stringbundleset id="autopagerStringbundleset">
-                <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
-            </stringbundleset>
 
             <menupopup id="autopager-popup" hidden="true">
                 <menuitem
-                    key="key_openautopagerSidebar"
                     observes="viewautopagerSidebar"
                     position="1"/>
                 <menuitem
@@ -90,14 +93,12 @@
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
-                          type="checkbox"
-                          autocheck="false" 
                           oncommand="autopagerMain.createXpath( content.document);"
-                /> 
+                />
                 <menuitem
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
+                    oncommand="autopagerMain.testXPathTest( content.document);"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-myname"
@@ -183,7 +184,6 @@
         <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
             <menupopup id="autopager-popup-tool">
                 <menuitem
-                    key="key_openautopagerSidebar"
                     observes="viewautopagerSidebar"
                     position="1"/>
                 <menuitem
@@ -227,14 +227,12 @@
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
-                          type="checkbox"
-                          autocheck="false"
                           oncommand="autopagerMain.createXpath( content.document);"
                 />
                 <menuitem
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
+                    oncommand="autopagerMain.testXPathTest( content.document);"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-immedialate-load" class="autopager-menu-class"
@@ -283,7 +281,6 @@
         <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
             <menupopup id="autopager-popup-tool">
                 <menuitem
-                    key="key_openautopagerSidebar"
                     observes="viewautopagerSidebar"
                     position="1"/>
                 <menuitem
@@ -327,14 +324,12 @@
                 <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
-                          type="checkbox"
-                          autocheck="false" 
                           oncommand="autopagerMain.createXpath( content.document);"
-                /> 
+                />
                 <menuitem
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="toggleSidebar('viewautopagerSidebar');/*autopagerMain.xPathTest( content.document);*/"
+                    oncommand="autopagerMain.testXPathTest( content.document);"
                 />
                 <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-immedialate-load" class="autopager-menu-class"
@@ -381,13 +376,10 @@
     </menupopup>
 
     <menupopup id="viewSidebarMenu">
-        <menuitem key="key_openautopagerSidebar" observes="viewautopagerSidebar"/>
+        <menuitem observes="viewautopagerSidebar"/>
     </menupopup>
 
     <keyset id="mainKeyset">
-        <key id="key_openautopagerSidebar" command="viewautopagerSidebar"
-			key="&openautopagerSidebar.commandkey;"
-			modifiers="&openautopagerSidebar.modifiersKey;"/>
         <key id="key_load3pages" oncommand="autopagerMain.loadPages(content.document,3);"
 			key="&autopager.menuitem.autopager-load-3.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>

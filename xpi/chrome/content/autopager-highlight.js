@@ -8,7 +8,7 @@ const autopagerHightlight =
     {
     
     counts : [],
-    HighlightNodes : function(doc,nodes,selected ,color)
+    HighlightNodes : function(doc,nodes,selected ,color,focus)
     {
         var first = true;
         if (nodes == null || nodes.length == 0)
@@ -26,7 +26,8 @@ const autopagerHightlight =
                     first = false;
 					if (doc.defaultView)
 						doc.defaultView.scrollTo(left,top);
-                    node.focus();
+                    if (focus)
+                        node.focus();
                 }
     
             }

@@ -115,7 +115,7 @@ var AutoPagerUpdateTypes =
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
                         "configurations added to blog",
-                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",true,"autopager-freetext",0,[]));
+                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",false,"autopager-freetext",0,[]));
 
                     
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
@@ -174,14 +174,22 @@ var AutoPagerUpdateTypes =
 				for(var h in defaultSites)
 				{
 					var defaultSite = defaultSites[h]
-					if (defaultSite.filename == site.filename &&
-					(defaultSite.backupUrls!=null && defaultSite.backupUrls.length>0)
-						&& (site.backupUrls==null || site.backupUrls.length==0))
-					{
-						site.backupUrls = defaultSite.backupUrls;
-						site.url = defaultSite.url;
-						changed = true;
-					}
+                    if (defaultSite.filename == site.filename)
+                    {
+                        if (
+                            (defaultSite.backupUrls!=null && defaultSite.backupUrls.length>0)
+                            && (site.backupUrls==null || site.backupUrls.length==0))
+                            {
+                            site.backupUrls = defaultSite.backupUrls;
+                            site.url = defaultSite.url;
+                            changed = true;
+                        }
+                        if (site.filename == "blogcomments.xml")
+                        {
+                            site.enabled = false;
+                            changed = true;
+                        }
+                    }
 				}
 				if (changed)
 				{

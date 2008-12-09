@@ -77,95 +77,39 @@ AutoPagerRefreshPage : function(evt){
    
 },
 sitewizard : function(doc) {
-    alert(autopagerConfig.autopagerGetString("selectlinkxpath"));
-    document.autopagerXPathModel = "wizard";
-    document.autopagerWizardStep = "";
-    if(!doc.documentElement.autoPagerSelectorEnabled)
-        autopagerMain.enableSelector(doc,true);
+    toggleSidebar('viewautopagerSidebar',true);
+    window.setTimeout(function(){
+        var sidebar = document.getElementById("sidebar");
+        var discoverPath = sidebar.contentDocument.getElementById("discoverPath");
+        discoverPath.doCommand();
+
+    },200);
+
+//    alert(autopagerConfig.autopagerGetString("selectlinkxpath"));
+//    document.autopagerXPathModel = "wizard";
+//    document.autopagerWizardStep = "";
+//    if(!doc.documentElement.autoPagerSelectorEnabled)
+//        autopagerMain.enableSelector(doc,true);
 },
 createXpath : function(doc) {
-    document.autopagerXPathModel = "test";
-    autopagerMain.enableSelector(doc,true);
+    toggleSidebar('viewautopagerSidebar',true);
+    window.setTimeout(function(){
+        var sidebar = document.getElementById("sidebar");
+        var pickupContentPath = sidebar.contentDocument.getElementById("pickupContentPath");
+        pickupContentPath.doCommand();
+    },200);
+    //document.autopagerXPathModel = "test";
+    //autopagerMain.enableSelector(doc,true);
 },
-addStyleSheetToDoc : function(doc,styleSheet) {
-    if(doc.createStyleSheet) {
-        doc.createStyleSheet(styleSheet);
-    }
-    else {
-        var styles = "@import url(' " + styleSheet +  " ');";
-        var newSS=doc.createElement('link');
-        newSS.rel='stylesheet';
-        newSS.type = "text/css";
-        newSS.href=styleSheet;	//'data:text/css,'+escape(styles);
-        doc.getElementsByTagName("head")[0].appendChild(newSS);
-    }		
-},
-removeStyleSheetFromDoc : function(doc,styleSheet) {
-    var nodes = autopagerMain.autopagerEvaluateXPath(doc.getElementsByTagName("head")[0],"link[@href ='" + styleSheet + "']",false);
-    for (var i=0;i<nodes.length;++i)
-        doc.getElementsByTagName("head")[0].removeChild(nodes[i]);
-},
-escToExitCreateModel : function(e) {
-    var code;
-    if (!e) var e = window.event;
-    if (e.keyCode) code = e.keyCode;
-    else if (e.which) code = e.which;
-    //var character = String.fromCharCode(code);
-    if (code == 27) //escape
-    {
-        var doc = (e.target.ownerDocument == null) ? e.target : e.target.ownerDocument ;
-        autopagerMain.enableSelector(doc.defaultView.top.document,true);
-    }
-},
-enableSelector : function(doc,setMenuStatus) {
-    if (!(doc instanceof HTMLDocument))
-    {
-        return;
-    }
-    
-    try{
-    var de = doc.documentElement;
-    
-    //alert(doc);
-    if (de.autoPagerSelectorEnabled) {
-        doc.removeEventListener("mouseover", autopagerMain.onXPathMouseOver, false);
-        doc.removeEventListener("keyup", autopagerMain.escToExitCreateModel, false);
-        de.autoPagerSelectorEnabled = false;
-        autopagerMain.removeStyleSheetFromDoc(doc,"chrome://autopagerimg/content/EditorContent.css");
-        autopagerMain.removeStyleSheetFromDoc(doc,"chrome://autopagerimg/content/EditorAllTags.css");
-        autopagerMain.hiddenRegionDivs(doc,"");
-        autopagerMain.hiddenDiv(doc.getElementById("autoPagerLabel"),true);
-
-        if (autopagerMain.selectedObj) {
-            autopagerMain.enableClick(autopagerMain.selectedObj,false);
-        }
-        
-    }else {
-        doc.addEventListener("mouseover", autopagerMain.onXPathMouseOver, false);
-        doc.addEventListener("keyup", autopagerMain.escToExitCreateModel, false);
-        de.autoPagerSelectorEnabled = true;
-        
-        autopagerMain.addStyleSheetToDoc(doc,"chrome://autopagerimg/content/EditorContent.css");
-        if (autopagerMain.loadBoolPref('showtags'))
-          autopagerMain.addStyleSheetToDoc(doc,"chrome://autopagerimg/content/EditorAllTags.css");
-    }
-    if (setMenuStatus) {
-        if (de.autoPagerSelectorEnabled ) {
-            var msg = autopagerConfig.autopagerGetString("esctoabort");
-            alert(msg);
-            autopagerMain.logInfo(msg,msg);
-        }
-        document.getElementById("autoPagerCreateXPath").setAopenSettingttribute("checked",
-                de.autoPagerSelectorEnabled);
-    }
-    if (doc.defaultView.frames != null) {
-        //alert(doc.defaultView.frames.length);
-        var i=0;
-        for(i=0;i<doc.defaultView.frames.length;++i) {
-            autopagerMain.enableSelector(doc.defaultView.frames[i].document,false);
-        }
-    }
-    }catch(e){}
+testXPathTest : function(doc) {
+    toggleSidebar('viewautopagerSidebar',true);
+    window.setTimeout(function(){
+        var sidebar = document.getElementById("sidebar");
+        var contentXPath = sidebar.contentDocument.getElementById("contentXPath");
+        contentXPath.focus();
+    },200);
+    //document.autopagerXPathModel = "test";
+    //autopagerMain.enableSelector(doc,true);
 },
 onPageUnLoad : function(event) {
     
@@ -250,6 +194,9 @@ onContentLoad : function(event) {
   },
   Copy : function (container,doc)
   {
+
+    //We can't use this, it doesn't work in some ajax page
+    return;
     var childs = doc.documentElement.childNodes;
     var i=0;
     for(i=childs.length-1;i>=0;--i)
@@ -300,6 +247,7 @@ onContentLoad : function(event) {
                         {
                             furtherscrollWatcher =autopagerMain.scrollWindow(browser.auotpagerContentDoc,doc);
                             autopagerMain.onStopPaging(browser.auotpagerContentDoc);
+                            splitbrowse.switchToCollapsed(true);
                         }
                     }
                 }
@@ -418,31 +366,6 @@ getCapString : function(str)
 {
     return str.substring(0,1).toUpperCase() + str.substring(1);
 },
-convertStringToXPath2 : function(str,dir) {
-    var xi="";
-    
-    if (str.length>0) {
-       xi = autopagerMain.doConvertStringToXPath (str,dir)
-        var cap = autopagerMain.getCapString(str);
-       if (cap != str)
-        xi = autopagerMain.appendOrCondition(xi,autopagerMain.doConvertStringToXPath (cap,dir));
-    }
-    return xi;
-},
-doConvertStringToXPath : function(str,dir) {
-    var xi="";
-    
-    if (str.length>0) {
-        xi = autopagerMain.appendOrCondition(xi,  dir + ("text()") + " ='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@id and " + dir + "@id" + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@name and " + dir + "@name" + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "@class and " + dir + "@class" + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" + dir + "img and ("  + dir + "img/@src" + "='" + str + "' " +
-        				" or substring(" + dir + "img/@src,1," + str.length + ")" + "='" + str + "'))");
-
-    }
-    return xi;
-},
 
 appendOrCondition : function(base,newStr) {
     if (base.length > 0) {
@@ -522,8 +445,9 @@ onInitDoc : function(doc,safe) {
     try{
     //autopagerMain.log("1.1 " + new Date().getTime())
         this.autopagerDebug=autopagerMain.getAutopagerPrefs().getBoolPref(".debug");
-        document.getElementById("autopager-hidden-panel-menu").hidden = !this.autopagerDebug;
-        document.getElementById("autopager-hidden-panel-separator").hidden = !this.autopagerDebug;
+        var showpagehold=autopagerMain.getAutopagerPrefs().getBoolPref(".showpagehold");
+        document.getElementById("autopager-hidden-panel-menu").hidden = !this.autopagerDebug && !showpagehold;
+        document.getElementById("autopager-hidden-panel-separator").hidden = !this.autopagerDebug && !showpagehold;
     //autopagerMain.log("1.2 " + new Date().getTime())
     }catch(e) {
         autopagerMain.alertErr(e);
@@ -714,7 +638,7 @@ onInitDoc : function(doc,safe) {
 
                     var topDoc = doc.defaultView.top.document;
                     if (!topDoc.documentElement.autopagerEnabledDoc)
-                        topDoc.documentElement.autopagerEnabledDoc = new Array();
+                        topDoc.documentElement.autopagerEnabledDoc = [];
                     topDoc.documentElement.autopagerEnabledDoc.push( doc);
                     try{
                         if (autopagerMain.workingAutoSites[i].enableJS || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript"))) {
@@ -866,7 +790,7 @@ doScrollWatcher : function() {
 									doc.documentElement.forceLoadPage = 0;
 								var scrollDoc =doc;
 
-								var wh = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
+								var winHeight = window.innerHeight;//scrollDoc.defaultView.innerHeight ? scrollDoc.defaultView.innerHeight : scrollDoc.documentElement.clientHeight;
 
 								var scrollContainer = null;
 								if (scrollDoc.documentElement.getAttribute("containerXPath"))
@@ -879,46 +803,66 @@ doScrollWatcher : function() {
 												if (autopagerContainer!=null)
 												{
 														scrollContainer = autopagerContainer[0];
-														wh = autopagerContainer[0].clientHeight;
+														winHeight = autopagerContainer[0].clientHeight;
+
+                                                        if (!(scrollContainer.style.getPropertyValue("overflow-y") == 'scroll'))
+                                                        {
+                                                            scrollContainer.style.setProperty("overflow-y",'scroll',null);
+                                                            var pNode=scrollContainer.parentNode;
+                                                            var s1 = scrollDoc.defaultView.getComputedStyle(pNode, null);
+                                                            var s2 = scrollDoc.defaultView.getComputedStyle(scrollDoc.body, null);
+                                                            if ((s1 !=null &&( s1.getPropertyValue("overflow")=='hidden'
+                                                                ||s1.getPropertyValue("overflow-y")=='hidden'))
+                                                                || ((s2 != null && s2.getPropertyValue("overflow")=='hidden'
+                                                                ||s2.getPropertyValue("overflow-y")=='hidden')))
+                                                            {
+                                                                var wHeight = scrollDoc.body != null ?
+                                                                    scrollDoc.body.scrollHeight : scrollContainer.scrollHeight ;
+//                                                                if (scrollContainer != null && scrollContainer.scrollHeight < sh)
+//                                                                    wHeight = scrollContainer.scrollHeight;
+                                                                scrollContainer.style.setProperty("height",(wHeight - this.getOffsetTop(scrollContainer)) + 'px',null);
+                                                            }
+                                                        }
 												}
 										}
 
 								}
 								if (scrollContainer==null)
 										scrollContainer = scrollDoc.documentElement;
-								var sc = (scrollContainer && scrollContainer.scrollTop)
+								var scrollTop = (scrollContainer && scrollContainer.scrollTop)
 								? scrollContainer.scrollTop : scrollDoc.body.scrollTop;
-								var sh = (scrollContainer && scrollContainer.scrollHeight)
+								var scrollOffset = (scrollContainer && scrollContainer.scrollHeight)
 								? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
-								if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
-										sh = scrollDoc.body.scrollHeight;
+								if (scrollDoc.body != null && scrollDoc.body.scrollHeight > scrollOffset)
+										scrollOffset = scrollDoc.body.scrollHeight;
 
 
-								var remain = sh - sc - scrollContainer.offsetTop - wh;
+								var remain = scrollOffset - scrollTop - scrollContainer.offsetTop - winHeight;
 								this.count++;
 								if (this.autopagerDebug)
-										autopagerMain.logInfo(this.count + ": Auto pager wh:" + wh+ " sc:" + sc + " remain: " + remain,
-												"sh=" + sh + " sc = " + sc + " wh= " + wh + " Auto pager remain: " + remain + ".\nremain < " + wh+" will auto page.");
+										autopagerMain.logInfo(this.count + ": Auto pager wh:" + winHeight+ " sc:" + scrollTop + " remain: " + remain,
+												"sh=" + scrollOffset + " sc = " + scrollTop + " wh= " + winHeight + " Auto pager remain: " + remain + ".\nremain < " + winHeight+" will auto page.");
 
 								//alert(wh);
 								if (this.autopagerDebug)
-										wh = wh * (doc.documentElement.margin*1 + 2);
+										winHeight = winHeight * (doc.documentElement.margin*1 + 1);
 								else
-										wh = wh * (doc.documentElement.margin * 1 + 1.5);
+										winHeight = winHeight * (doc.documentElement.margin * 1);
 								//alert(wh);
 								//needLoad = remain < wh;
 								var targetHeight = 0;
-								var a = de.autoPagerPageHeight
-								if (a!=null && a.length >= doc.documentElement.margin)
+                                //notice doc.documentElement is different to de here!!!!!
+								var a = doc.documentElement.autoPagerPageHeight;
+                                if (a!=null && a.length >= 1)
 								{
 										var pos = a.length - 1;//doc.documentElement.margin
 										targetHeight = a[pos];
 								}
-								var currHeight = sc + scrollContainer.offsetTop;// + wh
-								needLoad = (targetHeight < currHeight) || remain < wh;
+								var currHeight = scrollTop + scrollContainer.offsetTop;// + wh
+								needLoad = (targetHeight < currHeight) || remain < winHeight;
 							}
                             if( needLoad){
-                                if (de.autoPagerPage==null || de.autoPagerPage<2)
+                                if (doc.documentElement.autoPagerPage==null || doc.documentElement.autoPagerPage<2)
                                  {
                                     //test the contetXPATH first
                                     var xpath = doc.documentElement.contentXPath;
@@ -956,31 +900,36 @@ doScrollWatcher : function() {
                                 if (needConfirm)
                                 {
                                     doc.documentElement.autopagerEnabled = false;
-									var showoption = {value: false};
-									var result = false;
-									if (autopagerMain.loadEnableStat() && autopagerMain.loadBoolPref("modalprompt"))
-									{
-										var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-																.getService(Components.interfaces.nsIPromptService);
-										var host = doc.location.host;
-										var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
-										result = prompts.confirmCheck(window, autopagerConfig.autopagerFormatString("enableurl",[host]),
-											autopagerConfig.autopagerFormatString("enableonsite",[host,owner]),
-																		  autopagerConfig.autopagerFormatString("showoptions",[host,owner]), showoption);
-									    document.autopagerConfirmDoc = doc;
-										if (showoption.value==false)
-										{
-											autopagerMain.enabledThisSite(result);
-										}
-										else
-											autopagerMain.enabledInThisSession(false);
-									    document.autopagerConfirmDoc = null;
-
-									}
-									else if (!autopagerMain.loadBoolPref("modalprompt"))
-										showoption.value = true;
-									if (showoption.value)
-										autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),false || !autopagerMain.loadEnableStat());
+                                    var showoption = {value: false};
+                                    var result = false;
+                                    if ((doc.documentElement.autopagerSessionAllowed && doc.documentElement.autopagerAllowedPageCount== doc.documentElement.autoPagerPage))
+                                    {
+                                        showoption.value = true;
+                                    }
+                                    else
+                                    if (autopagerMain.loadEnableStat() && autopagerMain.loadBoolPref("modalprompt"))
+                                    {
+                                        var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+                                        .getService(Components.interfaces.nsIPromptService);
+                                        var host = doc.location.host;
+                                        var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
+                                        result = prompts.confirmCheck(window, autopagerConfig.autopagerFormatString("enableurl",[host]),
+                                        autopagerConfig.autopagerFormatString("enableonsite",[host,owner]),
+                                        autopagerConfig.autopagerFormatString("showoptions",[host,owner]), showoption);
+                                        document.autopagerConfirmDoc = doc;
+                                        if (showoption.value==false)
+                                        {
+                                            autopagerMain.enabledThisSite(result);
+                                        }
+                                        else
+                                            autopagerMain.enabledInThisSession(false);
+                                        document.autopagerConfirmDoc = null;
+                                        
+                                    }
+                                    else if (!autopagerMain.loadBoolPref("modalprompt"))
+                                        showoption.value = true;
+                                    if (showoption.value)
+                                        autopagerMain.hiddenDiv(autopagerMain.getPagingOptionDiv(doc),false || !autopagerMain.loadEnableStat());
                                 }
                                 else
                                     if ((doc.documentElement.autopagerUserConfirmed
@@ -1048,29 +997,6 @@ showAllPagingOptions : function() {
        autopagerMain.alertErr("Exception:" + e);
    }
     
-},
-onXPathMouseOver : function(event) {
-    var target = event.target;
-    if (target == null)
-        target = event.explicitTarget;
-    
-    if(target.tagName=="BODY"||target.tagName=="HTML" 
-    ||(target.offsetHeight<10&&target.offsetWidth<10)) {
-        return true;
-    }
-    if (target.className == "autoPagerS") {
-        return true;
-    }
-    if (target.tagName != 'A' && target.parentNode.tagName == 'A')
-        target = target.parentNode;
-    
-    var str = autopagerConfig.autopagerFormatString("moveover",[target.tagName,autopagerMain.getXPathForObject(target)]);
-    autopagerMain.logInfo(str,str);
-    
-    //event.target.addEventListener("click",autopagerMain.onXPathClick,true);
-    //event.target.addEventListener("contextmenu",onMyContextMenu,true);
-    autopagerMain.createPagerSelectorDivs(target.ownerDocument,target);
-    return true;
 },
 createDiv : function(doc,id,style) {
     var div = doc.createElement("div");
@@ -1173,29 +1099,6 @@ getLastDiv: function(doc) {
     
     return div;
 },
-enableClickOnNode : function(node,enabled) {
-    if (node!=null)
-    {
-    if (enabled) {
-        node.addEventListener("click",autopagerMain.onXPathClick,true);
-    }else {
-        node.removeEventListener("click",autopagerMain.onXPathClick,true);
-    }
-    }
-},
-enableClick : function(node,enabled) {
-    //if (node.parentNode.tagName == "A")
-    autopagerMain.enableClickOnNode(node.parentNode,enabled);
-    autopagerMain.enableClickOnNodes(node,enabled);
-},
-enableClickOnNodes : function(node,enabled) {
-    autopagerMain.enableClickOnNode(node,enabled);
-    var childs = node.childNodes;
-    var i=0;
-    for(i=0;i<childs.length;++i)
-        autopagerMain.enableClickOnNodes(childs[i],enabled);
-},
-selectedObj : null,
 hiddenRegionDivs : function(doc,subfix) {
     var leftDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
     var rightDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
@@ -1216,16 +1119,6 @@ hiddenDiv :function(div,hidden) {
         }
     }
 	//div.hidden = hidden;
-},
-createPagerSelectorDivs : function(doc,target) {
-    if (autopagerMain.selectedObj) {
-        autopagerMain.enableClick(autopagerMain.selectedObj,false);
-    }
-    autopagerMain.selectedObj = target;
-    autopagerMain.enableClick(autopagerMain.selectedObj,true);
-    autopagerMain.createRegionDivs(doc,target,"");
-    autopagerMain.createLabelDivs(doc,target,"");
-        
 },
 myGetPos : function(target)
 {
@@ -1259,62 +1152,6 @@ myGetWindowDimensions : function (doc)
 	}
 	return out;
 },
-makeElementLabelString :function(target) {
-	var s = "<b style='color:#000'>" + target.tagName.toLowerCase() + "</b>";
-	if (target.id != '')
-		s += ", id: " + target.id;
-	if (target.className != '')
-		s += ", class: " + target.className;
-	/*for (var i in target.style)
-		if (target.style[i] != '')
-			s += "<br> " + i + ": " + target.style[i]; */
-	if (target.style.cssText != '')
-		s += ", style: " + target.style.cssText;
-		
-	return s;
-},
-labelDrawnHigh :null,
-createLabelDivs : function(doc,target,subfix)
-{
-	var pos = autopagerMain.myGetPos(target)
-	var dims = autopagerMain.myGetWindowDimensions (doc);    
-    	var y = pos.y + target.offsetHeight + 1;
-        var labelDiv =autopagerMain.getLabelDiv(doc,"autoPagerLabel" + subfix);
-	labelDiv.style.left = (pos.x + 2) + "px";
-        
-    
-    	
-        labelDiv.innerHTML = autopagerMain.makeElementLabelString(target);
-	labelDiv.style.display = "";
-
-	// adjust the label as necessary to make sure it is within screen and
-	// the border is pretty
-	if ((y + labelDiv.offsetHeight) >= dims.scrollY + dims.height)
-	{
-		labelDiv.style.borderTopWidth = "1px";
-		labelDiv.style.MozBorderRadiusTopleft = "6px";
-		labelDiv.style.MozBorderRadiusTopright = "6px";
-		autopagerMain.labelDrawnHigh = true;
-		y = (dims.scrollY + dims.height) - labelDiv.offsetHeight;
-	}
-	else if (labelDiv.offsetWidth > target.offsetWidth)
-	{
-		labelDiv.style.borderTopWidth = "1px";
-		labelDiv.style.MozBorderRadiusTopright = "6px";
-		autopagerMain.labelDrawnHigh = true;
-	}
-	else if (autopagerMain.labelDrawnHigh)
-	{
-		labelDiv.style.borderTopWidth = "0";
-		labelDiv.style.MozBorderRadiusTopleft = "";
-		labelDiv.style.MozBorderRadiusTopright = "";
-		delete (autopagerMain.labelDrawnHigh); 
-	}
-	labelDiv.style.top = y + "px";	
-
-            
-},
-    
 createRegionDivs : function(doc,target,subfix) {
     var margin = 3;
     var leftDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
@@ -1352,197 +1189,6 @@ createRegionDivs : function(doc,target,subfix) {
     autopagerMain.hiddenDiv(topDiv,false);
     autopagerMain.hiddenDiv(bottomDiv,false);
     
-},
-appendCondition : function(base,newStr) {
-    if (base.length > 0) {
-        if (newStr.length > 0)
-            return base + " and " + newStr;
-        else
-            return base;
-    }
-    return newStr;
-},
-getXIdetify:function(node,dir) {
-    var xi = "";
-    try{
-        if ((node.className != null) && (node.className.length >0)) {
-            xi = autopagerMain.appendCondition(xi,dir + "@class='" + node.className + "'");
-        }
-        if (node.getAttribute("id") != null && node.getAttribute("id").length >0) {
-            xi = autopagerMain.appendCondition(xi,dir + "@id='" + node.getAttribute("id") + "'");
-        }
-        if (node.textContent != null && node.childNodes.length ==1 && node.textContent.length >0 && node.textContent.length < 10) {
-            //only if child is #text
-            var child = node.childNodes[0];
-            
-            if(child.nodeType == 3)
-                xi = autopagerMain.appendCondition(xi, "contains(" +dir + "text(),'" + child.textContent + "')");
-        }
-        if(node.tagName == "INPUT") {
-            if (node.getAttribute("type") != null && node.getAttribute("type").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@type='" + node.getAttribute("type") + "'");
-            }
-            if (node.getAttribute("name") != null && node.getAttribute("name").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@name='" + node.getAttribute("name") + "'");
-            }
-            if (node.getAttribute("value") != null && node.getAttribute("value").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@value='" + node.getAttribute("value") + "'");
-            }
-            if (node.getAttribute("src") != null && node.getAttribute("src").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@src='" + node.getAttribute("src") + "'");
-            }
-        }
-        else if(node.tagName == "IMG") {
-            if (node.getAttribute("src") != null && node.getAttribute("src").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@src='" + node.getAttribute("src") + "'");
-            }
-            if (node.getAttribute("alt") != null && node.getAttribute("alt").length >0) {
-                xi = autopagerMain.appendCondition(xi,dir + "@alt='" + node.getAttribute("alt") + "'");
-            }
-        }
-    }catch(e) {
-        autopagerMain.alertErr(e);
-    }
-    return xi;
-},
-getTagCount : function(childs,index) {
-    var tagCount = 0;
-    var tagname = childs[index].tagName;
-    var i;
-    for(i=childs.length-1;i>=0;--i) {
-        if (childs[i].tagName == tagname)
-            tagCount ++;
-    }
-    return tagCount;
-},
-getTagIndex : function(childs,index) {
-    var tagIndex = 1;
-    var tagname = childs[index].tagName;
-    var i;
-    for( i=index-1;i>=0;--i) {
-        if (childs[i].tagName == tagname)
-            tagIndex ++;
-    }
-    return tagIndex;
-},
-getXPath :function(node,dir,deep) {
-    var xi = autopagerMain.getXIdetify(node,dir);
-    if (deep >0 && node.hasChildNodes() &&  (node.childNodes != null) && (node.childNodes.length > 0)) {
-        var i=0;
-        var childs = node.childNodes;
-        for(i=0;i<childs.length;++i) {
-            if (childs[i].nodeType == 1) {
-                var tagname = childs[i].tagName.toLowerCase();
-                if (autopagerMain.getTagCount(childs,i) > 1)
-                    tagname = tagname + "[" + autopagerMain.getTagIndex(childs,i) + "]";
-                xi = autopagerMain.appendCondition(xi,
-                autopagerMain.getXPath(childs[i], dir + tagname +"/" ,deep-1));
-            }
-        }
-    }
-    return xi;
-},
-getTagName : function(node) {
-    var tagname = node.tagName.toLowerCase();
-    if (tagname == 'td' || tagname == 'th' || tagname == 'tr' || tagname == 'tbody')
-        tagname = "table";
-    return tagname;
-},
-getPathDir : function(root,child) {
-    var dir="";
-    if (root != child) {
-        if (root == 'table') {
-            if (child == 'td' || child == 'th')
-                dir = "/" + child;
-            if (child != "tbody")
-                dir = "/tr" + dir;
-            dir = "tbody" + dir;
-        }
-        if (dir.length >0)
-            dir = dir +"/";
-    }
-    return dir;
-},
-getXPathForObject : function(target) {
-    var tagname = autopagerMain.getTagName(target);
-    var dir = autopagerMain.getPathDir(tagname,target.tagName.toLowerCase());
-    var path="//" + tagname;
-    var xi = autopagerMain.getXPath(target,dir,1);
-    if (xi.length >0)
-        path = path +  "[" + xi + "]";
-    return path;	
-},
-onXPathClick : function(event) {
-    event.preventDefault();
-    var target = event.target;
-    if(target != event.currentTarget)
-        return false;
-    
-    if (target.tagName != 'A' && target.parentNode.tagName == 'A')
-        target = target.parentNode;
-    var path = autopagerMain.getXPathForObject(target);
-    content.document.xTestLastDoc = target.ownerDocument;
-    var doc = content.document.xTestLastDoc;
-    var url = doc.location.href;
-    
-    var newpath = autopagerMain.xTestXPath(target.ownerDocument,path);
-    if (newpath != null && document.autopagerXPathModel == "wizard") {
-
-        if (document.autopagerWizardStep != "contentXPath")
-        {
-        //step1, select the xpath
-         if ( confirm(autopagerConfig.autopagerGetString("xpathconfirm"))) {
-            document.autopagerWizardStep = "contentXPath";
-            document.autopagerWizardLinkXPath = newpath;
-            alert(autopagerConfig.autopagerGetString("selectcontentxpath"));
-        }else if(!confirm(autopagerConfig.autopagerGetString("tryagain"))) {
-            if(doc.documentElement.autoPagerSelectorEnabled)
-                autopagerMain.enableSelector(content.document,true);
-        }
-        else
-            if(!doc.documentElement.autoPagerSelectorEnabled)
-                autopagerMain.enableSelector(content.document,true);
-       
-        }
-       else
-           {
-       
-      if ( confirm(autopagerConfig.autopagerGetString("contentxpathconfirm"))) {
-            var urlPattern = url;
-            if (url.indexOf("?")>0)
-                urlPattern = url.substring(0,url.indexOf("?")) + "*";
-            var site = autopagerConfig.newSite(urlPattern,url
-                ,document.autopagerWizardLinkXPath,newpath,[url]);
-            site.createdByYou = true;
-            site.owner = autopagerMain.loadMyName();
-            while (site.owner.length == 0)
-                site.owner = autopagerMain.changeMyName();
-            //general link
-            if (target.tagName == "A" && (/^( )*javascript( )*\:/.test(target.href.toLowerCase())))
-                site.enableJS = false;
-            else
-                site.enableJS = true;
-            autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
-            autopagerConfig.insertAt(autopagerMain.workingAutoSites,0,site);
-            autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
-            document.autopagerXPathModel = "";
-            document.autopagerWizardStep = "";
-            autopagerConfig.openSetting(urlPattern);
-            if(doc.documentElement.autoPagerSelectorEnabled)
-                autopagerMain.enableSelector(doc,true);
-        }else if(!confirm(autopagerConfig.autopagerGetString("tryagain"))) {
-            if(doc.documentElement.autoPagerSelectorEnabled)
-                autopagerMain.enableSelector(content.document,true);
-        }
-        else
-            if(!doc.documentElement.autoPagerSelectorEnabled)
-                autopagerMain.enableSelector(content.document,true);
-       }
-    }
-    //	if (target.tagName == 'A')
-    //		autopagerMain.processNextDoc(target.autoPagerHref);
-    event.preventDefault();
-    return true;
 },
 getOffsetTop : function(target) {
     var node=target;
@@ -1692,6 +1338,7 @@ onSplitDocLoadedWithDelay : function(doc,timeout)
     try{
         autopagerMain.scrollWindow(browser.auotpagerContentDoc,doc);
         autopagerMain.onStopPaging(browser.auotpagerContentDoc);
+        splitbrowse.switchToCollapsed(true);
     }catch(e)
     {
         var de = doc.documentElement
@@ -1862,9 +1509,17 @@ observeConnection : function (doc)
     return listener;
 },
 autopagerSimulateClick : function(win,doc,node) {
-    var evt = node.ownerDocument.createEvent("MouseEvents");
-    evt.initMouseEvent("click", true, true, win,
-                0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    var click = node.ownerDocument.createEvent("MouseEvents");
+    click.initMouseEvent("click", true, true, win,
+                1, 1, 1, 1, 1, false, false, false, false, 0, null);
+
+    var mousedown = node.ownerDocument.createEvent("MouseEvents");
+    mousedown.initMouseEvent("mousedown", true, true, win,
+                1, 1, 1, 1, 1, false, false, false, false, 0, null);
+    var mouseup = node.ownerDocument.createEvent("MouseEvents");
+    mouseup.initMouseEvent("mouseup", true, true, win,
+                1, 1, 1, 1, 1, false, false, false, false, 0, null);
+
     //handle ajax site
     var listener=null;
     if (doc.documentElement.getAttribute('autopagerAjax')=='true')
@@ -1872,7 +1527,12 @@ autopagerSimulateClick : function(win,doc,node) {
         //observe http conections
         listener = this.observeConnection(node.ownerDocument);
     }
-    var canceled = !node.dispatchEvent(evt);
+    splitbrowse.switchToCollapsed(false);
+     var canceled = !node.dispatchEvent(mousedown);
+        canceled = !node.dispatchEvent(click);
+        canceled = !node.dispatchEvent(mouseup);
+//    var canceled =false;
+//    node.doCommand();
     if (doc.documentElement.getAttribute('autopagerAjax')=='true')
     {
         //observe http conections
@@ -2679,62 +2339,6 @@ findNodeInDoc : function(doc,path,enableJS) {
         return result;
     }
     
-},
-xPathTest : function(doc) {
-    if (!doc.xTestLastDoc)
-        doc.xTestLastDoc = doc;
-    autopagerMain.xTestXPath(doc,autopagerMain.xpath);
-},
-xTestXPath : function(doc,path) {
-    
-    var newpath = path;//prompt("Please input the xpath:",path);
-    var key = "inputxpath";
-    if (document.autopagerXPathModel != "wizard") {
-        key = "inputxpath";
-    }
-    else
-        key = "modifyxpath";
-    newpath =prompt(autopagerConfig.autopagerGetString(key),path);
-    
-    if (!newpath || newpath.length==0)
-        return null;
-    autopagerMain.xpath = newpath;
-    var found = autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath,false);
-    if (found==null || found.length ==0) {
-        //try on all frame
-         if (document.autopagerXPathModel != "wizard") {
-            if (doc.defaultView.frames != null) {
-                //alert(doc.defaultView.frames.length);
-                var i=0;
-                for(i=0;i<doc.defaultView.frames.length;++i) {
-                    found = autopagerMain.autopagerEvaluateXPath(doc.defaultView.frames[i].document,autopagerMain.xpath,false);
-                    if (found!=null && found.length >0)
-                        break;
-                }
-            }
-
-         }
-         if (found==null || found.length ==0) 
-        {
-                alert(autopagerConfig.autopagerGetString("xpathreturnnothing"));
-                return null;
-        }
-    }
-    
-    var w=window.open();
-    var newDoc = 	w.document;
-    autopagerMain.createDiv(newDoc,"","").innerHTML = "<h1>Result for XPath: " + autopagerMain.xpath + "</h1><br/>" ;
-    for(var i=0;i<found.length;++i) {
-        try{
-            //alert(found[i].tagName);
-            var div = autopagerMain.createDiv(newDoc,"","");
-            div.appendChild(newDoc.importNode( found[i],true));
-        }catch(e) {
-            autopagerMain.alertErr(e);
-        }
-    }
-    
-    return newpath;
 },
 showAutoPagerMenu : function() {
     autopagerMain.showMyName();

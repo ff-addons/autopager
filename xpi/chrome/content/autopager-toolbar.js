@@ -47,14 +47,14 @@ function autopagerToobarInit() {
     var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
     var prefBranch = prefService.getBranch("autopager.");
     if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-        prefBranch.setCharPref("last_version", "0.3.0.4");
+        prefBranch.setCharPref("last_version", "0.3.0.10");
         autopagerOpenIntab(autopagerHome,null);
         addAutopagerButton();
     } else { // check for upgrade
         var lastVersion = prefBranch.getCharPref("last_version");
-        if (lastVersion != "0.3.0.4")
+        if (lastVersion != "0.3.0.10")
         {
-            prefBranch.setCharPref("last_version", "0.3.0.4");
+            prefBranch.setCharPref("last_version", "0.3.0.10");
             autopagerOpenIntab(autopagerHome,null);
             //addAutopagerButton();
         }
@@ -70,8 +70,36 @@ function autopagerOpenIntab(url,obj)
         var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                       .getService(Components.interfaces.nsIIOService);
         var ops = ioService.newURI("http://www.teesoft.info", null, null);
-        var tab = browser.addTab(url,ops);
-        browser.selectedTab = tab;
+        var uri = ioService.newURI(url, null, null);
+        var tab = null;
+        if (browser.addTab)
+        {
+            tab = browser.addTab(url,ops);
+            browser.selectedTab = tab;
+        }
+        else if (window.Browser)
+        {
+            try{
+                tab = Browser._content.newTab(true);
+                if (tab) {
+                  var content = Browser._content;
+                  var browser = content.getBrowserForDisplay(content.getDisplayForTab(tab));
+                  newWindow = browser.contentWindow;
+                }
+                newWindow.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                 .getInterface(Components.interfaces.nsIWebNavigation)
+                 .loadURI(uri.spec, 
+                    Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE,
+                    null, null, null);
+                newWindow.focus();
+            }catch(e)
+            {
+                alert(e)
+            }
+        }else
+        {
+            return window.open(url, "_blank");
+        }
         return tab;
     } else {
         return window.open(url, "_blank");
