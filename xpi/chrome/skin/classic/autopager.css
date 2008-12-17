@@ -1,4 +1,11 @@
-
+#helptip{
+    max-width: 48px !important;
+    max-height: 48px !important;
+}
+#helptip image{
+    max-width: 48px !important;
+    max-height: 48px !important;
+}
 treechildren:-moz-tree-row(selected) {
    background: #E4EEF8;
    border-bottom: 0px

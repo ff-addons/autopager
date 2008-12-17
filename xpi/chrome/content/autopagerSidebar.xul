@@ -32,6 +32,8 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />
+
     <toolbox class="plain">
         <toolbar>
             <toolbarbutton id="discoverPath" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.discovery();" tooltiptext="&toolbarbutton.discoverPath.tooltiptext;"/>
@@ -156,4 +158,11 @@
             <tooltip id="autopager-viewsource" noautohide="true" orient="vertical"/>
         </vbox>
     </deck>
+    <vbox flex="0">
+<tooltip  id="helptip" flex="1">
+  <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
+      style="color: red;"
+      onclick=" autopagerSidebar.tips.openHelpTip(this.parentNode);" class="text-link"/>
+</tooltip>
+</vbox>
 </page>

@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
 <!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "IDs beim Auswählen der Elemente anzeigen">

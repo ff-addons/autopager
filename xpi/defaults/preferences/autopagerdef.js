@@ -26,3 +26,9 @@ pref("autopager.modalprompt", true);
 pref("extensions.autopager@mozilla.org.description", "chrome://autopager/locale/autopager.properties");  
 pref("autopager.hide-status", false);
 
+pref("autopager.loadingDelayMiliseconds", "100");
+pref("autopager.show-help", false);
+pref("autopager.miniheight", "0.5");
+pref("autopager.defaultheight", "2");
+pref("autopager.minipages", "1");
+

@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
 <!ENTITY setting.label.pagebreak "分页符样式:">
+<!ENTITY setting.label.showHelpTips "显示帮助提示，你可以点击它查看相关对象的说明">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
 <!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY setting.label.showtags "选择页面元素时显示元素标签">

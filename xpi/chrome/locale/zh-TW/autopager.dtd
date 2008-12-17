@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "頁面空間剩下">
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
 <!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">

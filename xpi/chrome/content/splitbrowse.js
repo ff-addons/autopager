@@ -476,7 +476,7 @@ var splitbrowse = {
         //alert("done");
         window.setTimeout(function(){
             autopagerMain.onSplitDocLoaded(doc,true);
-        },10);
+        },autopagerMain.getDelayMiliseconds());
     }
 };
 var splitpanelProgressListener = {    

@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "Paginazione quando lo spazio è inferiore a">
 <!ENTITY setting.label.marginEnd "Altezza della finestra">
 <!ENTITY setting.label.pagebreak "Stile per le interruzioni di pagina:">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">

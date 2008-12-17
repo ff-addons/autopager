@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
 <!ENTITY setting.label.marginEnd "vensterhoogte">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
 <!ENTITY setting.label.showStatusBar "AutoPager-pictogram weergeven in statusbalk">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">

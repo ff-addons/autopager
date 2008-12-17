@@ -8,6 +8,8 @@ var autopagerSidebar =
 	contentColor: "orange",
 	maxWidth: '',
 	orgPriority: '',
+    search: false,
+    tips : null,
     loadString: function() {
         // initialization code
         this.initialized = true;
@@ -50,10 +52,24 @@ var autopagerSidebar =
         }
         document.getElementById("xpathDeck").selectedIndex = 0;
     },
-
+    onMouseOver:function (event)
+    {
+        autopagerSidebar.tips.onMouseOver(event);
+    },
+    onMouseOut:function (event)
+    {
+        autopagerSidebar.tips.onMouseOut(event);
+    },
     onLoad : function() {
         autopagerUtils.log("onLoad() called");
 
+    autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
+
+        if (autopagerMain.loadBoolPref("show-help"))
+        {
+            window.addEventListener("mouseover",autopagerSidebar.onMouseOver,false);
+            window.addEventListener("mouseout",autopagerSidebar.onMouseOut,false);
+        }
 		var sidebar = window.top.document.getElementById("sidebar");
 		autopagerSidebar.orgPriority = sidebar.style.getPropertyPriority ("max-width");
 		autopagerSidebar.maxWidth = sidebar.style.getPropertyValue ("max-width");
@@ -72,24 +88,28 @@ var autopagerSidebar =
 						sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
 				}
         }
-		document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);},false);
-        document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','status');},false);
+		//document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);},false);
+        document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
         document.getElementById("xpath").addEventListener('keypress',
                     function(event){
                         if (event.keyCode == event.DOM_VK_RETURN)
-                        autopagerSidebar.tabbox.selectedIndex=1;
-						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);
+                        {
+                            autopagerSidebar.tabbox.selectedIndex=1;
+    						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,true);
+                        }
                     },true);
         document.getElementById("xpath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=1;},false);
 
 
-        document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);},false);
-        document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','status2');},false);
+        //document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);},false);
+        document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},false);
         document.getElementById("contentXPath").addEventListener('keypress',
                     function(event){
                         if (event.keyCode == event.DOM_VK_RETURN)
-                        autopagerSidebar.tabbox.selectedIndex=2;
-                        autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);
+                        {
+                            autopagerSidebar.tabbox.selectedIndex=2;
+                            autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,true);
+                        }
                     },true);
         document.getElementById("contentXPath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=2;},false);
         
@@ -242,7 +262,7 @@ var autopagerSidebar =
         
     },
 
-    onTextChangeInXPathBox:function(xpathID,statusID) {
+    onTextChangeInXPathBox:function(xpathID,resultsFrame,statusID,color) {
         setTimeout(function()
         {
             var xpathCtrl = document.getElementById(xpathID)
@@ -250,14 +270,32 @@ var autopagerSidebar =
             var isValid = autopagerXPath.isValidXPath(xpath,autopagerSidebar.currentDoc)
             document.getElementById(statusID).value = isValid ? "" : "Syntax error"
             xpathCtrl.style.color = isValid? "green": "red";
+            autopagerSidebar.lazySearch(xpathID,resultsFrame,statusID,color,false);
         },10);
     },
-
+    lazySearch:function(xpathID,resultFrameID,statusID,color,focus) {
+        autopagerSidebar.xpathID = xpathID;
+        autopagerSidebar.resultFrameID = resultFrameID;
+        autopagerSidebar.statusID = statusID;
+        autopagerSidebar.color = color;
+        if (!autopagerSidebar.searching)
+        {
+              setTimeout(function()
+              {
+                  autopagerSidebar.searching = true;
+                  autopagerSidebar.search(autopagerSidebar.xpathID
+                        ,autopagerSidebar.resultFrameID
+                        ,autopagerSidebar.statusID
+                        ,autopagerSidebar.color
+                        ,false);
+                  autopagerSidebar.searching = false;
+              },1000);
+        }
+    },
     search:function(xpathID,resultFrameID,statusID,color,focus) {
         autopagerUtils.log("search called")
         var xpath = document.getElementById(xpathID).value
         this.searchXPath(xpath,document.getElementById(resultFrameID),statusID,color,focus);
-
     },
     searchXPath:function(xpath,contentFrame,statusID,color,focus) {
         autopagerUtils.log("search called")
@@ -270,7 +308,7 @@ var autopagerSidebar =
         }
 
         var resultList = this.getXPathNodes(doc, xpath)
-        if (resultList.length>0)
+        if (focus && resultList.length>0)
         {
             if (autopagerSidebar.linkColor == color)
                 this.addXPathList(document.getElementById("autoLinkPathTreeBody"),xpath,1,resultList.length);
@@ -674,6 +712,8 @@ var autopagerSidebar =
     },
 	quit: function()
 	{
+    window.removeEventListener("mouseover",autopagerSidebar.onMouseOver,false);
+    window.removeEventListener("mouseout",autopagerSidebar.onMouseOut,false);
 
 		var sidebar = window.top.document.getElementById("sidebar");
 

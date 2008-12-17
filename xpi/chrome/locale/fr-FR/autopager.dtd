@@ -102,6 +102,7 @@
 <!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
 <!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
 <!ENTITY setting.label.showStatusBar "Afficher l&apos;icône d&apos;AutoPager dans la barre d&apos;état">
 <!ENTITY setting.label.showtags "Afficher les balises nœud lors de la sélection de l&apos;élément">

@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.3.0.10").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.4.0").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -234,7 +234,7 @@ function Site()
 	this.desc = null;
 	this.testLink = [];
 	this.oldSite = null;
-	this.margin = autopagerMain.getMiniMargin();
+	this.margin = autopagerMain.getDefaultMargin();
 	
 	this.maxLinks = -1;
         this.isTemp = false;
@@ -862,6 +862,7 @@ loadConfigFromUrl : function(url) {
  loadConfigFromDoc : function(doc) {
   var sites = new Array();
   var nodes = autopagerConfig.autopagerGetNode(doc);
+  var miniMargin = autopagerMain.getMiniMargin();
   if (nodes == null)
       return sites;
   var hasQuickLoad = false;
@@ -892,10 +893,10 @@ loadConfigFromUrl : function(url) {
                 var val = autopagerConfig.getValue(childNode);
                         if (autopagerConfig.isNumeric(val))
                         {
-								if (val>autopagerMain.getMiniMargin())
+								if (val>miniMargin)
 								  site.margin = val;
 						        else
-								  site.margin = autopagerMain.getMiniMargin();
+								  site.margin = miniMargin;
                         }
       }
       else if (nodeName == "desc") {

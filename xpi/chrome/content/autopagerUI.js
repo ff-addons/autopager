@@ -19,14 +19,21 @@ var allSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,showHelpTip;
     var selectedListItem = null;
     var margin,smartMargin;
     var selectedSite;
     var contentXPath;
     var xpath="";
     var siteSearch;
-    
+
+if (autopagerMain.loadBoolPref("show-help"))
+    {
+    var tips = new autopagerTip("AutopagerUI:");
+
+    window.addEventListener("mouseover",function(event){tips.onMouseOver(event);},false);
+    window.addEventListener("mouseout",function(event){tips.onMouseOut(event);},false);
+}
     var btnAddRemovePath, btnEditRemovePath, btnDeleteRemovePath, lstRemoveXPath
 
     var settingDeck;
@@ -206,6 +213,7 @@ function autopagerOpenIntab(url,obj)
         autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
         autopagerMain.saveBoolPref("modalprompt",simpleModalPrompt.checked);
         autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
+        autopagerMain.saveBoolPref("show-help",showHelpTip.checked);
 
 
 
@@ -320,6 +328,10 @@ function autopagerOpenIntab(url,obj)
 
         showStatusBar = document.getElementById("showStatusBar");
         showStatusBar.checked = !autopagerMain.loadBoolPref("hide-status");
+
+        showHelpTip = document.getElementById("showHelpTip");
+        showHelpTip.checked = autopagerMain.loadBoolPref("show-help");
+
 
         smartenable = document.getElementById("smartenable");
         smartenable.checked = autopagerMain.loadBoolPref("smartenable");

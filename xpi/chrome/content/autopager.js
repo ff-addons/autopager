@@ -41,6 +41,7 @@ var autopagerMain =
     workingAutoSites:null,
     workingAllSites:null,
     autopagerConfirmSites : null,
+    addonsList : null,
 
 autopagerOnLoad : function() {
     window.addEventListener("DOMContentLoaded", autopagerMain.onContentLoad, false);
@@ -584,6 +585,7 @@ onInitDoc : function(doc,safe) {
                     de.autopagerUserConfirmed= true;
                     de.autopagerSessionAllowed= siteConfirm.UserAllowed;
                     de.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
+                    de.autopagerSessionAllowedPageCount = siteConfirm.AllowedPageCount;
                     de.autopagerUserAllowed=siteConfirm.UserAllowed;
                 }
     //autopagerMain.log("10 " + new Date().getTime()) 
@@ -626,6 +628,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
+                de.setAttribute('autopagerVersion',"0.4.0");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -850,16 +853,21 @@ doScrollWatcher : function() {
 										winHeight = winHeight * (doc.documentElement.margin * 1);
 								//alert(wh);
 								//needLoad = remain < wh;
-								var targetHeight = 0;
-                                //notice doc.documentElement is different to de here!!!!!
-								var a = doc.documentElement.autoPagerPageHeight;
-                                if (a!=null && a.length >= 1)
-								{
-										var pos = a.length - 1;//doc.documentElement.margin
-										targetHeight = a[pos];
-								}
 								var currHeight = scrollTop + scrollContainer.offsetTop;// + wh
-								needLoad = (targetHeight < currHeight) || remain < winHeight;
+								var targetHeight = 0;
+                                var minipages = autopagerMain.loadPref("minipages");
+                                if (minipages>0)
+                                {
+                                    //notice doc.documentElement is different to de here!!!!!
+                                    var a = doc.documentElement.autoPagerPageHeight;
+                                    if (a!=null && a.length >= minipages)
+                                    {
+                                            var pos = a.length - minipages;//doc.documentElement.margin
+                                            targetHeight = a[pos];
+                                    }
+                                }else
+                                    targetHeight = currHeight;
+								needLoad = ( (targetHeight < currHeight)) || remain < winHeight;
 							}
                             if( needLoad){
                                 if (doc.documentElement.autoPagerPage==null || doc.documentElement.autoPagerPage<2)
@@ -880,6 +888,7 @@ doScrollWatcher : function() {
                                     doc.documentElement.autopagerUserConfirmed = true;
                                     doc.documentElement.autopagerUserAllowed = true;
                                     doc.documentElement.autopagerAllowedPageCount = -1;
+                                    doc.documentElement.autopagerSessionAllowedPageCount  = -1;
                                 }
                                 if (!doc.documentElement.autopagerUserConfirmed)
 								{
@@ -890,6 +899,7 @@ doScrollWatcher : function() {
 											de.autopagerSessionAllowed= siteConfirm.UserAllowed;
 											de.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
 											de.autopagerUserAllowed=siteConfirm.UserAllowed;
+                                            de.autopagerSessionAllowedPageCount = siteConfirm.AllowedPageCount;
 										}
 								}
                                 var needConfirm =  (!autopagerMain.loadBoolPref("noprompt"))
@@ -1948,6 +1958,25 @@ scrollWindow : function(container,doc) {
             var insertPoint =	de.autopagerinsertPoint;
 
             insertPoint.parentNode.insertBefore(div,insertPoint);
+
+            //load preload xpaths, like //style for make WOT works
+            var preXPath=this.getPreloadXPaths();
+            if (preXPath.length>0)
+             {
+                var preloadNodes = autopagerMain.findNodeInDoc(doc,preXPath,de.getAttribute('enableJS') == 'true');
+                for(i=0;i<preloadNodes.length;++i) {
+                    try{
+                        var newNode = preloadNodes[i];
+                        newNode = container.importNode (newNode,true);
+                        newNode = insertPoint.parentNode.insertBefore(newNode,insertPoint);
+
+                    }catch(e) {
+                        autopagerMain.alertErr(e);
+                    }
+                }
+             }
+
+
             for(i=0;i<nodes.length;++i) {
                 try{
                     var newNode = nodes[i];
@@ -2098,7 +2127,11 @@ getPagingOptionDiv : function(doc)
     }
     if (!autopagerMain.loadBoolPref("noprompt"))
         showonnew.checked = true;
-    
+
+    if (doc.documentElement.autopagerSessionAllowedPageCount>0)
+    {
+        doc.getElementById("autopagercount").value = doc.documentElement.autopagerSessionAllowedPageCount;
+    }
     return div;
 	
 },
@@ -2228,6 +2261,7 @@ enabledInNextPages : function(enabled,count)
     var de =doc.documentElement;
     de.autopagerUserConfirmed= true;
     de.autopagerSessionAllowed= true;
+    de.autopagerSessionAllowedPageCount = count;
     de.autopagerAllowedPageCount=de.autoPagerPage+count;
     de.autopagerUserAllowed=enabled;
     de.autopagerEnabled = enabled;
@@ -2630,13 +2664,65 @@ alertErr : function(e) {
     }
 	, getMiniMargin : function()
 	{
-			return 2;
+			return autopagerMain.loadPref("miniheight");
+    }
+	, getDefaultMargin : function()
+	{
+			return autopagerMain.loadPref("defaultheight");
     }
 	, showStatus : function(){
             var statusBar = document.getElementById("autopager_status");
             if (statusBar!=null)
 				statusBar.hidden = autopagerMain.loadBoolPref("hide-status");
+    },
+    getAddonsList: function _getAddonsList() {
+
+    if (this.addonsList==null)
+    {
+  	var extensionDir = Components.classes["@mozilla.org/file/directory_service;1"]
+                          .getService(Components.interfaces.nsIProperties)
+                          .get("ProfD", Components.interfaces.nsIFile);
+    extensionDir.append("extensions");
+  	var entries = extensionDir.directoryEntries;
+
+  	var list = [];
+
+    while (entries.hasMoreElements()) {
+  		var entry = entries.getNext();
+  		entry.QueryInterface(Components.interfaces.nsIFile);
+  		if (!entry.isDirectory())
+        continue;
+  		var guid = entry.leafName;
+  		list.push(guid);
+  	}
+    this.addonsList = list;
     }
+  	return this.addonsList;
+  },
+  getPreloadXPaths : function ()
+  {
+    var xPathlists = [];
+    var extensionsXPath = {
+      "{a0d7ccb3-214d-498b-b4aa-0e8fda9a7bf7}": "//style" //WOT
+    }
+
+    var list = this.getAddonsList();
+
+    var len = list.length;
+
+    for (var j = 0; j < len; j++) {
+      var curExt = list[j];
+      if (extensionsXPath[curExt]) {
+        xPathlists.push(extensionsXPath[curExt]);
+      }
+    }
+    return xPathlists;
+
+  },
+  getDelayMiliseconds : function()
+  {
+    return autopagerMain.loadPref("loadingDelayMiliseconds");
+  }
 };
 
 autopagerMain.autopagerOnLoad();

@@ -99,9 +99,10 @@
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
 <!ENTITY setting.label.loading "loading notification style:">
-<!ENTITY setting.label.margin "Paging when space less then">
-<!ENTITY setting.label.marginEnd "window hight">
+<!ENTITY setting.label.margin "Paging when space is less then">
+<!ENTITY setting.label.marginEnd "window heights">
 <!ENTITY setting.label.pagebreak "page break style:">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
 <!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
