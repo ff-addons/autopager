@@ -249,6 +249,11 @@ onContentLoad : function(event) {
                             furtherscrollWatcher =autopagerMain.scrollWindow(browser.auotpagerContentDoc,doc);
                             autopagerMain.onStopPaging(browser.auotpagerContentDoc);
                             splitbrowse.switchToCollapsed(true);
+                            if (browser.auotpagerContentDoc.documentElement.autoPagerPage==2)
+                            {
+                                window.content.focus();
+                            }
+
                         }
                     }
                 }
@@ -431,12 +436,23 @@ setShiftKey:function(value)
 },
 getRegExp :function(site)
 {
-   if (site.regex==null)
-   {
-		 if (site.isRegex)
-            site.regex = new RegExp(site.urlPattern);
-         else
-            site.regex = convert2RegExp(site.urlPattern);
+   try{
+       if (site.regex==null)
+       {
+             if (site.isRegex)
+                try{
+                    site.regex = new RegExp(site.urlPattern);
+                }catch(re)
+                {
+                    //error create regexp, try to use it as pattern
+                    site.regex = convert2RegExp(site.urlPattern);
+                }
+             else
+                site.regex = convert2RegExp(site.urlPattern);
+        }
+    }catch(e)
+    {
+        site.regex = /no-such-regex/;
     }
 	return site.regex;
 },
@@ -628,7 +644,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.0");
+                de.setAttribute('autopagerVersion',"0.4.0.2");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
