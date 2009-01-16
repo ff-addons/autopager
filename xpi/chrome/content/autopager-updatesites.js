@@ -103,9 +103,9 @@ var AutoPagerUpdateTypes =
                         "autopagerize.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
-                        "http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
-                        "autopagerize new configurations",
-                        "autopagerizeJson.xml",'',true,"autopagerize-json",168,[]));
+                        "http://static.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
+                        "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
+                        "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
             sites.push(new AutoPagerUpdateSite("chinalist","all",
                         "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
