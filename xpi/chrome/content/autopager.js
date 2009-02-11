@@ -42,6 +42,7 @@ var autopagerMain =
     workingAllSites:null,
     autopagerConfirmSites : null,
     addonsList : null,
+    flashIconNotify: false,
 
 autopagerOnLoad : function() {
     window.addEventListener("DOMContentLoaded", autopagerMain.onContentLoad, false);
@@ -165,7 +166,13 @@ onContentLoad : function(event) {
         {
             return;
         }
-	autopagerMain.showStatus();
+   if (doc.documentElement.scrollWidth<window.innerWidth/3 || doc.documentElement.scrollHeight<window.innerHeight/3)
+   {
+       //ignore small iframe/frame
+       return;
+   }
+
+    autopagerMain.showStatus();
     if (doc.defaultView.name=="autoPagerLoadDivifr")
         return;
     if (!document.autoPagerInited) {
@@ -174,6 +181,7 @@ onContentLoad : function(event) {
         window.setTimeout(function(){autopagerConfig.autopagerUpdate();},400);
    }
     autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+    autopagerMain.flashIconNotify = autopagerMain.loadBoolPref("flashIconNotify");
 	if (doc.documentElement.forceLoadPage==null)
 		doc.documentElement.forceLoadPage = 0;
 	if (!autopagerMain.loadEnableStat() && doc.documentElement.forceLoadPage==0)
@@ -261,7 +269,7 @@ onContentLoad : function(event) {
             
         }
         if (furtherscrollWatcher)
-        autopagerMain.scrollWatcher();
+            autopagerMain.scrollWatcher();
         return;
     }
 
@@ -644,7 +652,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.0.4");
+                de.setAttribute('autopagerVersion',"0.4.0.5");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -776,8 +784,8 @@ loadPages : function (doc,pages)
 count:0,
 scrollWatching: false,
 scrollWatcher : function() {
-    autopagerMain.doScrollWatcher();
-    setTimeout(autopagerMain.doScrollWatcher,2000);
+    //autopagerMain.doScrollWatcher();
+    setTimeout(autopagerMain.doScrollWatcher,20);
 },
 doScrollWatcher : function() {
     if (autopagerMain.scrollWatching)
@@ -1750,7 +1758,10 @@ processNextDocUsingXMLHttpRequest : function(doc,url){
     }
     
 },
-
+evaluateWrapper: function (doc, aExpr, aNode)
+{
+    return doc.evaluate(aExpr, aNode, null, 0, null);
+},
 // Evaluate an XPath expression aExpression against a given DOM node
 // or Document object (aNode), returning the results as an array
 // thanks wanderingstan at morethanwarm dot mail dot com for the
@@ -1764,7 +1775,7 @@ autopagerEvaluateXPath : function(aNode, path,enableJS) {
     try{
         //var doc = aNode.ownerDocument == null ?
         //		aNode.documentElement : aNode.ownerDocument.documentElement;
-        var result = doc.evaluate(aExpr, aNode, null, 0, null);
+        var result =  autopagerMain.evaluateWrapper(doc,aExpr, aNode);// doc.evaluate(aExpr, aNode, null, 0, null);
         
 //        var xpe = new XPathEvaluator();
 //        var nsResolver = xpe.createNSResolver(doc.documentElement);
@@ -1943,10 +1954,10 @@ scrollWindow : function(container,doc) {
 
 
 			var scrollContainer = null;
-			if (de.containerXPath != null)
+			if (de.getAttribute("containerXPath"))
 			{
 					autopagerContainer = autopagerMain.findNodeInDoc(
-							de,de.containerXPath,false);
+							de,de.getAttribute("containerXPath"),false);
 					if (autopagerContainer!=null)
 					{
 							scrollContainer = autopagerContainer[0];
@@ -2043,19 +2054,10 @@ getNextUrl : function(container,enableJS,node) {
 },
 onStartPaging  : function(doc) {
     doc.documentElement.autopagerPagingCount ++;
-    try{
-        autopagerMain.logInfo(autopagerConfig.autopagerFormatString("autopaging",[ doc.location.href]),
-        autopagerConfig.autopagerFormatString("autopaging",[ doc.location.href]));
-    }catch(e) {		
-    }
     autopagerMain.pagingWatcher();
 },
 onStopPaging : function(doc) {
-    try{
-        autopagerMain.logInfo(autopagerConfig.autopagerFormatString("autopageOn",[doc.location.href]),
-        autopagerConfig.autopagerFormatString("autopageOnTip",[doc.location.href]));
-    }catch(e) {		
-    }
+
     doc.documentElement.autopagerEnabled = true;
     //if (doc.documentElement.autopagerPagingCount>0)
         doc.documentElement.autopagerPagingCount--;
@@ -2063,7 +2065,8 @@ onStopPaging : function(doc) {
     {
         //.defaultView.top.content.document
                 autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
-            autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+                if (autopagerMain.flashIconNotify)
+                    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     }
 },
 getPagingWatcherDiv : function(doc,create)
@@ -2340,19 +2343,24 @@ pagingWatcher : function() {
             }
             if (loading)
                 {
+                    if (autopagerMain.flashIconNotify)
+                    {
                     document.autoPagerImageShowStatus = !document.autoPagerImageShowStatus;
                     autopagerMain.setGlobalImageByStatus(document.autoPagerImageShowStatus);
                     var self = arguments.callee;
-                    setTimeout(self, 300);//10 +Math.random()*200);                    
+                    setTimeout(self, 300);//10 +Math.random()*200);
+                    }
                 }
             
         }
         else {
             autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
-            autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+            if (autopagerMain.flashIconNotify)
+                autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         }
     }catch(e) {
-        autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+        if (autopagerMain.flashIconNotify)
+            autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
     }
     
@@ -2457,7 +2465,7 @@ getGlobalEnabled : function() {
     }
 },
 saveEnableStat : function(enabled) {
-    autopagerMain.getAutopagerPrefs().setBoolPref(".enabled", enabled); // set a pref
+    autopagerMain.saveBoolPref("enabled", enabled); // set a pref
 },
 loadEnableStat : function() {
     return autopagerMain.getAutopagerPrefs().getBoolPref(".enabled"); // get a pref
@@ -2564,8 +2572,8 @@ loadBoolPref : function(name) {
 },
 savePref : function(name,value) {
     try{
-        
-        return autopagerMain.getAutopagerPrefs().setCharPref("." +  name,value); // set a pref
+        if (autopagerMain.getAutopagerPrefs().getCharPref("." +  name)!=value)
+            return autopagerMain.getAutopagerPrefs().setCharPref("." +  name,value); // set a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
     }
@@ -2574,6 +2582,7 @@ savePref : function(name,value) {
 saveBoolPref : function(name,value) {
     try{
         
+        if (autopagerMain.getAutopagerPrefs().getBoolPref("." +  name)!=value)
         return autopagerMain.getAutopagerPrefs().setBoolPref("." +  name,value); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -2690,6 +2699,13 @@ alertErr : function(e) {
             var statusBar = document.getElementById("autopager_status");
             if (statusBar!=null)
 				statusBar.hidden = autopagerMain.loadBoolPref("hide-status");
+            var separator1 = document.getElementById("autopager-context-separator1");
+            if (separator1!=null)
+                separator1.hidden = autopagerMain.loadBoolPref("hide-context-menu");
+            var menu = document.getElementById("autopager-context-menu");
+            if (menu!=null)
+                menu.hidden = autopagerMain.loadBoolPref("hide-context-menu");
+
     },
     getAddonsList: function _getAddonsList() {
 

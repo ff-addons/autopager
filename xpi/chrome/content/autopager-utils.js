@@ -16,6 +16,11 @@ const autopagerUtils = {
         if (autopagerPref.loadBoolPref("debug"))
            debug(message)
     },
+    consoleLog: function(message) {
+        var consoleService = Components.classes['@mozilla.org/consoleservice;1']
+                .getService(Components.interfaces.nsIConsoleService);
+        consoleService.logStringMessage(message)
+    },
     currentDocument: function()
     {
 	return this.currentBrowser().contentDocument;  

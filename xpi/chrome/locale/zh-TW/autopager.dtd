@@ -65,6 +65,7 @@
 <!ENTITY setting.button.up "向上移">
 <!ENTITY setting.buttonlabelextra1 "套用">
 <!ENTITY setting.key "u">
+<!ENTITY setting.label.advanced "Advanced">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
 <!ENTITY setting.label.btnEdit "編輯">
 <!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件。">

@@ -32,11 +32,11 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
 
-<tooltip  id="helptip"  flex="1">
-  <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
+    <tooltip  id="helptip"  flex="1">
+        <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
       style="color: red;"
       onclick=" tips.openHelpTip(this.parentNode);" class="text-link"/>
-</tooltip>
+    </tooltip>
     
     <tabbox id="autopager-tabbox" flex="1">
         <tabs>
@@ -54,7 +54,7 @@
                                 <tree flex="10"  id="treeSites" seltype="multiple" width="400">
                                     <treecols>
                                         <treecol id="urlPatternCol" label="&setting.tree.URLPattern;" primary="true"  flex="5" width="300"/>
-                                        <splitter class="tree-splitter"/>    
+                                        <splitter class="tree-splitter"/>
                                         <treecol id="descCol" label="&setting.tree.Description;" flex="1" hidden="false"/>
                                     </treecols>
                                     <treechildren id="siteContents"></treechildren>
@@ -72,29 +72,29 @@
                                 
                                 <popupset>
                                     <popup id="import-settings" position="before_start">
-                                        <menuitem 
+                                        <menuitem
                                             label="&autopager.status.importurl;"
                                             tooltiptext="&autopager.status.importurlTip;"
                                             oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromURL(function(){onSiteFilter(siteSearch.value,true)});"
                                         />
-                                        <menuitem 
+                                        <menuitem
                                             label="&autopager.status.importfile;"
                                             tooltiptext="&autopager.status.importfileTip;"
                                             oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromFile();onSiteFilter(siteSearch.value,true);"
                                         />
-                                        <menuitem 
+                                        <menuitem
                                             label="&autopager.status.importclip;"
                                             tooltiptext="&autopager.status.importclipTip;"
                                             oncommand="autopagerConfig.saveConfig(sites);autopagerConfig.importFromClip();onSiteFilter(siteSearch.value,true);"
                                         />
                                     </popup>
                                     <popup id="export-settings" position="before_start">
-                                        <menuitem 
+                                        <menuitem
                                             label="&autopager.status.exportfile;"
                                             tooltiptext="&autopager.status.exportfileTip;"
                                             oncommand="exportSelectedSetting(false);"
                                         />
-                                        <menuitem 
+                                        <menuitem
                                             label="&autopager.status.exportclip;"
                                             tooltiptext="&autopager.status.exportclipTip;"
                                             oncommand="exportSelectedSetting(true);"
@@ -113,120 +113,136 @@
                     </vbox>
                     <splitter/>
                     <deck id="settingDeck" selectedIndex="1">
-                    <vbox flex="1">
-                        <hbox align="center">
-                            <label control="lblOwner" value="&setting.label.lblOwner;"/>
-                            <label id="lblOwner" value=""/>
-	                        <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
-                            <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;" 
+                        <vbox flex="1">
+                            <tabbox id="rule-tabbox" flex="1">
+                                <tabs>
+                                    <tab label="&setting.label.general;"/>
+                                    <tab label="&setting.label.advanced;"/>
+                                </tabs>
+                                <tabpanels  flex="1">
+                                    <tabpanel id="rule-general-setting"  flex="1">
+                                        <vbox flex="1">
+                                            <hbox align="center">
+                                                <label control="lblOwner" value="&setting.label.lblOwner;"/>
+                                                <label id="lblOwner" value=""/>
+                                                <checkbox id="chkEnabled" label="&setting.label.chkEnabled;" checked="true" />
+                                                <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;"
                                     hidden="true" flex="1" style="color:red;"
                                      tooltiptext="&setting.button.cloneToEditTip;"/>                                
-                        </hbox>
+                                            </hbox>
                         
-                        <hbox align="center">
-                            <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
-                            <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
-                            <textbox id="urlPattern" flex="1"/>
-                        </hbox>
-                        <hbox align="center">
-                            <label control="margin" value="&setting.label.margin;"/>
-                            <textbox id="margin" flex="1"/>
-                            <label control="margin" value="&setting.label.marginEnd;"/>
-                        </hbox>
-                        <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="false" />
-                        <checkbox id="chkAjax" label="&setting.label.chkAjax;" checked="false" />
-                        <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
-                        <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
-                        <vbox id="auto-xpath" flex="1">
-                            <hbox align="center">
-                                <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
-                                <textbox id="linkXPath" flex="1"/>
-                                <button id="pickLinkPath" label="&setting.button.pick;" />
-                            </hbox>
-                            <hbox align="center">
-                                <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
-                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
-                            </hbox>
-                            <groupbox id="grpContentXPath" orient="vertical" flex="1">
-                                <caption label="&setting.label.grpContentXPath;" />
-                                <hbox style="margin-bottom:.5em;" flex="1">
-                                    <listbox id="lstContentXPath" flex="1" rows="3"/>
-                                    <vbox>
-                                        <button id="btnAddPath" label="&setting.button.add;" />
-                                        <button id="btnEditPath" label="&setting.button.edit;" />
-                                        <button id="btnDeletePath" label="&setting.button.remove;"/>
-                                        <spacer flex="1"/>
-                                        <button id="btnUp" label="&setting.button.up;" />
-                                        <button id="btnDown" label="&setting.button.down;" />
-                                    </vbox>
-                                </hbox>
-                            </groupbox>
+                                            <hbox align="center">
+                                                <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
+                                                <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
+                                                <textbox id="urlPattern" flex="1"/>
+                                            </hbox>
+                                            <hbox align="center">
+                                                <label control="margin" value="&setting.label.margin;"/>
+                                                <textbox id="margin" flex="1"/>
+                                                <label control="margin" value="&setting.label.marginEnd;"/>
+                                            </hbox>
+                                            <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="false" />
+                                            <vbox id="auto-xpath" flex="1">
+                                                <hbox align="center">
+                                                    <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
+                                                    <textbox id="linkXPath" flex="1"/>
+                                                    <button id="pickLinkPath" label="&setting.button.pick;" />
+                                                </hbox>
+                                                <groupbox id="grpContentXPath" orient="vertical" flex="1">
+                                                    <caption label="&setting.label.grpContentXPath;" />
+                                                    <hbox style="margin-bottom:.5em;" flex="1">
+                                                        <listbox id="lstContentXPath" flex="1" rows="3"/>
+                                                        <vbox>
+                                                            <button id="btnAddPath" label="&setting.button.add;" />
+                                                            <button id="btnEditPath" label="&setting.button.edit;" />
+                                                            <button id="btnDeletePath" label="&setting.button.remove;"/>
+                                                            <spacer flex="1"/>
+                                                            <button id="btnUp" label="&setting.button.up;" />
+                                                            <button id="btnDown" label="&setting.button.down;" />
+                                                        </vbox>
+                                                    </hbox>
+                                                </groupbox>
 
-                            <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
-                                <caption label="&setting.label.grpRemoveXPath;" />
-                                <hbox style="margin-bottom:.5em;" flex="1">
-                                    <listbox id="lstRemoveXPath" flex="1"  rows="3"/>
-                                    <vbox>
-                                        <button id="btnAddRemovePath" label="&setting.button.add;" />
-                                        <button id="btnEditRemovePath" label="&setting.button.edit;" />
-                                        <button id="btnDeleteRemovePath" label="&setting.button.remove;"/>
-                                    </vbox>
-                                </hbox>
-                            </groupbox>
+                                            </vbox>
+                                            <hbox flex="2">
+                                                <label control="desc" value="&setting.label.lblDesc;"/>
+                                                <textbox multiline="true" id="desc" rows="4" flex="1"/>
+                                            </hbox>
+                                        </vbox>
+                                    </tabpanel>
+                                    <tabpanel  id="rule-advanced-setting"  flex="1">
+                                        <vbox flex="1">
+                                            <checkbox id="chkAjax" label="&setting.label.chkAjax;" checked="false" />
+                                            <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
+                                            <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
+                                            <hbox align="center">
+                                                <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
+                                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
+                                            </hbox>
+                                            <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
+                                                <caption label="&setting.label.grpRemoveXPath;" />
+                                                <hbox style="margin-bottom:.5em;" flex="1">
+                                                    <listbox id="lstRemoveXPath" flex="1"  rows="3"/>
+                                                    <vbox>
+                                                        <button id="btnAddRemovePath" label="&setting.button.add;" />
+                                                        <button id="btnEditRemovePath" label="&setting.button.edit;" />
+                                                        <button id="btnDeleteRemovePath" label="&setting.button.remove;"/>
+                                                    </vbox>
+                                                </hbox>
+                                            </groupbox>
+                                        </vbox>
+                                    </tabpanel>
+                                </tabpanels>
+                            </tabbox>
                         </vbox>
-                        <hbox flex="2">
-                            <label control="desc" value="&setting.label.lblDesc;"/>
-                            <textbox multiline="true" id="desc" rows="4" flex="1"/>
-                        </hbox>
-                    </vbox>
-                    <vbox>
-                    <vbox flex="1">
-                        <descrition>
+                        <vbox>
+                            <vbox flex="1">
+                                <descrition>
                             &setting.label.lblSetting;
-                        </descrition>
+                                </descrition>
                         
-                        <hbox align="center">
-                            <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;"/>
-                            <textbox id="lbSettinglOwner" value=""/>
-	                    <checkbox id="chkSettingEnabled" label="&setting.label.chkEnabled;" checked="true" />
-                        </hbox>
-                        <hbox align="center">
-                            <label control="settingurl" value="&setting.label.lblSettingUrl;"/>
-                            <textbox id="settingurl" flex="1"/>
-                        </hbox>
-                        <hbox align="center">
-                            <label control="settingtype" value="&setting.label.lblSettingType;"/>
-                            <menulist id="settingtype" flex="1">
-                                <menupopup>
-                                    <menuitem label="&setting.type.autopager;" value="autopager-xml" selected="true"/>
-                                    <menuitem label="&setting.type.autopagertext;" value="autopager-freetext"/>
-                                    <menuitem label="&setting.type.autopagerize;" value="autopagerize"/>
-                                    <menuitem label="&setting.type.autopagerizeJson;" value="autopagerize-json"/>
-                                </menupopup>
-                            </menulist>
-                        </hbox>
-                            <label control="settingUpdatePeriod" value="&setting.label.lblUpdate;"/>
-                            <menulist id="settingUpdatePeriod" >
-                                <menupopup>
-                                    <menuitem label="&setting.update.global;" value="-2"/>
-                                    <menuitem label="&setting.update.startup;" value="-1"/>
+                                <hbox align="center">
+                                    <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;"/>
+                                    <textbox id="lbSettinglOwner" value=""/>
+                                    <checkbox id="chkSettingEnabled" label="&setting.label.chkEnabled;" checked="true" />
+                                </hbox>
+                                <hbox align="center">
+                                    <label control="settingurl" value="&setting.label.lblSettingUrl;"/>
+                                    <textbox id="settingurl" flex="1"/>
+                                </hbox>
+                                <hbox align="center">
+                                    <label control="settingtype" value="&setting.label.lblSettingType;"/>
+                                    <menulist id="settingtype" flex="1">
+                                        <menupopup>
+                                            <menuitem label="&setting.type.autopager;" value="autopager-xml" selected="true"/>
+                                            <menuitem label="&setting.type.autopagertext;" value="autopager-freetext"/>
+                                            <menuitem label="&setting.type.autopagerize;" value="autopagerize"/>
+                                            <menuitem label="&setting.type.autopagerizeJson;" value="autopagerize-json"/>
+                                        </menupopup>
+                                    </menulist>
+                                </hbox>
+                                <label control="settingUpdatePeriod" value="&setting.label.lblUpdate;"/>
+                                <menulist id="settingUpdatePeriod" >
+                                    <menupopup>
+                                        <menuitem label="&setting.update.global;" value="-2"/>
+                                        <menuitem label="&setting.update.startup;" value="-1"/>
                                     <!-- the value is the hours after last update -->
-                                    <menuitem label="&setting.update.daily;" value="24"/>
-                                    <menuitem label="&setting.update.weekly;" value="168"/>
-                                    <menuitem label="&setting.update.monthly;" value="720"/>
-                                    <menuitem label="&setting.update.never;" value="0"/>
-                                </menupopup>
-                            </menulist>			
-                        <hbox align="center">
-                            <label control="settingxpath" value="&setting.label.lblSettingXPath;"/>
-                            <textbox id="settingxpath" flex="1"/>
-                        </hbox>
-                        <hbox align="center">
-                            <label control="settingdesc" value="&setting.label.lblSettingDesc;"/>
-                            <textbox multiline="true" id="settingdesc" rows="4" flex="1"/>
-                        </hbox>
+                                        <menuitem label="&setting.update.daily;" value="24"/>
+                                        <menuitem label="&setting.update.weekly;" value="168"/>
+                                        <menuitem label="&setting.update.monthly;" value="720"/>
+                                        <menuitem label="&setting.update.never;" value="0"/>
+                                    </menupopup>
+                                </menulist>
+                                <hbox align="center">
+                                    <label control="settingxpath" value="&setting.label.lblSettingXPath;"/>
+                                    <textbox id="settingxpath" flex="1"/>
+                                </hbox>
+                                <hbox align="center">
+                                    <label control="settingdesc" value="&setting.label.lblSettingDesc;"/>
+                                    <textbox multiline="true" id="settingdesc" rows="4" flex="1"/>
+                                </hbox>
+                            </vbox>
                         </vbox>
-                    </vbox>
                     </deck>
                 </hbox>
                 
@@ -308,41 +324,41 @@
                         </hbox>
                     </vbox>
                     <hbox align="center">
-                            <checkbox id="showtags" label="&setting.label.showtags;" check="false" flex="1"/>
+                        <checkbox id="showtags" label="&setting.label.showtags;" check="false" flex="1"/>
                     </hbox>
                     <hbox align="center">
-                            <checkbox id="alwaysEnableJavaScript" label="&setting.label.allwaysEnableJavaScript;" check="false" flex="1"/>
+                        <checkbox id="alwaysEnableJavaScript" label="&setting.label.allwaysEnableJavaScript;" check="false" flex="1"/>
                     </hbox>
                     <hbox align="center">
-                            <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
+                        <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
                     </hbox>
                     <hbox align="center">
-                            <checkbox id="simpleModalPrompt" label="&setting.label.simpleModalPrompt;" check="true" flex="1"/>
+                        <checkbox id="simpleModalPrompt" label="&setting.label.simpleModalPrompt;" check="true" flex="1"/>
                     </hbox>
                     <hbox align="center">
-                            <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+                        <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
                     </hbox>
                     <hbox align="center">
-                            <checkbox id="showHelpTip" label="&setting.label.showHelpTips;" check="false" flex="1"/>
+                        <checkbox id="showHelpTip" label="&setting.label.showHelpTips;" check="false" flex="1"/>
                     </hbox>
                 </vbox>
             </tabpanel>
             <tabpanel id="update-setting">
                 <vbox flex="1">
-                        <hbox align="center">
-                            <label control="updatePeriod" value="&setting.label.lblUpdate;"/>
-                            <menulist id="updatePeriod" flex="1" >
-                                <menupopup>
-                                    <menuitem label="&setting.update.startup;" value="-1" selected="true"/>
+                    <hbox align="center">
+                        <label control="updatePeriod" value="&setting.label.lblUpdate;"/>
+                        <menulist id="updatePeriod" flex="1" >
+                            <menupopup>
+                                <menuitem label="&setting.update.startup;" value="-1" selected="true"/>
                                     <!-- the value is the hours after last update -->
-                                    <menuitem label="&setting.update.daily;" value="24"/>
-                                    <menuitem label="&setting.update.weekly;" value="168"/>
-                                    <menuitem label="&setting.update.monthly;" value="720"/>
-                                    <menuitem label="&setting.update.once;" value="0"/>
-                                </menupopup>
-                            </menulist>
-                        </hbox>
-                </vbox>                  
+                                <menuitem label="&setting.update.daily;" value="24"/>
+                                <menuitem label="&setting.update.weekly;" value="168"/>
+                                <menuitem label="&setting.update.monthly;" value="720"/>
+                                <menuitem label="&setting.update.once;" value="0"/>
+                            </menupopup>
+                        </menulist>
+                    </hbox>
+                </vbox>
             </tabpanel>
         </tabpanels>
     </tabbox>

@@ -50,21 +50,22 @@
 <!ENTITY openautopagerSidebar.commandkey "b">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY setting.appname "AutoPager">
-<!ENTITY setting.button.add "Toevoegen...">
+<!ENTITY setting.button.add "Toevoegen…">
 <!ENTITY setting.button.cloneToEdit "Kopiëren voor bewerking">
 <!ENTITY setting.button.cloneToEditTip "Dit onderdeel komt uit een afgeronde bron. U kunt zonodig de gekopieerde versie bewerken.">
 <!ENTITY setting.button.copy "Kopiëren">
 <!ENTITY setting.button.down "Omlaag">
-<!ENTITY setting.button.edit "Bewerken...">
+<!ENTITY setting.button.edit "Bewerken…">
 <!ENTITY setting.button.export "Exporteren">
 <!ENTITY setting.button.exportTip "Geselecteerde onderdelen exporteren">
 <!ENTITY setting.button.import "Importeren">
-<!ENTITY setting.button.pick "Kiezen...">
+<!ENTITY setting.button.pick "Kiezen…">
 <!ENTITY setting.button.public "Publiek">
 <!ENTITY setting.button.remove "Verwijderen">
 <!ENTITY setting.button.up "Omhoog">
 <!ENTITY setting.buttonlabelextra1 "Toepassen">
 <!ENTITY setting.key "u">
+<!ENTITY setting.label.advanced "Advanced">
 <!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAjax "Dit is een AJAX-site. Niet geladen.">

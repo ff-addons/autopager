@@ -1,7 +1,7 @@
 <!ENTITY autopager.label.value "auto pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immedialately Load">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Immediately Load">
 <!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
 <!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
@@ -65,6 +65,7 @@
 <!ENTITY setting.button.up "In alto">
 <!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.key "u">
+<!ENTITY setting.label.advanced "Advanced">
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Modifica">
 <!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">

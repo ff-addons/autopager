@@ -65,6 +65,7 @@
 <!ENTITY setting.button.up "Monter">
 <!ENTITY setting.buttonlabelextra1 "Appliquer">
 <!ENTITY setting.key "u">
+<!ENTITY setting.label.advanced "Advanced">
 <!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.btnEdit "Éditer">
 <!ENTITY setting.label.chkAjax "C&apos;est un site AJAX. Aucun événement chargé.">

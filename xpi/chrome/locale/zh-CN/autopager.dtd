@@ -65,6 +65,7 @@
 <!ENTITY setting.button.up "上移">
 <!ENTITY setting.buttonlabelextra1 "应用">
 <!ENTITY setting.key "u">
+<!ENTITY setting.label.advanced "高级">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">
 <!ENTITY setting.label.chkAjax "这是个Ajax站点(没有重新加载事件)">

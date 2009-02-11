@@ -444,7 +444,10 @@ function autopagerOpenIntab(url,obj)
            if (selectedSite != null) {
              selectedSite.ajax = chkAjax.checked;
              if (selectedSite.ajax)
-                 chkEnableJS.checked = true;
+             {
+                chkEnableJS.checked = true;
+                selectedSite.enableJS = true;
+             }
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);

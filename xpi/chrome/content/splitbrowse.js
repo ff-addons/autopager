@@ -310,7 +310,7 @@ var splitbrowse = {
             //splitBrowser.setAttribute("class",this.autopagerPrefix + "-split-browser");
             //splitBrowser.setAttribute("home", "about:black");
             vbox.appendChild(splitBrowser);
-	    
+            //var f =  document.commandDispatcher.focusedElement
             splitBrowser.setAttribute(this.getSplitKey(),true);
             splitBrowser.addProgressListener(splitpanelProgressListener,
                 Components.interfaces.nsIWebProgress.NOTIFY_ALL);
@@ -335,12 +335,12 @@ var splitbrowse = {
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             //alert(doc.documentElement.autopagerUseSafeEvent)
             splitbrowse.switchToCollapsed(false);
-
+            
             if (!doc.documentElement.autopagerUseSafeEvent )
                 this.cloneBrowser(splitBrowser,browser);
             else
                 splitBrowser.loadURI( doc.location.href, null, null );
-            
+
         }                  
  
         //splitBrowser.parentNode.hidden = hidden;

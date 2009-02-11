@@ -15,6 +15,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
             <spring flex="1"/><grippy/><spring flex="1"/>
@@ -182,7 +183,7 @@
 
     <popup id="contentAreaContextMenu">
         <menuseparator id="autopager-context-separator1"/>
-        <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
+        <menu id="autopager-context-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
             <menupopup id="autopager-popup-tool">
                 <menuitem
                     observes="viewautopagerSidebar"

@@ -52,7 +52,7 @@ getDatePrefs : function(name){
 },
 setDatePrefs : function(name,date){
    try{
-        
+        if (this.autopagerPrefs.getCharPref("." +  name)!=date.getTime())
         this.autopagerPrefs.setCharPref("." +  name,date.getTime()); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -70,8 +70,8 @@ loadBoolPref : function(name) {
 },
 savePref : function(name,value) {
     try{
-        
-        return this.autopagerPrefs.setCharPref("." +  name,value); // set a pref
+        if (this.autopagerPrefs.getCharPref("." +  name)!=value)
+            return this.autopagerPrefs.setCharPref("." +  name,value); // set a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
     }
@@ -79,8 +79,8 @@ savePref : function(name,value) {
 },
 saveBoolPref : function(name,value) {
     try{
-        
-        return this.autopagerPrefs.setBoolPref("." +  name,value); // get a pref
+        if (this.autopagerPrefs.getBoolPref("." +  name)!=value)
+            return this.autopagerPrefs.setBoolPref("." +  name,value); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
     }

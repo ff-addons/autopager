@@ -47,7 +47,7 @@ var AutoPagerUpdateTypes =
             this.types =  new Array();
 
             this.types.push(new AutoPagerUpdateType("autopager-xml","all",
-            "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
+            "http://rep.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
             "text/xml; charset=utf-8",
             "ap-",this.xmlConfigCallback,"//site",
             "default configurations on autopager.mozdev.org"));
@@ -100,7 +100,7 @@ var AutoPagerUpdateTypes =
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
                         "autopagerize configurations",
-                        "autopagerize.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",0,[]));
+                        "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://static.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
@@ -124,14 +124,19 @@ var AutoPagerUpdateTypes =
                         "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
+                        "http://rep.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
-                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://teesoft.co.cc/autopager/?version={version}&lastupdate={timestamp}"]));
+                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://wind.liyong.googlepages.com/autopager.xml",
+                                "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
+                                "http://vps.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
+                                "http://s2.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
+                                "http://teesoft.co.cc/autopager/?version={version}&lastupdate={timestamp}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://www.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
+                        "http://rep.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
                         "Experimental configurations @ teesoft.info",
-                        "autopagerBeta.xml","//site",false,"autopager-xml",-2,["http://teesoft.co.cc/autopager/?approvedOnly=0&version={version}&lastupdate={timestamp}"]));
+                        "autopagerBeta.xml","//site",false,"autopager-xml",-2,["http://rep.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}",
+                                "http://teesoft.co.cc/autopager/?approvedOnly=0&version={version}&lastupdate={timestamp}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
