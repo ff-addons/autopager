@@ -176,6 +176,14 @@
                                             <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
                                             <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
                                             <hbox align="center">
+                                                <label control="delaymsecs" value="&setting.label.delaymsecs;"/>
+                                                <textbox id="delaymsecs" flex="1"/>
+                                            </hbox>
+                                            <hbox align="center">
+                                                <label control="minipages" value="&setting.label.minipages;"/>
+                                                <textbox id="minipages" flex="1"/>
+                                            </hbox>
+                                            <hbox align="center">
                                                 <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
                                                 <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
                                             </hbox>
@@ -340,6 +348,10 @@
                     </hbox>
                     <hbox align="center">
                         <checkbox id="showHelpTip" label="&setting.label.showHelpTips;" check="false" flex="1"/>
+                    </hbox>
+                    <hbox align="center">
+                        <label control="gdelaymsecs" value="&setting.label.delaymsecs;"/>
+                        <textbox id="gdelaymsecs" flex="1"/>
                     </hbox>
                 </vbox>
             </tabpanel>

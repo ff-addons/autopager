@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "Caricamento rapido (non sicuro su alcuni siti web)">
 <!ENTITY setting.label.chkShift "Maiusc">
 <!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+ Doppio clic">
 <!ENTITY setting.label.general "Generale">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "Stile per le notifiche di caricamento:">
 <!ENTITY setting.label.margin "Paginazione quando lo spazio è inferiore a">
 <!ENTITY setting.label.marginEnd "Altezza della finestra">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "Stile per le interruzioni di pagina:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">

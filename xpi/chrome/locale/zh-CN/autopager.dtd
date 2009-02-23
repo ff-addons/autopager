@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "快速加载(部分站点不支持。)">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
+<!ENTITY setting.label.delaymsecs "加载前延迟(毫秒数)">
 <!ENTITY setting.label.discoverytext "自动识别">
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.general "一般">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
+<!ENTITY setting.label.minipages "最小预载入页数">
 <!ENTITY setting.label.pagebreak "分页符样式:">
 <!ENTITY setting.label.showHelpTips "显示帮助提示，你可以点击它查看相关对象的说明">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">

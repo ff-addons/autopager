@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "Quick Load (あらゆるサイトで安全ではありません)。">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "確認のスタイル:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+ダブルクリック">
 <!ENTITY setting.label.general "全般">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "読み込み通知のスタイル:">
 <!ENTITY setting.label.margin "残りスペースがウィンドウ高さ">
 <!ENTITY setting.label.marginEnd "未満になったらページングする">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "改ページのスタイル:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">

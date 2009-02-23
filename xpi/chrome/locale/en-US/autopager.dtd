@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "confirm style:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+Double Click">
 <!ENTITY setting.label.general "General">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "loading notification style:">
 <!ENTITY setting.label.margin "Paging when space is less then">
 <!ENTITY setting.label.marginEnd "window heights">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "page break style:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">

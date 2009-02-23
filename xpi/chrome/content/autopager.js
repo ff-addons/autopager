@@ -254,13 +254,15 @@ onContentLoad : function(event) {
                     else {
                         if (browser.auotpagerContentDoc.documentElement.getAttribute('autopagerAjax') == "false")
                         {
-                            furtherscrollWatcher =autopagerMain.scrollWindow(browser.auotpagerContentDoc,doc);
-                            autopagerMain.onStopPaging(browser.auotpagerContentDoc);
-                            splitbrowse.switchToCollapsed(true);
-                            if (browser.auotpagerContentDoc.documentElement.autoPagerPage==2)
-                            {
-                                window.content.focus();
-                            }
+                            var scrollFunc=function(){
+                                furtherscrollWatcher =autopagerMain.scrollWindow(browser.auotpagerContentDoc,doc);
+                                autopagerMain.onStopPaging(browser.auotpagerContentDoc);
+                                splitbrowse.switchToCollapsed(true);
+                            };
+                            if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)
+                                window.setTimeout(scrollFunc, browser.auotpagerContentDoc.documentElement.delaymsecs);
+                            else
+                                scrollFunc();
 
                         }
                     }
@@ -589,6 +591,8 @@ onInitDoc : function(doc,safe) {
                 
                 de.autopagerGUID = autopagerMain.workingAutoSites[i].guid;
                 de.margin = autopagerMain.workingAutoSites[i].margin;
+                de.minipages = autopagerMain.workingAutoSites[i].minipages;
+                de.delaymsecs = autopagerMain.workingAutoSites[i].delaymsecs;
                 de.enabled = autopagerMain.workingAutoSites[i].enabled;
                 //if (autopagerMain.workingAutoSites[i].enabled)
                 de.autopagerSplitDocInited = false;
@@ -652,7 +656,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.0.5");
+                de.setAttribute('autopagerVersion',"0.4.0.9");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -879,7 +883,9 @@ doScrollWatcher : function() {
 								//needLoad = remain < wh;
 								var currHeight = scrollTop + scrollContainer.offsetTop;// + wh
 								var targetHeight = 0;
-                                var minipages = autopagerMain.loadPref("minipages");
+                                var minipages = doc.documentElement.minipages;
+                                if (minipages==-1)
+                                    minipages = autopagerMain.loadPref("minipages");
                                 if (minipages>0)
                                 {
                                     //notice doc.documentElement is different to de here!!!!!
@@ -1562,9 +1568,22 @@ autopagerSimulateClick : function(win,doc,node) {
         listener = this.observeConnection(node.ownerDocument);
     }
     splitbrowse.switchToCollapsed(false);
-     var canceled = !node.dispatchEvent(mousedown);
-        canceled = !node.dispatchEvent(click);
-        canceled = !node.dispatchEvent(mouseup);
+    var focused = document.commandDispatcher.focusedElement;
+
+    var canceled = !node.dispatchEvent(mousedown);
+    canceled = !node.dispatchEvent(click);
+    canceled = !node.dispatchEvent(mouseup);
+    if (focused && focused.focus && focused != document.commandDispatcher.focusedElement)
+    {
+        var box = focused.ownerDocument.getBoxObjectFor(focused);
+        var de=focused.ownerDocument.documentElement;
+        if ((box.screenX + box.width>0 && box.screenY + box.height>0)
+            && ((de instanceof HTMLHtmlElement && (box.x - de.scrollLeft < de.scrollWidth && box.y - de.scrollTop < de.scrollHeight)
+                )
+                || (!(de instanceof HTMLHtmlElement) && (box.x < de.width && box.y < de.height)))
+            )
+            focused.focus();
+    }
 //    var canceled =false;
 //    node.doCommand();
     if (doc.documentElement.getAttribute('autopagerAjax')=='true')
@@ -2754,6 +2773,10 @@ alertErr : function(e) {
   getDelayMiliseconds : function()
   {
     return autopagerMain.loadPref("loadingDelayMiliseconds");
+  },
+  getMinipages : function()
+  {
+    return autopagerMain.loadPref("minipages");
   }
 };
 

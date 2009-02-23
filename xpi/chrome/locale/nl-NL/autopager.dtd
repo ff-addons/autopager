@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "Snel laden (niet voor alle sites veilig).">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "Stijl bevestigen:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Ontdekking">
 <!ENTITY setting.label.doubleclick "+dubbelklik">
 <!ENTITY setting.label.general "Algemeen">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "Stijl van laadbericht:">
 <!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
 <!ENTITY setting.label.marginEnd "vensterhoogte">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">

@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.4.0.5").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.4.0.9").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -221,7 +221,7 @@ function Site()
         this.isRegex = false;
 	this.enabled  = true;
 	this.enableJS  = false;
-        this.quickLoad = false;
+        this.quickLoad = true;
 	this.fixOverflow  = false;
 	this.createdByYou  = false;
 	this.changedByYou  = false;
@@ -242,6 +242,8 @@ function Site()
         this.guid = "";
         this.ajax=false;
 	this.published = false;
+        this.minipages = -1;
+        this.delaymsecs = -1;
 }
 
 function SiteConfirm()
@@ -438,6 +440,8 @@ generateGuid : function()
 	newSite.guid  = site.guid;
 	newSite.isRegex  = site.isRegex;
 	newSite.margin  = site.margin;
+	newSite.minipages  = site.minipages;
+	newSite.delaymsecs  = site.delaymsecs;
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
         newSite.ajax  = site.ajax;
@@ -477,6 +481,8 @@ generateGuid : function()
                                                 || oldSite.guid  != site.guid
                                                 || oldSite.isRegex  != site.isRegex
 						|| oldSite.margin  != site.margin
+						|| oldSite.minipages  != site.minipages
+						|| oldSite.delaymsecs  != site.delaymsecs
 						|| oldSite.enabled  != site.enabled
 						|| oldSite.enableJS  != site.enableJS
 						|| oldSite.published  != site.published
@@ -899,6 +905,20 @@ loadConfigFromUrl : function(url) {
 								  site.margin = miniMargin;
                         }
       }
+      else if (nodeName == "minipages") {
+          var minipages = autopagerConfig.getValue(childNode);
+          if (autopagerConfig.isNumeric(val))
+          {
+            site.minipages = minipages;
+          }
+      }
+      else if (nodeName == "delaymsecs") {
+          var delaymsecs = autopagerConfig.getValue(childNode);
+          if (autopagerConfig.isNumeric(val))
+          {
+            site.delaymsecs = delaymsecs;
+          }
+      }
       else if (nodeName == "desc") {
                         site.desc	= autopagerConfig.getValue(childNode);
       }
@@ -1001,6 +1021,7 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
 			site.testLink[i] = testLink[i];
 	}
 	site.guid = autopagerConfig.generateGuid();
+        site.quickLoad = true;
 	return site;
 },
 saveConfig : function(sites) {
@@ -1035,6 +1056,10 @@ if (sites!=null)
 	    autopagerConfig.createNode(siteNode,"guid",siteObj.guid);
             if (siteObj.margin>autopagerMain.getMiniMargin())
                 autopagerConfig.createNode(siteNode,"margin",siteObj.margin);
+            if (siteObj.minipages>=0)
+                autopagerConfig.createNode(siteNode,"minipages",siteObj.minipages);
+            if (siteObj.delaymsecs>=0)
+                autopagerConfig.createNode(siteNode,"delaymsecs",siteObj.delaymsecs);
 	    autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
 
             if (siteObj.isRegex)

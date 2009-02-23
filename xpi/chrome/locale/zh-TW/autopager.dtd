@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "快速載入 (部份網站不支援)">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "翻頁提示樣式:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "自動辨識">
 <!ENTITY setting.label.doubleclick "+按兩下">
 <!ENTITY setting.label.general "一般">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "「載入中」通知樣式:">
 <!ENTITY setting.label.margin "頁面空間剩下">
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">

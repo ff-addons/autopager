@@ -19,9 +19,9 @@ var allSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,showHelpTip;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,showHelpTip;
     var selectedListItem = null;
-    var margin,smartMargin;
+    var margin,minipages,delaymsecs,smartMargin;
     var selectedSite;
     var contentXPath;
     var xpath="";
@@ -41,8 +41,7 @@ if (autopagerMain.loadBoolPref("show-help"))
         var self = arguments.callee;
         window.removeEventListener("DOMContentLoaded",self,false);
         loadControls();     
-	{
-            
+	{            
             setTimeout(function (){
             //var t = new Date().getTime();
             populateChooser("",true);
@@ -206,6 +205,7 @@ function autopagerOpenIntab(url,obj)
 	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
         autopagerMain.savePref("smartlinks",smartlinks.value);
 	autopagerMain.savePref("smartMargin",smartMargin.value);
+        autopagerMain.savePref("loadingDelayMiliseconds",gdelaymsecs.value);
 
         autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
         autopagerMain.saveBoolPref("showtags",showtags.checked);
@@ -252,6 +252,8 @@ function autopagerOpenIntab(url,obj)
         urlPattern = document.getElementById("urlPattern");
         isRegex = document.getElementById("chkIsRegex");
         margin = document.getElementById("margin");
+        minipages = document.getElementById("minipages");
+        delaymsecs = document.getElementById("delaymsecs");
         lblOwner = document.getElementById("lblOwner");
         description = document.getElementById("desc");
         btnAdd = document.getElementById("btnAdd");
@@ -349,7 +351,10 @@ function autopagerOpenIntab(url,obj)
         
         smartMargin = document.getElementById("smartMargin");
         smartMargin.value = autopagerMain.loadPref("smartMargin");
-        
+
+        gdelaymsecs = document.getElementById("gdelaymsecs");
+        gdelaymsecs.value = autopagerMain.loadPref("loadingDelayMiliseconds");
+
         //txtTimeout = document.getElementById("timeout");
         //txtTimeout.value = autopagerMain.loadPref("timeout");
 
@@ -524,6 +529,30 @@ function autopagerOpenIntab(url,obj)
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
+        minipages.addEventListener("change", function() {
+           if (selectedSite != null) {
+           	if (!autopagerConfig.isNumeric( minipages.value))
+           	{
+           		alert(autopagerConfig.autopagerGetString("inputnumber"));
+           		minipages.focus();
+           		return;
+           	}
+             selectedSite.minipages = minipages.value;
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
+        delaymsecs.addEventListener("change", function() {
+           if (selectedSite != null) {
+           	if (!autopagerConfig.isNumeric( delaymsecs.value))
+           	{
+           		alert(autopagerConfig.autopagerGetString("inputnumber"));
+           		delaymsecs.focus();
+           		return;
+           	}
+             selectedSite.delaymsecs = delaymsecs.value;
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
         contentXPath.addEventListener("change", function() {
            if (selectedSite != null) {
            	 onPathChange();
@@ -692,7 +721,9 @@ function autopagerOpenIntab(url,obj)
     	selectedSite = null;
             selectedListItem = null;
             urlPattern.value = " ";
-            margin.value = "2";
+            margin.value = autopagerMain.getDefaultMargin();
+            minipages.value = -1;
+            delaymsecs.value = -1;
             description.value = " ";
             chkEnabled.checked = true;
             chkEnableJS.checked = false;
@@ -762,6 +793,8 @@ function autopagerOpenIntab(url,obj)
 
                 isRegex.checked = selectedSite.isRegex;
                 margin.value = selectedSite.margin;
+                minipages.value = selectedSite.minipages;
+                delaymsecs.value = selectedSite.delaymsecs;
                 description.value = selectedSite.desc;
                 chkEnabled.checked = selectedSite.enabled;
                 chkEnableJS.checked = selectedSite.enableJS;
@@ -788,6 +821,8 @@ function autopagerOpenIntab(url,obj)
         urlPattern.readOnly =disabled;
         isRegex.disabled =disabled;
         margin.readOnly =disabled;
+        minipages.readOnly =disabled;
+        delaymsecs.readOnly =disabled;
         description.readOnly =disabled;
         btnAddPath.disabled =disabled;
         //btnEditPath.disabled =disabled;

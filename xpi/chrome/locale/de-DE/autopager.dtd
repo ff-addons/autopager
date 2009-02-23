@@ -78,6 +78,7 @@
 <!ENTITY setting.label.chkQuickLoad "Schnelles Laden (funktioniert nicht für alle Seiten).">
 <!ENTITY setting.label.chkShift "Umschalt">
 <!ENTITY setting.label.confirmstyle "CSS-Stil für Steuerungs-Pop-up:">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Bekannte IDs von Link-Elementen">
 <!ENTITY setting.label.doubleclick "+Doppelklick">
 <!ENTITY setting.label.general "Allgemein">
@@ -102,6 +103,7 @@
 <!ENTITY setting.label.loading "CSS-Stil für Laden der nächsten Seite:">
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn unterer nichtsichtbarer Bereich der Seite kleiner als">
 <!ENTITY setting.label.marginEnd "Fensterhöhen ist.">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
