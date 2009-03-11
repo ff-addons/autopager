@@ -16,6 +16,8 @@
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
 <!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
+<!ENTITY autopager.status.disableOnSite "Disable On Site">
+<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
 <!ENTITY autopager.status.enabled "Activé">
 <!ENTITY autopager.status.enabledTip "État d&apos;activation d&apos;AutoPager.">
 <!ENTITY autopager.status.export "Exporter les paramètres">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
 <!ENTITY autopager.status.myname "Mon nom :">
 <!ENTITY autopager.status.mynameTip "Votre nom. Il sera lié à ce que vous avez créé durant le paramétrage.">
+<!ENTITY autopager.status.reportSite "Report Issue On Site">
+<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.requestHelp "Request Help On Site">
+<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "Configuration…">
 <!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
 <!ENTITY autopager.status.showoption "Options de la page">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "Faire le test d&apos;une expression XPath étant sur la page.">
 <!ENTITY autopager.status.update "Mise à jour des paramètres">
 <!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d&apos;AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.tooltip "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY caption.results-caption.label "Résultats">

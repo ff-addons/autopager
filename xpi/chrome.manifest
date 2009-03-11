@@ -21,3 +21,4 @@ locale        autopager        de-DE                       jar:chrome/autopager.
 locale        autopager        it-IT                       jar:chrome/autopager.jar!/locale/it-IT/
 locale        autopager        ja-JP                       jar:chrome/autopager.jar!/locale/ja-JP/
 locale        autopager        pt-BR                       jar:chrome/autopager.jar!/locale/pt-BR/
+locale        autopager        ru-RU                       jar:chrome/autopager.jar!/locale/ru-RU/

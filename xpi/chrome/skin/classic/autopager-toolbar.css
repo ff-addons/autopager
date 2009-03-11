@@ -1,9 +1,15 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #autopager-button {
-  list-style-image: url("chrome://autopager/skin/autopager.png");
+  list-style-image: url("chrome://autopager/skin/autopager.gif");
+}
+#autopager-button[disabled="true"] {
+  list-style-image: url("chrome://autopager/skin/autopager.off.gif");
 }
 
 toolbar[iconsize="small"] #autopager-button {
-  list-style-image: url("chrome://autopager/skin/autopager-small.png");
+  list-style-image: url("chrome://autopager/skin/autopager-small.on.gif");
+}
+toolbar[iconsize="small"][disabled="true"] #autopager-button {
+  list-style-image: url("chrome://autopager/skin/autopager-small.off.gif");
 }

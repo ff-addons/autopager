@@ -2,9 +2,9 @@
 <!DOCTYPE overlay SYSTEM "chrome://autopager/locale/autopager.dtd">
 <?xml-stylesheet href="chrome://autopager/skin/autopager-split.css" type="text/css"?>
 
-<overlay id="autopagestatus" 
+<overlay id="autopagestatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    
+
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
@@ -24,6 +24,7 @@
         </splitter>
         <vbox id="autopager-split-box" collapsed="false" persist="height" style="min-height: 0px !important;">
         </vbox>
+        <popupset id="autopager-popupset"/>
     </window>
     <stringbundleset id="stringbundleset">
         <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
@@ -46,8 +47,6 @@
                         class="statusbarpanel-menu-iconic"
                         src="chrome://autopager/skin/autopager-small.off.gif"
                         tooltip="autopager_tip">
-  	
-            
 
             <menupopup id="autopager-popup" hidden="true">
                 <menuitem
@@ -162,7 +161,7 @@
                 <menuitem id="autopager-enabled"
                           label="&autopager.status.enabled;"
                           type="checkbox"
-                          autocheck="false" 
+                          autocheck="false"
                           tooltiptext="&autopager.status.enabledTip;"
                           oncommand="autopagerMain.onEnable();"
                 />
@@ -171,7 +170,7 @@
         <menuitem class="menuitem-iconic" />
         <menuseparator class="autopager-sep-global"/>
         <menuitem class="menuitem-iconic" />
-        <menu id="autopager-menu" class="autopager-menu-class" 
+        <menu id="autopager-menu" class="autopager-menu-class"
           onpopupshowing="event.stopPropagation()" label="hello">
          <menupopup id="autopager-menupopup">
          </menupopup>
@@ -372,7 +371,7 @@
                           tooltiptext="&autopager.status.showoptionTip;"
                           oncommand="UpdateSites.updateOnline(true);autopagerMain.showAllPagingOptions()"
                 />
-                
+
             </menupopup>
         </menu>
     </menupopup>
@@ -406,8 +405,162 @@
 			oncommand="toggleSidebar('viewautopagerSidebar');"/>
     </broadcasterset>
 
+        <popupset id="autopager-popupset">
+		<popup id="autopager-status-popup" >
+                    <menuitem id="autopager-showoption"
+                              label="&autopager.status.showoption;"
+                              tooltiptext="&autopager.status.showoptionTip;"
+                              oncommand="UpdateSites.updateOnline(true);autopagerMain.showAllPagingOptions()"
+                    />
+		</popup>
+	</popupset>
 
     <toolbarpalette id="BrowserToolbarPalette">
-        <toolbarbutton id="autopager-button"  image="chrome://autopager/skin/autopager.gif"  tooltiptext="&autopager.tooltip;" observes="viewautopagerSidebar" class="toolbarbutton-1"/>
+        <toolbarbutton id="autopager-button" type="menu-button"
+            class="chromeclass-toolbar-additional"
+            label="&autopager.toolbarLabel;"
+            tooltiptext="&autopager.tooltip;"
+            oncontextmenu="event.target.open = true;event.preventDefault();"
+            context="autopager-status-popup"
+            oncommand="if (event.target == this) toggleSidebar('viewautopagerSidebar');">
+        <menupopup id="autopager-toolbar-popup"  onpopupshowing="autopagerMain.FillPopup(event.target)">
+                <menuitem
+                    label="&autopager.status.sitewizard;"
+                    tooltiptext="&autopager.status.sitewizardTip;"
+                    oncommand="autopagerMain.sitewizard( content.document);"
+                />
+                <menuitem
+                    label="&autopager.status.setting;"
+                    tooltiptext="&autopager.status.settingTip;"
+                    oncommand="autopagerMain.openSettingForDoc(content.document);"
+                />
+                <menu label="&autopager.status.updatesetting;">
+                    <menupopup id="autopager-setting-menupopup">
+                <menuitem
+                    label="&autopager.status.update;"
+                    tooltiptext="&autopager.status.updateTip;"
+                    oncommand="UpdateSites.updateOnline(true);"
+                />
+                <menuseparator class="autopager-sep-global"/>
+                <menuitem
+                    label="&autopager.status.importurl;"
+                    tooltiptext="&autopager.status.importurlTip;"
+                    oncommand="autopagerConfig.importFromURL();"
+                />
+                <menuitem
+                    label="&autopager.status.importfile;"
+                    tooltiptext="&autopager.status.importfileTip;"
+                    oncommand="autopagerConfig.importFromFile();"
+                />
+                <menuitem
+                    label="&autopager.status.importclip;"
+                    tooltiptext="&autopager.status.importclipTip;"
+                    oncommand="autopagerConfig.importFromClip();"
+                />
+                <menuseparator class="autopager-sep-global"/>
+                <menuitem
+                    label="&autopager.status.export;"
+                    tooltiptext="&autopager.status.exportTip;"
+                    oncommand="autopagerConfig.exportSetting();"
+                />
+                </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
+                <menuitem
+                    id="autopager-disable-on-site"
+                    type="checkbox"
+                    autocheck="false"
+                    label="&autopager.status.disableOnSite;"
+                    tooltiptext="&autopager.status.disableOnSiteTip;"
+                    oncommand="autopagerMain.disableOnSite(event.target,content.document);"
+                />
+                <menuitem
+                    id="autopager-issue-on-site"
+                    label="&autopager.status.reportSite;"
+                    tooltiptext="&autopager.status.reportSiteTip;"
+                    oncommand="autopagerMain.reportSite(event.target,content.document);"
+                />
+                <menuitem
+                    id="autopager-request-on-site"
+                    label="&autopager.status.requestHelp;"
+                    tooltiptext="&autopager.status.requestHelpTip;"
+                    oncommand="autopagerMain.requestHelp(event.target,content.document);"
+                />
+                <menuseparator class="autopager-sep-global"/>
+                 <menu label="&autopager.status.xpathUtils;">
+                    <menupopup id="autopager-xpath-menupopup">
+                <menuitem id="autoPagerCreateXPath"
+                          label="&autopager.status.createXPath;"
+                          tooltiptext="&autopager.status.createXPathTip;"
+                          oncommand="autopagerMain.createXpath( content.document);"
+                />
+                <menuitem
+                    label="&autopager.status.testXPath;"
+                    tooltiptext="&autopager.status.createXPathTip;"
+                    oncommand="autopagerMain.testXPathTest( content.document);"
+                />
+                </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
+                <menu id="autopager-hidden-panel-menu" class="autopager-menu-class"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-hidden-panel-menu.label;"
+                      hidden='true'>
+                    <menupopup id="autopager-menupopup" >
+                        <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
+                                  oncommand="splitbrowse.open(content.document,false);"
+                        />
+                        <menuitem id="autopager-hidden" label="&autopager.menuitem.autopager-hidden.label;"
+                                  oncommand="splitbrowse.open(content.document,true);"
+                        />
+                    </menupopup>
+                </menu>
+                <menuseparator id="autopager-hidden-panel-separator" class="autopager-sep-global" hidden='true'/>
+                <menu id="autopager-immedialate-load" class="autopager-menu-class"
+                      onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-immedialate-load.label;"
+                      accesskey="&autopager.menu.autopager-immedialate-load.key;"
+                      >
+                    <menupopup id="autopager-menupopup" >
+                        <menuitem id="autopager-load-3" label="&autopager.menuitem.autopager-load-3.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,3);"
+                                  accesskey="&autopager.menuitem.autopager-load-3.key;"
+                                  observes="load3pages"
+                                  key="key_load3pages"
+                        />
+                        <menuitem id="autopager-load-5" label="&autopager.menuitem.autopager-load-5.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,5);"
+                                  accesskey="&autopager.menuitem.autopager-load-5.key;"
+                                  observes="load5pages"
+                                  key="key_load5pages"
+                        />
+                        <menuitem id="autopager-load-10" label="&autopager.menuitem.autopager-load-10.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10);"
+                                  accesskey="&autopager.menuitem.autopager-load-10.key;"
+                                  observes="load10pages"
+                                  key="key_load10pages"
+                        />
+                        <menuitem id="autopager-load-all" label="&autopager.menuitem.autopager-load-all.label;"
+                                  oncommand="autopagerMain.loadPages(content.document,10000);"
+                                  accesskey="&autopager.menuitem.autopager-load-all.key;"
+                                  observes="loadALLpages"
+                                  key="key_loadALLpages"
+                        />
+                    </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
+                <menuitem id="autopager-showoption"
+                          label="&autopager.status.showoption;"
+                          tooltiptext="&autopager.status.showoptionTip;"
+                          oncommand="autopagerMain.showAllPagingOptions()"
+                />
+                <menuitem id="autopager-enabled"
+                          label="&autopager.status.enabled;"
+                          type="checkbox"
+                          autocheck="false"
+                          tooltiptext="&autopager.status.enabledTip;"
+                          oncommand="autopagerMain.onEnable();"
+                />
+
+        </menupopup>
+        </toolbarbutton>
     </toolbarpalette>
 </overlay>

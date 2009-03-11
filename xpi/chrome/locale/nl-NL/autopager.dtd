@@ -16,6 +16,8 @@
 <!ENTITY autopager.sidebarTitle "AutoPager site-instellingen workshop">
 <!ENTITY autopager.status.createXPath "XPath aanmaken">
 <!ENTITY autopager.status.createXPathTip "XPath aanmaken door een node op de pagina te selecteren.">
+<!ENTITY autopager.status.disableOnSite "Disable On Site">
+<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
 <!ENTITY autopager.status.enabled "Inschakelen">
 <!ENTITY autopager.status.enabledTip "AutoPager in-/uitschakelen">
 <!ENTITY autopager.status.export "Instellingen exporteren">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "AutoPager instellingen importeren van URL.">
 <!ENTITY autopager.status.myname "Mijn naam:">
 <!ENTITY autopager.status.mynameTip "Uw naam; deze wordt aan de door u aangemaakte configuratie toegevoegd.">
+<!ENTITY autopager.status.reportSite "Report Issue On Site">
+<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.requestHelp "Request Help On Site">
+<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "Instellingen beheren">
 <!ENTITY autopager.status.settingTip "AutoPager instellingen beheren">
 <!ENTITY autopager.status.showoption "Pagina-opties weergeven">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "Een XPath op de pagina testen.">
 <!ENTITY autopager.status.update "Instellingen online bijwerken">
 <!ENTITY autopager.status.updateTip "AutoPager instellingen bijwerken van http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager site-instellingen workshop">
 <!ENTITY autopager.tooltip "AutoPager site-instellingen workshop">
 <!ENTITY caption.results-caption.label "Resultaten">

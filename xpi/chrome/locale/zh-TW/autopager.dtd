@@ -16,7 +16,9 @@
 <!ENTITY autopager.sidebarTitle "AutoPager 網站設定工作室">
 <!ENTITY autopager.status.createXPath "建立 XPath">
 <!ENTITY autopager.status.createXPathTip "點選網頁內容以建立 XPath 路徑。">
-<!ENTITY autopager.status.enabled "啟用">
+<!ENTITY autopager.status.disableOnSite "此網站暫時停用">
+<!ENTITY autopager.status.disableOnSiteTip "此網站暫時停用">
+<!ENTITY autopager.status.enabled "啟用 AutoPager">
 <!ENTITY autopager.status.enabledTip "啟用／停用 Auto Pager。">
 <!ENTITY autopager.status.export "匯出設定">
 <!ENTITY autopager.status.exportTip "匯出 Auto Pager 網站設定值。">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "從網址匯入 Auto Pager 設定值。">
 <!ENTITY autopager.status.myname "你的名字:">
 <!ENTITY autopager.status.mynameTip "你的名字會被加進你所建立的 Auto Pager 網站設定值中。">
+<!ENTITY autopager.status.reportSite "回報此設定值的錯誤">
+<!ENTITY autopager.status.reportSiteTip "回報此設定值的錯誤">
+<!ENTITY autopager.status.requestHelp "請求幫助建立設定值">
+<!ENTITY autopager.status.requestHelpTip "請求幫助建立設定值">
 <!ENTITY autopager.status.setting "管理網站設定">
 <!ENTITY autopager.status.settingTip "管理 Auto Pager 設定值。">
 <!ENTITY autopager.status.showoption "顯示此頁面選項">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "在此網頁測試 XPath。">
 <!ENTITY autopager.status.update "線上更新">
 <!ENTITY autopager.status.updateTip "從 http://blogs.sun.com/wind/entry/autopager_site_config 線上更新網站設定值。">
+<!ENTITY autopager.status.updatesetting "更新設定">
+<!ENTITY autopager.status.xpathUtils "XPath 工具">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">
 <!ENTITY caption.results-caption.label "結果">
@@ -65,7 +73,7 @@
 <!ENTITY setting.button.up "向上移">
 <!ENTITY setting.buttonlabelextra1 "套用">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "Advanced">
+<!ENTITY setting.label.advanced "進階">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
 <!ENTITY setting.label.btnEdit "編輯">
 <!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件。">
@@ -78,7 +86,7 @@
 <!ENTITY setting.label.chkQuickLoad "快速載入 (部份網站不支援)">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "翻頁提示樣式:">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.delaymsecs "毫秒(ms)後才載入下一頁">
 <!ENTITY setting.label.discoverytext "自動辨識">
 <!ENTITY setting.label.doubleclick "+按兩下">
 <!ENTITY setting.label.general "一般">
@@ -103,9 +111,9 @@
 <!ENTITY setting.label.loading "「載入中」通知樣式:">
 <!ENTITY setting.label.margin "頁面空間剩下">
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
-<!ENTITY setting.label.minipages "Minimum preloaded page count">
+<!ENTITY setting.label.minipages "預讀最小頁面數">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
-<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
+<!ENTITY setting.label.showHelpTips "顯示每個選項的說明圖片，按一下可瀏覽該選項描述">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
 <!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">

@@ -1,21 +1,23 @@
-<!ENTITY autopager.label.value "auto pager">
-<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.label.value "auto paginação">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Painel Página">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immediately Load">
-<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "Carregar Imediatamente">
+<!ENTITY autopager.menuitem.autopager-hidden.label "ocultar">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10 Páginas">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3 Páginas">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5 Páginas">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "Todas as Páginas">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
-<!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.menuitem.autopager-show.label "Exibir">
 <!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Criar XPath">
 <!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
+<!ENTITY autopager.status.disableOnSite "Disable On Site">
+<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
 <!ENTITY autopager.status.enabled "Habilitado">
 <!ENTITY autopager.status.enabledTip "Auto Pager Habilitado ou não">
 <!ENTITY autopager.status.export "Exportar Preferências">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "Importar Configurações do Auto Pager da URL.">
 <!ENTITY autopager.status.myname "Meu Nome:">
 <!ENTITY autopager.status.mynameTip "Seu Nome, será adicionado a configuração que você criou.">
+<!ENTITY autopager.status.reportSite "Report Issue On Site">
+<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.requestHelp "Request Help On Site">
+<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "Gerenciador de Configurações">
 <!ENTITY autopager.status.settingTip "Gerenciar Configurações do Auto Pager">
 <!ENTITY autopager.status.showoption "Exibir Página de Opções">
@@ -42,10 +48,12 @@
 <!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.update "Atualizar Configurações Online">
 <!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
-<!ENTITY caption.results-caption.label "Results">
-<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY caption.results-caption.label "Resultados">
+<!ENTITY caption.results-caption2.label "Resultados">
 <!ENTITY label.Usages.value "Usages">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
@@ -60,15 +68,15 @@
 <!ENTITY setting.button.exportTip "Exportar Itens Selecionados">
 <!ENTITY setting.button.import "Importar">
 <!ENTITY setting.button.pick "Escolher...">
-<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.public "Público">
 <!ENTITY setting.button.remove "Excluir">
 <!ENTITY setting.button.up "Cima">
-<!ENTITY setting.buttonlabelextra1 "Apply">
+<!ENTITY setting.buttonlabelextra1 "Aplicar">
 <!ENTITY setting.key "u">
 <!ENTITY setting.label.advanced "Advanced">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.allwaysEnableJavaScript "Sempre habilitar Java Script ao carregar página">
 <!ENTITY setting.label.btnEdit "Editar">
-<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
+<!ENTITY setting.label.chkAjax "Este é um site em ajax. Não caregar evento.">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Habilitar JavaScript ao carregar página.">
@@ -79,12 +87,12 @@
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "estilo de confirmação:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
-<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.discoverytext "Descobrir">
 <!ENTITY setting.label.doubleclick "+Duplo-clique">
 <!ENTITY setting.label.general "Geral">
 <!ENTITY setting.label.grpContentXPath "Conteúdo XPath:">
-<!ENTITY setting.label.grpDiscovery "Discovery">
-<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
+<!ENTITY setting.label.grpDiscovery "Descobrir">
+<!ENTITY setting.label.grpRemoveXPath "Filtrar XPath(Ignora itens nas novas páginas):">
 <!ENTITY setting.label.grpSmart "Paginação Inteligente">
 <!ENTITY setting.label.hotkeys "Habilitar/Desabilitar teclas de atalho:">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">
@@ -95,7 +103,7 @@
 <!ENTITY setting.label.lblSettingContext "Context Type:">
 <!ENTITY setting.label.lblSettingDesc "Desc:">
 <!ENTITY setting.label.lblSettingOwner "Maintained By:">
-<!ENTITY setting.label.lblSettingType "Type:">
+<!ENTITY setting.label.lblSettingType "Tipo:">
 <!ENTITY setting.label.lblSettingUrl "URL:">
 <!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "Padrão URL:">

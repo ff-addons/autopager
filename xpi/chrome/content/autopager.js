@@ -656,7 +656,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.0.9");
+                de.setAttribute('autopagerVersion',"0.4.1.1");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -1037,6 +1037,108 @@ showAllPagingOptions : function() {
        autopagerMain.alertErr("Exception:" + e);
    }
     
+},
+FillPopup : function(target) {
+    
+        try{
+            var i =0;
+            var de = content.document.documentElement;
+            document.getElementById("autopager-disable-on-site").setAttribute("checked", false)
+            var matched = false;
+            if (de.autopagerEnabledDoc != null)
+            {
+                for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+                    var doc = de.autopagerEnabledDoc[i];
+                    if (doc.location != null)
+                    {
+                        matched = true;
+                        if (autopagerMain.autopagerConfirmSites == null)
+                            autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
+                        var siteConfirm = autopagerConfig.findConfirm(autopagerMain.autopagerConfirmSites,doc.documentElement.autopagerGUID,doc.location.host);
+                        if (siteConfirm)
+                            document.getElementById("autopager-disable-on-site").setAttribute("checked", !siteConfirm.UserAllowed);
+                        break;
+                    }
+                }
+            }
+            document.getElementById("autopager-disable-on-site").setAttribute("hidden",!matched);
+            document.getElementById("autopager-issue-on-site").setAttribute("hidden",!matched);
+            document.getElementById("autopager-request-on-site").setAttribute("hidden",matched);
+            //document.getElementById("autopager-immedialate-load").setAttribute("hidden",!matched);
+            //document.getElementById("autopager-showoption").setAttribute("hidden",!matched);
+
+        }catch(e){
+            autopagerMain.alertErr("Exception:" + e);
+        }
+    
+},
+disableOnSite : function(target,d) {
+
+        try{
+            var i =0;
+            var de = d.documentElement;
+
+            if (de.autopagerEnabledDoc != null)
+            {
+                for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+                    var doc = de.autopagerEnabledDoc[i];
+                    if (doc.location != null)
+                    {
+                        if (autopagerMain.autopagerConfirmSites == null)
+                            autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
+                        var siteConfirm = autopagerConfig.findConfirm(autopagerMain.autopagerConfirmSites,doc.documentElement.autopagerGUID,doc.location.host);
+                        if (siteConfirm)
+                        {
+                            siteConfirm.UserAllowed = !siteConfirm.UserAllowed;
+                            document.autopagerConfirmDoc = doc
+                            autopagerMain.enabledInThisSession(siteConfirm.UserAllowed);
+                        }
+                        else
+                        {
+                            var host = doc.location.host;
+                            var guid = doc.documentElement.autopagerGUID;
+                            autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
+                            autopagerConfig.addConfirm(autopagerMain.autopagerConfirmSites,guid,-1,host,true);
+                        }
+                        autopagerConfig.saveConfirm(autopagerMain.autopagerConfirmSites);
+                        break;
+                    }
+                }
+            }
+
+        }catch(e){
+            autopagerMain.alertErr("Exception:" + e);
+        }
+
+},
+requestHelp : function(target,d) {
+    autopagerMain.reportSite(target,d);
+},
+reportSite : function(target,d) {
+
+        try{
+            var i =0;
+            var de = d.documentElement;
+            var opened = false;
+            if (de.autopagerEnabledDoc != null)
+            {
+                for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+                    var doc = de.autopagerEnabledDoc[i];
+                    if (doc.location != null)
+                    {
+                        autopagerOpenIntab("http://autopager.teesoft.info/reportissues/" + doc.location.href);
+                        opened = true;
+                        break;
+                    }
+                }
+            }
+            if (!opened)
+                autopagerOpenIntab("http://autopager.teesoft.info/requestsites/" + d.location.href);
+
+        }catch(e){
+            autopagerMain.alertErr("Exception:" + e);
+        }
+
 },
 createDiv : function(doc,id,style) {
     var div = doc.createElement("div");

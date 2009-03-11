@@ -16,6 +16,8 @@
 <!ENTITY autopager.sidebarTitle "自动翻页设置工作室">
 <!ENTITY autopager.status.createXPath "创建XPath路径">
 <!ENTITY autopager.status.createXPathTip "点选页面内容创建XPath路径.">
+<!ENTITY autopager.status.disableOnSite "在这个网站上禁用">
+<!ENTITY autopager.status.disableOnSiteTip "在这个网站上禁用">
 <!ENTITY autopager.status.enabled "启用">
 <!ENTITY autopager.status.enabledTip "启用/禁用自动翻页">
 <!ENTITY autopager.status.export "导出设置">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "从地址导入自动翻页选项.">
 <!ENTITY autopager.status.myname "你的姓名:">
 <!ENTITY autopager.status.mynameTip "你的姓名。它将显示在你创建的自动翻页站点配置信息中.">
+<!ENTITY autopager.status.reportSite "报告在这个网站上有问题">
+<!ENTITY autopager.status.reportSiteTip "报告在这个网站上有问题">
+<!ENTITY autopager.status.requestHelp "请求帮助设置自动翻页">
+<!ENTITY autopager.status.requestHelpTip "请求帮助设置这个网站自动翻页">
 <!ENTITY autopager.status.setting "设置">
 <!ENTITY autopager.status.settingTip "设置自动翻页选项。">
 <!ENTITY autopager.status.showoption "页选项">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
 <!ENTITY autopager.status.update "在线更新">
 <!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
 <!ENTITY caption.results-caption.label "结果">
@@ -65,7 +73,7 @@
 <!ENTITY setting.button.up "上移">
 <!ENTITY setting.buttonlabelextra1 "应用">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "高级">
+<!ENTITY setting.label.advanced "Advanced">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">
 <!ENTITY setting.label.chkAjax "这是个Ajax站点(没有重新加载事件)">
@@ -78,7 +86,7 @@
 <!ENTITY setting.label.chkQuickLoad "快速加载(部分站点不支持。)">
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
-<!ENTITY setting.label.delaymsecs "加载前延迟(毫秒数)">
+<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "自动识别">
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.general "一般">
@@ -103,9 +111,9 @@
 <!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
-<!ENTITY setting.label.minipages "最小预载入页数">
+<!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "分页符样式:">
-<!ENTITY setting.label.showHelpTips "显示帮助提示，你可以点击它查看相关对象的说明">
+<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
 <!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY setting.label.showtags "选择页面元素时显示元素标签">

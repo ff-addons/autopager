@@ -16,6 +16,8 @@
 <!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Crea XPath">
 <!ENTITY autopager.status.createXPathTip "Crea XPath selezionando un nodo nella pagina">
+<!ENTITY autopager.status.disableOnSite "Disable On Site">
+<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
 <!ENTITY autopager.status.enabled "Attivo">
 <!ENTITY autopager.status.enabledTip "Attiva o disattiva Auto Pager">
 <!ENTITY autopager.status.export "Esporta le impostazioni">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "Importa le impostazioni di Auto Pager da un URL.">
 <!ENTITY autopager.status.myname "Inserire il proprio nome:">
 <!ENTITY autopager.status.mynameTip "Il proprio nome sarà aggiunto alla configurazione creata">
+<!ENTITY autopager.status.reportSite "Report Issue On Site">
+<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.requestHelp "Request Help On Site">
+<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "Gestione opzioni">
 <!ENTITY autopager.status.settingTip "Gestione delle opzioni di Auto Pager">
 <!ENTITY autopager.status.showoption "Mostra opzioni pagina">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "Esegue un test su un XPath della pagina.">
 <!ENTITY autopager.status.update "Aggiorna le impostazioni dal web">
 <!ENTITY autopager.status.updateTip "Aggiornamento delle impostazioni da http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">

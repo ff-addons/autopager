@@ -16,6 +16,8 @@
 <!ENTITY autopager.sidebarTitle "AutoPager サイト設定 作業場">
 <!ENTITY autopager.status.createXPath "XPath を作成">
 <!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
+<!ENTITY autopager.status.disableOnSite "Disable On Site">
+<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
 <!ENTITY autopager.status.enabled "有効済み">
 <!ENTITY autopager.status.enabledTip "Auto Pager が有効か否かです。">
 <!ENTITY autopager.status.export "設定を書き出す">
@@ -32,6 +34,10 @@
 <!ENTITY autopager.status.importurlTip "Auto Pager の設定を URL から取り込みます。">
 <!ENTITY autopager.status.myname "私の名前:">
 <!ENTITY autopager.status.mynameTip "作成した設定に追加される、あなたの名前です。">
+<!ENTITY autopager.status.reportSite "Report Issue On Site">
+<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.requestHelp "Request Help On Site">
+<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "設定の管理">
 <!ENTITY autopager.status.settingTip "Auto Pager の設定を管理します。">
 <!ENTITY autopager.status.showoption "ページ設定を表示する">
@@ -42,6 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
 <!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
+<!ENTITY autopager.status.updatesetting "Update Setting">
+<!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
 <!ENTITY caption.results-caption.label "Results">
