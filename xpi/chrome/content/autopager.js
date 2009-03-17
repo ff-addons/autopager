@@ -166,7 +166,8 @@ onContentLoad : function(event) {
         {
             return;
         }
-   if (doc.documentElement.scrollWidth<window.innerWidth/3 || doc.documentElement.scrollHeight<window.innerHeight/3)
+   //doc.documentElement.scrollHeight is 0 for some site, don't know why. We should not ignore them.
+   if ( doc.documentElement.scrollWidth<window.innerWidth/3 || (doc.documentElement.scrollHeight>0 && doc.documentElement.scrollHeight<window.innerHeight/3))
    {
        //ignore small iframe/frame
        return;
@@ -598,6 +599,8 @@ onInitDoc : function(doc,safe) {
                 de.autopagerSplitDocInited = false;
                 de.setAttribute('enableJS', autopagerMain.workingAutoSites[i].enableJS ||autopagerMain.workingAutoSites[i].ajax || (!autopagerMain.workingAutoSites[i].fixOverflow &&  autopagerMain.loadBoolPref("alwaysEnableJavaScript")));
                 de.setAttribute('autopagerAjax', autopagerMain.workingAutoSites[i].ajax);
+                de.setAttribute('autopagerNeedMouseEvent', autopagerMain.workingAutoSites[i].needMouseDown);
+
                 if (!de.autopagerPagingCount)
                     de.autopagerPagingCount = 0;
                 if (!de.autoPagerPage)
@@ -656,7 +659,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.1.1");
+                de.setAttribute('autopagerVersion',"0.4.1.2");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -1656,10 +1659,10 @@ autopagerSimulateClick : function(win,doc,node) {
                 1, 1, 1, 1, 1, false, false, false, false, 0, null);
 
     var mousedown = node.ownerDocument.createEvent("MouseEvents");
-    mousedown.initMouseEvent("mousedown", true, true, win,
+    mousedown.initMouseEvent("mousedown", false, true, win,
                 1, 1, 1, 1, 1, false, false, false, false, 0, null);
     var mouseup = node.ownerDocument.createEvent("MouseEvents");
-    mouseup.initMouseEvent("mouseup", true, true, win,
+    mouseup.initMouseEvent("mouseup", false, true, win,
                 1, 1, 1, 1, 1, false, false, false, false, 0, null);
 
     //handle ajax site
@@ -1672,9 +1675,13 @@ autopagerSimulateClick : function(win,doc,node) {
     splitbrowse.switchToCollapsed(false);
     var focused = document.commandDispatcher.focusedElement;
 
-    var canceled = !node.dispatchEvent(mousedown);
+    var canceled = false;
+    var needMouseEvents = doc.documentElement.getAttribute('autopagerAjax')=='true' || doc.documentElement.getAttribute('autopagerNeedMouseEvent')=='true';
+    if (needMouseEvents)
+        canceled = !node.dispatchEvent(mousedown);
     canceled = !node.dispatchEvent(click);
-    canceled = !node.dispatchEvent(mouseup);
+    if (needMouseEvents)
+        canceled = !node.dispatchEvent(mouseup);
     if (focused && focused.focus && focused != document.commandDispatcher.focusedElement)
     {
         var box = focused.ownerDocument.getBoxObjectFor(focused);

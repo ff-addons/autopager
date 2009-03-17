@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "Regulärer Ausdruck">
 <!ENTITY setting.label.chkQuickLoad "Schnelles Laden (funktioniert nicht für alle Seiten).">
 <!ENTITY setting.label.chkShift "Umschalt">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "CSS-Stil für Steuerungs-Pop-up:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Bekannte IDs von Link-Elementen">

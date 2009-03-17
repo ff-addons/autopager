@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "使用正規表示式">
 <!ENTITY setting.label.chkQuickLoad "快速載入 (部份網站不支援)">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "翻頁提示樣式:">
 <!ENTITY setting.label.delaymsecs "毫秒(ms)後才載入下一頁">
 <!ENTITY setting.label.discoverytext "自動辨識">

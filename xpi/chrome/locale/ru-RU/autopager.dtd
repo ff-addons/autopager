@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "Это RegExp?">
 <!ENTITY setting.label.chkQuickLoad "Быстрая загрузка (подходит не для всех сайтов)">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "Стиль подтверждения:">
 <!ENTITY setting.label.delaymsecs "Задержка перед присоединением следующей страницы (миллисекунд)">
 <!ENTITY setting.label.discoverytext "Обнаружение">

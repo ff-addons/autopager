@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "É RegExp?">
 <!ENTITY setting.label.chkQuickLoad "Carregamento Rápido (Não seguro para todos os sites).">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "estilo de confirmação:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Descobrir">

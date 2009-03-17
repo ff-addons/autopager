@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "正規表現を利用する">
 <!ENTITY setting.label.chkQuickLoad "Quick Load (あらゆるサイトで安全ではありません)。">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "確認のスタイル:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Discovery">

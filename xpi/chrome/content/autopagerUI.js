@@ -5,7 +5,7 @@ var allSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
-    var chkEnabled, chkEnableJS,chkAjax
+    var chkEnabled, chkEnableJS,chkAjax,chkneedMouseDown
     var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnSiteUp,btnSiteDown;
@@ -279,6 +279,8 @@ function autopagerOpenIntab(url,obj)
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
         chkAjax = document.getElementById("chkAjax");
+        chkneedMouseDown = document.getElementById("chkneedMouseDown");
+
         chkQuickLoad = document.getElementById("chkQuickLoad");
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
@@ -445,6 +447,7 @@ function autopagerOpenIntab(url,obj)
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
+
         chkAjax.addEventListener("command", function() {
            if (selectedSite != null) {
              selectedSite.ajax = chkAjax.checked;
@@ -453,6 +456,12 @@ function autopagerOpenIntab(url,obj)
                 chkEnableJS.checked = true;
                 selectedSite.enableJS = true;
              }
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
+        chkneedMouseDown.addEventListener("command", function() {
+           if (selectedSite != null) {
+             selectedSite.needMouseDown = chkneedMouseDown.checked;
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
@@ -728,6 +737,7 @@ function autopagerOpenIntab(url,obj)
             chkEnabled.checked = true;
             chkEnableJS.checked = false;
             chkAjax.checked = false;
+            chkneedMouseDown.checked = false;
             chkQuickLoad.checked = false;
             chkFixOverflow.checked = true;
             lblOwner.value = "";
@@ -799,6 +809,7 @@ function autopagerOpenIntab(url,obj)
                 chkEnabled.checked = selectedSite.enabled;
                 chkEnableJS.checked = selectedSite.enableJS;
                 chkAjax.checked = selectedSite.ajax
+                chkneedMouseDown.checked = selectedSite.needMouseDown
                 chkQuickLoad.checked = selectedSite.quickLoad;
                 chkFixOverflow.checked = selectedSite.fixOverflow;
 
@@ -841,6 +852,7 @@ function autopagerOpenIntab(url,obj)
         chkEnabled.disabled =disabled;
         chkEnableJS.disabled =disabled;
         chkAjax.disabled =disabled;
+        chkneedMouseDown.disabled = disabled;
         chkQuickLoad.disabled =disabled;
         chkFixOverflow.disabled =disabled;
         linkXPath.readOnly =disabled;

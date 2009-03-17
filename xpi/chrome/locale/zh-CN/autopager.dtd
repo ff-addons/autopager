@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "使用正则表达式">
 <!ENTITY setting.label.chkQuickLoad "快速加载(部分站点不支持。)">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "自动识别">

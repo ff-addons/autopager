@@ -85,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
 <!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
 <!ENTITY setting.label.chkShift "Maj">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "Style des options de page :">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Identification">

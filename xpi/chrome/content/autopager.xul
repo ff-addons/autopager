@@ -175,6 +175,7 @@
                                             <checkbox id="chkAjax" label="&setting.label.chkAjax;" checked="false" />
                                             <checkbox id="chkQuickLoad" label="&setting.label.chkQuickLoad;" checked="true" />
                                             <checkbox id="chkFixOverflow" label="&setting.label.chkFixOverflow;" checked="true" />
+                                            <checkbox id="chkneedMouseDown" label="&setting.label.chkneedMouseDown;" checked="false" />
                                             <hbox align="center">
                                                 <label control="delaymsecs" value="&setting.label.delaymsecs;"/>
                                                 <textbox id="delaymsecs" flex="1"/>

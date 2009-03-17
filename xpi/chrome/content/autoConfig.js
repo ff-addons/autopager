@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.4.1.1").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.4.1.2").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -241,6 +241,7 @@ function Site()
         this.tmpPaths = [];
         this.guid = "";
         this.ajax=false;
+        this.needMouseDown = false;
 	this.published = false;
         this.minipages = -1;
         this.delaymsecs = -1;
@@ -445,6 +446,7 @@ generateGuid : function()
 	newSite.enabled  = site.enabled;
 	newSite.enableJS  = site.enableJS;
         newSite.ajax  = site.ajax;
+        newSite.needMouseDown  = site.needMouseDown;
 		newSite.published = site.published;
         newSite.quickLoad  = site.quickLoad;
 	newSite.fixOverflow  = site.fixOverflow;
@@ -487,6 +489,7 @@ generateGuid : function()
 						|| oldSite.enableJS  != site.enableJS
 						|| oldSite.published  != site.published
 						|| oldSite.ajax  != site.ajax
+						|| oldSite.needMouseDown  != site.needMouseDown
 						|| oldSite.quickLoad  != site.quickLoad
 						|| oldSite.fixOverflow  != site.fixOverflow
 						|| oldSite.owner  != site.owner
@@ -875,6 +878,7 @@ loadConfigFromUrl : function(url) {
   for (var node = null; (node = nodes.iterateNext()); ) {
     var site = new Site();
     var ajax = false;
+    var needMouseDown = false;
 	var published =false;
     var enabled = true;
     var enableJS = true;
@@ -944,6 +948,9 @@ loadConfigFromUrl : function(url) {
                         enableJS	= (autopagerConfig.getValue(childNode) == 'true');
                         //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
       }
+      else if (nodeName == "needMouseDown") {
+                        needMouseDown	= (autopagerConfig.getValue(childNode) == 'true');
+      }
       else if (nodeName == "ajax") {
                         ajax	= (autopagerConfig.getValue(childNode) == 'true');
       }
@@ -967,6 +974,7 @@ loadConfigFromUrl : function(url) {
       }
     }
     site.ajax = ajax;
+    site.needMouseDown = needMouseDown;
 	site.published = published;
     site.enabled = enabled;
     site.enableJS = enableJS;
@@ -1078,6 +1086,9 @@ if (sites!=null)
             
             if (siteObj.ajax)
                 autopagerConfig.createNode(siteNode,"ajax",siteObj.ajax);
+            
+            if (siteObj.needMouseDown)
+                autopagerConfig.createNode(siteNode,"needMouseDown",siteObj.needMouseDown);
 
             if (siteObj.published)
                 autopagerConfig.createNode(siteNode,"published",siteObj.published);
