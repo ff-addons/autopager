@@ -5,8 +5,8 @@ pref("autopager.myname", "");
 pref("autopager.smartenable", false);
 pref("autopager.flashIconNotify", false);
 pref("autopager.smarttext", "next|>|下一页|次を表示");
-pref("autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页");
-
+//refer to http://www.teesoft.info/phpbb/viewtopic.php?t=330 fro "NEXT" in Different Languages
+pref("autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页|Volgende|Volg|Verder|Напред|Следва|Næste|Nächste|Naechste|Weiter|Vorwärts|Vorwaerts|Volgende|Continue|Onward|Venonta|Seuraava|Suivant|Prochaine|Επόμενη|Næst|Successive|Successiva|Successivo|Prossima|Prossime|Prossimo|Altra|Altro|次へ|다음|Neste|Dalej|Następna|Następne|Następny|Więcej|Próximo|Înainte|Înaintare|Următor|Următoare|След|Следующая|Siguiente|Próxima|Próximos|Nästa|Sonraki|Devam|İlerle");
 pref("autopager.smartlinks", "2");
 pref("autopager.smartMargin", "1");
 pref("autopager.showtags", false);
@@ -33,4 +33,4 @@ pref("autopager.show-help", false);
 pref("autopager.miniheight", "0.5");
 pref("autopager.defaultheight", "1");
 pref("autopager.minipages", "1");
-
+pref("autopager.simulateMouseDown",false);

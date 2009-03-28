@@ -16,9 +16,9 @@
 <!ENTITY autopager.sidebarTitle "AutoPager site-instellingen workshop">
 <!ENTITY autopager.status.createXPath "XPath aanmaken">
 <!ENTITY autopager.status.createXPathTip "XPath aanmaken door een node op de pagina te selecteren.">
-<!ENTITY autopager.status.disableOnSite "Disable On Site">
-<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
-<!ENTITY autopager.status.enabled "Inschakelen">
+<!ENTITY autopager.status.disableOnSite "Op site uitschakelen">
+<!ENTITY autopager.status.disableOnSiteTip "Op site uitschakelen">
+<!ENTITY autopager.status.enabled "AutoPager inschakelen">
 <!ENTITY autopager.status.enabledTip "AutoPager in-/uitschakelen">
 <!ENTITY autopager.status.export "Instellingen exporteren">
 <!ENTITY autopager.status.exportTip "AutoPager instellingen exporteren.">
@@ -34,10 +34,10 @@
 <!ENTITY autopager.status.importurlTip "AutoPager instellingen importeren van URL.">
 <!ENTITY autopager.status.myname "Mijn naam:">
 <!ENTITY autopager.status.mynameTip "Uw naam; deze wordt aan de door u aangemaakte configuratie toegevoegd.">
-<!ENTITY autopager.status.reportSite "Report Issue On Site">
-<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
-<!ENTITY autopager.status.requestHelp "Request Help On Site">
-<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
+<!ENTITY autopager.status.reportSite "Issue over site rapporteren">
+<!ENTITY autopager.status.reportSiteTip "Issue over site rapporteren">
+<!ENTITY autopager.status.requestHelp "Hulp met site aanvragen">
+<!ENTITY autopager.status.requestHelpTip "Hulp met site aanvragen">
 <!ENTITY autopager.status.setting "Instellingen beheren">
 <!ENTITY autopager.status.settingTip "AutoPager instellingen beheren">
 <!ENTITY autopager.status.showoption "Pagina-opties weergeven">
@@ -48,8 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "Een XPath op de pagina testen.">
 <!ENTITY autopager.status.update "Instellingen online bijwerken">
 <!ENTITY autopager.status.updateTip "AutoPager instellingen bijwerken van http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Update Setting">
-<!ENTITY autopager.status.xpathUtils "XPath Utils">
+<!ENTITY autopager.status.updatesetting "Instelling bijwerken">
+<!ENTITY autopager.status.xpathUtils "XPath hulpmiddelen">
 <!ENTITY autopager.toolbarLabel "AutoPager site-instellingen workshop">
 <!ENTITY autopager.tooltip "AutoPager site-instellingen workshop">
 <!ENTITY caption.results-caption.label "Resultaten">
@@ -73,7 +73,7 @@
 <!ENTITY setting.button.up "Omhoog">
 <!ENTITY setting.buttonlabelextra1 "Toepassen">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "Advanced">
+<!ENTITY setting.label.advanced "Geavanceerd">
 <!ENTITY setting.label.allwaysEnableJavaScript "Altijd JavaScript inschakelen bij laden van pagina">
 <!ENTITY setting.label.btnEdit "Bewerken">
 <!ENTITY setting.label.chkAjax "Dit is een AJAX-site. Niet geladen.">
@@ -87,7 +87,7 @@
 <!ENTITY setting.label.chkShift "Shift">
 <!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "Stijl bevestigen:">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.delaymsecs "Milliseconden vertraging voor overgang naar volgende pagina">
 <!ENTITY setting.label.discoverytext "Ontdekking">
 <!ENTITY setting.label.doubleclick "+dubbelklik">
 <!ENTITY setting.label.general "Algemeen">
@@ -107,14 +107,14 @@
 <!ENTITY setting.label.lblSettingType "Type:">
 <!ENTITY setting.label.lblSettingUrl "URL:">
 <!ENTITY setting.label.lblSettingXPath "XPath:">
-<!ENTITY setting.label.lblURLPattern "URL patroon:">
+<!ENTITY setting.label.lblURLPattern "URL-patroon:">
 <!ENTITY setting.label.lblUpdate "Siteconfiguratie automatisch bijwerken:">
 <!ENTITY setting.label.loading "Stijl van laadbericht:">
 <!ENTITY setting.label.margin "Pagineren wanneer de ruimte minder is dan">
 <!ENTITY setting.label.marginEnd "vensterhoogte">
-<!ENTITY setting.label.minipages "Minimum preloaded page count">
+<!ENTITY setting.label.minipages "Minimaal aantal vooraf geladen pagina’s">
 <!ENTITY setting.label.pagebreak "Stijl van pagina-afbreking:">
-<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
+<!ENTITY setting.label.showHelpTips "Hulppictogram weergeven voor elke control, klik om de beschrijving te zien">
 <!ENTITY setting.label.showPrompt "Vragen voor individuele nieuwe site">
 <!ENTITY setting.label.showStatusBar "AutoPager-pictogram weergeven in statusbalk">
 <!ENTITY setting.label.showtags "Nodelabels weergeven bij selecteren element">

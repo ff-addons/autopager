@@ -119,15 +119,15 @@ onPageUnLoad : function(event) {
     {
         if (!document.autoPagerInited) {
             document.autoPagerInited = true;
-            autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
         }
+        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
 
         var doc = event.originalTarget;
         if (!(doc instanceof HTMLDocument))
             {
                 return;
             }
-        autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+//        autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         try{
             autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
             document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
@@ -178,10 +178,10 @@ onContentLoad : function(event) {
         return;
     if (!document.autoPagerInited) {
         document.autoPagerInited = true;
-        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
         window.setTimeout(function(){autopagerConfig.autopagerUpdate();},400);
    }
-    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+//    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     autopagerMain.flashIconNotify = autopagerMain.loadBoolPref("flashIconNotify");
 	if (doc.documentElement.forceLoadPage==null)
 		doc.documentElement.forceLoadPage = 0;
@@ -399,6 +399,8 @@ getAutopagerPrefs : function () {
         getService(Components.interfaces.nsIPrefService).getBranch("autopager");
         try{
             this.autopagerPrefs=this.autopagerPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+            this.autopagerPrefs.addObserver("", this, false);
+
         }catch(e){}
     }
     return this.autopagerPrefs;
@@ -659,7 +661,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.1.2");
+                de.setAttribute('autopagerVersion',"0.4.2.1");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -1041,6 +1043,28 @@ showAllPagingOptions : function() {
    }
     
 },
+isEnabledOnDoc : function(target)
+{
+    var de = target.documentElement;
+    var enabled = true;
+    if (de.autopagerEnabledDoc != null)
+    {
+        for(i=0;i<de.autopagerEnabledDoc.length;i++) {
+            var doc = de.autopagerEnabledDoc[i];
+            if (doc.location != null)
+            {
+                if (autopagerMain.autopagerConfirmSites == null)
+                    autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
+                var siteConfirm = autopagerConfig.findConfirm(autopagerMain.autopagerConfirmSites,doc.documentElement.autopagerGUID,doc.location.host);
+
+                if (siteConfirm)
+                    enabled = siteConfirm.UserAllowed;
+                break;
+            }
+        }
+    }
+    return enabled;
+},
 FillPopup : function(target) {
     
         try{
@@ -1112,7 +1136,7 @@ disableOnSite : function(target,d) {
         }catch(e){
             autopagerMain.alertErr("Exception:" + e);
         }
-
+    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
 },
 requestHelp : function(target,d) {
     autopagerMain.reportSite(target,d);
@@ -1676,10 +1700,22 @@ autopagerSimulateClick : function(win,doc,node) {
     var focused = document.commandDispatcher.focusedElement;
 
     var canceled = false;
-    var needMouseEvents = doc.documentElement.getAttribute('autopagerAjax')=='true' || doc.documentElement.getAttribute('autopagerNeedMouseEvent')=='true';
+    var needMouseEvents =  autopagerMain.loadBoolPref("simulateMouseDown") || doc.documentElement.getAttribute('autopagerAjax')=='true' || doc.documentElement.getAttribute('autopagerNeedMouseEvent')=='true';
     if (needMouseEvents)
         canceled = !node.dispatchEvent(mousedown);
     canceled = !node.dispatchEvent(click);
+    //if the mouse is currently down then the click event may be canceled, 
+    //let's try it again with simulating mouse down ,click and up
+    if (canceled && !needMouseEvents)
+    {
+        node.dispatchEvent(mousedown);
+        //renew the click event
+        click = node.ownerDocument.createEvent("MouseEvents");
+        click.initMouseEvent("click", true, true, win,
+                1, 1, 1, 1, 1, false, false, false, false, 0, null);
+        node.dispatchEvent(click);
+        node.dispatchEvent(mouseup);
+    }
     if (needMouseEvents)
         canceled = !node.dispatchEvent(mouseup);
     if (focused && focused.focus && focused != document.commandDispatcher.focusedElement)
@@ -2188,13 +2224,14 @@ onStopPaging : function(doc) {
 
     doc.documentElement.autopagerEnabled = true;
     //if (doc.documentElement.autopagerPagingCount>0)
-        doc.documentElement.autopagerPagingCount--;
+    doc.documentElement.autopagerPagingCount--;
+    autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
     if (doc.documentElement.autopagerPagingCount <= 0)
     {
         //.defaultView.top.content.document
-                autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
                 if (autopagerMain.flashIconNotify)
-                    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+                    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+                //autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     }
 },
 getPagingWatcherDiv : function(doc,create)
@@ -2396,6 +2433,7 @@ enabledInNextPagesAlways : function(always)
         autopagerMain.autopagerConfirmSites = autopagerConfig.loadConfirm();
         autopagerConfig.addConfirm(autopagerMain.autopagerConfirmSites,guid,countNumber,host,true);
         autopagerConfig.saveConfirm(autopagerMain.autopagerConfirmSites);
+        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
     }
 },
 enabledInThisTime : function(enabled)
@@ -2440,6 +2478,7 @@ enabledThisSite : function(enabled)
     autopagerConfig.addConfirm(autopagerMain.autopagerConfirmSites,guid,-1,host,enabled);
     autopagerConfig.saveConfirm(autopagerMain.autopagerConfirmSites);
     autopagerMain.scrollWatcher();
+    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
 },
 enabledInThisSession : function(enabled)
 {
@@ -2484,12 +2523,14 @@ pagingWatcher : function() {
         else {
             autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
             if (autopagerMain.flashIconNotify)
-                autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
+                autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+            //autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         }
     }catch(e) {
-        if (autopagerMain.flashIconNotify)
-            autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
+        if (autopagerMain.flashIconNotify)
+            autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+        //autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     }
     
 },
@@ -2542,7 +2583,10 @@ showAutoPagerMenu : function() {
 ,
 onEnable : function() {
     var enabled = !autopagerMain.getGlobalEnabled();
-    autopagerMain.setGlobalEnabled( enabled);
+    if (document.autoGlobalPagerEnabled != enabled) {
+        autopagerMain.saveEnableStat(enabled);
+    }
+    //autopagerMain.setGlobalEnabled( enabled);
 	if (enabled)
 	{
 		window.removeEventListener("scroll",autopagerMain.scrollWatcher,false);
@@ -2563,7 +2607,6 @@ statusClicked : function(event) {
         var popup = document.getElementById("autopager-popup");
         popup.hidden=true;
         popup.hidePopup();
-        var image = document.getElementById("autopager_status");
         autopagerMain.onEnable();
     }
 },
@@ -2723,14 +2766,43 @@ setGlobalEnabled : function(enabled) {
         autopagerMain.saveEnableStat(enabled);
     }
     document.autoGlobalPagerEnabled = enabled;
-    autopagerMain.setGlobalImageByStatus(enabled);
+    //autopagerMain.setGlobalImageByStatus(enabled);
     if (enabled)
         autopagerMain.logInfo(autopagerConfig.autopagerGetString("autopageenabled"),autopagerConfig.autopagerGetString("autopageenabledTip"));
     else
         autopagerMain.logInfo(autopagerConfig.autopagerGetString("autopagedisabled"),autopagerConfig.autopagerGetString("autopagedisabledTip"));
     var enableMenuItem = document.getElementById("autopager-enabled");
     if (enableMenuItem)
-      enableMenuItem.setAttribute("checked",enabled);	  		  
+      enableMenuItem.setAttribute("checked",enabled);
+    enableMenuItem = document.getElementById("tb-autopager-enabled");
+    if (enableMenuItem)
+      enableMenuItem.setAttribute("checked",enabled);
+        var apStatus ="ap-disabled";
+        if (enabled)
+        {
+            if (!this.isEnabledOnDoc(content.document))
+                apStatus = "ap-site-disabled";
+            else
+                apStatus = "ap-enabled";
+        }
+    var autopagerButton = document.getElementById("autopager-button");
+    if (autopagerButton)
+    {
+        if (autopagerButton.className.indexOf(" ap-")==-1)
+            autopagerButton.className= autopagerButton.className + " " + apStatus;
+        else
+            autopagerButton.className= autopagerButton.className.substr(0,autopagerButton.className.indexOf(" ap-")) + " " + apStatus;
+    }
+     var image = document.getElementById("autopager_status");
+     if (image)
+     {
+        if (apStatus =="ap-disabled")
+            image.setAttribute("src", "chrome://autopager/skin/autopager-small.off.gif");
+        else if (apStatus =="ap-enabled")
+            image.setAttribute("src", "chrome://autopager/skin/autopager-small.on.gif");
+        else if (apStatus =="ap-site-disabled")
+            image.setAttribute("src", "chrome://autopager/skin/autopager-small-site.off.gif");
+     }
 },
 logInfo : function(status,tip) {
     if (this.autopagerDebug) {
@@ -2886,7 +2958,21 @@ alertErr : function(e) {
   getMinipages : function()
   {
     return autopagerMain.loadPref("minipages");
-  }
+  },
+   observe: function(subject, topic, data)
+   {
+     if (topic != "nsPref:changed")
+     {
+       return;
+     }
+
+     switch(data)
+     {
+       case ".enabled":
+         autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+         break;
+     }
+   }
 };
 
 autopagerMain.autopagerOnLoad();

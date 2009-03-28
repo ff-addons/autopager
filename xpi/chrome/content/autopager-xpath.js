@@ -18,9 +18,28 @@ const autopagerXPath = {
         var smarttext = autopagerPref.loadUTF8Pref("smarttext");
         var discoverytext = autopagerPref.loadUTF8Pref("discoverytext");
         
-        var tmpPaths =  this.convertToXpath(smarttext);
-        var tmpPaths2 =  this.convertToXpath(discoverytext);        
-        tmpPaths = this.merge(tmpPaths,tmpPaths2); 
+        var body = doc.documentElement.innerHTML
+        var strs = (smarttext + "|" + discoverytext).split("|");
+        var texts = "|";
+        var ignoredTexts = "|";
+        for(var k=0;k<strs.length;++k)
+            strs[k] = strs[k].toLowerCase().replace(new RegExp(" ","gm"),"");
+        for(var k=0;k<strs.length;++k)
+        {
+            if (strs[k].length==0)
+                continue;
+            if (texts.indexOf("|" + strs[k] + "|")==-1 && ignoredTexts.indexOf("|" + strs[k] + "|")==-1)
+            {
+                if (body.indexOf(strs[k])!=-1)
+                    texts = texts + strs[k] + "|";
+                else
+                    ignoredTexts = ignoredTexts + strs[k] + "|";
+            }
+        }
+        var tmpPaths =  this.convertToXpath(texts);
+        //var tmpPaths2 =  this.convertToXpath(discoverytext);
+        
+        //tmpPaths = this.merge(tmpPaths,tmpPaths2);
         var links = [];//this.evaluate(doc,"//a[@href]");
         var item = null;
         for(i in tmpPaths)
@@ -827,6 +846,8 @@ convertToXpath  : function(str) {
     for(var k=0;k<strs.length;++k)
         strs[k] = strs[k].toLowerCase().replace(new RegExp(" ","gm"),"");
     for(var i=0;i<strs.length;++i) {
+        if (strs[i].length==0)
+            continue;
         var strCon =  this.convertStringToXPath(strs[i],"");
         if (strCon.length >0)
         {

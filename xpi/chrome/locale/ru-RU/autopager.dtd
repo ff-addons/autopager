@@ -1,5 +1,5 @@
 <!ENTITY autopager.label.value "AutoPager">
-<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
+<!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Хранилище страниц">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "н">
 <!ENTITY autopager.menu.autopager-immedialate-load.label "Загрузить немедленно">
 <!ENTITY autopager.menuitem.autopager-hidden.label "скрыть">
@@ -85,7 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "Это RegExp?">
 <!ENTITY setting.label.chkQuickLoad "Быстрая загрузка (подходит не для всех сайтов)">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
+<!ENTITY setting.label.chkneedMouseDown "Необходимо инициировать событие Mouse Down для ссылки">
 <!ENTITY setting.label.confirmstyle "Стиль подтверждения:">
 <!ENTITY setting.label.delaymsecs "Задержка перед присоединением следующей страницы (миллисекунд)">
 <!ENTITY setting.label.discoverytext "Обнаружение">
@@ -101,7 +101,7 @@
 <!ENTITY setting.label.lblLinkXPath "XPath для ссылки:">
 <!ENTITY setting.label.lblOwner "Создатель:">
 <!ENTITY setting.label.lblSetting "Источник настроек AutoPager&apos;а">
-<!ENTITY setting.label.lblSettingContext "Context Type:">
+<!ENTITY setting.label.lblSettingContext "Тип контекста:">
 <!ENTITY setting.label.lblSettingDesc "Описание:">
 <!ENTITY setting.label.lblSettingOwner "Поддержка:">
 <!ENTITY setting.label.lblSettingType "Тип:">

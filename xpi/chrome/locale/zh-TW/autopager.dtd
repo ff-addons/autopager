@@ -85,7 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "使用正規表示式">
 <!ENTITY setting.label.chkQuickLoad "快速載入 (部份網站不支援)">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
+<!ENTITY setting.label.chkneedMouseDown "需要觸發此連結的滑鼠左鍵按下事件">
 <!ENTITY setting.label.confirmstyle "翻頁提示樣式:">
 <!ENTITY setting.label.delaymsecs "毫秒(ms)後才載入下一頁">
 <!ENTITY setting.label.discoverytext "自動辨識">
@@ -130,7 +130,7 @@
 <!ENTITY setting.title "Auto Pager 設定">
 <!ENTITY setting.tree.Description "描述">
 <!ENTITY setting.tree.URLPattern "網址樣式">
-<!ENTITY setting.type.autopager "Aautopager XML">
+<!ENTITY setting.type.autopager "Autopager XML">
 <!ENTITY setting.type.autopagerize "Autopagerize">
 <!ENTITY setting.type.autopagerizeJson "Autopagerize JSON">
 <!ENTITY setting.type.autopagertext "Autopager Text">

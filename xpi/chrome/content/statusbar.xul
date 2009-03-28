@@ -552,7 +552,7 @@
                           tooltiptext="&autopager.status.showoptionTip;"
                           oncommand="autopagerMain.showAllPagingOptions()"
                 />
-                <menuitem id="autopager-enabled"
+                <menuitem id="tb-autopager-enabled"
                           label="&autopager.status.enabled;"
                           type="checkbox"
                           autocheck="false"

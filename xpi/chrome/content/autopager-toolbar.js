@@ -19,7 +19,7 @@ function addAutopagerButton() {
                 var newSet = "";
                 var child = toolbar.firstChild;
                 while (child) {
-                    if(!hasAutopagerButton && child.id == "urlbar-container") {
+                    if(!hasAutopagerButton && (child.id == "urlbar-container" || child.id =="nav-bar-inner") ) {
                         newSet += "autopager-button,";
                         hasAutopagerButton = true;
                     }
@@ -47,14 +47,14 @@ function autopagerToobarInit() {
     var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
     var prefBranch = prefService.getBranch("autopager.");
     if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-        prefBranch.setCharPref("last_version", "0.4.1.2");
+        prefBranch.setCharPref("last_version", "0.4.2.1");
         autopagerOpenIntab(autopagerHome,null);
         addAutopagerButton();
     } else { // check for upgrade
         var lastVersion = prefBranch.getCharPref("last_version");
-        if (lastVersion != "0.4.1.2")
+        if (lastVersion != "0.4.2.1")
         {
-            prefBranch.setCharPref("last_version", "0.4.1.2");
+            prefBranch.setCharPref("last_version", "0.4.2.1");
             autopagerOpenIntab(autopagerHome,null);
             //addAutopagerButton();
         }

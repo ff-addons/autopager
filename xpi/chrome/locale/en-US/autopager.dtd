@@ -77,7 +77,6 @@
 <!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
 <!ENTITY setting.label.btnEdit "Edit">
 <!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Enable Javascript while loading page.">
@@ -86,6 +85,7 @@
 <!ENTITY setting.label.chkIsRegex "Is RegExp?">
 <!ENTITY setting.label.chkQuickLoad "Quick Load(Not safe for all site).">
 <!ENTITY setting.label.chkShift "Shift">
+<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "confirm style:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
 <!ENTITY setting.label.discoverytext "Discovery">

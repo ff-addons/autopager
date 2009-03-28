@@ -48,8 +48,8 @@
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
 <!ENTITY autopager.status.update "在线更新">
 <!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
-<!ENTITY autopager.status.updatesetting "Update Setting">
-<!ENTITY autopager.status.xpathUtils "XPath Utils">
+<!ENTITY autopager.status.updatesetting "更新">
+<!ENTITY autopager.status.xpathUtils "XPath工具">
 <!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
 <!ENTITY caption.results-caption.label "结果">
@@ -73,7 +73,7 @@
 <!ENTITY setting.button.up "上移">
 <!ENTITY setting.buttonlabelextra1 "应用">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "Advanced">
+<!ENTITY setting.label.advanced "高级">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻页时总是启用JavaScript">
 <!ENTITY setting.label.btnEdit "编辑">
 <!ENTITY setting.label.chkAjax "这是个Ajax站点(没有重新加载事件)">
@@ -85,9 +85,9 @@
 <!ENTITY setting.label.chkIsRegex "使用正则表达式">
 <!ENTITY setting.label.chkQuickLoad "快速加载(部分站点不支持。)">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
+<!ENTITY setting.label.chkneedMouseDown "需要模拟鼠标按下事件">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.delaymsecs "合并页面前延迟的毫秒数">
 <!ENTITY setting.label.discoverytext "自动识别">
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.general "一般">
@@ -112,9 +112,9 @@
 <!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
-<!ENTITY setting.label.minipages "Minimum preloaded page count">
+<!ENTITY setting.label.minipages "最小预载入页面数">
 <!ENTITY setting.label.pagebreak "分页符样式:">
-<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
+<!ENTITY setting.label.showHelpTips "显示操作提示">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
 <!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
 <!ENTITY setting.label.showtags "选择页面元素时显示元素标签">
