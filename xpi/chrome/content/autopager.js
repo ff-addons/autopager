@@ -661,7 +661,7 @@ onInitDoc : function(doc,safe) {
                 de.setAttribute('contentXPath',autopagerMain.workingAutoSites[i].contentXPath);
                 de.setAttribute('containerXPath',autopagerMain.workingAutoSites[i].containerXPath);
 				de.setAttribute('autopagerSettingOwner',autopagerMain.workingAutoSites[i].owner);
-                de.setAttribute('autopagerVersion',"0.4.2.1");
+                de.setAttribute('autopagerVersion',"0.4.2.2");
                 de.autopagerSplitCreated = false;
                 
     //autopagerMain.log("11 " + new Date().getTime())
@@ -1736,9 +1736,12 @@ autopagerSimulateClick : function(win,doc,node) {
         //observe http conections
         if (listener!=null)
         {
-            setTimeout(function(){ listener.stopObserveConnection()},1000);
+            var delaymsecs = 0;
+            if (doc.documentElement.delaymsecs && doc.documentElement.delaymsecs>0)
+                delaymsecs = doc.documentElement.delaymsecs*1; //convert to integer
+            setTimeout(function(){ listener.stopObserveConnection()},1000 + delaymsecs);
             //clear after teen seconds whethere success or not
-            setTimeout(function(){ listener.removeObserveConnection()},10000);   
+            setTimeout(function(){ listener.removeObserveConnection()},10000 + delaymsecs);
         }
     }
     

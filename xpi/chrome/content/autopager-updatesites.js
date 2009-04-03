@@ -110,7 +110,7 @@ var AutoPagerUpdateTypes =
             sites.push(new AutoPagerUpdateSite("chinalist","all",
                         "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
                         "pagerization chinalist configurations",
-                        "chinalist.xml",'//*[@class="autopagerize_data"]',true,"autopagerize",168,[]));
+                        "chinalist.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",168,[]));
             
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
@@ -126,7 +126,7 @@ var AutoPagerUpdateTypes =
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
                         "default configurations @ teesoft.info",
-                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://wind.liyong.googlepages.com/autopager.xml",
+                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://wind.liyong.googlepages.com/autopager.xml?version={version}&lastupdate={timestamp}",
                                 "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
                                 "http://vps.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
                                 "http://s2.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
@@ -183,7 +183,7 @@ var AutoPagerUpdateTypes =
                     {
                         if (
                             (defaultSite.backupUrls!=null && defaultSite.backupUrls.length>0)
-                            && (site.backupUrls==null || site.backupUrls.length==0))
+                            && (site.backupUrls==null || site.backupUrls.length!=defaultSite.backupUrls.length))
                             {
                             site.backupUrls = defaultSite.backupUrls;
                             site.url = defaultSite.url;
