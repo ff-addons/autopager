@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Do you want to clear autoPager site confirmation?">
 <!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Crea XPath">
 <!ENTITY autopager.status.createXPathTip "Crea XPath selezionando un nodo nella pagina">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "Esporta le impostazioni di Auto Pager in un file.">
 <!ENTITY autopager.status.importclip "Import dagli Appunti">
 <!ENTITY autopager.status.importclipTip "Importa le impostazioni di Auto Pager dagli Appunti">
+<!ENTITY autopager.status.importexport "Import/Export">
 <!ENTITY autopager.status.importfile "Importa da file">
 <!ENTITY autopager.status.importfileTip "Importa le impostazioni di Auto Pager da un file.">
 <!ENTITY autopager.status.importurl "Importa da URL">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "Esegue un test su un XPath della pagina.">
 <!ENTITY autopager.status.update "Aggiorna le impostazioni dal web">
 <!ENTITY autopager.status.updateTip "Aggiornamento delle impostazioni da http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Update Setting">
 <!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Open In Own Window">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Open In Sidebar">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">

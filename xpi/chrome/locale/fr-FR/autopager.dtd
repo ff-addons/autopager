@@ -13,11 +13,14 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "Toutes les pages">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "visible">
+<!ENTITY autopager.sanitizer.entry "Confirmation de site AutoPager">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Voulez-vous effacer la confirmation de site AutoPager ?">
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
 <!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
-<!ENTITY autopager.status.disableOnSite "Disable On Site">
-<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
+<!ENTITY autopager.status.disableOnSite "Désactiver pour le site">
+<!ENTITY autopager.status.disableOnSiteTip "Désactiver pour le site">
 <!ENTITY autopager.status.enabled "Activé">
 <!ENTITY autopager.status.enabledTip "État d&apos;activation d&apos;AutoPager.">
 <!ENTITY autopager.status.export "Exporter les paramètres">
@@ -28,16 +31,17 @@
 <!ENTITY autopager.status.exportfileTip "Exporter les paramètres d&apos;Auto Pager vers un fichier.">
 <!ENTITY autopager.status.importclip "Importer depuis le presse-papiers">
 <!ENTITY autopager.status.importclipTip "Importer les paramètres d&apos;AutoPager depuis le contenu du presse-papiers">
+<!ENTITY autopager.status.importexport "Importer / exporter">
 <!ENTITY autopager.status.importfile "Importer depuis un fichier">
 <!ENTITY autopager.status.importfileTip "Importer les paramètres d&apos;AutoPager depuis un fichier.">
 <!ENTITY autopager.status.importurl "Importer depuis une URL">
 <!ENTITY autopager.status.importurlTip "Importer les paramètres d&apos;AutoPager depuis une URL.">
 <!ENTITY autopager.status.myname "Mon nom :">
 <!ENTITY autopager.status.mynameTip "Votre nom. Il sera lié à ce que vous avez créé durant le paramétrage.">
-<!ENTITY autopager.status.reportSite "Report Issue On Site">
-<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
-<!ENTITY autopager.status.requestHelp "Request Help On Site">
-<!ENTITY autopager.status.requestHelpTip "Request Help On Site">
+<!ENTITY autopager.status.reportSite "Rapporter un problème sur le site">
+<!ENTITY autopager.status.reportSiteTip "Rapporter un problème sur le site">
+<!ENTITY autopager.status.requestHelp "Demander de l&apos;aide sur le site">
+<!ENTITY autopager.status.requestHelpTip "Demander de l&apos;aide sur le site">
 <!ENTITY autopager.status.setting "Configuration…">
 <!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
 <!ENTITY autopager.status.showoption "Options de la page">
@@ -48,8 +52,7 @@
 <!ENTITY autopager.status.testXPathTip "Faire le test d&apos;une expression XPath étant sur la page.">
 <!ENTITY autopager.status.update "Mise à jour des paramètres">
 <!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d&apos;AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Update Setting">
-<!ENTITY autopager.status.xpathUtils "XPath Utils">
+<!ENTITY autopager.status.xpathUtils "Utilitaires XPath">
 <!ENTITY autopager.toolbarLabel "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY autopager.tooltip "Atelier de paramétrage en ligne d&apos;AutoPager">
 <!ENTITY caption.results-caption.label "Résultats">
@@ -73,7 +76,7 @@
 <!ENTITY setting.button.up "Monter">
 <!ENTITY setting.buttonlabelextra1 "Appliquer">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "Advanced">
+<!ENTITY setting.label.advanced "Avancé">
 <!ENTITY setting.label.allwaysEnableJavaScript "Toujours activer le script Java durant le chargement de la page">
 <!ENTITY setting.label.btnEdit "Éditer">
 <!ENTITY setting.label.chkAjax "C&apos;est un site AJAX. Aucun événement chargé.">
@@ -85,9 +88,9 @@
 <!ENTITY setting.label.chkIsRegex "Expression rationnelle ?">
 <!ENTITY setting.label.chkQuickLoad "Chargement rapide (n&apos;est pas sans danger sur tous les sites).">
 <!ENTITY setting.label.chkShift "Maj">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
+<!ENTITY setting.label.chkneedMouseDown "Besoin d&apos;un évènement de déclenchement de la souris pour le lien">
 <!ENTITY setting.label.confirmstyle "Style des options de page :">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.delaymsecs "Millisecondes d&apos;attente avant de fusionner la page suivante">
 <!ENTITY setting.label.discoverytext "Identification">
 <!ENTITY setting.label.doubleclick "+ double-clic">
 <!ENTITY setting.label.general "Général">
@@ -112,9 +115,9 @@
 <!ENTITY setting.label.loading "Style du cadre de notification :">
 <!ENTITY setting.label.margin "Paginer quand l&apos;espace est de moins de">
 <!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
-<!ENTITY setting.label.minipages "Minimum preloaded page count">
+<!ENTITY setting.label.minipages "Nombre minimum de pages préchargées">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
-<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
+<!ENTITY setting.label.showHelpTips "Afficher une image d&apos;aide pour chacun des contrôles, y cliquer pour voir sa description">
 <!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
 <!ENTITY setting.label.showStatusBar "Afficher l&apos;icône d&apos;AutoPager dans la barre d&apos;état">
 <!ENTITY setting.label.showtags "Afficher les balises nœud lors de la sélection de l&apos;élément">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "Ajouter un site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Tout effacer">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Identification">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Ouvrir dans la fenêtre actuelle">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Ouvrir dans le panneau latéral">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Contenu de la fenêtre de sélection">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Lien de la fenêtre de sélection">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Tester un site">

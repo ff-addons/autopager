@@ -69,7 +69,7 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.4.2.2").replace(/\{timestamp\}/,(new Date()).getTime());
+        url = url.replace(/\{version\}/,"0.5.0.1").replace(/\{timestamp\}/,(new Date()).getTime());
         return url;
     },
 	updateOnline :function (force)
@@ -352,7 +352,7 @@ getConfigFile : function(fileName) {
   return sites;
 }
  ,
-  loadConfirm : function() {
+  getConfirm : function() {
       var confirms = UpdateSites.AutopagerCOMP.getSiteConfirms();
      if (confirms == null || confirms.length==0)
      {
@@ -887,11 +887,16 @@ loadConfigFromUrl : function(url) {
     var isRegex = false;
     var createdByYou = false;
     var changedByYou = false;
-    var childNodes = node.childNodes;
-    //childNode = childNodes[i]
-    for (var i = 0, childNode = null; (childNode = childNodes[i]) ; i++) {
+    var childNode = node.firstChild
+    while(childNode)
+    {
       var nodeName = childNode.nodeName;
-      if (nodeName == "urlPattern") {
+      if (nodeName == "#text")
+      {
+          childNode = childNode.nextSibling
+          continue;
+      }
+      else if (nodeName == "urlPattern") {
                         site.urlPattern = autopagerConfig.getValue(childNode);
       }
       else  if (nodeName == "guid") {
@@ -931,7 +936,7 @@ loadConfigFromUrl : function(url) {
       }
       else if (nodeName == "containerXPath") {
                         site.containerXPath	= autopagerConfig.getValue(childNode);
-      }      
+      }
       else if (nodeName == "contentXPath") {
                         site.contentXPath.push(autopagerConfig.getValue(childNode));
       }
@@ -972,6 +977,7 @@ loadConfigFromUrl : function(url) {
       else if (nodeName == "published") {
                         published	= (autopagerConfig.getValue(childNode) == 'true');
       }
+      childNode = childNode.nextSibling
     }
     site.ajax = ajax;
     site.needMouseDown = needMouseDown;
@@ -1147,3 +1153,127 @@ getWriteStream : function(file) {
 }
 };
 UpdateSites.init();
+
+/*
+  sanitize privte data by clear the file site-confirm.xml
+*/
+var autopagerSanitizer = {
+   addSanitizeItem: function ()
+   {
+      window.removeEventListener('load', autopagerSanitizer.addSanitizeItem, true);
+      if (typeof Sanitizer != 'function')
+         return;
+      // Sanitizer will execute this
+      Sanitizer.prototype.items['extensions-autopager'] = {
+         clear : function() {
+            try {
+               autopagerSanitizer.sanitize();
+            } catch (ex) {
+               try { Components.utils.reportError(ex); } catch(ex) {}
+            }
+         },
+         get canClear() {
+            return true;
+         }
+      }
+   },
+
+   addMenuItem: function ()
+   {
+      var prefs = document.getElementsByTagName('preferences')[0];
+      var firstCheckbox = document.getElementsByTagName('checkbox')[0];
+      if (prefs && firstCheckbox) // if this isn't true we are lost :)
+      {
+         var pref = document.createElement('preference');
+         pref.setAttribute('id', 'privacy.item.extensions-autopager');
+         pref.setAttribute('name', 'privacy.item.extensions-autopager');
+         pref.setAttribute('type', 'bool');
+         prefs.appendChild(pref);
+
+         var check = document.createElement('checkbox');
+         check.setAttribute('label', autopagerSanitize.label);
+         check.setAttribute('accesskey', autopagerSanitize.accesskey);
+         check.setAttribute('preference', 'privacy.item.extensions-autopager');
+         check.setAttribute('oncommand', 'autopagerSanitizer.confirm(this);');
+         firstCheckbox.parentNode.insertBefore(check, firstCheckbox);
+
+         if (typeof(gSanitizePromptDialog) == 'object')
+         {
+            pref.setAttribute('readonly', 'true');
+            check.setAttribute('onsyncfrompreference', 'return gSanitizePromptDialog.onReadGeneric();');
+         }
+      }
+   },
+
+   confirm: function (aCheckbox)
+   {
+      if (!aCheckbox.checked)
+         return;
+
+      var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
+                                  .getService(Components.interfaces.nsIPromptService);
+
+      var title = "AutoPager - " + document.title;
+      var msg = autopagerSanitize.confirm;
+      var buttonPressed = promptService.confirmEx(null,
+                     title,
+                     msg,
+                     (promptService.BUTTON_TITLE_YES * promptService.BUTTON_POS_0)
+                     + (promptService.BUTTON_TITLE_NO * promptService.BUTTON_POS_1),
+                     null, null, null, null, {});
+      if (buttonPressed == 1)
+         aCheckbox.checked = false;
+   },
+
+   isSanitizeAPwithoutPrompet: function ()
+   {
+      var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefBranch);
+
+      try {
+         var promptOnSanitize = prefService.getBoolPref("privacy.sanitize.promptOnSanitize");
+      } catch (e) { promptOnSanitize = true;}
+
+      // if promptOnSanitize is true we call autopagerSanitizer.sanitize from Firefox Sanitizer
+      if (promptOnSanitize)
+         return false;
+
+      try {
+         var sanitizeAutopager = prefService.getBoolPref("privacy.item.extensions-autopager");
+      } catch (e) { sanitizeAutopager = false;}
+
+      if (!sanitizeAutopager)
+         return false;
+
+      return true;
+   },
+
+   tryToSanitize: function ()
+   {
+      if (this.isSanitizeAPwithoutPrompet()) {
+        this.sanitize();
+        return true;
+      }
+
+      return false;
+   },
+
+   sanitize: function AP_SN_sanitize()
+   {
+        UpdateSites.AutopagerCOMP.setSiteConfirms(new Array());
+        autopagerConfig.saveConfirm(new Array());
+        //autopagerPref.resetPref("noprompt")
+   },
+   onWindowClose : function()
+   {
+       window.removeEventListener("unload", autopagerSanitizer.onWindowClose, false);
+       if (autopagerUtils.isLastWindow())
+       {
+           var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+                                .getService(Components.interfaces.nsIPrefBranch);
+           if (prefService.getBoolPref("privacy.sanitize.sanitizeOnShutdown"))
+            autopagerSanitizer.tryToSanitize();
+       }
+   }
+}
+window.addEventListener("unload", autopagerSanitizer.onWindowClose, false);

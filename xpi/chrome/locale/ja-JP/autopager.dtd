@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Do you want to clear autoPager site confirmation?">
 <!ENTITY autopager.sidebarTitle "AutoPager サイト設定 作業場">
 <!ENTITY autopager.status.createXPath "XPath を作成">
 <!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "Auto Pager の設定をファイルに書き出します。">
 <!ENTITY autopager.status.importclip "クリップボードから取り込む">
 <!ENTITY autopager.status.importclipTip "Auto Pager の設定をクリップボードから取り込みます。">
+<!ENTITY autopager.status.importexport "Import/Export">
 <!ENTITY autopager.status.importfile "ファイルから取り込む">
 <!ENTITY autopager.status.importfileTip "Auto Pager の設定をファイルから取り込みます。">
 <!ENTITY autopager.status.importurl "URL から取り込む">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
 <!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
-<!ENTITY autopager.status.updatesetting "Update Setting">
 <!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "サイトを追加します">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "すべて一掃します">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "ディスカバリ">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Open In Own Window">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Open In Sidebar">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "コンテンツを収集します">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "リンクを収集します">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">

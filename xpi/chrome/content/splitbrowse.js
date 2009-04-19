@@ -341,7 +341,8 @@ var splitbrowse = {
             else
                 splitBrowser.loadURI( doc.location.href, null, null );
 
-        }                  
+        }
+
  
         //splitBrowser.parentNode.hidden = hidden;
         //	splitBrowser.hidden = hidden;
@@ -476,7 +477,18 @@ var splitbrowse = {
         //alert("done");
         window.setTimeout(function(){
             autopagerMain.onSplitDocLoaded(doc,true);
-        },autopagerMain.getDelayMiliseconds());
+        },splitbrowse.getDelayMiliseconds(doc));
+    },
+    getDelayMiliseconds : function ( doc ){
+        var browser = splitbrowse.getBrowserNode(doc);
+        if (browser.getAttribute(splitbrowse.getSplitKey())) {
+            if (browser.auotpagerContentDoc)
+            {
+                if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)
+                    return browser.auotpagerContentDoc.documentElement.delaymsecs;
+            }
+        }
+        return autopagerMain.getDelayMiliseconds();
     }
 };
 var splitpanelProgressListener = {    

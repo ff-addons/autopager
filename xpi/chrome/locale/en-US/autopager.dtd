@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "show">
+<!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Do you want to clear autoPager site confirmation?">
 <!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Create XPath">
 <!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
 <!ENTITY autopager.status.importclip "Import from Clipboard">
 <!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
+<!ENTITY autopager.status.importexport "Import/Export">
 <!ENTITY autopager.status.importfile "Import from File">
 <!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
 <!ENTITY autopager.status.importurl "Import from URL">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "Test XPath an XPath on the page.">
 <!ENTITY autopager.status.update "Update Setting Online">
 <!ENTITY autopager.status.updateTip "Update Auto Pager Setting From http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Update Setting">
 <!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
@@ -110,7 +113,7 @@
 <!ENTITY setting.label.lblURLPattern "URL Pattern:">
 <!ENTITY setting.label.lblUpdate "Auto Update Site Configurations:">
 <!ENTITY setting.label.loading "loading notification style:">
-<!ENTITY setting.label.margin "Paging when space is less then">
+<!ENTITY setting.label.margin "Paging when space is less than">
 <!ENTITY setting.label.marginEnd "window heights">
 <!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "page break style:">
@@ -121,7 +124,7 @@
 <!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
-<!ENTITY setting.label.smartlinks "Follow link when there are no more then">
+<!ENTITY setting.label.smartlinks "Follow link when there are no more than">
 <!ENTITY setting.label.smartlinksEnd "meet links.">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
 <!ENTITY setting.label.timeout "page loading timeout(Seconds):">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Open In Own Window">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Open In Sidebar">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">

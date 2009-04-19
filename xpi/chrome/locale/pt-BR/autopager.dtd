@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "Todas as Páginas">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "Exibir">
+<!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Do you want to clear autoPager site confirmation?">
 <!ENTITY autopager.sidebarTitle "AutoPager Site Setting Workshop">
 <!ENTITY autopager.status.createXPath "Criar XPath">
 <!ENTITY autopager.status.createXPathTip "Criar XPath selecionando um nó na página.">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "Exportar Configurações do Auto Pager para Arquivo.">
 <!ENTITY autopager.status.importclip "Importar da Área de Transferência">
 <!ENTITY autopager.status.importclipTip "Importar Configurações do Auto Pager da Área de Transferência.">
+<!ENTITY autopager.status.importexport "Import/Export">
 <!ENTITY autopager.status.importfile "Importar do Arquivo">
 <!ENTITY autopager.status.importfileTip "Importar Configurações do Auto Pager do Arquivo.">
 <!ENTITY autopager.status.importurl "Importar da URL">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "Testa Xpath na página">
 <!ENTITY autopager.status.update "Atualizar Configurações Online">
 <!ENTITY autopager.status.updateTip "Atualizar Configurações Online do Auto Pager em http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Update Setting">
 <!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Open In Own Window">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Open In Sidebar">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Pickup Content">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Pickup Link">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Test Site">

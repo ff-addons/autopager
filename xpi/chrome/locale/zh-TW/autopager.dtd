@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "全部">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "顯示">
+<!ENTITY autopager.sanitizer.entry "AutoPager 網站設定">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "你確定要清除 AutoPager 網站設定嗎？">
 <!ENTITY autopager.sidebarTitle "AutoPager 網站設定工作室">
 <!ENTITY autopager.status.createXPath "建立 XPath">
 <!ENTITY autopager.status.createXPathTip "點選網頁內容以建立 XPath 路徑。">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "匯出 Auto Pager 設定值為檔案。">
 <!ENTITY autopager.status.importclip "從剪貼簿匯入">
 <!ENTITY autopager.status.importclipTip "從剪貼簿匯入 Auto Pager 設定值。">
+<!ENTITY autopager.status.importexport "匯入/匯出">
 <!ENTITY autopager.status.importfile "從檔案匯入">
 <!ENTITY autopager.status.importfileTip "從檔案匯入 Auto Pager 設定值。">
 <!ENTITY autopager.status.importurl "從網址匯入">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "在此網頁測試 XPath。">
 <!ENTITY autopager.status.update "線上更新">
 <!ENTITY autopager.status.updateTip "從 http://blogs.sun.com/wind/entry/autopager_site_config 線上更新網站設定值。">
-<!ENTITY autopager.status.updatesetting "更新設定">
 <!ENTITY autopager.status.xpathUtils "XPath 工具">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自動辨識">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "於原視窗開啟">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "於側邊欄開啟">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "選取內容">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "選取連結">
 <!ENTITY toolbarbutton.testSite.tooltiptext "測試網站">

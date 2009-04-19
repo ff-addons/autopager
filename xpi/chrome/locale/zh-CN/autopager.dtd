@@ -13,6 +13,9 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "所有页">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-show.label "显示">
+<!ENTITY autopager.sanitizer.entry "自动翻页网站确认信息">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "你确定要清除自动翻页网站确认信息?">
 <!ENTITY autopager.sidebarTitle "自动翻页设置工作室">
 <!ENTITY autopager.status.createXPath "创建XPath路径">
 <!ENTITY autopager.status.createXPathTip "点选页面内容创建XPath路径.">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "导出自动翻页设置到文件.">
 <!ENTITY autopager.status.importclip "从剪贴板导入">
 <!ENTITY autopager.status.importclipTip "从剪贴板导入自动翻页选项.">
+<!ENTITY autopager.status.importexport "导入/导出">
 <!ENTITY autopager.status.importfile "从文件导入">
 <!ENTITY autopager.status.importfileTip "从文件导入自动翻页选项.">
 <!ENTITY autopager.status.importurl "从地址导入">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
 <!ENTITY autopager.status.update "在线更新">
 <!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
-<!ENTITY autopager.status.updatesetting "更新">
 <!ENTITY autopager.status.xpathUtils "XPath工具">
 <!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "添加站点配置">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "清除当前设置">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自动识别">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "在独立的新窗口打开">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "在侧边拦打开">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "选择内容">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "选择链接">
 <!ENTITY toolbarbutton.testSite.tooltiptext "测试站点配置">

@@ -21,6 +21,9 @@ const autopagerUtils = {
                 .getService(Components.interfaces.nsIConsoleService);
         consoleService.logStringMessage(message)
     },
+    consoleError: function(message) {
+        Components.utils.reportError(message)
+    },
     currentDocument: function()
     {
 	return this.currentBrowser().contentDocument;  
@@ -28,10 +31,16 @@ const autopagerUtils = {
     currentBrowser: function()
     {
         var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-	var browserWindow = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
+	var browser = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
 
 
-	return browserWindow;  
+	return browser;  
+    },
+    currentWindow: function()
+    {
+        var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
+        var browserWindow = windowManager.getMostRecentWindow("navigator:browser");
+        return browserWindow;
     },
     cloneBrowser: function(targetB, originalB)
   {
@@ -95,6 +104,29 @@ const autopagerUtils = {
     ctx = lm(ctx, "top")();
     
     return ctx;
+  },
+  windowEnumerator : function(aWindowtype) {
+  if (typeof(aWindowtype) == "undefined")
+     aWindowtype = "navigator:browser";
+  var WindowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
+                        .getService(Components.interfaces.nsIWindowMediator);
+  return WindowManager.getEnumerator(aWindowtype);
+},
+numberOfWindows : function(all, aWindowtype) {
+  var enumerator = autopagerUtils.windowEnumerator(aWindowtype);
+  var count = 0;
+  while ( enumerator.hasMoreElements() ) {
+    var win = enumerator.getNext();
+    if ("SessionManager" in win && win.SessionManager.windowClosed)
+      continue;
+    count++;
+    if (!all && count == 2)
+      break;
   }
-
+  return count;
+},
+isLastWindow : function(aWindowtype) {
+  var count = autopagerUtils.numberOfWindows(false,aWindowtype);
+  return count <=1;
+}
 };

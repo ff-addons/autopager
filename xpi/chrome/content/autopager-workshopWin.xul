@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/content/bookmarks/bookmarks.css" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager.css" type="text/css"?>
+<?xml-stylesheet href="chrome://autopager/skin/autopager-workshop-win.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd" >
+<?xul-overlay href="chrome://autopager/content/autopager-workshop.xul"?>
+<dialog id="autopagerWorkshopDialog"
+        title="&setting.title;"
+        orient="vertical"
+        onload="autopagerSidebar.onLoad();"
+        ondialogcancel="autopagerSidebar.quit();"
+        ondialogaccept="return autopagerSidebar.doAddSite(true);"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <vbox id="autopager-workshop" flex="1">
+</vbox>
+</dialog>

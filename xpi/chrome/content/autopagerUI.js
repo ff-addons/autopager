@@ -178,16 +178,7 @@ function autopagerOpenIntab(url,obj)
         autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
     }
     function handleOkButton() {
-       	handleApplyButton();
-         
-//        // Step 1: Create new event which has detail of the command.
-//        var newCmdEvent = document.createEvent('Events');
-//        newCmdEvent.initEvent('AutoPagerRefreshPage',true, true);         
-//        var newEvent = document.createEvent('XULCommandEvents');
-//        newEvent.initCommandEvent('AutoPagerRefreshPage', true, true,window.opener, 0, false, false, false, false,  newCmdEvent);
-//        window.opener.document.dispatchEvent(newEvent);
-//        //         autopagerMain.onContentLoad(parentWindow.gBrowser.contentDocument);
-
+       	handleApplyButton();         
           if (window.opener.getBrowser)
             window.opener.getBrowser().contentDocument.location.reload();
           else if (window.opener.gBrowser)
@@ -693,7 +684,9 @@ function autopagerOpenIntab(url,obj)
 				onRemovePathChange();
            	}
         }, false);
-
+        btnPickLinkPath.addEventListener("command", function() {
+			pickupLink();
+        }, false);
 
     }
     function enableSmartControl(enabled)
@@ -1003,11 +996,7 @@ function autopagerOpenIntab(url,obj)
         window.autopagerPublicSite=site;
 //        window.opener.autopagerPublicSite=site;
         
-        //
-        
-        //var browser = window.open("http://localhost:8080/WebApplication1/");
-//        autopagerOpenIntab("http://www.teesoft.info/component/option,com_autopager/Itemid,47/")
-        var browser = window.open("http://www.teesoft.info/component/option,com_autopager/Itemid,47/");
+        var browser = window.open("http://www.teesoft.info/aprules/submit");
 
     }
     
@@ -1227,3 +1216,33 @@ var userSites = null;
 		}
 
 	}
+        function pickupLink ()
+        {
+            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            autopagerSelector.clearFunctions();
+            autopagerSelector.registorSelectFunction(function (elem){
+
+                  var doc = elem.ownerDocument;
+
+                 var nodes = [];
+                 nodes.push(elem);
+
+                  var links = [];
+                  links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
+                  window.focus();
+                  if (links.length>0)
+                  {
+                    linkXPath.value = links[0].xpath
+                  }
+
+            })
+
+            autopagerSelector.registorStartFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 1;
+            });
+            autopagerSelector.registorQuitFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 0;
+            });
+
+            autopagerSelector.start(autopagerUtils.currentBrowser());
+        }

@@ -31,6 +31,10 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerTreeView.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-highlight.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
 
     <tooltip  id="helptip"  flex="1">
         <image width="48" height="48" src="chrome://autopager/skin/help.jpg"

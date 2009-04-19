@@ -177,9 +177,10 @@ autopagerSelector.initHelpBox = function() {
         {
             this.onStartFunctions[i]();
         }
-	var helpBoxRows = document.getElementById("autopager-helpbox-rows");
-	if (helpBoxRows.firstChild)
-		return;
+	var added = false;
+    var helpBoxRows = document.getElementById("autopager-helpbox-rows");
+	if (helpBoxRows!=null && helpBoxRows.firstChild)
+		added = true;;
 
 	// Help box hasn't been filled yet, need to do it now
 	var stringService = Components.classes["@mozilla.org/intl/stringbundle;1"]
@@ -193,18 +194,21 @@ autopagerSelector.initHelpBox = function() {
 		this.commands[command + "_key"] = key.toLowerCase();
 		this.commands[command + "_label"] = label;
 
-		var row = document.createElement("row");
-		helpBoxRows.appendChild(row);
+        if (!added && helpBoxRows)
+        {
+            var row = document.createElement("row");
+            helpBoxRows.appendChild(row);
 
-		var element = document.createElement("description");
-		element.setAttribute("value", key);
-		element.className = "key";
-		row.appendChild(element);
+            var element = document.createElement("description");
+            element.setAttribute("value", key);
+            element.className = "key";
+            row.appendChild(element);
 
-		element = document.createElement("description");
-		element.setAttribute("value", label);
-		element.className = "label";
-		row.appendChild(element);
+            element = document.createElement("description");
+            element.setAttribute("value", label);
+            element.className = "label";
+            row.appendChild(element);
+        }
 	}
 }
 

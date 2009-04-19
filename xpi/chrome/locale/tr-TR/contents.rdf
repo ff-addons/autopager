@@ -9,7 +9,7 @@
 
   <!-- locale information -->
   <RDF:Description about="urn:mozilla:locale:tr-TR"
-        chrome:displayName="T�rk�e (TR)"
+        chrome:displayName="Türkçe (TR)"
         chrome:author="ErkanYV"
         chrome:name="tr-TR">
     <chrome:packages>

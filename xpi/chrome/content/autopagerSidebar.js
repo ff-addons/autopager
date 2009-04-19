@@ -71,22 +71,25 @@ var autopagerSidebar =
             window.addEventListener("mouseout",autopagerSidebar.onMouseOut,false);
         }
 		var sidebar = window.top.document.getElementById("sidebar");
-		autopagerSidebar.orgPriority = sidebar.style.getPropertyPriority ("max-width");
-		autopagerSidebar.maxWidth = sidebar.style.getPropertyValue ("max-width");
+        if (sidebar)
+        {
+            autopagerSidebar.orgPriority = sidebar.style.getPropertyPriority ("max-width");
+            autopagerSidebar.maxWidth = sidebar.style.getPropertyValue ("max-width");
 
-		sidebar.style.removeProperty("max-width");
-		sidebar.addEventListener("DOMAttrModified",this.changed,false);
-		var sidebarBox = window.top.document.getElementById("sidebar-box");
-		sidebarBox.addEventListener("DOMAttrModified",this.changed,false);
-		var sheets = window.top.document.styleSheets
-		for(var i=0;i<sheets.length;i++)
-		{
-				if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
-				{
-						var sheet = sheets.item(i);
-						sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
-						sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
-				}
+            sidebar.style.removeProperty("max-width");
+            sidebar.addEventListener("DOMAttrModified",this.changed,false);
+            var sidebarBox = window.top.document.getElementById("sidebar-box");
+            sidebarBox.addEventListener("DOMAttrModified",this.changed,false);
+            var sheets = window.top.document.styleSheets
+            for(var i=0;i<sheets.length;i++)
+            {
+                    if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
+                    {
+                            var sheet = sheets.item(i);
+                            sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
+                            sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
+                    }
+            }
         }
 		//document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
@@ -96,6 +99,7 @@ var autopagerSidebar =
                         {
                             autopagerSidebar.tabbox.selectedIndex=1;
     						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,true);
+                            event.preventDefault();
                         }
                     },true);
         document.getElementById("xpath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=1;},false);
@@ -109,6 +113,7 @@ var autopagerSidebar =
                         {
                             autopagerSidebar.tabbox.selectedIndex=2;
                             autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,true);
+                            event.preventDefault();
                         }
                     },true);
         document.getElementById("contentXPath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=2;},false);
@@ -187,31 +192,43 @@ var autopagerSidebar =
         this.loadIFrame(doc,"resultsFrame2","results-caption2");
         this.loadIFrame(doc,"resultsFrame","results-caption");
 
-        setTimeout(function(){
-        var iframe = document.getElementById( "resultsFrame");            
-        iframe.addEventListener("DOMContentLoaded", function() {
-            var self = arguments.callee;
-            var iframe = document.getElementById( "resultsFrame");      
-            iframe.removeEventListener("DOMContentLoaded",self,false);
-            autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
-            var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
-            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));			
-        } 
-        , false);
-        autopagerUtils.cloneBrowser(iframe, browser);
+        if (autopagerMain.loadBoolPref("tweaking-workshop-result-style"))
+        {
+            setTimeout(function(){
+            var iframe = document.getElementById( "resultsFrame");
+            iframe.addEventListener("DOMContentLoaded", function() {
+                var self = arguments.callee;
+                var iframe = document.getElementById( "resultsFrame");
+                iframe.removeEventListener("DOMContentLoaded",self,false);
+                autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
+                var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+                autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
+            }
+            , false);
+            autopagerUtils.cloneBrowser(iframe, browser);
 
-        iframe = document.getElementById( "resultsFrame2");
-        iframe.addEventListener("DOMContentLoaded", function() {
-            var self = arguments.callee;
-            var iframe = document.getElementById( "resultsFrame2");      
-            iframe.removeEventListener("DOMContentLoaded",self,false);
-            autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
+            iframe = document.getElementById( "resultsFrame2");
+            iframe.addEventListener("DOMContentLoaded", function() {
+                var self = arguments.callee;
+                var iframe = document.getElementById( "resultsFrame2");
+                iframe.removeEventListener("DOMContentLoaded",self,false);
+                autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
+                var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+                autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
+            }
+            , false);
+            autopagerUtils.cloneBrowser(iframe, browser);
+            },1000);
+        }
+        else
+        {
+            var iframe = document.getElementById( "resultsFrame");
             var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
             autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
-        } 
-        , false);
-        autopagerUtils.cloneBrowser(iframe, browser);
-        },1000);
+            iframe = document.getElementById( "resultsFrame2");
+            b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+            autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
+        }
 		var sites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),this.currUrl,10);
 
 		autopagerSidebar.showSettingList(document.getElementById("settingsTreeBody"),sites);
@@ -523,19 +540,23 @@ var autopagerSidebar =
     },
     addSite : function()
     {
+      autopagerSidebar.doAddSite(false);
+    },
+    doAddSite : function(closethisFirst)
+    {
         var linkXPath =document.getElementById("xpath").value;
         if (linkXPath == null || linkXPath.length ==0)
         {
           alert(this.getString("LinkXPathcannotbenull"));
           document.getElementById("xpath").focus();
-          return;
+          return false;
         }
         var contentXPath =document.getElementById("contentXPath").value;
         if (contentXPath == null || contentXPath.length ==0)
         {
           alert(this.getString("ContentXPathcannotbenull"));
           document.getElementById("contentXPath").focus();
-          return;
+          return false;
         }
         var url = this.currentDoc.documentURI;
 
@@ -565,8 +586,23 @@ var autopagerSidebar =
             document.autopagerXPathModel = "";
             document.autopagerWizardStep = "";
 			window.autopagerSelectUrl = autopagerSidebar.currUrl;
+            if (closethisFirst || (window.top.document.getElementById("sidebar")==null))
+            {
+                autopagerSidebar.quit()
+                window.close();
+            }
             autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
-        
+        return true;
+    },
+    openInOwnWin : function()
+    {
+        window.open("chrome://autopager/content/autopager-workshopWin.xul", "autopager","chrome,resizable,centerscreen,width=600,height=500");
+        autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',false);
+    },
+    openInSidebar : function()
+    {
+        autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+        window.close();
     },
     testSite : function()
     {
@@ -629,12 +665,13 @@ var autopagerSidebar =
                   links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
                   autopagerSidebar.showXPathList(document.getElementById("autoLinkPathTreeBody"),links)
 
+                  window.focus();
                   if (links.length>0)
                   {    
                     document.getElementById("xpath").value = links[0].xpath;
                     autopagerSidebar.searchXPath(links[0].xpath,document.getElementById("resultsFrame"),"status",autopagerSidebar.linkColor,false);
                   }
-
+                  document.getElementById("xpath").focus();
                   document.getElementById("xpathDeck").selectedIndex = 0;
 
                 
@@ -654,7 +691,7 @@ var autopagerSidebar =
         {
 //            alert("This function is not implemented yet.Please wait for next versions.");
             autopagerSelector.clearFunctions();
-            autopagerSelector.registorSelectFunction(function (elem){
+           autopagerSelector.registorSelectFunction(function (elem){
               
                   var doc = elem.ownerDocument;
                   if (autopagerSidebar.currUrl != doc.documentURI)
@@ -669,6 +706,7 @@ var autopagerSidebar =
                   links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
                   autopagerSidebar.showXPathList(document.getElementById("autoContentPathTreeBody"),links)
 
+                  window.focus();
                   if (links.length>0)
                   {    
                     document.getElementById("contentXPath").value = links[0].xpath;
@@ -676,7 +714,7 @@ var autopagerSidebar =
                   }
 
                   document.getElementById("xpathDeck").selectedIndex = 0;
-
+                  document.getElementById("contentXPath").focus();
                 
             });
             autopagerSelector.registorStartFunction(function (){
@@ -716,26 +754,29 @@ var autopagerSidebar =
     window.removeEventListener("mouseout",autopagerSidebar.onMouseOut,false);
 
 		var sidebar = window.top.document.getElementById("sidebar");
+        autopagerMain.saveBoolPref("show-workshop-in-sidebar",sidebar!=null);
+        if (sidebar)
+        {
+            sidebar.removeEventListener("DOMAttrModified",this.changed,false);
 
-		sidebar.removeEventListener("DOMAttrModified",this.changed,false);
+            //restore max-width
+            autopagerSidebar.orgPriority = sidebar.style.setProperty  ("max-width",autopagerSidebar.maxWidth,autopagerSidebar.orgPriority);
 
-		//restore max-width
-		autopagerSidebar.orgPriority = sidebar.style.setProperty  ("max-width",autopagerSidebar.maxWidth,autopagerSidebar.orgPriority);
+            var sidebarBox = window.top.document.getElementById("sidebar-box");
+            sidebarBox.removeEventListener("DOMAttrModified",this.changed,false);
 
-		var sidebarBox = window.top.document.getElementById("sidebar-box");
-		sidebarBox.removeEventListener("DOMAttrModified",this.changed,false);
-
-		var sheets = window.top.document.styleSheets
-		for(var i=0;i<sheets.length;i++)
-		{
-				if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
-				{
-						var sheet = sheets.item(i);
-						//sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
-						//sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
-						sheet.deleteRule(sheet.cssRules.length-1)
-						sheet.deleteRule(sheet.cssRules.length-1)
-				}
+            var sheets = window.top.document.styleSheets
+            for(var i=0;i<sheets.length;i++)
+            {
+                    if('chrome://autopager/skin/autopager-toolbar.css' == sheets.item(i).href)
+                    {
+                            var sheet = sheets.item(i);
+                            //sheet.insertRule("#sidebar-box { overflow-x: hidden !important;}",sheet.cssRules.length);
+                            //sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
+                            sheet.deleteRule(sheet.cssRules.length-1)
+                            sheet.deleteRule(sheet.cssRules.length-1)
+                    }
+            }
         }
 		autopagerSelector.quit();
 		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);

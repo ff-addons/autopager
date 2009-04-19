@@ -86,6 +86,14 @@ saveBoolPref : function(name,value) {
     }
     return "";
 },
+resetPref : function(name,value) {
+    try{
+        this.autopagerPrefs.clearUserPref("." +  name);
+    }catch(e) {
+        //autopagerMain.alertErr(e);
+    }
+    return "";
+},
  saveMyName : function(myname) {
     this.saveUTF8Pref("myname", myname); // set a pref
 },
@@ -98,19 +106,10 @@ loadMyName : function() {
     }
     return "";
 },
-  showMyName : function(){
-    try{
-        var myname = document.getElementById("autopager-myname");
-        myname.label = autopagerConfig.autopagerFormatString("myname" ,[this.loadMyName()]);
-    }catch(e) {
-        
-    }
-},
  changeMyName : function() {
     var name = prompt(autopagerConfig.autopagerGetString("inputname"),this.loadMyName());
     if (name!=null && name.length>0) {
         this.saveMyName(name);
-        this.showMyName();
     }
     return name;
 }   

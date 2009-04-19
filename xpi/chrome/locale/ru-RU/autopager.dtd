@@ -11,8 +11,11 @@
 <!ENTITY autopager.menuitem.autopager-load-5.label "5 страниц">
 <!ENTITY autopager.menuitem.autopager-load-all.key "В">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Все страницы">
-<!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
+<!ENTITY autopager.menuitem.autopager-load.modifiers "accel, alt">
 <!ENTITY autopager.menuitem.autopager-show.label "показать">
+<!ENTITY autopager.sanitizer.entry "Подтверждение сайта AutoPager">
+<!ENTITY autopager.sanitizer.entry.accesskey "A">
+<!ENTITY autopager.sanitizer.entry.confirm "Вы хотите очистить подтверждение сайта AutoPager?">
 <!ENTITY autopager.sidebarTitle "Центр настройки AutoPager">
 <!ENTITY autopager.status.createXPath "Создать XPath">
 <!ENTITY autopager.status.createXPathTip "Создать XPath, выбрав узел на странице">
@@ -28,6 +31,7 @@
 <!ENTITY autopager.status.exportfileTip "Экспорт настроек AutoPager&apos;a в файл">
 <!ENTITY autopager.status.importclip "Импорт из буфера обмена">
 <!ENTITY autopager.status.importclipTip "Импорт настроек AutoPager&apos;a из буфер обмена">
+<!ENTITY autopager.status.importexport "Импорт/Экспорт">
 <!ENTITY autopager.status.importfile "Импорт из файла">
 <!ENTITY autopager.status.importfileTip "Импорт настроек AutoPager&apos;a из файла">
 <!ENTITY autopager.status.importurl "Импорт по URL">
@@ -48,7 +52,6 @@
 <!ENTITY autopager.status.testXPathTip "Протестировать XPath на этой странице">
 <!ENTITY autopager.status.update "Обновить настройки через сеть">
 <!ENTITY autopager.status.updateTip "Обновить настройки AutoPager&apos;а с http://blogs.sun.com/wind/entry/autopager_site_config.">
-<!ENTITY autopager.status.updatesetting "Обновить параметры">
 <!ENTITY autopager.status.xpathUtils "Инструменты XPath">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "Центр настройки AutoPager">
@@ -144,6 +147,8 @@
 <!ENTITY toolbarbutton.addSite.tooltiptext "Добавить сайт">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Очистить всё">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Обнаружение">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "Открыть в отдельном окне">
+<!ENTITY toolbarbutton.openInSidebar.tooltiptext "Открыть в боковой панели">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Выбрать содержимое">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Выбрать ссылку">
 <!ENTITY toolbarbutton.testSite.tooltiptext "Протестировать сайт">
