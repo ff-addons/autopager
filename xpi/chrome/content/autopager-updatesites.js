@@ -47,9 +47,9 @@ var AutoPagerUpdateTypes =
             this.types =  new Array();
 
             this.types.push(new AutoPagerUpdateType("autopager-xml","all",
-            "http://rep.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
-            "text/xml; charset=utf-8",
-            "ap-",this.xmlConfigCallback,"//site",
+            "http://rep.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}",
+            "application/json; charset=utf-8",
+            "ap-",this.autopagerConfigCallback,"//site",
             "default configurations on autopager.mozdev.org"));
             
             this.types.push(new AutoPagerUpdateType("autopager-freetext","all",
@@ -84,6 +84,16 @@ var AutoPagerUpdateTypes =
         if (sites == null|| sites.length==0)
         {
             sites = this.getDefaultSites();
+            for(var i=0;i<sites.length;i++)
+            {
+                    var newSite = autopagerUtils.clone(sites[i]);
+                    newSite.referred = sites[i];
+                    sites[i]= newSite;
+                    if (sites[i].filename == "chinalist.xml" && autopagerUtils.isChineseLocale())
+                    {
+                        newSite.enabled = true;
+                    }
+            }
             //this.saveSettingSiteConfig(sites);
         }
         return sites;
@@ -124,19 +134,21 @@ var AutoPagerUpdateTypes =
                         "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://rep.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
-                        "default configurations @ teesoft.info",
-                        "autopagerTee.xml","//site",true,"autopager-xml",-2,["http://wind.liyong.googlepages.com/autopager.xml?version={version}&lastupdate={timestamp}",
-                                "http://www.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
-                                "http://vps.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
-                                "http://s2.teesoft.info/autopager/export/?version={version}&lastupdate={timestamp}",
-                                "http://teesoft.co.cc/autopager/?version={version}&lastupdate={timestamp}"]));
+                        "http://rep.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
+                        "Experimental configurations @ teesoft.info, please don't enable this.",
+                        "autopagerBeta.xml","//site",false,"autopager-xml",-2,[
+                            "http://vps.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}",
+                            "http://s2.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://rep.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}","text/xml; charset=utf-8",
-                        "Experimental configurations @ teesoft.info",
-                        "autopagerBeta.xml","//site",false,"autopager-xml",-2,["http://rep.teesoft.info/autopager/export/?approvedOnly=0&version={version}&lastupdate={timestamp}",
-                                "http://teesoft.co.cc/autopager/?approvedOnly=0&version={version}&lastupdate={timestamp}"]));
+                        "http://rep.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
+                        "default configurations @ teesoft.info",
+                        "autopagerTee.xml","//site",true,"autopager-xml",-2,
+                                ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
+                                "http://s2.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
+                                "http://shared.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
+                                "http://wind.liyong.googlepages.com/autopager.json?version={version}&lastupdate={timestamp}&all={all}",
+                                "http://teesoft.co.cc/autopager/json/?version={version}&lastupdate={timestamp}&all={all}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
@@ -148,6 +160,15 @@ var AutoPagerUpdateTypes =
     xmlConfigCallback : function(doc,updatesite)
     {
         var sites = autopagerConfig.loadConfigFromDoc(doc);
+        return sites;
+    },
+    autopagerConfigCallback : function(doc,updatesite)
+    {
+        var sites = null;
+        if (typeof doc =='string')
+            sites = autopagerJsonSetting.loadCompactFromString(doc);
+        else
+            sites = autopagerConfig.loadConfigFromDoc(doc);
         return sites;
     },
     blogConfigCallback : function(doc,updatesite)
@@ -172,7 +193,7 @@ var AutoPagerUpdateTypes =
             var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
             sites = this.loadSettingSitesFromDoc(doc);
 			var defaultSites = this.getDefaultSites();
-			var changed = false;
+			var oldFormat = false;
             for(var i in sites)
             {
 				var site = sites[i];
@@ -181,25 +202,31 @@ var AutoPagerUpdateTypes =
 					var defaultSite = defaultSites[h]
                     if (defaultSite.filename == site.filename)
                     {
-                        if (
-                            (defaultSite.backupUrls!=null && defaultSite.backupUrls.length>0)
-                            && (site.backupUrls==null || site.backupUrls.length!=defaultSite.backupUrls.length))
-                            {
-                            site.backupUrls = defaultSite.backupUrls;
-                            site.url = defaultSite.url;
-                            changed = true;
-                        }
-                        if (site.filename == "blogcomments.xml")
+                        if (typeof site.url != 'undefined')
+                            oldFormat = true;
+                        var newSite = autopagerUtils.clone(defaultSite);
+
+                        newSite.referred = defaultSite;
+                        if (typeof site.enabled != 'undefined')
+                            newSite.enabled = site.enabled;
+                        if (oldFormat && site.filename == "chinalist.xml")
                         {
-                            site.enabled = false;
-                            changed = true;
+                            var isChineseLocale = autopagerUtils.isChineseLocale();
+                            if (isChineseLocale)
+                                newSite.enabled = true;
                         }
+                        if (typeof site.updateType != 'undefined')
+                            newSite.updateType = site.updateType;
+                        if (typeof site.updateperiod != 'undefined')
+                            newSite.updateperiod = site.updateperiod;
+                        newSite.lastupdate = site.lastupdate
+                        sites[i] = newSite;
                     }
 				}
-				if (changed)
-				{
-					this.saveSettingSiteConfig(sites);
-				}
+            }
+            if (oldFormat)
+            {
+                this.saveSettingSiteConfig(sites);
             }
                       
         }catch(e)
@@ -322,26 +349,42 @@ var AutoPagerUpdateTypes =
             {
                 for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
                     var siteNode = doc.createElement("update-site");
-                    
-                    autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
-                    autopagerConfig.createNode(siteNode,"locales",siteObj.locales);
-                    autopagerConfig.createNode(siteNode,"url",siteObj.url);
-                    autopagerConfig.createNode(siteNode,"contenttype",siteObj.contenttype);
+                    if (typeof siteObj.referred == 'undefined')
+                    {
+                        autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
+                        autopagerConfig.createNode(siteNode,"updateType",siteObj.updateType.type);
+                        autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);
+
+                        autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
+                        autopagerConfig.createNode(siteNode,"locales",siteObj.locales);
+                        autopagerConfig.createNode(siteNode,"url",siteObj.url);
+                        autopagerConfig.createNode(siteNode,"contenttype",siteObj.contenttype);
+                        autopagerConfig.createNode(siteNode,"xpath",siteObj.xpath);
+                        autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
+                        autopagerConfig.createNode(siteNode,"defaulted",siteObj.defaulted);
+                        if (siteObj.backupUrls!=null)
+                        {
+                            for(var u=0;u<siteObj.backupUrls.length;u++)
+                                autopagerConfig.createNode(siteNode,"backupUrl",siteObj.backupUrls[u]);
+                        }
+                    }
+                    else
+                    {
+                        if (siteObj.enabled != siteObj.referred.enabled)
+                        {
+                            autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);                                
+                        }
+                        if (siteObj.updateType.type != siteObj.referred.updateType.type)
+                        {
+                            autopagerConfig.createNode(siteNode,"updateType",siteObj.updateType.type);                                
+                        }
+                        if (siteObj.updateperiod != siteObj.referred.updateperiod)
+                        {
+                            autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);                                
+                        }
+                    }
                     autopagerConfig.createNode(siteNode,"filename",siteObj.filename);
-                    autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
-                    autopagerConfig.createNode(siteNode,"xpath",siteObj.xpath);
-                    autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
-                    autopagerConfig.createNode(siteNode,"updateType",siteObj.updateType.type);
-                    autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);
                     autopagerConfig.createNode(siteNode,"lastupdate",siteObj.lastupdate);
-                    autopagerConfig.createNode(siteNode,"defaulted",siteObj.defaulted);
-
-					if (siteObj.backupUrls!=null)
-					{
-						for(var u=0;u<siteObj.backupUrls.length;u++)
-							autopagerConfig.createNode(siteNode,"backupUrl",siteObj.backupUrls[u]);
-					}
-
 
                     doc.firstChild.appendChild(siteNode);
                     doc.firstChild.appendChild(doc.createTextNode("\n"));

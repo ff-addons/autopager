@@ -1,7 +1,6 @@
 var UpdateSites=
 {
     updateSites: null,
-    allSiteSetting: null,
     submitCount:0,
     AutopagerCOMP:null,
 	updatedCount: 0,
@@ -69,7 +68,10 @@ var UpdateSites=
     },
     getUrl : function (url)
     {
-        url = url.replace(/\{version\}/,"0.5.0.1").replace(/\{timestamp\}/,(new Date()).getTime());
+        var all=0;
+        if (autopagerMain.loadBoolPref("include-unsafe-rules"))
+            all=1;
+        url = url.replace(/\{version\}/,"0.5.1.3").replace(/\{timestamp\}/,(new Date()).getTime()).replace(/\{all\}/,all);
         return url;
     },
 	updateOnline :function (force)
@@ -102,23 +104,30 @@ var UpdateSites=
 		{
 			obj.triedTime ++;
 			//try 2 times
-			UpdateSites.updateSiteOnline(obj,true)
+            setTimeout(function(){
+                UpdateSites.updateSiteOnline(obj,true)
+            },10);
+			
 		}
 		else
 		if (obj.backupUrls!=null &&  obj.triedBackup < obj.backupUrls.length)
 		{
-			UpdateSites.updateSiteOnlineBackup(obj)
-			obj.triedBackup ++;
+            setTimeout(function(){
+                UpdateSites.updateSiteOnlineBackup(obj)
+                obj.triedBackup ++;
+            },10);
 		}
     },
     callback:function(doc,updatesite)
     {
         var sites = updatesite.callback(doc,updatesite);
+        if (sites==null || sites.length==0)
+            return;
         sites.updateSite = updatesite;
-        var file = autopagerConfig.getConfigFile(updatesite.filename);
+        var file = autopagerConfig.getConfigFile(updatesite.filename.replace(/\.xml/,".json"));
         if (file)
         {
-            autopagerConfig.saveConfigToFile(sites,file,true);
+            autopagerConfig.saveConfigToJsonFile(sites,file,true);
         }
         UpdateSites.submitCount--;
         //if (UpdateSites.submitCount<=0)
@@ -143,23 +152,14 @@ var UpdateSites=
     {
         if (this.AutopagerCOMP.loadAll().length==0)
         {
-            this.allSiteSetting = {};
-			this.allSiteSetting["testing.xml"] = null;
+            var allSiteSetting = {};
+			allSiteSetting["testing.xml"] = null;
             for(var i=this.updateSites.length-1;i>=0;i--)
             {
-                var configContents="";
-                try{
-                      configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(this.updateSites[i].filename));
-                      var sites= null;
-                      sites = autopagerConfig.loadConfigFromStr(configContents,false);
-                      sites.updateSite = this.updateSites[i];
-                      this.allSiteSetting[this.updateSites[i].filename] = sites;
-                }catch(e)
-                {
-                    //alert(e);
-                }            
+                var sites = autopagerConfig.reLoadConfig(allSiteSetting,this.updateSites[i]);
+                allSiteSetting[this.updateSites[i].filename] = sites;
             }
-            this.AutopagerCOMP.setAll(this.allSiteSetting);
+            this.AutopagerCOMP.setAll(allSiteSetting);
         }
         return this.AutopagerCOMP.loadAll();
     },
@@ -317,7 +317,7 @@ getConfigFile : function(fileName) {
 	  }
   }catch(e)
   {
-  	//alert(e);
+  	autopagerUtils.consoleLog(e);
   }
   return file;
   
@@ -325,7 +325,6 @@ getConfigFile : function(fileName) {
  loadConfirmFromStr : function(configContents) {
   var sites = new Array();
   try{
-		  //var configContents = autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("autopager.xml"));
 		  var doc = this.autopagerDomParser.parseFromString(configContents, "text/xml");
 		  var nodes = doc.evaluate("/autopager/site-confirm", doc, null, 0, null);
 		  for (var node = null; (node = nodes.iterateNext()); ) {
@@ -347,7 +346,7 @@ getConfigFile : function(fileName) {
                }
 	}catch(e)
 	{
-		//alert(e);
+		autopagerUtils.consoleLog(e);
 	}
   return sites;
 }
@@ -361,7 +360,7 @@ getConfigFile : function(fileName) {
              confirmContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("site-confim.xml"));
          }catch(e)
          {
-             //alert(e);
+             autopagerUtils.consoleLog(e);
          }
          confirms = this.loadConfirmFromStr(confirmContents);
          UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
@@ -404,7 +403,7 @@ getConfigFile : function(fileName) {
  },
  isNumeric : function (strNumber)
 {  
-		var  newPar=/^(\+)?\d+(\.\d+)?$/  
+		var  newPar=/^(\+|\-)?\d+(\.\d+)?$/
         return  newPar.test(strNumber);  
 }
 // Array.insert( index, value ) - Insert value at index, without overwriting existing keys
@@ -611,7 +610,7 @@ getConfigFileURI : function(fileName) {
                    .newFileURI(autopagerConfig.getConfigFile(fileName));
 	}catch(e)
 	{
-		//alert(e);
+		autopagerUtils.consoleLog(e);
 	}
 },
 getRemoteURI : function(url)
@@ -662,28 +661,46 @@ autopagerGetContents : function(aURL, charset,warn){
 	}
 },
 loadConfig :function() {
-//  var configContents="";
-//  try{
-//	  configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("autopager.xml"));
-//    }catch(e)
-//    {
-//    	//alert(e);
-//    }
-//    return autopagerConfig.loadConfigFromStr(configContents,true);
     var allConfigs = UpdateSites.loadAll();
     return allConfigs["autopager.xml"];
  },
- reLoadConfig :function(updateSite) {
+ reLoadConfig :function(allSiteSetting,updateSite) {
     var configContents="";
+    var loaded = false;
+    var jsonfile = updateSite.filename.replace(/\.xml/,".json");
     try{
-        configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(updateSite.filename));
-        var sites= null;
-        sites = autopagerConfig.loadConfigFromStr(configContents,false);
-        sites.updateSite = updateSite;
+
+        configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonfile));
+        if (configContents!=null && configContents.length>0)
+        {
+          var sites= null;
+           sites = autopagerJsonSetting.loadCompactFromString(configContents);
+          sites.updateSite = updateSite;
+          loaded = true;
+        }
     }catch(e)
     {
-        //alert(e);
-    }    
+        loaded = false;
+    }
+    if (!loaded)
+    {
+        try{
+            configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(updateSite.filename));
+            var sites= null;
+            sites = autopagerConfig.loadConfigFromStr(configContents,false);
+            sites.updateSite = updateSite;
+            //save to json
+            if (sites.length>0)
+            {
+                autopagerConfig.saveConfigToJsonFile(sites,autopagerConfig.getConfigFile(jsonfile),true);
+                //todo:delete old xml file
+            }
+        }catch(e)
+        {
+            autopagerUtils.consoleLog(e);
+        }
+    }
+    allSiteSetting[updateSite.filename] = sites;
     return sites                
 },
 importFromURL :function(func)
@@ -1000,12 +1017,11 @@ loadConfigFromStr : function(configContents,remote) {
   var sites = null;
   try{
 
-		  //var configContents = autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("autopager.xml"));
 		  var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
                   sites = autopagerConfig.loadConfigFromDoc(doc);
 	}catch(e)
 	{
-		//alert(e);
+		autopagerUtils.consoleLog(e);
 	}
   if (remote && sites.length ==0 )
   {
@@ -1038,12 +1054,38 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
         site.quickLoad = true;
 	return site;
 },
-saveConfig : function(sites) {
+saveConfigXML : function(sites) {
 	autopagerConfig.saveConfigToFile(sites,autopagerConfig.getConfigFile("autopager.xml"),true);
         var allConfigs = UpdateSites.loadAll();
         //sites.updateSite = allConfigs["autopager.xml"].updateSite;
         allConfigs["autopager.xml"] = sites;
         UpdateSites.AutopagerCOMP.setAll(allConfigs);          
+},
+saveConfigJSON : function(sites) {
+	autopagerConfig.saveConfigToJsonFile(sites,autopagerConfig.getConfigFile("autopager.json"),true);
+        var allConfigs = UpdateSites.loadAll();
+        //sites.updateSite = allConfigs["autopager.xml"].updateSite;
+        allConfigs["autopager.xml"] = sites;
+        UpdateSites.AutopagerCOMP.setAll(allConfigs);
+},
+saveConfigToJsonFile: function(sites,saveFile,includeChangeInfo)
+{
+    try{
+        var fStream = autopagerConfig.getWriteStream(saveFile);
+        var configStream = autopagerConfig.getConverterWriteStream(fStream);
+        var str = autopagerJsonSetting.saveNormalToCompactString(sites);
+        configStream.writeString(str);
+        configStream.close();
+        fStream.close();
+	}catch(e)
+	{
+		alert(e);
+	}
+    //UpdateSites.allSiteSetting= UpdateSites.loadAll();
+    autopagerMain.setDatePrefs("settingupdatedate", new Date());
+},
+saveConfig : function(sites) {
+	autopagerConfig.saveConfigJSON(sites);
 },
 createNode : function(siteNode,name,value)
 {
@@ -1099,16 +1141,15 @@ if (sites!=null)
             if (siteObj.published)
                 autopagerConfig.createNode(siteNode,"published",siteObj.published);
     
-	    var x=0;
-	    for(x=0;x<siteObj.contentXPath.length;++x)
+	    for(var x=0;x<siteObj.contentXPath.length;++x)
 	    {
 		    autopagerConfig.createNode(siteNode,"contentXPath",siteObj.contentXPath[x]);
         }
-	    for(x=0;x<siteObj.testLink.length;++x)
+	    for(var x=0;x<siteObj.testLink.length;++x)
 	    {
 		    autopagerConfig.createNode(siteNode,"testLink",siteObj.testLink[x]);
         }
-	    for(x=0;x<siteObj.removeXPath.length;++x)
+	    for(var x=0;x<siteObj.removeXPath.length;++x)
 	    {
 		    autopagerConfig.createNode(siteNode,"removeXPath",siteObj.removeXPath[x]);
         }
@@ -1139,7 +1180,7 @@ if (sites!=null)
 	{
 		alert(e);
 	}
-        UpdateSites.allSiteSetting= UpdateSites.loadAll();
+        //UpdateSites.allSiteSetting= UpdateSites.loadAll();
 
         autopagerMain.setDatePrefs("settingupdatedate", new Date());
 },
@@ -1150,7 +1191,15 @@ getWriteStream : function(file) {
   stream.init(file, 0x02 | 0x08 | 0x20, 420, 0);
 
   return stream;
+},
+getConverterWriteStream : function(output) {
+  var stream = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+    .createInstance(Components.interfaces.nsIConverterOutputStream);
+
+  stream.init(output, "UTF-8", 0, 0x0000);
+  return stream;
 }
+
 };
 UpdateSites.init();
 

@@ -316,7 +316,7 @@ var splitbrowse = {
                 Components.interfaces.nsIWebProgress.NOTIFY_ALL);
             splitBrowser.autopagerSplitWinFirstDocSubmited = false;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
-            splitBrowser.loadURI("about:",null,null);
+            splitBrowser.loadURI("about:blank",null,null);
             //    	if (!browser.getAttribute("flex"))
             //	    		browser.setAttribute("flex", "1");
             //this.setVisible(splitBrowser,!this.hidden);
@@ -327,6 +327,10 @@ var splitbrowse = {
         if (splitBrowser != null)
         {
             splitBrowser.docShell.allowPlugins = false;
+//            splitBrowser.docShell.allowAuth = false;
+//            splitBrowser.docShell.allowMetaRedirects = false;
+            splitBrowser.docShell.allowSubframes = doc.documentElement.autopagerUseSafeEvent || (doc.defaultView != doc.defaultView.top);
+            splitBrowser.docShell.allowImages = doc.documentElement.autopagerUseSafeEvent;
         }
         if (splitBrowser != null && clone)
         {
@@ -339,10 +343,14 @@ var splitbrowse = {
             if (!doc.documentElement.autopagerUseSafeEvent )
                 this.cloneBrowser(splitBrowser,browser);
             else
-                splitBrowser.loadURI( doc.location.href, null, null );
-
+            {
+                splitBrowser.loadURI("about:blank",null,null);
+                window.setTimeout(function(){
+                    splitBrowser.loadURI( doc.location.href, null, null );
+                },10);
+                
+            }             
         }
-
  
         //splitBrowser.parentNode.hidden = hidden;
         //	splitBrowser.hidden = hidden;
@@ -475,6 +483,8 @@ var splitbrowse = {
     done : function(doc)
     {
         //alert("done");
+       if (doc.location.href=='about:blank')
+            return true;
         window.setTimeout(function(){
             autopagerMain.onSplitDocLoaded(doc,true);
         },splitbrowse.getDelayMiliseconds(doc));

@@ -531,7 +531,7 @@ var autopagerSidebar =
         var txtbox = document.getElementById('xpath');
         txtbox.value = site.linkXPath;
 		txtbox = document.getElementById('contentXPath');
-        txtbox.value = site.contentXPath;
+        txtbox.value = site.contentXPath.join(" | ");
 
 		var urlPattern = document.getElementById("urlPattern");
 		urlPattern.value = site.urlPattern;
@@ -596,7 +596,7 @@ var autopagerSidebar =
     },
     openInOwnWin : function()
     {
-        window.open("chrome://autopager/content/autopager-workshopWin.xul", "autopager","chrome,resizable,centerscreen,width=600,height=500");
+        autopagerMain.openWorkshopInDialog();
         autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',false);
     },
     openInSidebar : function()

@@ -27,6 +27,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />

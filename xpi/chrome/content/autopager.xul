@@ -22,16 +22,17 @@
     
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerTreeView.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerUI.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-highlight.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
@@ -254,6 +255,9 @@
                                     <label control="settingdesc" value="&setting.label.lblSettingDesc;"/>
                                     <textbox multiline="true" id="settingdesc" rows="4" flex="1"/>
                                 </hbox>
+                                <hbox align="center">
+                                    <textbox  hidden="true" id="rulecount" flex="1" value="0" readonly="true"/>
+                                </hbox>
                             </vbox>
                         </vbox>
                     </deck>
@@ -326,9 +330,6 @@
                                 <caption label="&setting.label.grpDiscovery;" />
                                 <vbox>
                                     <hbox align="center">
-                                        <label control="discoverytext" value = "&setting.label.discoverytext;" flex="1"/>
-                                    </hbox>
-                                    <hbox align="center">
                                         <textbox id="discoverytext" flex="1"/>
                                     </hbox>
                                 </vbox>
@@ -337,19 +338,12 @@
                         </hbox>
                     </vbox>
                     <hbox align="center">
-                        <checkbox id="showtags" label="&setting.label.showtags;" check="false" flex="1"/>
-                    </hbox>
-                    <hbox align="center">
+                        <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
                         <checkbox id="alwaysEnableJavaScript" label="&setting.label.allwaysEnableJavaScript;" check="false" flex="1"/>
                     </hbox>
                     <hbox align="center">
                         <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
-                    </hbox>
-                    <hbox align="center">
                         <checkbox id="simpleModalPrompt" label="&setting.label.simpleModalPrompt;" check="true" flex="1"/>
-                    </hbox>
-                    <hbox align="center">
-                        <checkbox id="showStatusBar" label="&setting.label.showStatusBar;" check="true" flex="1"/>
                     </hbox>
                     <hbox align="center">
                         <checkbox id="showHelpTip" label="&setting.label.showHelpTips;" check="false" flex="1"/>

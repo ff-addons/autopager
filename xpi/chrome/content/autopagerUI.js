@@ -2,6 +2,7 @@ const CI = Components.interfaces;
 const CC = Components.classes;
 
 var allSites = null;
+var hashSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
@@ -15,11 +16,11 @@ var allSites = null;
     var linkXPath,containerXPath;
 
     var chkSettingEnabled,lbSettinglOwner,settingurl
-    var settingtype,settingUpdatePeriod,settingxpath,settingdesc
+    var settingtype,settingUpdatePeriod,settingxpath,settingdesc,rulecount
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,showtags,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,showHelpTip;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,showHelpTip;
     var selectedListItem = null;
     var margin,minipages,delaymsecs,smartMargin;
     var selectedSite;
@@ -40,12 +41,15 @@ if (autopagerMain.loadBoolPref("show-help"))
     window.addEventListener("DOMContentLoaded", function(ev) {
         var self = arguments.callee;
         window.removeEventListener("DOMContentLoaded",self,false);
-        loadControls();     
-	{            
+        
+        loadControls();
+    	{
             setTimeout(function (){
             //var t = new Date().getTime();
             populateChooser("",true);
             var url = window.opener.autopagerSelectUrl;
+            if (typeof window.opener.autopagerSelectUrl == 'undefined')
+                url = autopagerUtils.currentDocument().location.href;
             //window.autopagerSelectUrl = url;
             if (url != null )
             {
@@ -99,8 +103,7 @@ if (autopagerMain.loadBoolPref("show-help"))
     function getMatchedByGuid(guid)
     {
     	var index = -1;
-		var allSites = UpdateSites.loadAll();
-        var key;
+		var key;
         for ( key in allSites){
 			        var tmpsites = allSites[key];
                     if (tmpsites==null || tmpsites.updateSite.filename=="autopager.xml")
@@ -162,7 +165,6 @@ function autopagerOpenIntab(url,obj)
           else if (window.opener.gBrowser)
               browser = window.opener.gBrowser ;
 
-
         var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                       .getService(Components.interfaces.nsIIOService);
         var ops = ioService.newURI(url, null, null);
@@ -185,12 +187,20 @@ function autopagerOpenIntab(url,obj)
               window.opener.gBrowser.contentDocument.location.reload();
           else if (window.opener.autopagerOpenerObj)
               window.opener.autopagerOpenerObj.contentDocument.location.reload();
+          else if (typeof window.opener.autopagerSelectUrl == 'undefined')
+            autopagerUtils.currentDocument().location.reload();
         return true;
     }
     function handleApplyButton() {
        	autopagerConfig.saveConfig(sites);
+        var allConfigs = {};
+        for (var key in allSites){
+            allConfigs[allSites[key].updateSite.filename] = allSites[key]
+        }
+        allConfigs["autopager.xml"] = sites;
+        UpdateSites.AutopagerCOMP.setAll(allConfigs);
         //autopagerConfig.autoSites = autopagerConfig.loadConfig();
-
+        
 	autopagerMain.saveMyName(mynameText.value);
         autopagerMain.saveBoolPref("smartenable",smartenable.checked);
 	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
@@ -199,14 +209,11 @@ function autopagerOpenIntab(url,obj)
         autopagerMain.savePref("loadingDelayMiliseconds",gdelaymsecs.value);
 
         autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
-        autopagerMain.saveBoolPref("showtags",showtags.checked);
         autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
         autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
         autopagerMain.saveBoolPref("modalprompt",simpleModalPrompt.checked);
         autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
         autopagerMain.saveBoolPref("show-help",showHelpTip.checked);
-
-
 
 		//autopagerMain.savePref("timeout",txtTimeout.value);
          autopagerMain.setCtrlKey(chkCtrl.checked);
@@ -217,7 +224,8 @@ function autopagerOpenIntab(url,obj)
          autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
          autopagerMain.savePref("update",mnuUpdate.value);
 
-         AutoPagerUpdateTypes.saveAllSettingSiteConfig();
+         AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
+         //AutoPagerUpdateTypes.saveAllSettingSiteConfig();
 	     return true;
     }
     function onSiteChange(treeitem,site)
@@ -289,7 +297,8 @@ function autopagerOpenIntab(url,obj)
         settingUpdatePeriod = document.getElementById("settingUpdatePeriod");
         settingxpath = document.getElementById("settingxpath");
         settingdesc  = document.getElementById("settingdesc");
-        
+        rulecount = document.getElementById("rulecount");
+
         mynameText = document.getElementById("myname");
         mynameText.value = autopagerMain.loadMyName();
         txtLoading = document.getElementById("loading");
@@ -309,8 +318,6 @@ function autopagerOpenIntab(url,obj)
         chkAlt.checked = autopagerMain.getAltKey();
         chkShift.checked = autopagerMain.getShiftKey();
         
-        showtags = document.getElementById("showtags");
-        showtags.checked = autopagerMain.loadBoolPref("showtags");
         
         alwaysEnableJavaScript = document.getElementById("alwaysEnableJavaScript");
         alwaysEnableJavaScript.checked = autopagerMain.loadBoolPref("alwaysEnableJavaScript");
@@ -587,7 +594,20 @@ function autopagerOpenIntab(url,obj)
                var index = treeSites.currentIndex;
                var treeitem = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex);
                if (treeitem.updateSite != null)
+               {
+                   var updateIndex = getMatchedRepositoryIndex(allSites,treeitem.updateSite);
+                   if (updateIndex > allSites.length-1 || updateIndex<1)
+                       return;
+                   
+                   var curr = allSites[updateIndex];
+                   allSites[updateIndex] = allSites[updateIndex-1];
+                   allSites[updateIndex-1] = curr;
+
+                    onSiteFilter(siteSearch.value,false);
+                   treeSites.view.selection.select(index-1);
                    return;
+               }
+                   
                var itemParent = treeitem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite.url.length > 0)
@@ -603,11 +623,23 @@ function autopagerOpenIntab(url,obj)
            }
         }, false);
         btnSiteDown.addEventListener("command", function() {
-           if (treeSites.currentIndex > 0) {
+           if (treeSites.currentIndex >= 0) {
                var index = treeSites.currentIndex;
                var treeitem = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex);
                if (treeitem.updateSite != null)
+               {
+                   var updateIndex = getMatchedRepositoryIndex(allSites,treeitem.updateSite);
+                   if (updateIndex >= allSites.length-1 || updateIndex==-1)
+                       return;
+                   var curr = allSites[updateIndex];
+                   allSites[updateIndex] = allSites[updateIndex+1];
+                   allSites[updateIndex+1] = curr;
+
+                    onSiteFilter(siteSearch.value,false);
+                   treeSites.view.selection.select(index+1);
                    return;
+
+               }
                var itemParent = treeitem.parentItem();
                var updateSite = itemParent.updateSite;
                if (updateSite.url.length > 0)
@@ -736,7 +768,7 @@ function autopagerOpenIntab(url,obj)
             lblOwner.value = "";
             btnClone.hidden = true;
     }
-    function updateSourceDetail(updateSite)
+    function updateSourceDetail(updateSite,count)
     {
         selectedSource = updateSite
         chkSettingEnabled.checked = updateSite.enabled;
@@ -746,7 +778,10 @@ function autopagerOpenIntab(url,obj)
         settingUpdatePeriod.value = updateSite.updateperiod;
         settingxpath.value = updateSite.xpath;
         settingdesc.value =  updateSite.desc;
+        rulecount.value =  count;
         
+        rulecount.hidden = !autopagerMain.loadBoolPref("show-rulecount")
+
         var readOnly = updateSite.defaulted;
         chkSettingEnabled.readOnly = readOnly;
         lbSettinglOwner.readOnly = readOnly;
@@ -755,6 +790,8 @@ function autopagerOpenIntab(url,obj)
         //settingUpdatePeriod.disabled = readOnly;
         settingxpath.readOnly = readOnly;
         settingdesc.readOnly = readOnly;
+        btnSiteUp.disabled =false;
+        btnSiteDown.disabled =false;
         
     }
 	function updateDetails(event) {
@@ -774,8 +811,8 @@ function autopagerOpenIntab(url,obj)
                if (updateSite == null)
                {
                    switchDeck(1);
-                   updateSourceDetail(selectedListItem.updateSite);
                    enableSiteEditControls(false);
+                   updateSourceDetail(selectedListItem.updateSite,selectedListItem.getChildCount());
                    clearInfo();
                    return;
                }
@@ -1109,9 +1146,15 @@ function autopagerOpenIntab(url,obj)
 var userSites = null;
         if(reload)
         {
-            allSites = UpdateSites.loadAll();
+            hashSites = UpdateSites.loadAll();
+            allSites = [];
+            for(var key in hashSites)
+            {
+                if (hashSites[key]!=null)
+                    allSites.push(hashSites[key]);
+            }
             try{
-                userSites = autopagerConfig.reLoadConfig(allSites["autopager.xml"].updateSite);//  allSites["autopager.xml"] ;
+                userSites = autopagerConfig.reLoadConfig(hashSites, hashSites["autopager.xml"].updateSite);//  allSites["autopager.xml"] ;
             }catch(e)
             {
             }
@@ -1123,7 +1166,7 @@ var userSites = null;
                 
          }
         else
-            userSites = allSites["autopager.xml"] ;            
+            userSites = hashSites["autopager.xml"] ;
 
         //allSites["autopager.xml"]  = sites
         var levels = getLevels(allSites,sites,filter);
@@ -1246,3 +1289,28 @@ var userSites = null;
 
             autopagerSelector.start(autopagerUtils.currentBrowser());
         }
+        
+        
+function getMatchedRepositoryIndex(allSites , updateSite)
+{
+    var updateIndex = -1;
+    for(var i=0;i<allSites.length;i++)
+    {
+        if (allSites[i].updateSite == updateSite)
+        {
+            updateIndex = i;
+            break;
+        }
+    }
+    return updateIndex;
+}
+function getAllRepository(allSites)
+{
+    var repositories = new Array();
+    for (var i= allSites.length-1;i>=0;i--){
+        if (allSites[i].updateSite.filename=="smartpaging.xml" || allSites[i].updateSite.filename=="testing.xml")
+            continue;
+        repositories.push(allSites[i].updateSite)
+    }
+    return repositories;
+}

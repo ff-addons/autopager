@@ -120,7 +120,6 @@
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
-<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
 <!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Enable Smart Paging">

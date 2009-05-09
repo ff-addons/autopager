@@ -42,7 +42,7 @@ const autopagerXPath = {
         //tmpPaths = this.merge(tmpPaths,tmpPaths2);
         var links = [];//this.evaluate(doc,"//a[@href]");
         var item = null;
-        for(i in tmpPaths)
+        for(var i in tmpPaths)
         {
             //get the nodes
             var urlNodes = this.evaluate(doc,tmpPaths[i]);
@@ -148,10 +148,10 @@ const autopagerXPath = {
         var navBars = this.evaluate(doc,"//*[count(a[text() != '' and translate(text(),'0123456789','')=''])>=2]/a[text() != '' and translate(text(),'0123456789','')='']");
         if (navBars && navBars.length !=0)
             {
-                for( level=1;level<this.MAXLevel;level+=1)
+                for(var level=1;level<this.MAXLevel;level+=1)
                 {
                      var paths = this.anaLyzeNavbar(doc,navBars,level);
-                     for(i in paths)
+                     for(var i in paths)
                      {
                         item = new autopagerXPathItem();
                         item.authority = (this.MAXLevel  / level);
@@ -374,7 +374,7 @@ const autopagerXPath = {
         else // too many links, ignore this
         {
             var paths = this.anaLyzeNavbar(node,urlNodes,level);
-            for(i in paths)
+            for(var i in paths)
             {
                 item = new autopagerXPathItem();
                 item.authority = (this.MAXLevel  / level);
@@ -513,8 +513,7 @@ const autopagerXPath = {
     getTagCount: function(childs,index) {
         var tagCount = 0;
         var tagname = childs[index].tagName;
-        var i;
-        for(i=childs.length-1;i>=0;--i) {
+        for(var i=childs.length-1;i>=0;--i) {
             if (childs[i].tagName == tagname)
                 tagCount ++;
         }
@@ -524,8 +523,7 @@ const autopagerXPath = {
     getTagIndex: function(childs,index) {
         var tagIndex = 1;
         var tagname = childs[index].tagName;
-        var i;
-        for( i=index-1;i>=0;--i) {
+        for(var i=index-1;i>=0;--i) {
             if (childs[i].tagName == tagname)
                 tagIndex ++;
         }
@@ -534,9 +532,8 @@ const autopagerXPath = {
     getXPath: function(node,dir,deep,maxChildCount,level) {
         var xi = this.getXIdetify(node,dir,level);
         if (deep >0 && node.hasChildNodes() &&  (node.childNodes != null) && (node.childNodes.length > 0)) {
-            var i=0;
             var childs = node.childNodes;
-            for(i=0;i<childs.length;++i) {
+            for(var i=0;i<childs.length;++i) {
                 if (childs[i].nodeType == 1) {
                     var tagname = childs[i].tagName.toLowerCase();
                     if (maxChildCount >= this.getTagIndex(childs,i))

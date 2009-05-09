@@ -5,6 +5,7 @@
 <overlay id="autopagestatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
@@ -13,9 +14,9 @@
     <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
             <spring flex="1"/><grippy/><spring flex="1"/>

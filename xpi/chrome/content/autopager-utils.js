@@ -128,5 +128,98 @@ numberOfWindows : function(all, aWindowtype) {
 isLastWindow : function(aWindowtype) {
   var count = autopagerUtils.numberOfWindows(false,aWindowtype);
   return count <=1;
-}
+},
+clone : function(obj){
+    if(obj == null || typeof obj != 'object')
+        return obj;
+    var temp = new Object(); // changed
+
+    for(var key in obj)
+    {
+        temp[key] = this.clone(obj[key]);
+    }
+    return temp;
+},
+getLocale : function ()
+{
+        return navigator.language;
+},
+isChineseLocale : function ()
+{
+    var l = navigator.language;
+    return (l == 'zh-CN' || l == 'zh-TW');
+},
+    parseUri : function (sourceUri){
+        var uriPartNames = ["href","protocol","host","hostname","port","pathname","directoryPath","fileName","search","hash"];
+        var uriParts = new RegExp("^(?:([^:/?#.]+):)?(?://)?(([^:/?#]*)(?::(\\d*))?)?((/(?:[^?#](?![^?#/]*\\.[^?#/.]+(?:[\\?#]|$)))*/?)?([^?#/]*))?(?:\\?([^#]*))?(?:#(.*))?").exec(sourceUri);
+        var uri = {};
+
+        for(var i = 0; i < 10; i++){
+            uri[uriPartNames[i]] = (uriParts[i] ? uriParts[i] : "");
+        }
+
+        // Always end directoryPath with a trailing backslash if a path was present in the source URI
+        // Note that a trailing backslash is NOT automatically inserted within or appended to the "path" key
+        if(uri.directoryPath.length > 0){
+            uri.directoryPath = uri.directoryPath.replace(/\/?$/, "/");
+        }
+
+        var search = uri["search"];
+        var searchParts = this.parseSearch(search);
+        uri["searchParts"] = searchParts
+        return uri;
+    },
+    parseSearch : function(search)
+    {
+        /* parse the query */
+        var x = search.replace(/;/g, '&').split('&');
+        var q={};
+        for (var i=0; i<x.length; i++)
+        {
+            if (x[i].length==0)
+                continue;
+            var t = x[i].split('=', 2);
+            var name = unescape(t[0]);
+            var v;
+            if (t.length > 1)
+                v = unescape(t[1]);
+            else
+                v = true;
+
+            if (q[name])
+            {
+                var vs = [];
+                vs[0] = q[name];
+                q[name] = vs;
+                q[name][q[name].length] = v;
+            }
+            else
+                q[name] = v;
+        }
+        return q;
+    },
+    // Dump the object in a table
+    dumpResults : function(obj,container){
+        var output = "";
+        for (var property in obj){
+            output += '<tr><td class="name">' + property +
+            '</td><td class="result">"<span class="value">' +
+            this.dumpObject(obj[property]) + '</span>"</td></tr>';
+        }
+        container.innerHTML = "<table>" + output + "</table>";
+    },
+    dumpObject : function (obj)
+    {
+        if(obj == null || typeof obj != 'object')
+            return obj;
+        var temp = "[";
+
+        for(var key in obj)
+        {
+            if (temp.length>1)
+                temp+=",";
+            temp += key + "=" + dumpObject(obj[key]);
+        }
+        return temp+"]";
+    }
 };

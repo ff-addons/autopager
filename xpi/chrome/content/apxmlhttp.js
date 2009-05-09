@@ -166,7 +166,9 @@ _handleParse: function (event) {
             {
                     if(xmlhttp.status == 200)
                     {
-                        if (obj.contenttype != null && obj.contenttype.indexOf("text\/plain")>-1)
+                        if ((xmlhttp.channel.contentType != null && (xmlhttp.channel.contentType.indexOf("text\/plain")>-1
+                                    || xmlhttp.channel.contentType.indexOf("application\/json")>-1))
+                                    || xmlhttp.responseText.substring(0,2)=='[{')
                             loadCallBack(xmlhttp.responseText,obj)
                         else
                         {
@@ -200,7 +202,7 @@ _handleParse: function (event) {
           xmlhttp.send(null);
 
         }catch (e){
-                errorCallBack(doc,obj);
+            errorCallBack(doc,obj);
         }
     },
 

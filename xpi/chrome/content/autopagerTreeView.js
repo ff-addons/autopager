@@ -364,14 +364,15 @@ function getLevels(allSites,firstItem,filter)
     
     var k = 1;
     var parent = 0;
-    for ( key in allSites){
-        if (key=="smartpaging.xml" || key=="testing.xml")
+    for (var key in allSites){
+        if (allSites[key].updateSite.filename=="smartpaging.xml" || allSites[key].updateSite.filename=="testing.xml")
             continue;
         var sites = null;
-        if (key == "autopager.xml")
+        if (allSites[key].updateSite.filename == "autopager.xml")
             sites = firstItem;
         else
             sites = allSites[key];
+
         levels[k] = new SitesItem(levels[parent], sites);
         
         var siteIndex = levels[k];

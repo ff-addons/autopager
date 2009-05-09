@@ -88,8 +88,7 @@ autopagerSelector.addEventListener = function(browser,name,func,user)
     
         if (browser.contentWindow.frames != null) {
             //alert(doc.defaultView.frames.length);
-            var i=0;
-            for(i=0;i<browser.contentWindow.frames.length;++i) {
+            for(var i=0;i<browser.contentWindow.frames.length;++i) {
                 browser.contentWindow.frames[i].addEventListener(name, func, user);
             }
         }
@@ -101,8 +100,7 @@ autopagerSelector.removeEventListener = function(browser,name,func,user)
     
         if (browser.contentWindow.frames != null) {
             //alert(doc.defaultView.frames.length);
-            var i=0;
-            for(i=0;i<browser.contentWindow.frames.length;++i) {
+            for(var i=0;i<browser.contentWindow.frames.length;++i) {
                 browser.contentWindow.frames[i].removeEventListener(name, func, user);
             }
         }

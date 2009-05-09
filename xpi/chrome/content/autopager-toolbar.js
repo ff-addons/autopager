@@ -49,20 +49,22 @@ var autopagerToolbar =
         var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
         var prefBranch = prefService.getBranch("autopager.");
         if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-            if (autopagerToolbar.autopagerOpenIntab(autopagerHome,null))
+            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.1.3",null))
             {
-                prefBranch.setCharPref("last_version", "0.5.0.1");
+                prefBranch.setCharPref("last_version", "0.5.1.3");
                 autopagerToolbar.addAutopagerButton();
             }
+            autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = prefBranch.getCharPref("last_version");
-            if (lastVersion != "0.5.0.1")
+            if (lastVersion != "0.5.1.3")
             {
-                if (autopagerToolbar.autopagerOpenIntab(autopagerHome,null))
+                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.1.3",null))
                 {
-                    prefBranch.setCharPref("last_version", "0.5.0.1");
+                    prefBranch.setCharPref("last_version", "0.5.1.3");
                 //autopagerToolbar.addAutopagerButton();
                 }
+                autopagerConfig.autopagerUpdate();
             }
         }
     },

@@ -9,7 +9,7 @@
 <!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd" >
 <?xul-overlay href="chrome://autopager/content/autopager-workshop.xul"?>
 <dialog id="autopagerWorkshopDialog"
-        title="&setting.title;"
+        title="&autopager.sidebarTitle;"
         orient="vertical"
         onload="autopagerSidebar.onLoad();"
         ondialogcancel="autopagerSidebar.quit();"
