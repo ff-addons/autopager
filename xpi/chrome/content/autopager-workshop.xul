@@ -31,6 +31,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-tips.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
 
     <toolbox class="plain">
         <toolbar>
@@ -43,6 +44,32 @@
             <toolbarbutton id="testSite" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.testSite();" tooltiptext="&toolbarbutton.testSite.tooltiptext;"/>
             <spacer flex="0"/>
             <toolbarbutton id="addSite" class="autopager_button toolbarbutton-1" oncommand="autopagerSidebar.addSite();" tooltiptext="&toolbarbutton.addSite.tooltiptext;"/>
+                <toolbarbutton type="menu" id="autopager-about" class="autopager-menu-class" label="&statusbar.menu.autopager-about.label;"
+                      >
+                    <menupopup id="autopager-about-menupopup" >
+                        <menuitem id="autopager-donation" label="&statusbar.menuitem.autopager-donation.label;" tooltiptext="&statusbar.menuitem.autopager-donation.tooltiptext;"
+                                  oncommand="autopagerMain.showDonation()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showtutorials" label="&statusbar.menuitem.autopager-showtutorials.label;" tooltiptext="&statusbar.menuitem.autopager-showtutorials.tooltiptext;"
+                                  oncommand="autopagerMain.showTutorials()"
+                        />
+                        <menuitem id="autopager-showhelp" label="&statusbar.menuitem.autopager-showhelp.label;" tooltiptext="&statusbar.menuitem.autopager-showhelp.tooltiptext;"
+                                  oncommand="autopagerMain.showHelp()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showrules" label="&statusbar.menuitem.autopager-showrules.label;" tooltiptext="&statusbar.menuitem.autopager-showrules.tooltiptext;"
+                                  oncommand="autopagerMain.showRules()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showabout"
+                                  label="&autopager.status.showabout;"
+                                  tooltiptext="&autopager.status.showaboutTip;"
+                                  oncommand="autopagerMain.showAbout()"
+                        />
+                    </menupopup>
+                </toolbarbutton>
+
             <spacer flex="1"/>
             <!--
             <toolbarbutton id="tools" type="menu" class="autopager_button toolbarbutton-1" label="Tools"  tooltiptext="Tools">
@@ -61,15 +88,26 @@
             <hbox align="center">
                 <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
                 <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
-                <textbox id="urlPattern" flex="1"/>
+                <menulist flex="1" id="urlPattern" editable="true">
+                    <menupopup >
+                    </menupopup>
+                </menulist>
             </hbox>
             <hbox align="center">
                 <label control="xpath" value="&setting.label.lblLinkXPath;"/>
-                <textbox id="xpath" flex="1"/><!-- type="timed" timeout="1000" -->
+                <menulist flex="1" id="xpath" editable="true">
+                    <menupopup >
+                    </menupopup>
+                </menulist>
+                <button id="modifyXPath" label="..." onclick="autopagerXPath.modifyXPath('xpath');"/>
             </hbox>
             <hbox align="center">
                 <label control="contentXPath" value="&setting.label.grpContentXPath;"/>
-                <textbox id="contentXPath" flex="1"/>
+                <menulist flex="1" id="contentXPath" editable="true">
+                    <menupopup >
+                    </menupopup>
+                </menulist>
+                <button id="modifyXPath" label="..." onclick="autopagerXPath.modifyXPath('contentXPath');"/>
             </hbox>
             <tabbox id="autopager-workshop-tabbox" flex="1" selectedIndex="1">
                 <tabs>

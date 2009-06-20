@@ -14,7 +14,7 @@ pref("autopager.alwaysEnableJavaScript", true);
 pref("autopager.enablehotkeys.ctrlkey", true);
 pref("autopager.enablehotkeys.altkey", true);
 pref("autopager.enablehotkeys.shiftkey", false);
-pref("autopager.loading", "position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;");
+pref("autopager.loading", "position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; max-width:160px;max-height:20px;right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;");
 pref("autopager.optionstyle", "line-height:normal;width:200px;position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;text-align:left !important;");
 
 pref("autopager.pagebreak", "clear:both; line-height:20px; background:#E6E6E6; text-align:center;margin-top:20px;margin-bottom:20px;");
@@ -42,4 +42,8 @@ pref("autopager.show-nav-bottom",true);
 pref("autopager.tweaking-session",true);
 pref("autopager.show-rulecount",false);
 pref("autopager.include-unsafe-rules",false);
-
+pref("autopager.mini-window-width", "200");
+pref("autopager.mini-window-height", "100");
+pref("autopager.refinement", true);
+pref("autopager.set-x-autopager-httphead", true);
+pref("autopager.ignore-format-version-check", false);

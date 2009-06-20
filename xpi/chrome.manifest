@@ -28,3 +28,6 @@ locale        autopager        tr-TR                       jar:chrome/autopager.
 locale        autopager        hu-HU                       jar:chrome/autopager.jar!/locale/hu-HU/
 locale        autopager        he-IL                       jar:chrome/autopager.jar!/locale/he-IL/
 locale        autopager        vi-VN                       jar:chrome/autopager.jar!/locale/vi-VN/
+locale        autopager        pl-PL                       jar:chrome/autopager.jar!/locale/pl-PL/
+locale        autopager        ro                 jar:chrome/autopager.jar!/locale/ro/
+locale        autopager        es                 jar:chrome/autopager.jar!/locale/es/

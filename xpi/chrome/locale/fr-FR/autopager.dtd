@@ -44,6 +44,8 @@
 <!ENTITY autopager.status.requestHelpTip "Demander de l&apos;aide sur le site">
 <!ENTITY autopager.status.setting "Configuration…">
 <!ENTITY autopager.status.settingTip "Paramètres d&apos;AutoPager">
+<!ENTITY autopager.status.showabout "About">
+<!ENTITY autopager.status.showaboutTip "Show About Of AutoPager.">
 <!ENTITY autopager.status.showoption "Options de la page">
 <!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page.">
 <!ENTITY autopager.status.sitewizard "Assistant pour le site">
@@ -60,6 +62,17 @@
 <!ENTITY label.Usages.value "Utilisations">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
+<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
+<!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
+<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
+<!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
+<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
+<!ENTITY options.dialog.autopager-options.title "AutoPager Options">
+<!ENTITY options.label.speedLabel.value "Proload page count:">
+<!ENTITY options.menuitem.label0 "0">
+<!ENTITY options.menuitem.label1 "1">
+<!ENTITY options.menuitem.label2 "2">
+<!ENTITY options.menuitem.label3 "3">
 <!ENTITY setting.appname "AutoPager">
 <!ENTITY setting.button.add "Ajouter…">
 <!ENTITY setting.button.cloneToEdit "Cloner pour éditer">
@@ -71,7 +84,7 @@
 <!ENTITY setting.button.exportTip "Exporter les éléments sélectionnés">
 <!ENTITY setting.button.import "Importer">
 <!ENTITY setting.button.pick "Choisir…">
-<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.public "Publish">
 <!ENTITY setting.button.remove "Supprimer">
 <!ENTITY setting.button.up "Monter">
 <!ENTITY setting.buttonlabelextra1 "Appliquer">
@@ -120,7 +133,6 @@
 <!ENTITY setting.label.showHelpTips "Afficher une image d&apos;aide pour chacun des contrôles, y cliquer pour voir sa description">
 <!ENTITY setting.label.showPrompt "Afficher une demande lors d&apos;un nouveau site individuel">
 <!ENTITY setting.label.showStatusBar "Afficher l&apos;icône d&apos;AutoPager dans la barre d&apos;état">
-<!ENTITY setting.label.showtags "Afficher les balises nœud lors de la sélection de l&apos;élément">
 <!ENTITY setting.label.simpleModalPrompt "Afficher une invite modale simple pour chaque nouveau site">
 <!ENTITY setting.label.sites "Sites">
 <!ENTITY setting.label.smartenable "Activer la pagination intelligente">
@@ -144,6 +156,24 @@
 <!ENTITY setting.update.once "Première fois">
 <!ENTITY setting.update.startup "À chaque démarrage">
 <!ENTITY setting.update.weekly "Chaque semaine">
+<!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Close AutoPager Page Holder">
+<!ENTITY statusbar.menu.autopager-about.label "Help">
+<!ENTITY statusbar.menu.fix.label "Fix Issues">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
+<!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
+<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">
+<!ENTITY statusbar.menuitem.autopager-showhelp.label "Help">
+<!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Show Help Page">
+<!ENTITY statusbar.menuitem.autopager-showrules.label "Rules">
+<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Show Rules in the Online Repository">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.label "Tutorials">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Show Tutorials Page">
+<!ENTITY statusbar.menuitem.label "Options">
+<!ENTITY statusbar.menuitem.tooltiptext "AutoPager Core Options">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Ajouter un site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Tout effacer">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Identification">

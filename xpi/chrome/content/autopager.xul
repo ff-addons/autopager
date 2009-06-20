@@ -151,7 +151,8 @@
                                                 <hbox align="center">
                                                     <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
                                                     <textbox id="linkXPath" flex="1"/>
-                                                    <button id="pickLinkPath" label="&setting.button.pick;" />
+                                                    <button id="pickLinkPath" flex="1" label="&setting.button.pick;" />
+                                                    <button id="modifyLinkXPath" flex="1" label="..." oncommand="autopagerXPath.modifyXPath('linkXPath');"/>
                                                 </hbox>
                                                 <groupbox id="grpContentXPath" orient="vertical" flex="1">
                                                     <caption label="&setting.label.grpContentXPath;" />
@@ -159,6 +160,7 @@
                                                         <listbox id="lstContentXPath" flex="1" rows="3"/>
                                                         <vbox>
                                                             <button id="btnAddPath" label="&setting.button.add;" />
+                                                            <button id="pickContentPath" label="&setting.button.pick;" oncommand="pickupContentForList('lstContentXPath')" />
                                                             <button id="btnEditPath" label="&setting.button.edit;" />
                                                             <button id="btnDeletePath" label="&setting.button.remove;"/>
                                                             <spacer flex="1"/>
@@ -192,6 +194,8 @@
                                             <hbox align="center">
                                                 <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
                                                 <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
+                                                <button id="pickContainerPath" flex="1" label="&setting.button.pick;" oncommand="pickupContent('containerXPath')" />
+                                                <button id="modifyContainerXPath" flex="1" label="..." oncommand="autopagerXPath.modifyXPath('containerXPath');"/>
                                             </hbox>
                                             <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
                                                 <caption label="&setting.label.grpRemoveXPath;" />
@@ -199,8 +203,12 @@
                                                     <listbox id="lstRemoveXPath" flex="1"  rows="3"/>
                                                     <vbox>
                                                         <button id="btnAddRemovePath" label="&setting.button.add;" />
+                                                        <button id="pickRemovePath" label="&setting.button.pick;" oncommand="pickupContentForList('lstRemoveXPath')" />
                                                         <button id="btnEditRemovePath" label="&setting.button.edit;" />
                                                         <button id="btnDeleteRemovePath" label="&setting.button.remove;"/>
+                                                        <spacer flex="1"/>
+                                                        <button id="btnFilterUp" label="&setting.button.up;" />
+                                                        <button id="btnFilterDown" label="&setting.button.down;" />
                                                     </vbox>
                                                 </hbox>
                                             </groupbox>

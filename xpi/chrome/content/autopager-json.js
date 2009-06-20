@@ -63,6 +63,9 @@ var autopagerJsonSetting= {
 
         return str;
     },
+    trim : function (str) {
+        return str.replace(/^\s*/, "").replace(/\s*$/, "");
+    },
     compactToNormal : function(site)
     {
             var newSite = new Site();
@@ -78,9 +81,12 @@ var autopagerJsonSetting= {
                 newSite.enableJS  = site.j;
             
             if (typeof site.x == 'undefined')
-                newSite.contentXPath.push("//body/*");
+            {}
             else if (typeof site.x == 'string')
-                newSite.contentXPath.push(site.x);
+            {
+                if (this.trim(site.x).length>0)
+                newSite.contentXPath.push(this.trim(site.x));
+            }
             else
             {
                 for(var i=0;i<site.x.length;i++)
@@ -141,7 +147,10 @@ var autopagerJsonSetting= {
                 newSite.minipages = site.i;
             if (typeof site.s != 'undefined')
                 newSite.delaymsecs = site.s;
-    
+
+            if (typeof site.v != 'undefined')
+                newSite.formatVersion = site.v;
+
             return newSite;
     },
     normalToCompact : function(normal)
@@ -199,6 +208,25 @@ var autopagerJsonSetting= {
                  site.i = normal.minipages;
             if (normal.delaymsecs>=0)
                 site.s = normal.delaymsecs;
+            if (typeof normal.formatVersion != 'undefined')
+                site.v = normal.formatVersion;
             return site;
-    }    
+    },
+    parse : function (str)
+    {
+        var info = null;
+        //try native json first
+
+        var Ci = Components.interfaces;
+        var Cc = Components.classes;
+
+        if (Cc["@mozilla.org/dom/json;1"])
+        {
+            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
+            info = nativeJSON.decode(str);
+        }
+        else
+            info = autopagerJSON.parse(str);
+        return info;
+    }
 }

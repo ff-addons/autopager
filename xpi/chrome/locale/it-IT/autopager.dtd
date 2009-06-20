@@ -44,6 +44,8 @@
 <!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "Gestione opzioni">
 <!ENTITY autopager.status.settingTip "Gestione delle opzioni di Auto Pager">
+<!ENTITY autopager.status.showabout "About">
+<!ENTITY autopager.status.showaboutTip "Show About Of AutoPager.">
 <!ENTITY autopager.status.showoption "Mostra opzioni pagina">
 <!ENTITY autopager.status.showoptionTip "Mostra le opzioni pagina per la pagina corrente.">
 <!ENTITY autopager.status.sitewizard "Procedura guidata per sito">
@@ -60,6 +62,17 @@
 <!ENTITY label.Usages.value "Usages">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
+<!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
+<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
+<!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
+<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
+<!ENTITY options.dialog.autopager-options.title "AutoPager Options">
+<!ENTITY options.label.speedLabel.value "Proload page count:">
+<!ENTITY options.menuitem.label0 "0">
+<!ENTITY options.menuitem.label1 "1">
+<!ENTITY options.menuitem.label2 "2">
+<!ENTITY options.menuitem.label3 "3">
 <!ENTITY setting.appname "Auto Pager">
 <!ENTITY setting.button.add "Aggiungi...">
 <!ENTITY setting.button.cloneToEdit "Clone To Edit">
@@ -71,7 +84,7 @@
 <!ENTITY setting.button.exportTip "Esporta elementi selezionati">
 <!ENTITY setting.button.import "Importa">
 <!ENTITY setting.button.pick "Scegli...">
-<!ENTITY setting.button.public "Public">
+<!ENTITY setting.button.public "Publish">
 <!ENTITY setting.button.remove "Rimuovi">
 <!ENTITY setting.button.up "In alto">
 <!ENTITY setting.buttonlabelextra1 "Apply">
@@ -120,7 +133,6 @@
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
-<!ENTITY setting.label.showtags "Show Node Tags While Selecting Element">
 <!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "Siti web">
 <!ENTITY setting.label.smartenable "Attiva lo Smart Paging">
@@ -144,6 +156,24 @@
 <!ENTITY setting.update.once "First Time">
 <!ENTITY setting.update.startup "Ogni avvio">
 <!ENTITY setting.update.weekly "Ogni settimana">
+<!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Close AutoPager Page Holder">
+<!ENTITY statusbar.menu.autopager-about.label "Help">
+<!ENTITY statusbar.menu.fix.label "Fix Issues">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
+<!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
+<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">
+<!ENTITY statusbar.menuitem.autopager-showhelp.label "Help">
+<!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Show Help Page">
+<!ENTITY statusbar.menuitem.autopager-showrules.label "Rules">
+<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Show Rules in the Online Repository">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.label "Tutorials">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Show Tutorials Page">
+<!ENTITY statusbar.menuitem.label "Options">
+<!ENTITY statusbar.menuitem.tooltiptext "AutoPager Core Options">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Add Site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Clear All">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Discovery">

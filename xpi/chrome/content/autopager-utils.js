@@ -132,7 +132,7 @@ isLastWindow : function(aWindowtype) {
 clone : function(obj){
     if(obj == null || typeof obj != 'object')
         return obj;
-    var temp = new Object(); // changed
+    var temp = new obj.constructor();
 
     for(var key in obj)
     {
@@ -163,7 +163,7 @@ isChineseLocale : function ()
         if(uri.directoryPath.length > 0){
             uri.directoryPath = uri.directoryPath.replace(/\/?$/, "/");
         }
-
+        uri.pathes = uri.pathname.substring(1).split("/");
         var search = uri["search"];
         var searchParts = this.parseSearch(search);
         uri["searchParts"] = searchParts
@@ -204,13 +204,13 @@ isChineseLocale : function ()
         for (var property in obj){
             output += '<tr><td class="name">' + property +
             '</td><td class="result">"<span class="value">' +
-            this.dumpObject(obj[property]) + '</span>"</td></tr>';
+            this.dumpObject(obj[property],10) + '</span>"</td></tr>';
         }
         container.innerHTML = "<table>" + output + "</table>";
     },
-    dumpObject : function (obj)
+    dumpObject : function (obj,level)
     {
-        if(obj == null || typeof obj != 'object')
+        if(obj == null || typeof obj != 'object' || level<0)
             return obj;
         var temp = "[";
 
@@ -218,8 +218,43 @@ isChineseLocale : function ()
         {
             if (temp.length>1)
                 temp+=",";
-            temp += key + "=" + dumpObject(obj[key]);
+            try{
+                temp += key + "=" + this.dumpObject(obj[key],level-1);
+            }catch(e){
+                temp += key + "=<unable to access>";
+            }
         }
         return temp+"]";
+    },
+    getPattern : function (location ,depth)
+    {
+        var url=location.protocol + "://" + location.host + (location.port!=""?location.port : "");
+        var last;
+        for(var lastPos=0;lastPos<depth && lastPos<location.pathes.length;lastPos++)
+        {
+            url += "/" + location.pathes[lastPos]
+        }
+        return url + (depth<=location.pathes.length-1 || depth==0 ?"/*":"*");
+    },
+    isNotMain : function(str,num)
+    {
+        return ((str.match(/[0123456789-_]/g) && str.match(/[0123456789-_]/g).length>=num)
+                || str.replace(/[0123456789-_]/g,'').length==0);
+    },
+    getMainDirDepth : function (location ,num)
+    {
+        var align=0;
+        if (location.pathname.match(/(\.)(html|shtml|txt|htm)(\*)?$/) || (location.pathname.match(/(\.)(asp|php|php3|php5)(\*)?$/)) && location.search=="")
+            align = 1;
+        var lastPos =0;
+        for(lastPos=location.pathes.length-1-align;
+                        lastPos>=0 && this.isNotMain(location.pathes[lastPos],num) ;lastPos--)
+        {
+        }
+
+//        if (lastPos ==0 && align==0 && location.pathes.length==1 &&
+//                (location.pathes[lastPos].match(/[0123456789-_]/g) == null || location.pathes[lastPos].match(/[0123456789-_]/g).length<num))
+//                return 1;
+        return lastPos+1;
     }
-};
+}

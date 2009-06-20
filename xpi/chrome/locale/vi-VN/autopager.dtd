@@ -44,6 +44,8 @@
 <!ENTITY autopager.status.requestHelpTip "Yêu cầu Trợ giúp trên Trang">
 <!ENTITY autopager.status.setting "Quản lí Thiết lập">
 <!ENTITY autopager.status.settingTip "Quản lí Thiết lập AutoPager.">
+<!ENTITY autopager.status.showabout "Giới thiệu">
+<!ENTITY autopager.status.showaboutTip "Hiện Giới Thiệu của AutoPager.">
 <!ENTITY autopager.status.showoption "Hiện Tùy Chọn Trang">
 <!ENTITY autopager.status.showoptionTip "Hiện Tùy Chọn Trang cho trang này.">
 <!ENTITY autopager.status.sitewizard "Trình thuật sĩ Trang">
@@ -60,6 +62,17 @@
 <!ENTITY label.Usages.value "Sử dụng">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
+<!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
+<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
+<!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
+<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
+<!ENTITY options.dialog.autopager-options.title "AutoPager Options">
+<!ENTITY options.label.speedLabel.value "Proload page count:">
+<!ENTITY options.menuitem.label0 "0">
+<!ENTITY options.menuitem.label1 "1">
+<!ENTITY options.menuitem.label2 "2">
+<!ENTITY options.menuitem.label3 "3">
 <!ENTITY setting.appname "AutoPager">
 <!ENTITY setting.button.add "Thêm...">
 <!ENTITY setting.button.cloneToEdit "Nhân bản để Chỉnh sửa">
@@ -120,7 +133,6 @@
 <!ENTITY setting.label.showHelpTips "Hiện một hình ảnh trợ giúp cho mỗi điều khiển, nhấn để xem mô tả cho điều khiển đó">
 <!ENTITY setting.label.showPrompt "Hiện hộp thoại hỏi cho từng trang mới">
 <!ENTITY setting.label.showStatusBar "Hiện biểu tượng autopager trong thanh trạng thái">
-<!ENTITY setting.label.showtags "Hiện Tag Điểm Nút Khi Chọn Phần Tử">
 <!ENTITY setting.label.simpleModalPrompt "Hiện hộp thoại hỏi đơn giản cho từng trang mới">
 <!ENTITY setting.label.sites "Trang">
 <!ENTITY setting.label.smartenable "Bật Lật trang Thông minh">
@@ -144,6 +156,24 @@
 <!ENTITY setting.update.once "Lần đầu tiên">
 <!ENTITY setting.update.startup "Mỗi khi Khởi động">
 <!ENTITY setting.update.weekly "Mỗi tuần">
+<!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Đóng Trình Giữ Trang AutoPager">
+<!ENTITY statusbar.menu.autopager-about.label "Trợ giúp">
+<!ENTITY statusbar.menu.fix.label "Sửa Lỗi">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Tự động Sửa">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Tự động Sửa lỗi">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Gỡ rối">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Gỡ rối">
+<!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
+<!ENTITY statusbar.menuitem.autopager-donation.label "Ủng hộ">
+<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Hiện trang Ủng hộ">
+<!ENTITY statusbar.menuitem.autopager-showhelp.label "Trợ giúp">
+<!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Hiện trang Trợ giúp">
+<!ENTITY statusbar.menuitem.autopager-showrules.label "Quy tắc">
+<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Hiện quy tắc trong Kho trực tuyến">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.label "Hướng dẫn">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Hiện trang Hướng dẫn">
+<!ENTITY statusbar.menuitem.label "Options">
+<!ENTITY statusbar.menuitem.tooltiptext "AutoPager Core Options">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Thêm Trang">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Xóa trắng Tất cả">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Khám phá">

@@ -102,10 +102,10 @@ var AutoPagerUpdateTypes =
     {
             var sites = new Array();
         
-            sites.push(new AutoPagerUpdateSite("pagerization","all",
-                        "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
-                        "pagerization configurations",
-                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
+//            sites.push(new AutoPagerUpdateSite("pagerization","all",
+//                        "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
+//                        "pagerization configurations",
+//                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
@@ -113,7 +113,7 @@ var AutoPagerUpdateTypes =
                         "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
-                        "http://static.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
+                        "http://rep.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
                         "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
                         "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
@@ -138,6 +138,7 @@ var AutoPagerUpdateTypes =
                         "Experimental configurations @ teesoft.info, please don't enable this.",
                         "autopagerBeta.xml","//site",false,"autopager-xml",-2,[
                             "http://vps.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}",
+                            "http://stone.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}",
                             "http://s2.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}"]));
 
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
@@ -145,6 +146,7 @@ var AutoPagerUpdateTypes =
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml","//site",true,"autopager-xml",-2,
                                 ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
+                                "http://stone.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
                                 "http://s2.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
                                 "http://shared.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
                                 "http://wind.liyong.googlepages.com/autopager.json?version={version}&lastupdate={timestamp}&all={all}",
@@ -188,6 +190,7 @@ var AutoPagerUpdateTypes =
         
         var configContents="";
         var sites= null;
+        var newSites = [];
         try{
             configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("all-sites.xml"));
             var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
@@ -197,6 +200,7 @@ var AutoPagerUpdateTypes =
             for(var i in sites)
             {
 				var site = sites[i];
+                var found = false;
 				for(var h in defaultSites)
 				{
 					var defaultSite = defaultSites[h]
@@ -220,20 +224,26 @@ var AutoPagerUpdateTypes =
                         if (typeof site.updateperiod != 'undefined')
                             newSite.updateperiod = site.updateperiod;
                         newSite.lastupdate = site.lastupdate
-                        sites[i] = newSite;
+                        newSites.push(newSite);
+                        found = true;
+                        break;
                     }
 				}
+                if (!found && (typeof site.url != 'undefined'))
+                {
+                    newSites.push(site)
+                }
             }
             if (oldFormat)
             {
-                this.saveSettingSiteConfig(sites);
+                this.saveSettingSiteConfig(newSites);
             }
                       
         }catch(e)
         {
             //alert(e);
         }
-        return sites;
+        return newSites;
         
     },
     loadSettingSitesFromDoc : function (doc)

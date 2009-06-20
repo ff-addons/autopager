@@ -6,12 +6,12 @@
 const autopagerXPath = {
     MAXTextLength : 20,
     MAXLevel: 6,
-    discovery:function(doc)
+    discovery:function(doc,xpathes)
     {
         var url = doc.documentURI;
-        return new autopagerDiscoveryResult(doc);
+        return new autopagerDiscoveryResult(doc,xpathes);
     },
-    discoveryLink:function(doc)
+    discoveryLink:function(doc,xpathes)
     {
         var url = doc.documentURI;        
         
@@ -68,11 +68,57 @@ const autopagerXPath = {
         {
             var site = existingSites[i];
 			//try the existing site settings
-			item = new autopagerXPathItem();
-			item.authority = 4;
-			item.xpath = site.linkXPath
-			this.addItem(doc,links,item);
+            var nodes = this.evaluate(doc,site.linkXPath,10);
+            if (nodes != null && nodes.length >0)
+            {
+                item = new autopagerXPathItem();
+                item.authority = 4;
+                item.xpath = site.linkXPath
+                item.matchCount = nodes.length
+                this.addItem(doc,links,item);
+            }
         }
+        var knowLinks = [];
+        for(var n in xpathes)
+        {
+            var site = xpathes[n];
+			//try the existing site settings
+            var nodes = this.evaluate(doc,site.n,10);
+            if (nodes != null && nodes.length >0)
+            {
+                item = new autopagerXPathItem();
+                item.authority = Math.sqrt(site.c);
+                item.matchCount = nodes.length
+
+                if (site.n!="//a[contains(text(),'Next')]" && site.n!="//a[contains(text(),'next')]")
+                {
+                    nodes = this.evaluate(doc,site.x,2);
+                    if (nodes != null && nodes.length >0)
+                        item.authority = item.authority *3;
+                }
+                item.xpath = site.n
+                knowLinks.push(item)
+                //this.addItem(doc,links,item);
+                //site.xpathItem = item
+            }
+        }
+        knowLinks = this.sortItems(knowLinks);
+        for(var i=0;i<knowLinks.length;i++)
+        {
+            var l = knowLinks[i]
+            var ignore = false;
+            for(var n=0;n<i;n++)
+            {
+                if (l.xpath == knowLinks[n].xpath)
+                {
+                    ignore = true;
+                    break;
+                }
+            }
+            if (!ignore)
+                this.addItem(doc,links,l);
+        }
+
 
         //try the links next to this page
         item = new autopagerXPathItem();
@@ -156,6 +202,8 @@ const autopagerXPath = {
                         item = new autopagerXPathItem();
                         item.authority = (this.MAXLevel  / level);
                         item.xpath = paths[i];
+                        if (item.xpath.indexOf("//input") !=-1)
+                            item.authority = item.authority/2;
                         this.addItem(doc,links,item);                
                      }
                 }
@@ -192,7 +240,29 @@ const autopagerXPath = {
         }
         links = this.mergeXPath(links);
         links = this.sortItems(links);
-        return links;
+        var newLinks = [];
+        //filter it again
+        for(var i=0;i<links.length;i++)
+        {
+            var item = links[i]
+            if(this.isMatchNodes(doc,item.xpath,nodes))
+                newLinks.push(item);
+        }
+        return newLinks;
+    },
+    isMatchNodes : function (doc,xpath,nodes)
+    {
+       var matchNodes = this.evaluate(doc,xpath);
+        if (matchNodes != null && matchNodes.length >0)
+        {
+            for(var n=0;n<nodes.length;n++)
+            for(var i=0;i<matchNodes.length;i++)
+            {
+                if (nodes[n].isEqualNode (matchNodes[i]))
+                    return true;
+            }
+        }
+        return false;
     },
     sortItems : function(links)
     {
@@ -253,7 +323,10 @@ const autopagerXPath = {
                     {
                         if (links[left].authority < links[right].authority)
                             links[left].authority = links[right].authority;
-                        links[left].authority = links[left].authority + 1 / links[right].matchCount;
+                        if (links[right].matchCount>2)
+                            links[left].authority = links[left].authority + 1 / links[right].matchCount;
+                        else
+                            links[left].authority = links[left].authority + 1;
                     }
                 }
             }
@@ -345,30 +418,42 @@ const autopagerXPath = {
             item = new autopagerXPathItem();
             item.xpath = this.getLinkXpathFromNode(node,urlNodes[0],level);
             item.authority = (this.MAXLevel  / level) ;
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByParent(urlNodes[0],3,level);
             item.authority = (this.MAXLevel  / level) ;
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectBySibling(urlNodes[0],3,level);
             item.authority = (this.MAXLevel  / level) ;
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
             items.push(item);
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectBySibling2(urlNodes[0],3,level);
             item.authority = (this.MAXLevel  / level) + 0.2 ;
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
             items.push(item);
             
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByPosition(urlNodes[0],3,level);
             item.authority = (this.MAXLevel  / level) /1.2;
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
             items.push(item);
         }
         else if (urlNodes.length <= 4)
         {
             item = new autopagerXPathItem();
             item.authority = (this.MAXLevel  / level) ;
-            item.xpath = this.getLinkXpathFromTwoNodes(node,urlNodes[0],urlNodes[1],level);            
+            if(urlNodes[0].tagName != 'A')
+                item.authority = item.authority  / 3;
+            item.xpath = this.getLinkXpathFromTwoNodes(node,urlNodes[0],urlNodes[1],level);
             items.push(item);
         }
         else // too many links, ignore this
@@ -378,6 +463,8 @@ const autopagerXPath = {
             {
                 item = new autopagerXPathItem();
                 item.authority = (this.MAXLevel  / level);
+                if(urlNodes[0].tagName != 'A')
+                    item.authority = item.authority  / 3;
                 item.xpath = paths[i];
                 items.push(item);                
             }
@@ -475,6 +562,13 @@ const autopagerXPath = {
             }
             if (level>=3 && node.getAttribute("title") != null && node.getAttribute("title").length >0) {
                 xi = this.appendAndCondition(xi,dir + "@title='" + node.getAttribute("title") + "'");
+            }
+            if (level>=3 && level<5 && node.textContent != null && node.childNodes.length ==1 && node.textContent.length >0 && node.textContent.length < this.MAXTextLength) {
+                //only if child is #text
+                var child = node.childNodes[0];
+
+                if(child.nodeType == 3)
+                    xi = this.appendAndCondition(xi, "(" +dir + "text()='" + this.getClearText(child.textContent) + "')");
             }
             if (level>=5 && node.textContent != null && node.childNodes.length ==1 && node.textContent.length >0 && node.textContent.length < this.MAXTextLength) {
                 //only if child is #text
@@ -759,7 +853,7 @@ const autopagerXPath = {
         }
 		return contentNode;
     },
-    discoveryContent:function(doc)
+    discoveryContent:function(doc,xpathes)
     {
         var node = doc.body;
         var url = doc.documentURI;
@@ -772,11 +866,57 @@ const autopagerXPath = {
         {
             var site = existingSites[i];
 			//try the existing site settings
-			item = new autopagerXPathItem();
-			item.authority = 4;
-			item.xpath = site.contentXPath[0]
-			this.addItem(doc,links,item);
+            var nodes = this.evaluate(doc,site.contentXPath.join(" | "),10);
+            if (nodes != null && nodes.length >0)
+            {
+                item = new autopagerXPathItem();
+                item.authority = 4;
+                item.xpath = site.contentXPath.join(" | ")
+                item.matchCount = nodes.length
+                this.addItem(doc,links,item);
+            }
         }
+        var knowLinks = [];
+        for(var n in xpathes)
+        {
+            var site = xpathes[n];
+			//try the existing site settings
+            var nodes = this.evaluate(doc,site.x,10);
+            if (nodes != null && nodes.length >0)
+            {
+                item = new autopagerXPathItem();
+                item.authority = site.c;
+                item.matchCount = nodes.length
+
+                if (site.x!="//body" && site.x!="//body/*" && site.x!="//body/table")
+                {
+                    nodes = this.evaluate(doc,site.n,2);
+                    if (nodes != null && nodes.length >0)
+                        item.authority = item.authority *3;
+                }
+                item.xpath = site.x
+                knowLinks.push(item)
+                //this.addItem(doc,links,item);
+                //site.xpathItem = item
+            }
+        }
+        knowLinks = this.sortItems(knowLinks);
+        for(var i=0;i<knowLinks.length;i++)
+        {
+            var l = knowLinks[i]
+            var ignore = false;
+            for(var n=0;n<i;n++)
+            {
+                if (l.xpath == knowLinks[n].xpath)
+                {
+                    ignore = true;
+                    break;
+                }
+            }
+            if (!ignore)
+                this.addItem(doc,links,l);
+        }
+
 
 		var contentNode = this.discoveryBigContent(node,items);
 		contentNode = this.discoveryBigContent(contentNode,items);
@@ -814,7 +954,7 @@ const autopagerXPath = {
 
         return true;
     },    
-    evaluate : function(node,expr)
+    evaluate : function(node,expr,max)
     {
         var doc = (node.ownerDocument == null) ? node : node.ownerDocument;
         var found = [];
@@ -829,7 +969,7 @@ const autopagerXPath = {
             var result = xpe.evaluate(expr, node, nsResolver, 0, null);
         
             var res;
-            while (res = result.iterateNext())
+            while ((res = result.iterateNext()) && (typeof(max)=='undefined' || found.length<max))
                 found.push(res);
             //alert(found.length);
         }catch(e) {
@@ -848,7 +988,7 @@ convertToXpath  : function(str) {
         var strCon =  this.convertStringToXPath(strs[i],"");
         if (strCon.length >0)
         {
-            xpaths.push( "//a[" + strCon + "] | //input[" + strCon + "]");
+            xpaths.push( "//a[" + strCon + "] | //input[(@type='submit' or @type='button' or @type='image') and " + strCon + "]");
             xpaths.push( "//*[" + strCon + "][count(a)=1]/a | //*[" + strCon + "][count(input)=1]/input");
         }
     }
@@ -900,8 +1040,17 @@ appendOrCondition: function(base,newStr) {
             return base;
     }
     return newStr;
-}
-,
+},
+    modifyXPath : function(id)
+    {
+        var box = document.getElementById(id);
+
+        window.openDialog("chrome://autopager/content/xpath-exprestion.xul",
+                     "autopagerAbout",
+                     "chrome,centerscreen,modal",
+                     box.value,
+                     autopagerUtils.currentDocument(),box);
+    },
  preparePath : function(doc,path,enableJS) {
     //host
     //href
@@ -958,10 +1107,10 @@ appendOrCondition: function(base,newStr) {
 }
    
 };
-function autopagerDiscoveryResult(doc)
+function autopagerDiscoveryResult(doc,xpathes)
 {
-this.linkXPaths = autopagerXPath.discoveryLink(doc);
-this.contentXPaths = autopagerXPath.discoveryContent(doc);
+this.linkXPaths = autopagerXPath.discoveryLink(doc,xpathes);
+this.contentXPaths = autopagerXPath.discoveryContent(doc,xpathes);
 }
 function autopagerXPathItem()
 {

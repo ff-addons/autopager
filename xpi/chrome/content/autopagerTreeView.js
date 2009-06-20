@@ -364,6 +364,7 @@ function getLevels(allSites,firstItem,filter)
     
     var k = 1;
     var parent = 0;
+    var matched = false;
     for (var key in allSites){
         if (allSites[key].updateSite.filename=="smartpaging.xml" || allSites[key].updateSite.filename=="testing.xml")
             continue;
@@ -382,7 +383,12 @@ function getLevels(allSites,firstItem,filter)
             if (filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
                 ||  (site.desc != null && site.desc.toLowerCase().indexOf(filter) != -1)))
             {
-                levels[k++] = new SiteItem(siteIndex, site)    
+                levels[k] = new SiteItem(siteIndex, site)
+                if (!matched){
+                    matched = true;
+                    levels.selected = levels[k];
+                }
+                k++;
             }
 //            siteIndex.toggleState();
         }

@@ -9,7 +9,7 @@ var hashSites = null;
     var chkEnabled, chkEnableJS,chkAjax,chkneedMouseDown
     var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
-    var btnUp,btnDown,btnSiteUp,btnSiteDown;
+    var btnUp,btnDown,btnFilterUp,btnFilterDown, btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
     var txtLoading,txtPagebreak,txtConfirmStyle,txtTimeout;
     var mnuUpdate;
@@ -27,6 +27,7 @@ var hashSites = null;
     var contentXPath;
     var xpath="";
     var siteSearch;
+    var btnPickRemovePath, btnPickContentPath,btnPickContainerPath,btnModifyContainerXPath,btnModifyLinkXPath
 
 if (autopagerMain.loadBoolPref("show-help"))
     {
@@ -46,7 +47,7 @@ if (autopagerMain.loadBoolPref("show-help"))
     	{
             setTimeout(function (){
             //var t = new Date().getTime();
-            populateChooser("",true);
+            populateChooser("",true,true);
             var url = window.opener.autopagerSelectUrl;
             if (typeof window.opener.autopagerSelectUrl == 'undefined')
                 url = autopagerUtils.currentDocument().location.href;
@@ -265,6 +266,8 @@ function autopagerOpenIntab(url,obj)
         btnEditPath = document.getElementById("btnEditPath");
         btnUp = document.getElementById("btnUp");
         btnDown = document.getElementById("btnDown");
+        btnFilterUp = document.getElementById("btnFilterUp");
+        btnFilterDown = document.getElementById("btnFilterDown");
         btnSiteUp = document.getElementById("btnSiteUp");
         btnSiteDown = document.getElementById("btnSiteDown");
         btnDeletePath = document.getElementById("btnDeletePath");
@@ -359,7 +362,13 @@ function autopagerOpenIntab(url,obj)
         //txtTimeout.value = autopagerMain.loadPref("timeout");
 
         enableSmartControl(smartenable.checked);
-        
+
+        btnPickRemovePath = document.getElementById("pickRemovePath")
+        btnPickContentPath = document.getElementById("pickContentPath")
+        btnPickContainerPath = document.getElementById("pickContainerPath")
+        btnModifyContainerXPath = document.getElementById("modifyContainerXPath")
+        btnModifyLinkXPath = document.getElementById("modifyLinkXPath")
+
         treeSites.addEventListener("select", updateDetails, false);
         treeSites.addEventListener("focus",function(e)
         {
@@ -488,10 +497,10 @@ function autopagerOpenIntab(url,obj)
            }
         }, false);
         siteSearch.addEventListener("change", function() {
-           onSiteFilter(siteSearch.value,false);
+           onSiteFilter(siteSearch.value,false,true);
         }, false);
         siteSearch.addEventListener("keyup", function() {
-           onSiteFilter(siteSearch.value,false);
+           onSiteFilter(siteSearch.value,false,true);
            siteSearch.focus();
         }, false);
         description.addEventListener("change", function() {
@@ -603,7 +612,7 @@ function autopagerOpenIntab(url,obj)
                    allSites[updateIndex] = allSites[updateIndex-1];
                    allSites[updateIndex-1] = curr;
 
-                    onSiteFilter(siteSearch.value,false);
+                    onSiteFilter(siteSearch.value,false,false);
                    treeSites.view.selection.select(index-1);
                    return;
                }
@@ -618,7 +627,7 @@ function autopagerOpenIntab(url,obj)
                sites[siteIndex] = sites[siteIndex-1];
                sites[siteIndex-1] = treeitem.site;
                
-               onSiteFilter(siteSearch.value,false);
+               onSiteFilter(siteSearch.value,false,true);
                treeSites.view.selection.select(index-1);
            }
         }, false);
@@ -635,7 +644,7 @@ function autopagerOpenIntab(url,obj)
                    allSites[updateIndex] = allSites[updateIndex+1];
                    allSites[updateIndex+1] = curr;
 
-                    onSiteFilter(siteSearch.value,false);
+                    onSiteFilter(siteSearch.value,false,false);
                    treeSites.view.selection.select(index+1);
                    return;
 
@@ -650,7 +659,7 @@ function autopagerOpenIntab(url,obj)
                sites[siteIndex] = sites[siteIndex+1];
                sites[siteIndex+1] = treeitem.site;
                
-               onSiteFilter(siteSearch.value,false);
+               onSiteFilter(siteSearch.value,false,true);
                treeSites.view.selection.select(index+1);
            }
         }, false);
@@ -676,6 +685,28 @@ function autopagerOpenIntab(url,obj)
                onPathChange();
            }
         }, false);
+        btnFilterUp.addEventListener("command", function() {
+           if (lstRemoveXPath.selectedIndex > 0) {
+               var treeitem = lstRemoveXPath.getSelectedItem(0);
+               var path = treeitem.label;
+               var newitem = lstRemoveXPath.childNodes[lstRemoveXPath.selectedIndex  -1];
+               treeitem.label = newitem.label;
+               newitem.label = path;
+               lstRemoveXPath.selectedIndex = lstRemoveXPath.selectedIndex -1;
+               onRemovePathChange();
+           }
+        }, false);
+        btnFilterDown.addEventListener("command", function() {
+           if (lstRemoveXPath.selectedIndex >= 0 && lstRemoveXPath.selectedIndex <lstRemoveXPath.childNodes.length-1 ) {
+               var treeitem = lstRemoveXPath.getSelectedItem(0);
+               var path = treeitem.label;
+               var newitem = lstRemoveXPath.childNodes[lstRemoveXPath.selectedIndex  +1];
+               treeitem.label = newitem.label;
+               newitem.label = path;
+               lstRemoveXPath.selectedIndex = lstRemoveXPath.selectedIndex +1;
+               onRemovePathChange();
+           }
+        }, false);
         btnEditPath.addEventListener("command", function() {
 			if (contentXPath.selectedCount > 0) {
                             treeitem = contentXPath.getSelectedItem(0);
@@ -692,8 +723,10 @@ function autopagerOpenIntab(url,obj)
         }, false);
         btnDeletePath.addEventListener("command", function() {
 			if (contentXPath.selectedCount > 0) {
-				contentXPath.removeChild(contentXPath.childNodes[contentXPath.selectedIndex]);
+				var s = contentXPath.selectedIndex
+                contentXPath.removeChild(contentXPath.childNodes[contentXPath.selectedIndex]);
 				onPathChange();
+                contentXPath.selectedIndex = s
            	}
         }, false);
         btnEditRemovePath.addEventListener("command", function() {
@@ -712,8 +745,10 @@ function autopagerOpenIntab(url,obj)
         }, false);
         btnDeleteRemovePath.addEventListener("command", function() {
 			if (lstRemoveXPath.selectedCount > 0) {
-				lstRemoveXPath.removeChild(lstRemoveXPath.childNodes[lstRemoveXPath.selectedIndex]);
+				var s = lstRemoveXPath.selectedIndex
+                lstRemoveXPath.removeChild(lstRemoveXPath.childNodes[lstRemoveXPath.selectedIndex]);
 				onRemovePathChange();
+                lstRemoveXPath.selectedIndex = s
            	}
         }, false);
         btnPickLinkPath.addEventListener("command", function() {
@@ -869,11 +904,18 @@ function autopagerOpenIntab(url,obj)
         //btnEditPath.disabled =disabled;
         btnDeletePath.disabled =disabled;
         btnAddRemovePath.disabled =disabled;
+        btnPickRemovePath.disabled = disabled
+        btnPickContentPath.disabled = disabled
+        btnPickContainerPath.disabled = disabled
+        btnModifyContainerXPath.disabled = disabled
+        btnModifyLinkXPath.disabled = disabled
         //btnEditPath.disabled =disabled;
         btnDeleteRemovePath.disabled =disabled;
         
         btnUp.disabled =disabled;
         btnDown.disabled =disabled;
+        btnFilterUp.disabled =disabled;
+        btnFilterDown.disabled =disabled;
         btnSiteUp.disabled =disabled;
         btnSiteDown.disabled =disabled;
         btnDelete.disabled =disabled;
@@ -933,7 +975,7 @@ function autopagerOpenIntab(url,obj)
 		site.owner = myname;
 		//addSite(site,sites.length -1);
                 autopagerConfig.insertAt(sites,0,site);
-                onSiteFilter(siteSearch.value,false);
+                onSiteFilter(siteSearch.value,false,true);
 	}
     function handleCopySiteButton() {
     	if (treeSites.currentIndex >= 0) {
@@ -947,7 +989,7 @@ function autopagerOpenIntab(url,obj)
             var site = autopagerConfig.cloneSite(selectedSite);
             
             autopagerConfig.insertAt(sites,0,site);
-            onSiteFilter(siteSearch.value,false);
+            onSiteFilter(siteSearch.value,false,true);
         }
     }
 	
@@ -1060,7 +1102,7 @@ function autopagerOpenIntab(url,obj)
            var item = items[i].site;
            autopagerConfig.removeFromArray(sites,item);
        }
-       onSiteFilter(siteSearch.value,false);
+       onSiteFilter(siteSearch.value,false,true);
        treeSites.view.selection.select(nodeIndex);
         //chooseTreeItem(node);
 
@@ -1087,7 +1129,7 @@ function autopagerOpenIntab(url,obj)
            }
 
     }
-    function onSiteFilter(filter,reload)
+    function onSiteFilter(filter,reload,select)
     {
     	treeSites.filterIng = true;
     	var url = urlPattern.value;
@@ -1096,19 +1138,8 @@ function autopagerOpenIntab(url,obj)
     		//remove from end
     		treebox.removeChild(treebox.childNodes[treebox.childNodes.length-1]);
     	}
-        populateChooser(filter,reload);
+        populateChooser(filter,reload,select);
     	treeSites.filterIng = false;
-        
-        chooseInView(treeSites.view.wrappedJSObject,url);
-//	    var index = getMatchedIndex(url);
-//	    if ( treeSites.view.rowCount > 0)
-//	    	chooseSite(index);
-//	    else
-//	    {
-//	    	//alert("clear");
-//	    	clearInfo();
-//	    }
-	    
     }
 
     function addTreeParent(treebox,updateSite)
@@ -1141,9 +1172,9 @@ function autopagerOpenIntab(url,obj)
             //treerow.setAttribute("properties","statusgreen");
             return treeitem;
     }
-    function populateChooser(filter,reload) {
+    function populateChooser(filter,reload,select) {
 //            var t = new Date().getTime();
-var userSites = null;
+        var userSites = null;
         if(reload)
         {
             hashSites = UpdateSites.loadAll();
@@ -1170,10 +1201,9 @@ var userSites = null;
 
         //allSites["autopager.xml"]  = sites
         var levels = getLevels(allSites,sites,filter);
-            treeSites.view = levels[0].wrappedJSObject;
-//            treeSites.view.selection.select(0);
-//            setTimeout(function(){treeSites.view.wrappedJSObject.invalidateRow();},100);
-////            alert(new Date().getTime() -t)
+        treeSites.view = levels[0].wrappedJSObject;
+        if (select && levels.selected)
+            treeSites.view.wrappedJSObject.selectItem(levels.selected)
     }
     function addNode(pNode,name)
     {
@@ -1276,6 +1306,9 @@ var userSites = null;
                   if (links.length>0)
                   {
                     linkXPath.value = links[0].xpath
+                    var newCmdEvent = document.createEvent('Events');
+                      newCmdEvent.initEvent('change',true, true);
+                      linkXPath.dispatchEvent(newCmdEvent)
                   }
 
             })
@@ -1289,7 +1322,72 @@ var userSites = null;
 
             autopagerSelector.start(autopagerUtils.currentBrowser());
         }
-        
+        function pickupContentForList(id)
+        {
+            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            autopagerSelector.clearFunctions();
+            autopagerSelector.registorSelectFunction(function (elem){
+
+                  var doc = elem.ownerDocument;
+
+                  var nodes = [];
+                  nodes.push(elem);
+
+                  var links = [];
+                  links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
+                  window.focus();
+                  if (links.length>0)
+                  {
+                      addContentXPath(links[0].xpath,document.getElementById(id));
+                      var newCmdEvent = document.createEvent('Events');
+                      newCmdEvent.initEvent('change',true, true);
+                      document.getElementById(id).dispatchEvent(newCmdEvent)
+                  }
+
+            })
+
+            autopagerSelector.registorStartFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 1;
+            });
+            autopagerSelector.registorQuitFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 0;
+            });
+
+            autopagerSelector.start(autopagerUtils.currentBrowser());
+        }
+        function pickupContent (id)
+        {
+            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            autopagerSelector.clearFunctions();
+            autopagerSelector.registorSelectFunction(function (elem){
+
+                  var doc = elem.ownerDocument;
+
+                  var nodes = [];
+                 nodes.push(elem);
+
+                  var links = [];
+                  links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
+                  window.focus();
+                  if (links.length>0)
+                  {
+                    document.getElementById(id).value = links[0].xpath
+                    var newCmdEvent = document.createEvent('Events');
+                    newCmdEvent.initEvent('change',true, true);
+                    document.getElementById(id).dispatchEvent(newCmdEvent)
+                  }
+
+            })
+
+            autopagerSelector.registorStartFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 1;
+            });
+            autopagerSelector.registorQuitFunction(function (){
+              //autopagerUtils.currentBrowser().ownerDocument.getElementById("xpathDeck").selectedIndex = 0;
+            });
+
+            autopagerSelector.start(autopagerUtils.currentBrowser());
+        }
         
 function getMatchedRepositoryIndex(allSites , updateSite)
 {

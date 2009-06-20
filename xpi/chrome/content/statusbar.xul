@@ -17,10 +17,15 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-refinement.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
+
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
             <spring flex="1"/><grippy/><spring flex="1"/>
-            <image id="autopager-close-toolbar" tooltiptext="Close AutoPager Page Holder" class="tabs-closebutton url" onclick="splitbrowse.open(content.document,true);"
+            <image id="autopager-close-toolbar" 
+                tooltiptext="&statusbar.image.autopager-close-toolbar.tooltiptext;"
+                class="tabs-closebutton url" onclick="splitbrowse.open(content.document,true);"
                 />
         </splitter>
         <vbox id="autopager-split-box" collapsed="false" persist="height" style="min-height: 0px !important;">
@@ -122,6 +127,10 @@
                     oncommand="UpdateSites.updateOnline(true);"
                 />
                 <menuseparator class="autopager-sep-global"/>
+                <menuitem label="&statusbar.menuitem.label;" tooltiptext="&statusbar.menuitem.tooltiptext;"
+                    oncommand="autopagerMain.openCoreOptions();"
+                />
+                <menuseparator class="autopager-sep-global"/>
                 <menu label="&autopager.status.importexport;">
                     <menupopup id="autopager-setting-menupopup">
                 <menuitem
@@ -184,6 +193,19 @@
                 </menupopup>
                 </menu>
                 <menuseparator class="autopager-sep-global"/>
+                 <menu id="fix" label="&statusbar.menu.fix.label;">
+                    <menupopup id="autopager-fixissue-menupopup">
+                <menuitem id="autoPagerAutoFix" label="&statusbar.menuitem.autoPagerAutoFix.label;"
+                    tooltiptext="&statusbar.menuitem.autoPagerAutoFix.tooltiptext;"
+                          oncommand="autopagerTroubleShoting.autoFix( content.document);"
+                />
+                <menuitem id="autoPagerShoting" label="&statusbar.menuitem.autoPagerShoting.label;"
+                    tooltiptext="&statusbar.menuitem.autoPagerShoting.tooltiptext;"
+                          oncommand="autopagerTroubleShoting.shoting( content.document,false);"
+                />
+                </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
                 <menu id="autopager-hidden-panel-menu" class="autopager-menu-class"
                       onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-hidden-panel-menu.label;"
                       hidden='true'>
@@ -226,6 +248,9 @@
                                   observes="loadALLpages"
                                   key="key_loadALLpages"
                         />
+                        <menuitem id="autopager-clean" label="&statusbar.menuitem.autopager-clean.label;"
+                                  oncommand="autopagerMain.clearLoadedPages(content.document);"
+                        />
                     </menupopup>
                 </menu>
                 <menuseparator class="autopager-sep-global"/>
@@ -234,6 +259,32 @@
                           tooltiptext="&autopager.status.showoptionTip;"
                           oncommand="autopagerMain.showAllPagingOptions()"
                 />
+                <menu id="autopager-about" class="autopager-menu-class" label="&statusbar.menu.autopager-about.label;"
+                      >
+                    <menupopup id="autopager-about-menupopup" >
+                        <menuitem id="autopager-donation" label="&statusbar.menuitem.autopager-donation.label;" tooltiptext="&statusbar.menuitem.autopager-donation.tooltiptext;"
+                                  oncommand="autopagerMain.showDonation()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showtutorials" label="&statusbar.menuitem.autopager-showtutorials.label;" tooltiptext="&statusbar.menuitem.autopager-showtutorials.tooltiptext;"
+                                  oncommand="autopagerMain.showTutorials()"
+                        />
+                        <menuitem id="autopager-showhelp" label="&statusbar.menuitem.autopager-showhelp.label;" tooltiptext="&statusbar.menuitem.autopager-showhelp.tooltiptext;"
+                                  oncommand="autopagerMain.showHelp()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showrules" label="&statusbar.menuitem.autopager-showrules.label;" tooltiptext="&statusbar.menuitem.autopager-showrules.tooltiptext;"
+                                  oncommand="autopagerMain.showRules()"
+                        />
+                        <menuseparator class="autopager-sep-global"/>
+                        <menuitem id="autopager-showabout"
+                                  label="&autopager.status.showabout;"
+                                  tooltiptext="&autopager.status.showaboutTip;"
+                                  oncommand="autopagerMain.showAbout()"
+                        />
+                    </menupopup>
+                </menu>
+                <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopager-enabled"
                           label="&autopager.status.enabled;"
                           type="checkbox"

@@ -7,30 +7,34 @@
     max-height: 48px !important;
 }
 treechildren:-moz-tree-row(selected) {
-   background: #E4EEF8;
+   background-color: #FFFFAA;
    border-bottom: 0px
 }
-treechildren::-moz-tree-row(statusgreen) {
-background-color: green;
-}
-
-treechildren::-moz-tree-cell-text(status)
-{
-}
-treechildren::-moz-tree-cell-text(statusblue)
+treechildren:-moz-tree-cell-text(selected)
 {
 color:blue;
 }
-treechildren::-moz-tree-cell-text(statusgreen)
+treechildren:-moz-tree-row(statusgreen) {
+background-color: green;
+}
+
+treechildren:-moz-tree-cell-text(status)
+{
+}
+treechildren:-moz-tree-cell-text(statusblue)
+{
+color:blue;
+}
+treechildren:-moz-tree-cell-text(statusgreen)
 {
 color:green;
 }
 
-treechildren::-moz-tree-cell-text(statusdarkgreen)
+treechildren:-moz-tree-cell-text(statusdarkgreen)
 {
 color: orange;
 }
-treechildren::-moz-tree-cell-text(statusgray)
+treechildren:-moz-tree-cell-text(statusgray)
 {
 color:gray;
 }

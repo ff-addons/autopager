@@ -18,40 +18,42 @@
 <!ENTITY autopager.sanitizer.entry.confirm "你確定要清除 AutoPager 網站設定嗎？">
 <!ENTITY autopager.sidebarTitle "AutoPager 網站設定工作室">
 <!ENTITY autopager.status.createXPath "建立 XPath">
-<!ENTITY autopager.status.createXPathTip "點選網頁內容以建立 XPath 路徑。">
+<!ENTITY autopager.status.createXPathTip "點選網頁內容以建立 XPath 路徑">
 <!ENTITY autopager.status.disableOnSite "此網站暫時停用">
 <!ENTITY autopager.status.disableOnSiteTip "此網站暫時停用">
 <!ENTITY autopager.status.enabled "啟用 AutoPager">
-<!ENTITY autopager.status.enabledTip "啟用／停用 Auto Pager。">
+<!ENTITY autopager.status.enabledTip "啟用／停用 Auto Pager">
 <!ENTITY autopager.status.export "匯出設定">
-<!ENTITY autopager.status.exportTip "匯出 Auto Pager 網站設定值。">
+<!ENTITY autopager.status.exportTip "匯出 Auto Pager 網站設定值">
 <!ENTITY autopager.status.exportclip "匯出到剪貼簿">
-<!ENTITY autopager.status.exportclipTip "匯出 Auto Pager 設定值到剪貼簿。">
+<!ENTITY autopager.status.exportclipTip "匯出 Auto Pager 設定值到剪貼簿">
 <!ENTITY autopager.status.exportfile "匯出為檔案">
-<!ENTITY autopager.status.exportfileTip "匯出 Auto Pager 設定值為檔案。">
+<!ENTITY autopager.status.exportfileTip "匯出 Auto Pager 設定值為檔案">
 <!ENTITY autopager.status.importclip "從剪貼簿匯入">
-<!ENTITY autopager.status.importclipTip "從剪貼簿匯入 Auto Pager 設定值。">
+<!ENTITY autopager.status.importclipTip "從剪貼簿匯入 Auto Pager 設定值">
 <!ENTITY autopager.status.importexport "匯入/匯出">
 <!ENTITY autopager.status.importfile "從檔案匯入">
-<!ENTITY autopager.status.importfileTip "從檔案匯入 Auto Pager 設定值。">
+<!ENTITY autopager.status.importfileTip "從檔案匯入 Auto Pager 設定值">
 <!ENTITY autopager.status.importurl "從網址匯入">
-<!ENTITY autopager.status.importurlTip "從網址匯入 Auto Pager 設定值。">
+<!ENTITY autopager.status.importurlTip "從網址匯入 Auto Pager 設定值">
 <!ENTITY autopager.status.myname "你的名字:">
-<!ENTITY autopager.status.mynameTip "你的名字會被加進你所建立的 Auto Pager 網站設定值中。">
+<!ENTITY autopager.status.mynameTip "你的名字會被加進你所建立的 Auto Pager 網站設定值中">
 <!ENTITY autopager.status.reportSite "回報此設定值的錯誤">
 <!ENTITY autopager.status.reportSiteTip "回報此設定值的錯誤">
 <!ENTITY autopager.status.requestHelp "請求幫助建立設定值">
 <!ENTITY autopager.status.requestHelpTip "請求幫助建立設定值">
 <!ENTITY autopager.status.setting "管理網站設定">
-<!ENTITY autopager.status.settingTip "管理 Auto Pager 設定值。">
+<!ENTITY autopager.status.settingTip "管理 Auto Pager 設定值">
+<!ENTITY autopager.status.showabout "關於">
+<!ENTITY autopager.status.showaboutTip "顯示 AutoPager 關於畫面">
 <!ENTITY autopager.status.showoption "顯示此頁面選項">
-<!ENTITY autopager.status.showoptionTip "顯示此頁面的頁面選項。">
+<!ENTITY autopager.status.showoptionTip "顯示此頁面的頁面選項">
 <!ENTITY autopager.status.sitewizard "網站設定精靈">
-<!ENTITY autopager.status.sitewizardTip "利用設定精靈協助你建立網站設定值。">
+<!ENTITY autopager.status.sitewizardTip "利用設定精靈協助你建立網站設定值">
 <!ENTITY autopager.status.testXPath "測試 XPath">
-<!ENTITY autopager.status.testXPathTip "在此網頁測試 XPath。">
+<!ENTITY autopager.status.testXPathTip "在此網頁測試 XPath">
 <!ENTITY autopager.status.update "線上更新">
-<!ENTITY autopager.status.updateTip "從 http://blogs.sun.com/wind/entry/autopager_site_config 線上更新網站設定值。">
+<!ENTITY autopager.status.updateTip "從 http://blogs.sun.com/wind/entry/autopager_site_config 線上更新網站設定值">
 <!ENTITY autopager.status.xpathUtils "XPath 工具">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">
@@ -60,10 +62,21 @@
 <!ENTITY label.Usages.value "用法">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
+<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "忽略規則格式版本檢查">
+<!ENTITY options.checkbox.setAgent.label "於瀏覽器的 User Agent 加入 AutoPager 字樣">
+<!ENTITY options.checkbox.showRefinements.label "顯示 AutoPager 搜尋建議">
+<!ENTITY options.checkbox.tweakSession.label "調整連線階段，重新啟動後回復最後瀏覽的頁面">
+<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "更多">
+<!ENTITY options.dialog.autopager-options.title "AutoPager 選項">
+<!ENTITY options.label.speedLabel.value "預讀頁面數量:">
+<!ENTITY options.menuitem.label0 "0">
+<!ENTITY options.menuitem.label1 "1">
+<!ENTITY options.menuitem.label2 "2">
+<!ENTITY options.menuitem.label3 "3">
 <!ENTITY setting.appname "Auto Pager">
 <!ENTITY setting.button.add "加入...">
 <!ENTITY setting.button.cloneToEdit "複製後編輯">
-<!ENTITY setting.button.cloneToEditTip "這個設定值的來源是唯讀的，你必須複製先一份後才可以編輯。">
+<!ENTITY setting.button.cloneToEditTip "這個設定值的來源是唯讀的，你必須複製先一份後才可以編輯">
 <!ENTITY setting.button.copy "複製">
 <!ENTITY setting.button.down "向下移">
 <!ENTITY setting.button.edit "編輯...">
@@ -79,7 +92,7 @@
 <!ENTITY setting.label.advanced "進階">
 <!ENTITY setting.label.allwaysEnableJavaScript "翻頁時永遠使用 Java Script">
 <!ENTITY setting.label.btnEdit "編輯">
-<!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件。">
+<!ENTITY setting.label.chkAjax "這個網站使用了 Ajax 技術，無法載入事件">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "載入下一頁時使用 Javascript">
@@ -120,12 +133,11 @@
 <!ENTITY setting.label.showHelpTips "顯示每個選項的說明圖片，按一下可瀏覽該選項描述">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
-<!ENTITY setting.label.showtags "選擇頁面元素時顯示節點標籤">
 <!ENTITY setting.label.simpleModalPrompt "於新網站顯示簡單的模型提示">
 <!ENTITY setting.label.sites "網站">
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
 <!ENTITY setting.label.smartlinks "只在符合的連結少於">
-<!ENTITY setting.label.smartlinksEnd "個連結時才自動翻頁。">
+<!ENTITY setting.label.smartlinksEnd "個連結時才自動翻頁">
 <!ENTITY setting.label.smarttext "尋找下個連結搜尋的文字／圖片、來源／ID／Class 連結 (用 &apos;|&apos; 分隔):">
 <!ENTITY setting.label.timeout "頁面載入逾時設定 (秒):">
 <!ENTITY setting.label.update "自動更新">
@@ -144,6 +156,24 @@
 <!ENTITY setting.update.once "初次啟動時">
 <!ENTITY setting.update.startup "每次啟動時">
 <!ENTITY setting.update.weekly "每週">
+<!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "關閉 AutoPager 頁面存放區">
+<!ENTITY statusbar.menu.autopager-about.label "說明">
+<!ENTITY statusbar.menu.fix.label "修復翻頁錯誤">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自動修復">
+<!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "自動修復翻頁錯誤">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "手動修復">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "手動修復">
+<!ENTITY statusbar.menuitem.autopager-clean.label "全部清除">
+<!ENTITY statusbar.menuitem.autopager-donation.label "贊助">
+<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "顯示贊助頁面">
+<!ENTITY statusbar.menuitem.autopager-showhelp.label "說明">
+<!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "顯示說明頁面">
+<!ENTITY statusbar.menuitem.autopager-showrules.label "規則">
+<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "於線上資料庫顯示規則">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.label "教學">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "顯示教學頁面">
+<!ENTITY statusbar.menuitem.label "核心設定">
+<!ENTITY statusbar.menuitem.tooltiptext "AutoPager 核心設定">
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自動辨識">

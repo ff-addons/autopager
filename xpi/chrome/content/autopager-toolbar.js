@@ -49,20 +49,22 @@ var autopagerToolbar =
         var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
         var prefBranch = prefService.getBranch("autopager.");
         if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.1.3",null))
+            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.2.2",null))
             {
-                prefBranch.setCharPref("last_version", "0.5.1.3");
+                prefBranch.setCharPref("last_version", "0.5.2.2");
                 autopagerToolbar.addAutopagerButton();
+                autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
             }
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = prefBranch.getCharPref("last_version");
-            if (lastVersion != "0.5.1.3")
+            if (lastVersion != "0.5.2.2")
             {
-                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.1.3",null))
+                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.2.2",null))
                 {
-                    prefBranch.setCharPref("last_version", "0.5.1.3");
+                    prefBranch.setCharPref("last_version", "0.5.2.2");
                 //autopagerToolbar.addAutopagerButton();
+                    autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }
                 autopagerConfig.autopagerUpdate();
             }
@@ -73,7 +75,7 @@ var autopagerToolbar =
         var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
         var w = wm && wm.getMostRecentWindow('navigator:browser', true);
         if(w && !w.closed) {
-            var browser = getBrowser();//w.getBrowser();
+            var browser = w.getBrowser();//w.getBrowser();
             var ioService = Components.classes["@mozilla.org/network/io-service;1"]
             .getService(Components.interfaces.nsIIOService);
             var ops = ioService.newURI("http://www.teesoft.info", null, null);

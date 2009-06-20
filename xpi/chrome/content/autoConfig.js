@@ -30,7 +30,7 @@ var UpdateSites=
         }
         return sites;
     },
-    updateSiteOnline :function (updatesite,force)
+    updateSiteOnline :function (updatesite,force,error)
     {
         UpdateSites.submitCount ++;
         var needUpdate = force;
@@ -50,28 +50,42 @@ var UpdateSites=
         {
             var today = new Date();
             var lastUpdate = updatesite.lastupdate;
+            var lasttry = updatesite.lasttry;
             if (lastUpdate==null || lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > updateperiod)
-                needUpdate = true;
+            {
+                //try if not try in last 1 minutes
+                if (lasttry==null || lasttry.length == 0 || (today.getTime() - lasttry) /(1000 * 60) > 1)
+                {
+                    needUpdate = true;
+                    updatesite.lasttry = today.getTime();
+                }
+            }
             //alert(updatesite.filename + " " + (today.getTime() - lastUpdate) /(1000 * 60 * 60))
         }
         }        
         if (needUpdate)
         {
-            apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
             //alert("update " + updatesite.filename)
          }
     },
-    updateSiteOnlineBackup :function (updatesite)
+    updateSiteOnlineBackup :function (updatesite,error)
     {
 		if (updatesite.backupUrls!=null &&  updatesite.triedBackup < updatesite.backupUrls.length)
-			apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup]),updatesite.contenttype,this.callback,this.onerror,updatesite);
+			apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup],true,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
     },
-    getUrl : function (url)
+    getUrl : function (url,force,error)
     {
         var all=0;
         if (autopagerMain.loadBoolPref("include-unsafe-rules"))
             all=1;
-        url = url.replace(/\{version\}/,"0.5.1.3").replace(/\{timestamp\}/,(new Date()).getTime()).replace(/\{all\}/,all);
+        var t=(new Date()).getTime()
+        if (force)
+            t += "&apForce=1";
+        if (error!=0)
+            t += "&apError=" + error;
+
+        url = url.replace(/\{version\}/,"0.5.2.2").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         return url;
     },
 	updateOnline :function (force)
@@ -88,7 +102,7 @@ var UpdateSites=
 							{
 								site.triedTime = 0;
 								site.triedBackup = 0;
-								this.updateSiteOnline(site,force);
+								this.updateSiteOnline(site,force,0);
 							}
 					}
 			}
@@ -105,7 +119,7 @@ var UpdateSites=
 			obj.triedTime ++;
 			//try 2 times
             setTimeout(function(){
-                UpdateSites.updateSiteOnline(obj,true)
+                UpdateSites.updateSiteOnline(obj,true,obj.triedTime)
             },10);
 			
 		}
@@ -113,8 +127,8 @@ var UpdateSites=
 		if (obj.backupUrls!=null &&  obj.triedBackup < obj.backupUrls.length)
 		{
             setTimeout(function(){
-                UpdateSites.updateSiteOnlineBackup(obj)
                 obj.triedBackup ++;
+                UpdateSites.updateSiteOnlineBackup(obj,obj.triedBackup * -1)
             },10);
 		}
     },
@@ -260,6 +274,7 @@ var autopagerConfig =
 {
     autopagerStrbundle:null,
     autoSites : null,
+    formatVersion: 1,
     autopagerDomParser : Components.classes["@mozilla.org/xmlextras/domparser;1"]
 		    .createInstance(Components.interfaces.nsIDOMParser),
     openSetting : function(url,obj) {
@@ -466,7 +481,10 @@ generateGuid : function()
         
         
 	newSite.desc = site.desc;
-	newSite.oldSite = site;
+	
+    if (typeof site.formatVersion != 'undefined')
+                newSite.formatVersion = site.formatVersion;
+    newSite.oldSite = site;
 	
 	return newSite;
 }
@@ -621,7 +639,7 @@ getRemoteURI : function(url)
                    .newURI(url,"UTF-8",null);
 	}catch(e)
 	{
-		alert(e);
+		//alert(e);
 	}
 }
 ,
@@ -722,7 +740,7 @@ importFromURL :function(func)
             {
                 //TODO:notify error
             }
-            apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url),"text/xml; charset=utf-8",callback,onerror,url);
+            apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url,false,0),"text/xml; charset=utf-8",callback,onerror,url);
             
 	}
 },

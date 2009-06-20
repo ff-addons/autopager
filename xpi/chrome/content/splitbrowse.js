@@ -334,22 +334,22 @@ var splitbrowse = {
         }
         if (splitBrowser != null && clone)
         {
+            splitBrowser.loadURI("about:blank",null,null);
             //splitBrowser.auotpagerContentDoc = doc;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             //alert(doc.documentElement.autopagerUseSafeEvent)
-            splitbrowse.switchToCollapsed(false);
-            
-            if (!doc.documentElement.autopagerUseSafeEvent )
-                this.cloneBrowser(splitBrowser,browser);
-            else
-            {
-                splitBrowser.loadURI("about:blank",null,null);
-                window.setTimeout(function(){
+            splitbrowse.switchToCollapsed(false);            
+            window.setTimeout(function(){
+                if (!doc.documentElement.autopagerUseSafeEvent )
+                {
+                    splitbrowse.cloneBrowser(splitBrowser,browser);
+                }
+                else
+                {
                     splitBrowser.loadURI( doc.location.href, null, null );
-                },10);
-                
-            }             
+                }
+            },10);
         }
  
         //splitBrowser.parentNode.hidden = hidden;
@@ -453,7 +453,6 @@ var splitbrowse = {
             parent.removeChild(splitBrowser);
         //splitBrowser.destroy();
         }
-  	 
     },
     getBrowserFromTarget: function(target)
     {
@@ -504,7 +503,7 @@ var splitbrowse = {
 var splitpanelProgressListener = {    
     onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
     {
-        const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
+    const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
         const nsIChannel = Components.interfaces.nsIChannel;
         if (aStateFlags & nsIWebProgressListener.STATE_START &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
@@ -524,7 +523,7 @@ var splitpanelProgressListener = {
     },
     onLocationChange : function(webProgress, request, location)
     {
-        splitbrowse.start();
+            splitbrowse.start();
         return;
     },
     onProgressChange : function(webProgress, request,

@@ -10,6 +10,7 @@ var autopagerSidebar =
 	orgPriority: '',
     search: false,
     tips : null,
+    xpathes : [],
     loadString: function() {
         // initialization code
         this.initialized = true;
@@ -35,7 +36,7 @@ var autopagerSidebar =
           this.loadXPathForNode(doc);
       
       
-        var res = autopagerXPath.discovery(doc);
+        var res = autopagerXPath.discovery(doc,autopagerSidebar.xpathes);
         this.showXPathList(document.getElementById("autoLinkPathTreeBody"),res.linkXPaths)
         this.showXPathList(document.getElementById("autoContentPathTreeBody"),res.contentXPaths)
         
@@ -62,6 +63,18 @@ var autopagerSidebar =
     },
     onLoad : function() {
         autopagerUtils.log("onLoad() called");
+
+        var url = "http://www.teesoft.info/autopager/xpathes/"
+
+        function callback(doc,obj)
+            {
+                autopagerSidebar.xpathes =  autopagerJsonSetting.parse(doc);
+            }
+            function onerror(doc,obj)
+            {
+                //TODO:notify error
+            }
+            apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url),"application/json; charset=utf-8",callback,onerror,url);
 
     autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
 
@@ -90,9 +103,12 @@ var autopagerSidebar =
                             sheet.insertRule("#sidebar {  min-width: 0px !important;    max-width: none !important;    overflow-x: hidden !important;}",sheet.cssRules.length);
                     }
             }
+            if (sidebarBox.boxObject.width<400)
+                sidebarBox.setAttribute("width",400)
         }
 		//document.getElementById("xpath").addEventListener('command',function(){autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,false);},false);
         document.getElementById("xpath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
+        document.getElementById("xpath").addEventListener('select',function(){autopagerSidebar.onTextChangeInXPathBox('xpath','resultsFrame','status',autopagerSidebar.linkColor);},false);
         document.getElementById("xpath").addEventListener('keypress',
                     function(event){
                         if (event.keyCode == event.DOM_VK_RETURN)
@@ -100,6 +116,7 @@ var autopagerSidebar =
                             autopagerSidebar.tabbox.selectedIndex=1;
     						autopagerSidebar.search('xpath','resultsFrame','status',autopagerSidebar.linkColor,true);
                             event.preventDefault();
+                            document.getElementById('xpath').focus();
                         }
                     },true);
         document.getElementById("xpath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=1;},false);
@@ -107,6 +124,7 @@ var autopagerSidebar =
 
         //document.getElementById("contentXPath").addEventListener('command',function(){autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,false);},false);
         document.getElementById("contentXPath").addEventListener('input',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},false);
+        document.getElementById("contentXPath").addEventListener('select',function(){autopagerSidebar.onTextChangeInXPathBox('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor);},false);
         document.getElementById("contentXPath").addEventListener('keypress',
                     function(event){
                         if (event.keyCode == event.DOM_VK_RETURN)
@@ -114,6 +132,7 @@ var autopagerSidebar =
                             autopagerSidebar.tabbox.selectedIndex=2;
                             autopagerSidebar.search('contentXPath','resultsFrame2','status2',autopagerSidebar.contentColor,true);
                             event.preventDefault();
+                            document.getElementById('contentXPath').focus();
                         }
                     },true);
         document.getElementById("contentXPath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=2;},false);
@@ -127,12 +146,8 @@ var autopagerSidebar =
 			autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
 		},false);
 
-		urlPattern.addEventListener('input',
-			function()
-			{
-				autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
-			}
-			,false);
+		urlPattern.addEventListener('input',function(){autopagerSidebar.checkurlPattern(chkIsRegex,document.getElementById("urlPattern"));},false);
+		//urlPattern.addEventListener('select',function(){autopagerSidebar.checkurlPattern(chkIsRegex,document.getElementById("urlPattern"));},false);
 
     },
 	checkurlPattern : function (chkIsRegex,urlPattern)
@@ -140,7 +155,7 @@ var autopagerSidebar =
 		var url = autopagerSidebar.currUrl;
 		if (!url)
 		{
-			urlPattern.style.color = "";
+			urlPattern.editor.rootElement.style.color = "";
 		}
 		var regex = null;
 		try{
@@ -154,15 +169,21 @@ var autopagerSidebar =
 			if (url)
 			{
 				if (regex.test(url))
-					urlPattern.style.color = "green";
+                {
+                    autopagerSidebar.addUrlPatternHistory(chkIsRegex.checked,urlPattern.value);
+                    if (chkIsRegex.checked)
+                        urlPattern.editor.rootElement.style.color = "blue";
+                    else
+                        urlPattern.editor.rootElement.style.color = "green";
+                }
 				else
 				{
-					urlPattern.style.color = "red";
+					urlPattern.editor.rootElement.style.color = "red";
 				}
 			}
 		}catch(e)
 		{
-			urlPattern.style.color = "red";
+			urlPattern.editor.rootElement.style.color = "red";
 		}
 
 	},
@@ -286,7 +307,9 @@ var autopagerSidebar =
             var xpath = xpathCtrl.value
             var isValid = autopagerXPath.isValidXPath(xpath,autopagerSidebar.currentDoc)
             document.getElementById(statusID).value = isValid ? "" : "Syntax error"
-            xpathCtrl.style.color = isValid? "green": "red";
+            var node= xpathCtrl.editor.rootElement
+
+            node.style.color = isValid? "green": "red";
             autopagerSidebar.lazySearch(xpathID,resultsFrame,statusID,color,false);
         },10);
     },
@@ -324,13 +347,20 @@ var autopagerSidebar =
             return 
         }
 
-        var resultList = this.getXPathNodes(doc, xpath)
+        var resultList = this.getXPathNodes(doc, xpath,200)
         if (focus && resultList.length>0)
         {
             if (autopagerSidebar.linkColor == color)
+            {
+                this.addHistory("xpath",xpath)
                 this.addXPathList(document.getElementById("autoLinkPathTreeBody"),xpath,1,resultList.length);
+            }
             else
+            {
+                this.addHistory("contentXPath",xpath)
                 this.addXPathList(document.getElementById("autoContentPathTreeBody"),xpath,1,resultList.length);
+            }
+            
         }
         this.showResultList(doc,resultList,contentFrame,statusID,color,focus)
 
@@ -353,15 +383,16 @@ var autopagerSidebar =
     }
     , updateHtmlResults:function(results,contentFrame,color,focus) {
         var doc = contentFrame.contentDocument;
-        autopagerSidebar.clearNoneLink(doc.body);
+        autopagerSidebar.clearNoneLink(contentFrame.contentDocument.body);
 
-        var table = autopagerSidebar.addNode(doc.body,"table");
+        var table = autopagerSidebar.addNode(contentFrame.contentDocument.body,"table");
         var tbody = autopagerSidebar.addNode(table,"tbody");
         
 
         autopagerHightlight.HighlightNodes(autopagerSidebar.currentDoc,results,-1,color,focus);
         for (var i in results) {
             var node = results[i]
+
             node.blur = true;
             var label = (parseInt(i)+1)+":"
 
@@ -370,8 +401,14 @@ var autopagerSidebar =
             var td2 = autopagerSidebar.addNode(row,"td");
 
             autopagerSidebar.addTextNode(td1, label);
-            var n = doc.importNode(node.cloneNode(true),true);
-            td2.appendChild (n);
+            if (node.nodeType != 2){
+                var n = contentFrame.contentDocument.importNode(node.cloneNode(true),true);
+                td2.appendChild (n);
+            }else{
+                autopagerSidebar.addTextNode(td2, node.nodeName + "=" + node.nodeValue + "\n");
+                var n = contentFrame.contentDocument.importNode(node.ownerElement.cloneNode(true),true);
+                td2.appendChild (n);
+            }
         }
 
     }
@@ -379,8 +416,8 @@ var autopagerSidebar =
     // ================================================================
 
 
-    , getXPathNodes:function(doc, xpath) {
-        return autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]");
+    , getXPathNodes:function(doc, xpath,max) {
+        return autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]",max);
     }
     ,countProperties:function(obj) {
         var result = 0
@@ -454,24 +491,43 @@ var autopagerSidebar =
             treecell.setAttribute("label", site.contentXPath[0]);
             treecell = this.addNode(treerow,"treecell");
             treecell.setAttribute("label", site.updateSite.filename);
+            this.addHistory("xpath",site.linkXPath)
+            this.addHistory("contentXPath",site.contentXPath[0])
+            autopagerSidebar.addUrlPatternHistory(site.isRegex, site.urlPattern);
         }
 		var chkIsRegex = document.getElementById("chkIsRegex");
         var urlPattern = document.getElementById("urlPattern");
-		if (lists.length>0)
+        var url = this.currentDoc.documentURI;
+        chkIsRegex.checked = false;
+        this.discoveryPath(urlPattern,url)
+
+        if (lists.length>0)
 		{
 			var site = lists[0];
-			chkIsRegex.checked = site.isRegex;
-			urlPattern.value = site.urlPattern;
+			//chkIsRegex.checked = site.isRegex;
+			//urlPattern.value = site.urlPattern;
 		}
 		else{
-			chkIsRegex.checked = false;
-            var url = this.currentDoc.documentURI;
-            var urlPatternValue = url;
-            if (url.indexOf("?")>0)
-                urlPatternValue = url.substring(0,url.indexOf("?")) + "*";
-			urlPattern.value = urlPatternValue;
+			//chkIsRegex.checked = false;
 		}
 		autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
+    },
+    discoveryPath : function (urlPattern,url)
+    {
+        var location = autopagerUtils.parseUri(url);
+        var urlPatternValue = url;
+            if (url.indexOf("?")>0)
+                urlPatternValue = url.substring(0,url.indexOf("?")) + "*";
+        var defaultPattern = urlPatternValue;
+        var defaultDepth=autopagerUtils.getMainDirDepth(location,2);
+        for(var i=location.pathes.length;i>=0;i--)
+        {
+            urlPatternValue = autopagerUtils.getPattern(location,i);
+            this.addUrlPatternHistory(false,urlPatternValue);
+            if (i==defaultDepth)
+                defaultPattern = urlPatternValue;
+        }
+        urlPattern.value = defaultPattern
     },
     round:function(num)
     {
@@ -534,7 +590,10 @@ var autopagerSidebar =
         txtbox.value = site.contentXPath.join(" | ");
 
 		var urlPattern = document.getElementById("urlPattern");
+        var chkIsRegex = document.getElementById("chkIsRegex");
+        chkIsRegex.checked = site.isRegex;
 		urlPattern.value = site.urlPattern;
+        autopagerSidebar.checkurlPattern(chkIsRegex,urlPattern);
         this.searchXPath(site.linkXPath,document.getElementById('resultsFrame'),'status',autopagerSidebar.linkColor,false);
         this.searchXPath(site.contentXPath,document.getElementById('resultsFrame2'),'status2',autopagerSidebar.contentColor,false);
     },
@@ -786,6 +845,43 @@ var autopagerSidebar =
 //		var oldSmart = workingAllSites["smartpaging.xml"]
 //		if (oldSmart!=null)
 //			oldSmart.testing = false;
+    },
+    addHistory : function(id,xpath)
+    {
+        var ele = document.getElementById(id);
+        for(var i=0;i<ele.menupopup.childNodes.length;i++)
+        {
+            if (ele.menupopup.childNodes[i].value == xpath)
+                return;
+        }
+        var m = document.createElement("menuitem");
+        m.setAttribute("label", xpath);
+        m.setAttribute("value", xpath);
+        ele.menupopup.appendChild(m);
+    },
+    addUrlPatternHistory : function(regex,url)
+    {
+        var ele = document.getElementById("urlPattern");
+        for(var i=0;i<ele.menupopup.childNodes.length;i++)
+        {
+            if (ele.menupopup.childNodes[i].value == url &&
+                ele.menupopup.childNodes[i].getAttribute("regex") == regex.toString())
+                return;
+        }
+        var m = document.createElement("menuitem");
+        m.setAttribute("label", url);
+        m.setAttribute("value", url);
+        m.setAttribute("regex", regex);
+        if (regex)
+            m.style.color="blue";
+        else
+            m.style.color="green";
+        m.addEventListener("command", function(e){
+            var chkIsRegex = document.getElementById("chkIsRegex");
+            chkIsRegex.checked = (e.target.getAttribute("regex")=="true");
+            autopagerSidebar.checkurlPattern(chkIsRegex,document.getElementById("urlPattern"));
+        }, false);
+        ele.menupopup.appendChild(m);
     }
 };
 autopagerUtils.log("loading window.js");
