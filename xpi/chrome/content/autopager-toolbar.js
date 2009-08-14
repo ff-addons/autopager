@@ -40,6 +40,45 @@ var autopagerToolbar =
             }
         }
     },
+    removeAutopagerButton : function() {
+        var toolbox = document.getElementById("navigator-toolbox");
+        var toolboxDocument = toolbox.ownerDocument;
+
+        var hasAutopagerButton = false;
+        for (var i = 0; i < toolbox.childNodes.length; ++i) {
+            var toolbar = toolbox.childNodes[i];
+            if (toolbar.localName == "toolbar" && toolbar.getAttribute("customizable") == "true") {
+                if (toolbar.currentSet.indexOf("autopager-button") > -1) {
+                    hasAutopagerButton = true;
+                }
+            }
+        }
+
+        if(hasAutopagerButton) {
+            for (var i = 0; i < toolbox.childNodes.length; ++i) {
+                toolbar = toolbox.childNodes[i];
+                if (toolbar.localName == "toolbar" &&  toolbar.getAttribute("customizable") == "true" && toolbar.id == "nav-bar") {
+                    var newSet = "";
+                    var child = toolbar.firstChild;
+                    while (child) {
+                        if(child.id != "autopager-button")
+                        {
+                            newSet += child.id + ",";
+                        }
+                        child = child.nextSibling;
+                    }
+                    newSet = newSet.substring(0, newSet.length - 1);
+                    toolbar.currentSet = newSet;
+                    toolbar.setAttribute("currentset", newSet);
+                    toolboxDocument.persist(toolbar.id, "currentset");
+                    try {
+                        BrowserToolboxCustomizeDone(true);
+                    } catch (e) {}
+                    break;
+                }
+            }
+        }
+    },
 
     autopagerToobarInit : function() {
         //var autopagerHome = "http://www.teesoft.info/content/view/27/1/";
@@ -49,22 +88,22 @@ var autopagerToolbar =
         var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
         var prefBranch = prefService.getBranch("autopager.");
         if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.2.2",null))
+            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.3.5",null))
             {
-                prefBranch.setCharPref("last_version", "0.5.2.2");
+                prefBranch.setCharPref("last_version", "0.5.3.5");
                 autopagerToolbar.addAutopagerButton();
-                autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
+                //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
             }
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = prefBranch.getCharPref("last_version");
-            if (lastVersion != "0.5.2.2")
+            if (lastVersion != "0.5.3.5")
             {
-                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.2.2",null))
+                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.3.5",null))
                 {
-                    prefBranch.setCharPref("last_version", "0.5.2.2");
+                    prefBranch.setCharPref("last_version", "0.5.3.5");
                 //autopagerToolbar.addAutopagerButton();
-                    autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
+                    //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }
                 autopagerConfig.autopagerUpdate();
             }

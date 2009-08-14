@@ -86,6 +86,8 @@
 <!ENTITY setting.button.pick "Pick...">
 <!ENTITY setting.button.public "Publish">
 <!ENTITY setting.button.remove "מחק">
+<!ENTITY setting.button.reset "Reset">
+<!ENTITY setting.button.resetTip "Reset to online setting or previous setting(for local rule)">
 <!ENTITY setting.button.up "מעלה">
 <!ENTITY setting.buttonlabelextra1 "אשר">
 <!ENTITY setting.key "u">
@@ -104,6 +106,7 @@
 <!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "confirm style:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.disable-by-default "Disabled for individual new site">
 <!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+Double Click">
 <!ENTITY setting.label.general "כללי">
@@ -133,6 +136,7 @@
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
+<!ENTITY setting.label.showToolbarIcon "Show autopager icon in toolbar">
 <!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "אתרים">
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.type.autopagertext "טקסט autopager">
+<!ENTITY setting.update.bidaily "Every Other Day">
 <!ENTITY setting.update.daily "כל יום">
 <!ENTITY setting.update.global "השתמש בהגדרות הכלליות">
 <!ENTITY setting.update.monthly "כל חודש">

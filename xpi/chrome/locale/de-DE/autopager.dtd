@@ -86,6 +86,8 @@
 <!ENTITY setting.button.pick "Auswählen...">
 <!ENTITY setting.button.public "Öffentlich">
 <!ENTITY setting.button.remove "Löschen">
+<!ENTITY setting.button.reset "Reset">
+<!ENTITY setting.button.resetTip "Reset to online setting or previous setting(for local rule)">
 <!ENTITY setting.button.up "Nach oben">
 <!ENTITY setting.buttonlabelextra1 "Apply">
 <!ENTITY setting.key "u">
@@ -104,6 +106,7 @@
 <!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "CSS-Stil für Steuerungs-Pop-up:">
 <!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.disable-by-default "Disabled for individual new site">
 <!ENTITY setting.label.discoverytext "Bekannte IDs von Link-Elementen">
 <!ENTITY setting.label.doubleclick "+Doppelklick">
 <!ENTITY setting.label.general "Allgemein">
@@ -133,6 +136,7 @@
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
+<!ENTITY setting.label.showToolbarIcon "Show autopager icon in toolbar">
 <!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
 <!ENTITY setting.label.sites "Regeln">
 <!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.update.bidaily "Every Other Day">
 <!ENTITY setting.update.daily "Täglich">
 <!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "Monatlich">

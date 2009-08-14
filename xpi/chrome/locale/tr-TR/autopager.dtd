@@ -86,6 +86,8 @@
 <!ENTITY setting.button.pick "Yakala...">
 <!ENTITY setting.button.public "Herkese Açık">
 <!ENTITY setting.button.remove "Kaldır">
+<!ENTITY setting.button.reset "Reset">
+<!ENTITY setting.button.resetTip "Reset to online setting or previous setting(for local rule)">
 <!ENTITY setting.button.up "Yukarı">
 <!ENTITY setting.buttonlabelextra1 "Uygula">
 <!ENTITY setting.key "u">
@@ -104,6 +106,7 @@
 <!ENTITY setting.label.chkneedMouseDown "Sayfalama için fare hareketini zorunlu kıl">
 <!ENTITY setting.label.confirmstyle "Sayfa tercihleri kutusunun biçemi:">
 <!ENTITY setting.label.delaymsecs "Sonraki sayfayı göstermek için beklenecek salise:">
+<!ENTITY setting.label.disable-by-default "Disabled for individual new site">
 <!ENTITY setting.label.discoverytext "Otomatik Keşfet için anahtar ifadeler:">
 <!ENTITY setting.label.doubleclick "+  Çift tıkla">
 <!ENTITY setting.label.general "Genel Ayarlar">
@@ -133,6 +136,7 @@
 <!ENTITY setting.label.showHelpTips "Denetimleri kullanırken ipucu simgesi göster">
 <!ENTITY setting.label.showPrompt "Desteklenen sitelerde onay penceresi göster">
 <!ENTITY setting.label.showStatusBar "Durum çubuğunda AutoPager simgesini göster">
+<!ENTITY setting.label.showToolbarIcon "Show autopager icon in toolbar">
 <!ENTITY setting.label.simpleModalPrompt "Desteklenen sitelerde varsayılan sayfalama tercihlerini kullan">
 <!ENTITY setting.label.sites "Mevcut Kurallar">
 <!ENTITY setting.label.smartenable "Akıllı Sayfalamayı Etkinleştir">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize Json">
 <!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.update.bidaily "Every Other Day">
 <!ENTITY setting.update.daily "Her Gün">
 <!ENTITY setting.update.global "Genel Ayarları Kullan">
 <!ENTITY setting.update.monthly "Her Ay">

@@ -86,6 +86,8 @@
 <!ENTITY setting.button.pick "選取...">
 <!ENTITY setting.button.public "發佈">
 <!ENTITY setting.button.remove "移除">
+<!ENTITY setting.button.reset "重設">
+<!ENTITY setting.button.resetTip "重設線上預設設定或(本機規則)先前的設定">
 <!ENTITY setting.button.up "向上移">
 <!ENTITY setting.buttonlabelextra1 "套用">
 <!ENTITY setting.key "u">
@@ -104,6 +106,7 @@
 <!ENTITY setting.label.chkneedMouseDown "需要觸發此連結的滑鼠左鍵按下事件">
 <!ENTITY setting.label.confirmstyle "翻頁提示樣式:">
 <!ENTITY setting.label.delaymsecs "毫秒(ms)後才載入下一頁">
+<!ENTITY setting.label.disable-by-default "遇到新網站先停用">
 <!ENTITY setting.label.discoverytext "自動辨識">
 <!ENTITY setting.label.doubleclick "+按兩下">
 <!ENTITY setting.label.general "一般">
@@ -133,6 +136,7 @@
 <!ENTITY setting.label.showHelpTips "顯示每個選項的說明圖片，按一下可瀏覽該選項描述">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
+<!ENTITY setting.label.showToolbarIcon "於工具列顯示 Autopager 圖示">
 <!ENTITY setting.label.simpleModalPrompt "於新網站顯示簡單的模型提示">
 <!ENTITY setting.label.sites "網站">
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "Autopagerize">
 <!ENTITY setting.type.autopagerizeJson "Autopagerize JSON">
 <!ENTITY setting.type.autopagertext "Autopager Text">
+<!ENTITY setting.update.bidaily "每两天">
 <!ENTITY setting.update.daily "每天">
 <!ENTITY setting.update.global "使用全域設定">
 <!ENTITY setting.update.monthly "每月">

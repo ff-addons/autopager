@@ -6,6 +6,11 @@
     max-width: 48px !important;
     max-height: 48px !important;
 }
+.changed
+{
+color:blue;
+}
+
 treechildren:-moz-tree-row(selected) {
    background-color: #FFFFAA;
    border-bottom: 0px

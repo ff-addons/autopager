@@ -86,6 +86,8 @@
 <!ENTITY setting.button.pick "选取">
 <!ENTITY setting.button.public "发布">
 <!ENTITY setting.button.remove "删除">
+<!ENTITY setting.button.reset "重置">
+<!ENTITY setting.button.resetTip "将规则重置到在线设置或对于本地规则重置到前一次设置">
 <!ENTITY setting.button.up "上移">
 <!ENTITY setting.buttonlabelextra1 "应用">
 <!ENTITY setting.key "u">
@@ -104,6 +106,7 @@
 <!ENTITY setting.label.chkneedMouseDown "需要模拟鼠标按下事件">
 <!ENTITY setting.label.confirmstyle "翻页提示样式:">
 <!ENTITY setting.label.delaymsecs "合并页面前延迟的毫秒数">
+<!ENTITY setting.label.disable-by-default "遇到新站点时缺省禁用自动翻页">
 <!ENTITY setting.label.discoverytext "自动识别">
 <!ENTITY setting.label.doubleclick "+双击">
 <!ENTITY setting.label.general "一般">
@@ -133,6 +136,7 @@
 <!ENTITY setting.label.showHelpTips "显示操作提示">
 <!ENTITY setting.label.showPrompt "遇到新站点时显示确认窗口">
 <!ENTITY setting.label.showStatusBar "在状态栏上显示AutoPager图标">
+<!ENTITY setting.label.showToolbarIcon "在工具栏上显示AutoPager图标">
 <!ENTITY setting.label.simpleModalPrompt "遇到新站点时显示简单模式确认窗口">
 <!ENTITY setting.label.sites "站点列表">
 <!ENTITY setting.label.smartenable "启用智能翻页">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.update.bidaily "每两天">
 <!ENTITY setting.update.daily "每天">
 <!ENTITY setting.update.global "使用全局设置">
 <!ENTITY setting.update.monthly "每月">

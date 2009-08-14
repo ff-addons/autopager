@@ -79,13 +79,13 @@ var UpdateSites=
         var all=0;
         if (autopagerMain.loadBoolPref("include-unsafe-rules"))
             all=1;
-        var t=(new Date()).getTime()
+        var t='';
         if (force)
-            t += "&apForce=1";
+            t +=  (new Date()).getTime() + "&apForce=1";
         if (error!=0)
-            t += "&apError=" + error;
+            t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.5.2.2").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.5.3.5").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         return url;
     },
 	updateOnline :function (force)
@@ -142,6 +142,20 @@ var UpdateSites=
         if (file)
         {
             autopagerConfig.saveConfigToJsonFile(sites,file,true);
+            var jsonOverridefile = updatesite.filename.replace(/\.xml/,".json.override");
+            try{
+                  if (updatesite.filename != "autopager.xml")
+                  {
+                    var overrideContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonOverridefile));
+                    if (overrideContents!=null && overrideContents.length>0)
+                    {
+                        var overrides = autopagerJsonSetting.decodeJSON(overrideContents);
+                        autopagerJsonSetting.mergeOverrides(sites,overrides);
+                    }
+                  }
+            }catch(e)
+            {
+            }
         }
         UpdateSites.submitCount--;
         //if (UpdateSites.submitCount<=0)
@@ -449,6 +463,10 @@ generateGuid : function()
 , cloneSite : function(site)
 {
 	var newSite = new Site();
+        return autopagerConfig.doCloneSite(newSite,site);
+},
+doCloneSite : function(newSite,site)
+{
 	newSite.urlPattern  = site.urlPattern;
 	newSite.regex  = site.regex;
 
@@ -467,12 +485,15 @@ generateGuid : function()
 	newSite.createdByYou  = site.createdByYou;
 	newSite.changedByYou  = site.changedByYou;
 	newSite.owner  = site.owner;
+        newSite.contentXPath = [];
 	for(var i=0;i<site.contentXPath.length;++i)
 			newSite.contentXPath[i] = site.contentXPath[i];
 
+        newSite.testLink = [];
 	for(var i=0;i<site.testLink.length;++i)
 			newSite.testLink[i] = site.testLink[i];
 
+        newSite.removeXPath = [];
 	for(var i=0;i<site.removeXPath.length;++i)
 			newSite.removeXPath[i] = site.removeXPath[i];
 
@@ -686,6 +707,7 @@ loadConfig :function() {
     var configContents="";
     var loaded = false;
     var jsonfile = updateSite.filename.replace(/\.xml/,".json");
+    var jsonOverridefile = updateSite.filename.replace(/\.xml/,".json.override");
     try{
 
         configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonfile));
@@ -695,6 +717,16 @@ loadConfig :function() {
            sites = autopagerJsonSetting.loadCompactFromString(configContents);
           sites.updateSite = updateSite;
           loaded = true;
+          if (updateSite.filename != "autopager.xml")
+          {
+            var overrideContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonOverridefile));
+            if (overrideContents!=null && overrideContents.length>0)
+            {
+                var overrides = autopagerJsonSetting.decodeJSON(overrideContents);
+                autopagerJsonSetting.mergeOverrides(sites,overrides);
+            }
+
+          }
         }
     }catch(e)
     {
@@ -1072,6 +1104,32 @@ newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
         site.quickLoad = true;
 	return site;
 },
+saveAllOverride : function (allSites)
+{
+    for (var key in allSites)
+    {
+        var updateSite = allSites[key].updateSite;
+        if (updateSite.fileName =='smartpaging.xml' || updateSite.fileName == 'testing.xml' || updateSite.fileName == 'autopager.xml')
+            continue;
+        var jsonfile = updateSite.filename.replace(/\.xml/,".json.override");
+        autopagerConfig.saveOverrideToJsonFile(allSites[key], autopagerConfig.getConfigFile(jsonfile));
+    }
+},
+saveOverrideToJsonFile: function(sites,saveFile)
+{
+    try{
+        var fStream = autopagerConfig.getWriteStream(saveFile);
+        var configStream = autopagerConfig.getConverterWriteStream(fStream);
+        var str = autopagerJsonSetting.saveOverrideToCompactString(sites);
+        configStream.writeString(str);
+        configStream.close();
+        fStream.close();
+	}catch(e)
+	{
+		alert(e);
+	}
+},
+
 saveConfigXML : function(sites) {
 	autopagerConfig.saveConfigToFile(sites,autopagerConfig.getConfigFile("autopager.xml"),true);
         var allConfigs = UpdateSites.loadAll();

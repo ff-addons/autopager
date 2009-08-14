@@ -5,6 +5,21 @@ var autopagerJsonSetting= {
     },
     loadCompactFromString : function (str)
     {
+        var info = autopagerJsonSetting.decodeJSON(str);
+        var sites = new Array();
+        for(var i=0;i<info.length;i++){
+            var site = info[i]
+
+            var newSite = autopagerJsonSetting.compactToNormal(site);
+//            alert(newSite)
+            newSite.oldSite = null;
+            sites.push(newSite);
+        }
+
+        return sites;
+    },
+    decodeJSON : function (str)
+    {
         var info = null;
         //try native json first
 
@@ -18,19 +33,9 @@ var autopagerJsonSetting= {
         }
         else
             info = autopagerJSON.parse(str);
-        //alert(info)
-        var sites = new Array();
-        for(var i=0;i<info.length;i++){
-            var site = info[i]
-
-            var newSite = autopagerJsonSetting.compactToNormal(site);
-//            alert(newSite)
-            newSite.oldSite = null;
-            sites.push(newSite);
-        }
-
-        return sites;
+        return info;
     },
+
     saveCompactToString : function (sites)
     {
         var str = null;
@@ -62,6 +67,39 @@ var autopagerJsonSetting= {
         str = autopagerJsonSetting.saveCompactToString(sites);
 
         return str;
+    },
+    saveOverrideToCompactString : function (normalSites)
+    {
+        var str = null;
+        var overrides = new Array();
+        for(var i=0;i<normalSites.length;i++){
+            var site = normalSites[i]
+            if (site.changedByYou)
+            {
+                var override = autopagerJsonSetting.overrideToCompact(site);
+                if (override!=null)
+                    overrides.push(override);
+            }
+        }
+
+        str = autopagerJsonSetting.saveCompactToString(overrides);
+
+        return str;
+    },
+    mergeOverrides : function (normalSites,overrides)
+    {
+        for(var o=0;o<overrides.length;o++)
+        {
+            var override = overrides[o]
+
+            for(var i=0;i<normalSites.length;i++){
+                var site = normalSites[i]
+                if (site.guid == override.g)
+                {
+                    autopagerJsonSetting.mergeOverrideToNormal(site,override);
+                }
+            }
+        }
     },
     trim : function (str) {
         return str.replace(/^\s*/, "").replace(/\s*$/, "");
@@ -152,6 +190,193 @@ var autopagerJsonSetting= {
                 newSite.formatVersion = site.v;
 
             return newSite;
+    },
+    mergeOverrideToNormal : function(normalSite,site)
+    {
+        if (normalSite.guid  != site.g)
+            return;
+        normalSite.oldSite = autopagerConfig.cloneSite(normalSite);
+
+            if (typeof site.u != 'undefined')
+                normalSite.urlPattern  = site.u;
+            //normalSite.guid  = site.g;
+            if (typeof site.r != 'undefined')
+                normalSite.isRegex  = site.r;
+
+            if (typeof site.e != 'undefined')
+                normalSite.enabled  = site.e;
+
+            if (typeof site.j != 'undefined')
+                normalSite.enableJS  = site.j;
+
+            if (typeof site.x != 'undefined')
+            {
+                normalSite.contentXPath = [];
+                if (typeof site.x == 'string')
+                {
+                    if (this.trim(site.x).length>0)
+                    normalSite.contentXPath.push(this.trim(site.x));
+                }
+                else
+                {
+                    for(var i=0;i<site.x.length;i++)
+                    {
+                        normalSite.contentXPath.push(site.x[i]);
+                    }
+                }
+           }
+
+            if (typeof site.n != 'undefined')
+                normalSite.linkXPath = site.n;
+            if (typeof site.d != 'undefined')
+                normalSite.desc = site.d;
+
+            if (typeof site.m != 'undefined')
+                normalSite.margin  = site.m;
+
+            if (typeof site.q != 'undefined')
+                normalSite.quickLoad  = site.q;
+
+            if (typeof site.f != 'undefined')
+                normalSite.fixOverflow  = site.f;
+
+//            if (typeof site.c != 'undefined')
+//                normalSite.createdByYou  = site.c;
+
+//            if (typeof site.u != 'undefined')
+            normalSite.changedByYou  = true;
+
+            if (typeof site.o != 'undefined')
+                normalSite.owner  = site.o;
+
+            if (typeof site.t != 'undefined')
+                normalSite.testLink.push(site.t);
+            if (typeof site.h != 'undefined')
+                normalSite.containerXPath=site.h;
+
+            if (typeof site.l != 'undefined')
+            {
+                normalSite.removeXPath = [];
+                if (typeof site.l == 'string')
+                    normalSite.removeXPath.push(site.l);
+                else
+                {
+                    for(var i=0;i<site.l.length;i++)
+                    {
+                        normalSite.removeXPath.push(site.l[i]);
+                    }
+                }
+            }
+            if (typeof site.a != 'undefined')
+                normalSite.ajax=site.a;
+            if (typeof site.w != 'undefined')
+                normalSite.needMouseDown = site.w;
+
+            if (typeof site.p != 'undefined')
+                normalSite.published = site.p;
+            if (typeof site.i != 'undefined')
+                normalSite.minipages = site.i;
+            if (typeof site.s != 'undefined')
+                normalSite.delaymsecs = site.s;
+
+            if (typeof site.v != 'undefined')
+                normalSite.formatVersion = site.v;
+
+    },
+
+    arrayEqual : function (a1, a2)
+    {
+        if (a1.length!=a2.length)
+            return false;
+        for(var i=0;i<a1.length;++i)
+	{
+            if (a1[i] != a2[i])
+		return false;
+	}
+        return true;
+    },
+    overrideToCompact : function(normal)
+    {
+            var override = new Object();
+            override.g = normal.guid;
+            var oldSite = normal.oldSite
+            if (oldSite==null)
+                return null;
+            if (normal.urlPattern!=oldSite.urlPattern)
+                override.u = normal.urlPattern;
+
+            if (normal.isRegex != oldSite.isRegex)
+                override.r = normal.isRegex;
+            if (normal.margin != oldSite.margin)
+                override.m = normal.margin;
+            if (normal.enabled != oldSite.enabled)
+              override.e = normal.enabled;
+
+            if (normal.enableJS != oldSite.enableJS)
+                override.j = normal.enableJS;
+            if (normal.quickLoad != oldSite.quickLoad)
+                override.q = normal.quickLoad;
+            if (normal.fixOverflow != oldSite.fixOverflow)
+                override.f = normal.fixOverflow;
+
+//            if (normal.createdByYou != oldSite.createdByYou)
+//                override.c = normal.createdByYou;
+
+//            if (normal.changedByYou != oldSite.changedByYou)
+//                override.y = normal.changedByYou;
+
+//            override.o = normal.owner;
+
+            if (!autopagerJsonSetting.arrayEqual(normal.contentXPath,oldSite.contentXPath))
+            {
+                if (normal.contentXPath.length==1)
+                    override.x = normal.contentXPath[0];
+                else
+                    override.x = normal.contentXPath;
+            }
+            if (normal.linkXPath != oldSite.linkXPath)
+                override.n = normal.linkXPath;
+
+            if (normal.desc != oldSite.desc)
+                if (typeof normal.desc != 'undefined' && normal.desc!=null && normal.desc.length>0)
+                    override.d = normal.desc;
+
+            if (normal.testLink != oldSite.testLink)
+            if (normal.testLink.length>0)
+                override.t = normal.testLink[0];
+
+            if (normal.containerXPath != oldSite.containerXPath)
+            if (normal.containerXPath!=null && normal.containerXPath.length>0)
+                override.h = normal.containerXPath;
+
+            if (!autopagerJsonSetting.arrayEqual(normal.removeXPath,oldSite.removeXPath))
+            {
+                if (normal.removeXPath.length==1)
+                    override.l = normal.removeXPath[0];
+                else if (normal.removeXPath.length>1)
+                    override.l = normal.removeXPath;
+            }
+
+            if (normal.ajax != oldSite.ajax)
+                override.a = normal.ajax;
+            if (normal.needMouseDown != oldSite.needMouseDown)
+                 override.w = normal.needMouseDown;
+
+//            if (normal.published != oldSite.published)
+//                 override.p = normal.published;
+            if (normal.minipages != oldSite.minipages)
+                 override.i = normal.minipages;
+            if (normal.delaymsecs != oldSite.delaymsecs)
+                override.s = normal.delaymsecs;
+            var count=0;
+            for(var key in override)
+            {
+                count ++;
+            }
+            //not only g : guid
+            if (count>1)
+                return override;
+            return null;
     },
     normalToCompact : function(normal)
     {

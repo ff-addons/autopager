@@ -1,26 +1,26 @@
 <!ENTITY autopager.label.value "auto pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
-<!ENTITY autopager.menu.autopager-immedialate-load.label "Immediately Load">
-<!ENTITY autopager.menuitem.autopager-hidden.label "hidden">
+<!ENTITY autopager.menu.autopager-immedialate-load.label "すぐにページを読み込む">
+<!ENTITY autopager.menuitem.autopager-hidden.label "表示しない">
 <!ENTITY autopager.menuitem.autopager-load-10.key "0">
-<!ENTITY autopager.menuitem.autopager-load-10.label "10 Pages">
+<!ENTITY autopager.menuitem.autopager-load-10.label "10ページ">
 <!ENTITY autopager.menuitem.autopager-load-3.key "3">
-<!ENTITY autopager.menuitem.autopager-load-3.label "3 Pages">
+<!ENTITY autopager.menuitem.autopager-load-3.label "3ページ">
 <!ENTITY autopager.menuitem.autopager-load-5.key "5">
-<!ENTITY autopager.menuitem.autopager-load-5.label "5 Pages">
+<!ENTITY autopager.menuitem.autopager-load-5.label "5ページ">
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
-<!ENTITY autopager.menuitem.autopager-load-all.label "All Pages">
+<!ENTITY autopager.menuitem.autopager-load-all.label "全ページ">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
-<!ENTITY autopager.menuitem.autopager-show.label "show">
-<!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
+<!ENTITY autopager.menuitem.autopager-show.label "表示する">
+<!ENTITY autopager.sanitizer.entry "AutoPager のサイト確認">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">
-<!ENTITY autopager.sanitizer.entry.confirm "Do you want to clear autoPager site confirmation?">
+<!ENTITY autopager.sanitizer.entry.confirm "AutoPager のサイト確認を消去してもよろしいですか？">
 <!ENTITY autopager.sidebarTitle "AutoPager サイト設定 作業場">
 <!ENTITY autopager.status.createXPath "XPath を作成">
 <!ENTITY autopager.status.createXPathTip "ページでノードを選択して XPath を作成します。">
-<!ENTITY autopager.status.disableOnSite "Disable On Site">
-<!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
+<!ENTITY autopager.status.disableOnSite "このページでは無効">
+<!ENTITY autopager.status.disableOnSiteTip "このページでは自動でページを読み込まないようにします。">
 <!ENTITY autopager.status.enabled "有効済み">
 <!ENTITY autopager.status.enabledTip "Auto Pager が有効か否かです。">
 <!ENTITY autopager.status.export "設定を書き出す">
@@ -31,21 +31,21 @@
 <!ENTITY autopager.status.exportfileTip "Auto Pager の設定をファイルに書き出します。">
 <!ENTITY autopager.status.importclip "クリップボードから取り込む">
 <!ENTITY autopager.status.importclipTip "Auto Pager の設定をクリップボードから取り込みます。">
-<!ENTITY autopager.status.importexport "Import/Export">
+<!ENTITY autopager.status.importexport "インポート/エクスポート">
 <!ENTITY autopager.status.importfile "ファイルから取り込む">
 <!ENTITY autopager.status.importfileTip "Auto Pager の設定をファイルから取り込みます。">
 <!ENTITY autopager.status.importurl "URL から取り込む">
 <!ENTITY autopager.status.importurlTip "Auto Pager の設定を URL から取り込みます。">
 <!ENTITY autopager.status.myname "私の名前:">
 <!ENTITY autopager.status.mynameTip "作成した設定に追加される、あなたの名前です。">
-<!ENTITY autopager.status.reportSite "Report Issue On Site">
-<!ENTITY autopager.status.reportSiteTip "Report Issue On Site">
+<!ENTITY autopager.status.reportSite "このページの問題を報告">
+<!ENTITY autopager.status.reportSiteTip "このページで起きた問題を報告します。">
 <!ENTITY autopager.status.requestHelp "Request Help On Site">
 <!ENTITY autopager.status.requestHelpTip "Request Help On Site">
 <!ENTITY autopager.status.setting "設定の管理">
 <!ENTITY autopager.status.settingTip "Auto Pager の設定を管理します。">
 <!ENTITY autopager.status.showabout "About">
-<!ENTITY autopager.status.showaboutTip "Show About Of AutoPager.">
+<!ENTITY autopager.status.showaboutTip "AutoPager について">
 <!ENTITY autopager.status.showoption "ページ設定を表示する">
 <!ENTITY autopager.status.showoptionTip "このページの設定を表示します。">
 <!ENTITY autopager.status.sitewizard "サイトウィザード">
@@ -54,21 +54,21 @@
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
 <!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
-<!ENTITY autopager.status.xpathUtils "XPath Utils">
+<!ENTITY autopager.status.xpathUtils "XPath ユーティリティ">
 <!ENTITY autopager.toolbarLabel "AutoPager">
-<!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">
-<!ENTITY caption.results-caption.label "Results">
-<!ENTITY caption.results-caption2.label "Results">
+<!ENTITY autopager.tooltip "AutoPager のサイト設定">
+<!ENTITY caption.results-caption.label "結果">
+<!ENTITY caption.results-caption2.label "結果">
 <!ENTITY label.Usages.value "Usages">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
-<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
-<!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
-<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
-<!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
-<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
-<!ENTITY options.dialog.autopager-options.title "AutoPager Options">
-<!ENTITY options.label.speedLabel.value "Proload page count:">
+<!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Format Version のチェックを無視する">
+<!ENTITY options.checkbox.setAgent.label "AutoPager をユーザエージェントに加える">
+<!ENTITY options.checkbox.showRefinements.label "AutoPager のリファレンスを表示する">
+<!ENTITY options.checkbox.tweakSession.label "Tweak Session、再読み込み時に最後に見ていたページから調整読み込み">
+<!ENTITY options.dialog.autopager-options.buttonlabelextra1 "詳細設定">
+<!ENTITY options.dialog.autopager-options.title "AutoPager のオプション">
+<!ENTITY options.label.speedLabel.value "前もって読み込むページ数">
 <!ENTITY options.menuitem.label0 "0">
 <!ENTITY options.menuitem.label1 "1">
 <!ENTITY options.menuitem.label2 "2">
@@ -86,13 +86,15 @@
 <!ENTITY setting.button.pick "選択...">
 <!ENTITY setting.button.public "公開">
 <!ENTITY setting.button.remove "除去">
+<!ENTITY setting.button.reset "リセット">
+<!ENTITY setting.button.resetTip "オンラインセッティングか前のセッティング（ローカルルールに従って）にリセットします。">
 <!ENTITY setting.button.up "上へ">
-<!ENTITY setting.buttonlabelextra1 "Apply">
+<!ENTITY setting.buttonlabelextra1 "更新">
 <!ENTITY setting.key "u">
-<!ENTITY setting.label.advanced "Advanced">
-<!ENTITY setting.label.allwaysEnableJavaScript "Always Enable Java Script While Loading Page">
+<!ENTITY setting.label.advanced "拡張">
+<!ENTITY setting.label.allwaysEnableJavaScript "ページ読み込み中は常にJava Script を有効にします。">
 <!ENTITY setting.label.btnEdit "編集">
-<!ENTITY setting.label.chkAjax "This is an ajax site.No load event.">
+<!ENTITY setting.label.chkAjax "ajax を使用したサイトではイベントを読み込みません。">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "読み込み中に JavaScript を有効にします。">
@@ -101,39 +103,41 @@
 <!ENTITY setting.label.chkIsRegex "正規表現を利用する">
 <!ENTITY setting.label.chkQuickLoad "Quick Load (あらゆるサイトで安全ではありません)。">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
+<!ENTITY setting.label.chkneedMouseDown "リンクでマウスを下に引く動作を必要とします。">
 <!ENTITY setting.label.confirmstyle "確認のスタイル:">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
-<!ENTITY setting.label.discoverytext "Discovery">
+<!ENTITY setting.label.delaymsecs "次のページを読み込み表示する前に待つ時間（ミリ秒単位）">
+<!ENTITY setting.label.disable-by-default "Disabled for individual new site">
+<!ENTITY setting.label.discoverytext "ディスカバリ">
 <!ENTITY setting.label.doubleclick "+ダブルクリック">
 <!ENTITY setting.label.general "全般">
 <!ENTITY setting.label.grpContentXPath "コンテンツ XPath:">
 <!ENTITY setting.label.grpDiscovery "ディスカバリ">
-<!ENTITY setting.label.grpRemoveXPath "Filter XPath(Ignore items from the new pages):">
+<!ENTITY setting.label.grpRemoveXPath "XPath フィルタ（新しいページのアイテムを無視します）">
 <!ENTITY setting.label.grpSmart "スマートページング">
 <!ENTITY setting.label.hotkeys "有効・無効化ホットキー:">
-<!ENTITY setting.label.lblContainerXPath "Container XPath:">
+<!ENTITY setting.label.lblContainerXPath "コンテナー XPath">
 <!ENTITY setting.label.lblDesc "説明:">
 <!ENTITY setting.label.lblLinkXPath "リンク XPath:">
 <!ENTITY setting.label.lblOwner "作成者:">
-<!ENTITY setting.label.lblSetting "AutoPager setting source">
+<!ENTITY setting.label.lblSetting "AutoPagerの設定ソース">
 <!ENTITY setting.label.lblSettingContext "Context Type:">
-<!ENTITY setting.label.lblSettingDesc "Desc:">
-<!ENTITY setting.label.lblSettingOwner "Maintained By:">
-<!ENTITY setting.label.lblSettingType "Type:">
-<!ENTITY setting.label.lblSettingUrl "URL:">
+<!ENTITY setting.label.lblSettingDesc "説明：">
+<!ENTITY setting.label.lblSettingOwner "設定者：">
+<!ENTITY setting.label.lblSettingType "Type：">
+<!ENTITY setting.label.lblSettingUrl "URL：">
 <!ENTITY setting.label.lblSettingXPath "XPath:">
 <!ENTITY setting.label.lblURLPattern "URL パターン:">
 <!ENTITY setting.label.lblUpdate "サイト設定の自動更新:">
 <!ENTITY setting.label.loading "読み込み通知のスタイル:">
 <!ENTITY setting.label.margin "残りスペースがウィンドウ高さ">
 <!ENTITY setting.label.marginEnd "未満になったらページングする">
-<!ENTITY setting.label.minipages "Minimum preloaded page count">
+<!ENTITY setting.label.minipages "前もって読み込んでおく最小のページ数">
 <!ENTITY setting.label.pagebreak "改ページのスタイル:">
-<!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
-<!ENTITY setting.label.showPrompt "Show prompt for individual new site">
-<!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">
-<!ENTITY setting.label.simpleModalPrompt "Show simple modal prompt for individual new site">
+<!ENTITY setting.label.showHelpTips "それぞれの設定にアイコンを表示し、クリックするとコントロールの説明が見れるようにする。">
+<!ENTITY setting.label.showPrompt "新しいサイトに訪れた時にダイアログを表示">
+<!ENTITY setting.label.showStatusBar "ステータスバーに autopager アイコンを表示">
+<!ENTITY setting.label.showToolbarIcon "ツールバーに autopager アイコンを表示">
+<!ENTITY setting.label.simpleModalPrompt "新しいサイトに訪れた時に簡単なダイアログを表示">
 <!ENTITY setting.label.sites "サイト">
 <!ENTITY setting.label.smartenable "スマートページングを有効にする">
 <!ENTITY setting.label.smartlinks "リンクが">
@@ -141,7 +145,7 @@
 <!ENTITY setting.label.smarttext "次のリンクを探すテキスト・画像の src・ID・class (「|」で分割):">
 <!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
 <!ENTITY setting.label.update "更新">
-<!ENTITY setting.text.tipContainerXPath "Don&apos;t change it if you don&apos;t know it.\nThis will help if the main content of the site have a container with overflow-y and scrollbar. Take www.cuil.com as an example.">
+<!ENTITY setting.text.tipContainerXPath "詳しくない人は変更しないでください。www.cuil.comなど、overflow-yやscrollbarをmain contentに持つサイトがあれば参考になるかと思います。">
 <!ENTITY setting.title "Auto Pager 設定">
 <!ENTITY setting.tree.Description "説明">
 <!ENTITY setting.tree.URLPattern "URL パターン">
@@ -149,6 +153,7 @@
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
 <!ENTITY setting.type.autopagertext "autopager text">
+<!ENTITY setting.update.bidaily "Every Other Day">
 <!ENTITY setting.update.daily "毎日">
 <!ENTITY setting.update.global "Use Global Setting">
 <!ENTITY setting.update.monthly "毎月">

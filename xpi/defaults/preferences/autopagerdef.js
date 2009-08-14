@@ -19,12 +19,14 @@ pref("autopager.optionstyle", "line-height:normal;width:200px;position: fixed; z
 
 pref("autopager.pagebreak", "clear:both; line-height:20px; background:#E6E6E6; text-align:center;margin-top:20px;margin-bottom:20px;");
 pref("autopager.timeout", "120");
-pref("autopager.update", "24");
+pref("autopager.update", "48");
 pref("autopager.settingupdatedate", "");
 pref("autopager.noprompt", false);
 pref("autopager.modalprompt", true);
+pref("autopager.disable-by-default", false);
 pref("extensions.autopager@mozilla.org.description", "chrome://autopager/locale/autopager.properties");  
 pref("autopager.hide-status", false);
+pref("autopager.hide-toolbar-icon", false);
 pref("autopager.hide-context-menu", false);
 
 pref("autopager.loadingDelayMiliseconds", "100");
@@ -45,5 +47,7 @@ pref("autopager.include-unsafe-rules",false);
 pref("autopager.mini-window-width", "200");
 pref("autopager.mini-window-height", "100");
 pref("autopager.refinement", true);
-pref("autopager.set-x-autopager-httphead", true);
+pref("autopager.refinementinneww", false);
+pref("autopager.set-x-autopager-httphead", false);
 pref("autopager.ignore-format-version-check", false);
+pref("autopager.anti-anti-autopager", false);

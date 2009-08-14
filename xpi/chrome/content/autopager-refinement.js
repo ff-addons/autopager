@@ -2,7 +2,7 @@
 var autopagerRefinement =
 {
     partner : { 
-        uiLabel: 'Auto Pager Refinements',
+        uiLabel: 'AutoPager Refinements',
         partnerCode: 'autopager',
         authCode: 'fbt62709'
     },
@@ -44,6 +44,7 @@ var autopagerRefinement =
             if (doc.location && doc.location.host)
             {
                 var host = doc.location.host;
+                var pathname = doc.location.pathname;
 //                if (doc.location.href.match(new RegExp("^http://[^.]+\.google\.(?:[^.]+\.)?[^./]+/\#"))) {
 //                    doc.documentElement.scRefinementQuery = null;
 //                    autopagerRefinement.waitForGoogleAjaxToComplete(doc);
@@ -56,19 +57,19 @@ var autopagerRefinement =
                         var q = qs[0]
                         doc.documentElement.scRefinementQuery = q.value;
                         var insertPoint = autopagerRefinement.evaluate(doc,"//div[@id='res']/div/ol[1] | //div[@id='res']/*[1][not(//div[@id='res']/div/ol)]",1)[0];
-                        autopagerRefinement.launchSCAjaxRequestForRefinementLinks(doc,insertPoint, '');
+                        autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint, '');
                     }
                 }
                 else if (autopagerRefinement.scContainsSubstring(host, 'search.yahoo.')) {
                     doc.documentElement.scRefinementQuery = doc.getElementById("yschsp").value;
                     var div = doc.getElementById('web');
                     var insertPoint = autopagerRefinement.scGetDescendents(div, "ol")[0];
-                    autopagerRefinement.launchSCAjaxRequestForRefinementLinks(doc,insertPoint, ' margin-left: 20px;');
-                } else if (autopagerRefinement.scContainsSubstring(host, '.bing.com')) {
+                    autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint, ' margin-left: 20px;');
+                } else if (autopagerRefinement.scContainsSubstring(host, '.bing.com')  && (pathname == '/search')) {
                     doc.documentElement.scRefinementQuery = doc.getElementById("sb_form_q").value;
                     var div = doc.getElementById('results');
                     var insertPoint = autopagerRefinement.scGetDescendents(div, "ul")[0];
-                    autopagerRefinement.launchSCAjaxRequestForRefinementLinks(doc,insertPoint, '');
+                    autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint, '');
                 }
             }
         }catch(e){
@@ -101,7 +102,7 @@ var autopagerRefinement =
         if (doc.getElementById("res")!=null)
         {
             var insertPoint = doc.getElementById("res").firstChild;
-            autopagerRefinement.launchSCAjaxRequestForRefinementLinks(doc,insertPoint,'');
+            autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint,'');
             return;
         }
         var liTags = doc.getElementsByTagName('li');
@@ -110,17 +111,21 @@ var autopagerRefinement =
             var cls = liTag.getAttribute('class');
             if (cls && ((cls == 'g') || (cls.indexOf('g ') === 0))) {
                 var insertPoint = liTag.parentNode.parentNode.parentNode;
-                autopagerRefinement.launchSCAjaxRequestForRefinementLinks(doc,insertPoint,'');
+                autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint,'');
                 break;
             }
         }
     },
-    launchSCAjaxRequestForRefinementLinks : function(doc, insertPoint, yStyle) {
+    startSCAjaxRequestForRefinementLinks : function(doc, insertPoint, yStyle) {
         var div = doc.createElement("div");
         div.innerHTML = '<div id=scTopOfPageRefinementLinks scTopPos=1 partner="' + autopagerRefinement.partner.partnerCode + '" style="height: 20px; margin-top: 7px; margin-bottom: 7px;' + yStyle + '"></div>';
         insertPoint.parentNode.insertBefore(div, insertPoint);
         var url = 'http://' + autopagerRefinement.partner.authCode + '.surfcanyon.com/queryReformulation?partner=' + autopagerRefinement.partner.partnerCode + '&authCode=' + autopagerRefinement.partner.authCode + '&q=' + doc.documentElement.scRefinementQuery.replace(/ /g, '+');
-
+        var target = "";
+        if (autopagerRefinement.pref.getBoolPref(".refinementinneww"))
+        {
+            target = 'target="blank"';
+        }
         var xhr = new window.XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
@@ -139,7 +144,7 @@ var autopagerRefinement =
                         if (runningLength + refinementLength < 99) {
                             runningLength += refinementLength;
                             var query = autopagerRefinement.makeRefinementQuery(doc,refinement).replace(/ /g, '+');
-                            items.push('<a href="http://search.surfcanyon.com/search?f=nrl' + i + '&q=' + query + '&partner=' + autopagerRefinement.partner.partnerCode + '">' + refinement + '</a>');
+                            items.push('<a ' + target + ' href="http://search.surfcanyon.com/search?f=nrl' + i + '&q=' + query + '&partner=' + autopagerRefinement.partner.partnerCode + '">' + refinement + '</a>');
                         }
                     } catch (e) {
                     }
@@ -147,7 +152,11 @@ var autopagerRefinement =
                 if (items.length > 0) {
                     var div = doc.getElementById('scTopOfPageRefinementLinks');
                     if (div && (div.getAttribute('partner') == 'autopager')) {
-                        div.innerHTML = '<font size=-1><b>' + items.join(' &nbsp;') + '</b> &nbsp;<font size =-1 color=darkgray>' + autopagerRefinement.partner.uiLabel + '</font></font>';
+                        div.innerHTML = '<font size=-1><b>' + items.join(' &nbsp;') + '</b> &nbsp;'
+                            + '<style>#apRefinementDesc:hover	{text-decoration:underline;}\n#apRefinementDesc	{text-decoration:none;}</style> '
+                            + '<a id="apRefinementDesc" color=darkgray href="http://www.teesoft.info/content/view/102/49/" target="_blank" title="Click To See What\'s Auto Pager Refinements"><font size =-1 color=darkgray>' + autopagerRefinement.partner.uiLabel
+                            + '</font></a>&nbsp;<a id="disableRefinement" class="disableRefinement" href="#" title="Disbale Auto Pager Refinements"><img src="chrome://autopagerimg/content/vx.png" alt="Disbale Auto Pager Refinements" style="border: 0px solid ; width: 9px; height: 7px;" class="autoPagerS"/></a></font>';
+                        autopagerRefinement.listenOndisableRefinement(doc);
                     }
                 }
             }
@@ -202,6 +211,30 @@ var autopagerRefinement =
         }
         return found;
     },
+    disableRefinement: function(event)
+    {
+        event.preventDefault();
+        if (confirm("Remove AutoPager Refinement links?\nYou can always re-enable them later in the options menu."))
+        {
+            autopagerRefinement.pref.setBoolPref(".refinement",false)
+            var divs = autopagerRefinement.evaluate(event.target.ownerDocument,"//div[@id='scTopOfPageRefinementLinks']",1)
+            for(var i=0;i<divs.length;i++)
+                divs[i].parentNode.removeChild(divs[i])
+        }
+    },
+    listenOndisableRefinement: function(doc)
+    {
+        if (!doc.getElementById('scTopOfPageRefinementLinks')) {
+            return;
+        }
+        var links = autopagerRefinement.evaluate(doc,"//a[@id='disableRefinement' and not(@class='disableRefinementListented')]",30)
+        for(var i=0;i<links.length;i++)
+        {
+            links[i].addEventListener("click", autopagerRefinement.disableRefinement, true)
+            links[i].setAttribute("class", "disableRefinementListented");
+        }
+
+    }
 
 }
 window.addEventListener("DOMContentLoaded", autopagerRefinement.entryPoint, false);

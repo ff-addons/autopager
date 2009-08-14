@@ -53,7 +53,7 @@
             <tabpanel id="site-setting"  flex="1">
                 <hbox flex="1">
                     <vbox flex="2" orient="vertical">
-                        <textbox id="siteSearch"/>
+                        <textbox id="siteSearch" persist="value" type="search" searchbutton="true" emptytext="Search"/>
                         <hbox flex="1">
                             <vbox flex="1">
                                 <tree flex="10"  id="treeSites" seltype="multiple" width="400">
@@ -134,6 +134,9 @@
                                                 <button id="btnCloneToEdit" label="&setting.button.cloneToEdit;"
                                     hidden="true" flex="1" style="color:red;"
                                      tooltiptext="&setting.button.cloneToEditTip;"/>                                
+                                                <button id="btnReset" label="&setting.button.reset;"
+                                    hidden="true" flex="1" style="color:red;"
+                                     tooltiptext="&setting.button.resetTip;"/>
                                             </hbox>
                         
                                             <hbox align="center">
@@ -250,6 +253,7 @@
                                         <menuitem label="&setting.update.startup;" value="-1"/>
                                     <!-- the value is the hours after last update -->
                                         <menuitem label="&setting.update.daily;" value="24"/>
+                                        <menuitem label="&setting.update.bidaily;" value="48"/>
                                         <menuitem label="&setting.update.weekly;" value="168"/>
                                         <menuitem label="&setting.update.monthly;" value="720"/>
                                         <menuitem label="&setting.update.never;" value="0"/>
@@ -371,6 +375,7 @@
                                 <menuitem label="&setting.update.startup;" value="-1" selected="true"/>
                                     <!-- the value is the hours after last update -->
                                 <menuitem label="&setting.update.daily;" value="24"/>
+                                <menuitem label="&setting.update.bidaily;" value="48"/>
                                 <menuitem label="&setting.update.weekly;" value="168"/>
                                 <menuitem label="&setting.update.monthly;" value="720"/>
                                 <menuitem label="&setting.update.once;" value="0"/>

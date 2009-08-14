@@ -7,7 +7,7 @@ var hashSites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
     var chkEnabled, chkEnableJS,chkAjax,chkneedMouseDown
-    var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic;
+    var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic,btnReset;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnFilterUp,btnFilterDown, btnSiteUp,btnSiteDown;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
@@ -195,6 +195,7 @@ function autopagerOpenIntab(url,obj)
     function handleApplyButton() {
        	autopagerConfig.saveConfig(sites);
         var allConfigs = {};
+        autopagerConfig.saveAllOverride(allSites);
         for (var key in allSites){
             allConfigs[allSites[key].updateSite.filename] = allSites[key]
         }
@@ -232,6 +233,8 @@ function autopagerOpenIntab(url,obj)
     function onSiteChange(treeitem,site)
     {
     	site.changedByYou = autopagerConfig.isChanged(site);
+        btnReset.hidden = !site.changedByYou;
+        checkChanged(site);
 //        var treerow = treeitem.childNodes[0];
 //        var treecell = treerow.childNodes[0];
 //        treecell.setAttribute("properties","status" + getColor(site));
@@ -259,6 +262,7 @@ function autopagerOpenIntab(url,obj)
         btnAdd = document.getElementById("btnAdd");
         btnCopy = document.getElementById("btnCopy");
         btnClone = document.getElementById("btnCloneToEdit");
+        btnReset = document.getElementById("btnReset");
         btnDelete = document.getElementById("btnDelete");
         btnPublic = document.getElementById("btnPublic");
         
@@ -388,6 +392,7 @@ function autopagerOpenIntab(url,obj)
         btnAdd.addEventListener("command", handleAddSiteButton, false);
         btnCopy.addEventListener("command", handleCopySiteButton, false);
         btnClone.addEventListener("command", handleCopySiteButton, false);
+        btnReset.addEventListener("command", handleResetSiteButton, false);
         btnDelete.addEventListener("command", handleDeleteSiteButton, false);
         btnPublic.addEventListener("command", handlePublicSiteButton, false);
         chkEnabled.addEventListener("command", function() {
@@ -802,6 +807,7 @@ function autopagerOpenIntab(url,obj)
             chkFixOverflow.checked = true;
             lblOwner.value = "";
             btnClone.hidden = true;
+            btnReset.hidden = true;
     }
     function updateSourceDetail(updateSite,count)
     {
@@ -832,6 +838,13 @@ function autopagerOpenIntab(url,obj)
 	function updateDetails(event) {
             setTimeout(doUdateDetails,10);
         }
+        function setChangedClass(node,changed)
+        {
+            if (changed)
+                node.setAttribute("class","changed")
+            else
+                node.setAttribute("class","")
+        }
         function doUdateDetails(event) {
             if(treeSites.filterIng)
 			return;
@@ -846,7 +859,7 @@ function autopagerOpenIntab(url,obj)
                if (updateSite == null)
                {
                    switchDeck(1);
-                   enableSiteEditControls(false);
+                   enableSiteEditControls(false,false);
                    updateSourceDetail(selectedListItem.updateSite,selectedListItem.getChildCount());
                    clearInfo();
                    return;
@@ -857,15 +870,16 @@ function autopagerOpenIntab(url,obj)
 //                    selectedSite = sites[selectedListItem.siteIndex];
 //                else
                     selectedSite = selectedListItem.site;
-               
-               enableSiteEditControls(enableEdit);
+
+               if (selectedSite.oldSite == null)
+                   selectedSite.oldSite = autopagerConfig.cloneSite(selectedSite);
+               enableSiteEditControls(enableEdit,selectedSite.changedByYou);
                 if (selectedSite == null)
                 {
                     selectedListItem = null;
                     return;
                 }
                 urlPattern.value = selectedSite.urlPattern;
-
                 isRegex.checked = selectedSite.isRegex;
                 margin.value = selectedSite.margin;
                 minipages.value = selectedSite.minipages;
@@ -877,23 +891,50 @@ function autopagerOpenIntab(url,obj)
                 chkneedMouseDown.checked = selectedSite.needMouseDown
                 chkQuickLoad.checked = selectedSite.quickLoad;
                 chkFixOverflow.checked = selectedSite.fixOverflow;
-
                 populateXPath(selectedSite.contentXPath,contentXPath);
                 linkXPath.value    = selectedSite.linkXPath;
                 containerXPath.value    = selectedSite.containerXPath;
                 populateXPath(selectedSite.removeXPath,lstRemoveXPath);
                 lstRemoveXPath.value    = selectedSite.removeXPath;
                 lblOwner.value = selectedSite.owner;
-            
+                checkChanged(selectedSite);
+            }
         }
+        function checkChanged(selectedSite) {
+            var oldSite = selectedSite.oldSite
+            setChangedClass(urlPattern, oldSite!=null && urlPattern.value != oldSite.urlPattern)
+            setChangedClass(isRegex, oldSite!=null && isRegex.checked != oldSite.isRegex)
+            setChangedClass(margin, oldSite!=null && margin.value != oldSite.margin)
+            setChangedClass(minipages, oldSite!=null && minipages.value != oldSite.minipages)
+            setChangedClass(delaymsecs, oldSite!=null && delaymsecs.value != oldSite.delaymsecs)
+            setChangedClass(description, oldSite!=null && description.value != oldSite.desc)
+            setChangedClass(chkEnabled, oldSite!=null && chkEnabled.checked != oldSite.enabled)
+            setChangedClass(chkEnableJS, oldSite!=null && chkEnableJS.checked != oldSite.enableJS)
+            setChangedClass(chkAjax, oldSite!=null && chkAjax.checked != oldSite.ajax)
+            setChangedClass(chkneedMouseDown, oldSite!=null && chkneedMouseDown.checked != oldSite.needMouseDown)
+            setChangedClass(chkQuickLoad, oldSite!=null && chkQuickLoad.checked != oldSite.quickLoad)
+            setChangedClass(chkFixOverflow, oldSite!=null && chkFixOverflow.checked != oldSite.fixOverflow)
+            setChangedClass(contentXPath, oldSite!=null && !autopagerJsonSetting.arrayEqual(selectedSite.contentXPath,oldSite.contentXPath))
+            setChangedClass(linkXPath, oldSite!=null && linkXPath.value != oldSite.linkXPath)
+            setChangedClass(containerXPath, oldSite!=null && containerXPath.value != oldSite.containerXPath)
+            setChangedClass(lstRemoveXPath, oldSite!=null && !autopagerJsonSetting.arrayEqual(selectedSite.removeXPath,oldSite.removeXPath))
+            //setChangedClass(urlPattern, oldSite!=null && selectedSite.urlPattern != oldSite.urlPattern)
+            setChangedClass(lblOwner, oldSite!=null && lblOwner.value != oldSite.owner)
     }
     function switchDeck(index)
     {
         settingDeck.selectedIndex = index;
     }
-      function enableSiteEditControls(enableEdit)
+      function enableSiteEditControls(enableEdit,changedByYou)
       {
-          var disabled = !enableEdit;
+        btnClone.hidden = enableEdit;
+        btnReset.hidden = enableEdit || !changedByYou;
+        var disabled = !enableEdit;
+        btnPublic.disabled =disabled;
+        btnSiteUp.disabled =disabled;
+        btnSiteDown.disabled =disabled;
+        btnDelete.disabled =disabled;
+        return;
         urlPattern.readOnly =disabled;
         isRegex.disabled =disabled;
         margin.readOnly =disabled;
@@ -901,6 +942,8 @@ function autopagerOpenIntab(url,obj)
         delaymsecs.readOnly =disabled;
         description.readOnly =disabled;
         btnAddPath.disabled =disabled;
+        btnUp.disabled =disabled;
+        btnDown.disabled =disabled;
         //btnEditPath.disabled =disabled;
         btnDeletePath.disabled =disabled;
         btnAddRemovePath.disabled =disabled;
@@ -912,14 +955,9 @@ function autopagerOpenIntab(url,obj)
         //btnEditPath.disabled =disabled;
         btnDeleteRemovePath.disabled =disabled;
         
-        btnUp.disabled =disabled;
-        btnDown.disabled =disabled;
+
         btnFilterUp.disabled =disabled;
         btnFilterDown.disabled =disabled;
-        btnSiteUp.disabled =disabled;
-        btnSiteDown.disabled =disabled;
-        btnDelete.disabled =disabled;
-        btnPublic.disabled =disabled;
         contentXPath.readOnly =disabled;
         chkEnabled.disabled =disabled;
         chkEnableJS.disabled =disabled;
@@ -930,16 +968,15 @@ function autopagerOpenIntab(url,obj)
         linkXPath.readOnly =disabled;
         containerXPath.readOnly =disabled;
         btnPickLinkPath.disabled = disabled;
-        btnClone.hidden = enableEdit;
       }
 	function populateXPath(paths,lst)
 	{
 		//clear
 		while (lst.hasChildNodes()) {
-        	lst.removeChild(lst.childNodes[0]);
-        }
+                    lst.removeChild(lst.childNodes[0]);
+                }
 		for (var i = 0, path = null; (path = paths[i]); i++) {
-	        addContentXPath( path,lst);
+                    addContentXPath( path,lst);
 		}
 	}
 	function addContentXPath(path,lst)
@@ -977,6 +1014,21 @@ function autopagerOpenIntab(url,obj)
                 autopagerConfig.insertAt(sites,0,site);
                 onSiteFilter(siteSearch.value,false,true);
 	}
+
+    function handleResetSiteButton()
+    {
+    	if (treeSites.currentIndex >= 0) {
+
+            selectedSite = treeSites.view.wrappedJSObject.getItemAtIndex(treeSites.currentIndex).site;
+            if (selectedSite == null)
+                return;
+            var site = autopagerConfig.doCloneSite(selectedSite,selectedSite.oldSite);
+            //site.oldSite = null;
+            site.changedByYou = false;
+            updateDetails();
+        }
+
+    }
     function handleCopySiteButton() {
     	if (treeSites.currentIndex >= 0) {
             var myname = checkMyName();

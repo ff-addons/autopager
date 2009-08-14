@@ -27,9 +27,12 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
 
     <vbox flex="1">
+        <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
+        <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+        <checkbox type="checkbox"  id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
+        <checkbox type="checkbox"  id="simpleModalPrompt" pref="modalprompt" label="&setting.label.simpleModalPrompt;" check="true"/>
+
         <checkbox id="tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
-        <checkbox id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true"/>
-        <checkbox id="simpleModalPrompt" pref="modalprompt" label="&setting.label.simpleModalPrompt;" check="true"/>
         <checkbox id="ignoreFormatVersionCheck" pref="ignore-format-version-check" label="&options.checkbox.ignoreFormatVersionCheck.label;" check="false"/>
         <hbox align="center">
             <label id="speedLabel" control="speed" value="&options.label.speedLabel.value;"/>
@@ -50,6 +53,7 @@
                     <menuitem label="&setting.update.startup;" value="-1" selected="true"/>
                                     <!-- the value is the hours after last update -->
                     <menuitem label="&setting.update.daily;" value="24"/>
+                    <menuitem label="&setting.update.bidaily;" value="48"/>
                     <menuitem label="&setting.update.weekly;" value="168"/>
                     <menuitem label="&setting.update.monthly;" value="720"/>
                     <menuitem label="&setting.update.once;" value="0"/>

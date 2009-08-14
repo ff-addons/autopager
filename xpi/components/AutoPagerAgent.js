@@ -1,5 +1,5 @@
 var headerName  = "X-AutoPager";
-var headerValue = "0.5.2.2 (http://www.teesoft.info/)";
+var headerValue = "0.5.3.5 (http://www.teesoft.info/)";
 
 
 
@@ -37,7 +37,7 @@ autopagerHTTPListener.prototype = {
           this.LOG("----------------------------> (" + subject + ") mod request");
 
           httpChannel.setRequestHeader(headerName, headerValue, false);
-          var agent = httpChannel.getRequestHeader("User-Agent") + " AutoPager/0.5.2.2 (http://www.teesoft.info/)";
+          var agent = httpChannel.getRequestHeader("User-Agent") + " AutoPager/0.5.3.5 (http://www.teesoft.info/)";
           httpChannel.setRequestHeader("User-Agent", agent, false);
           return;
       }
