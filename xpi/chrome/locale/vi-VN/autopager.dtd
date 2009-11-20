@@ -1,3 +1,5 @@
+<!ENTITY autopager-workshop.button.modifyXPath.label "...">
+<!ENTITY autopager-workshop.label.value "Frames">
 <!ENTITY autopager.label.value "lật trang tự động">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Trình giữ Trang">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
@@ -57,9 +59,14 @@
 <!ENTITY autopager.status.xpathUtils "Tiện ích XPath">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "Phân xưởng Thiết lập Trang của AutoPager">
+<!ENTITY button.modifyContainerXPath.label "...">
+<!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Kết quả">
 <!ENTITY caption.results-caption2.label "Kết quả">
+<!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "Sử dụng">
+<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
@@ -152,6 +159,7 @@
 <!ENTITY setting.type.autopager "autopager xml">
 <!ENTITY setting.type.autopagerize "autopager-hóa">
 <!ENTITY setting.type.autopagerizeJson "autopager-hóa josn">
+<!ENTITY setting.type.autopagerlite "autopager lite">
 <!ENTITY setting.type.autopagertext "autopager chữ">
 <!ENTITY setting.update.bidaily "Every Other Day">
 <!ENTITY setting.update.daily "Mỗi ngày">
@@ -162,6 +170,7 @@
 <!ENTITY setting.update.startup "Mỗi khi Khởi động">
 <!ENTITY setting.update.weekly "Mỗi tuần">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Đóng Trình Giữ Trang AutoPager">
+<!ENTITY statusbar.label.value "Click to view the paging rules online">
 <!ENTITY statusbar.menu.autopager-about.label "Trợ giúp">
 <!ENTITY statusbar.menu.fix.label "Sửa Lỗi">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Tự động Sửa">
@@ -177,8 +186,24 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Hiện quy tắc trong Kho trực tuyến">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "Hướng dẫn">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Hiện trang Hướng dẫn">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
+<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
+<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
 <!ENTITY statusbar.menuitem.label "Options">
+<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
+<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager Core Options">
+<!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Thêm Trang">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Xóa trắng Tất cả">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Khám phá">

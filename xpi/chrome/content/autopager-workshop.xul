@@ -86,6 +86,13 @@
     <deck selectedIndex="0" id="xpathDeck" flex="1">
         <vbox flex="1">
             <hbox align="center">
+                <label control="menuFrame" value="&autopager-workshop.label.value;"/>
+                <menulist flex="1" id="menuFrame">
+                    <menupopup >
+                    </menupopup>
+                </menulist>
+            </hbox>
+            <hbox align="center">
                 <label control="urlPattern" value="&setting.label.lblURLPattern;"/>
                 <checkbox id="chkIsRegex" label="&setting.label.chkIsRegex;" checked="false" />
                 <menulist flex="1" id="urlPattern" editable="true">
@@ -99,7 +106,7 @@
                     <menupopup >
                     </menupopup>
                 </menulist>
-                <button id="modifyXPath" label="..." onclick="autopagerXPath.modifyXPath('xpath');"/>
+                <button id="modifyXPath" label="&autopager-workshop.button.modifyXPath.label;" onclick="autopagerXPath.modifyXPath('xpath');"/>
             </hbox>
             <hbox align="center">
                 <label control="contentXPath" value="&setting.label.grpContentXPath;"/>
@@ -107,7 +114,7 @@
                     <menupopup >
                     </menupopup>
                 </menulist>
-                <button id="modifyXPath" label="..." onclick="autopagerXPath.modifyXPath('contentXPath');"/>
+                <button id="modifyXPath" label="&autopager-workshop.button.modifyXPath.label;" onclick="autopagerXPath.modifyXPath('contentXPath');"/>
             </hbox>
             <tabbox id="autopager-workshop-tabbox" flex="1" selectedIndex="1">
                 <tabs>
@@ -157,7 +164,7 @@
                                 <caption id="results-caption" label="&caption.results-caption.label;" crop="center"/>
                                 <vbox flex="1">
                                     <label id="status"/>
-                                    <iframe id="resultsFrame" type="content-targetable" flex="1"  src="chrome://autopager/content/empty.html"/>
+                                    <iframe id="resultsFrame" type="content-targetable" flex="1"  src="http://www.teesoft.info/autopager/intro.html"/>
                                 </vbox>
                             </groupbox>
                         </vbox>
@@ -182,7 +189,7 @@
                                 <caption id="results-caption2" label="&caption.results-caption2.label;" crop="center"/>
                                 <vbox flex="1">
                                     <label id="status2"/>
-                                    <iframe id="resultsFrame2" type="content-targetable" flex="1" src="chrome://autopager/content/empty.html"/>
+                                    <iframe id="resultsFrame2" type="content-targetable" flex="1" src="http://www.teesoft.info/autopager/intro.html"/>
                                 </vbox>
                             </groupbox>
                         </vbox>

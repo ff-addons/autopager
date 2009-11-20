@@ -7,15 +7,17 @@ var autopagerJsonSetting= {
     {
         var info = autopagerJsonSetting.decodeJSON(str);
         var sites = new Array();
-        for(var i=0;i<info.length;i++){
-            var site = info[i]
+        if (info)
+        {
+            for(var i=0;i<info.length;i++){
+                var site = info[i]
 
-            var newSite = autopagerJsonSetting.compactToNormal(site);
-//            alert(newSite)
-            newSite.oldSite = null;
-            sites.push(newSite);
+                var newSite = autopagerJsonSetting.compactToNormal(site);
+    //            alert(newSite)
+                newSite.oldSite = null;
+                sites.push(newSite);
+            }
         }
-
         return sites;
     },
     decodeJSON : function (str)
@@ -26,13 +28,16 @@ var autopagerJsonSetting= {
         var Ci = Components.interfaces;
         var Cc = Components.classes;
 
-        if (Cc["@mozilla.org/dom/json;1"])
-        {
-            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
-            info = nativeJSON.decode(str);
+        try{
+            if (Cc["@mozilla.org/dom/json;1"])
+            {
+                var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
+                info = nativeJSON.decode(str);
+            }
+            else
+                info = autopagerJSON.parse(str);
+        }catch(e){
         }
-        else
-            info = autopagerJSON.parse(str);
         return info;
     },
 

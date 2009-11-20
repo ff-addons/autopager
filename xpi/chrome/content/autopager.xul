@@ -36,6 +36,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-highlight.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
 
     <tooltip  id="helptip"  flex="1">
         <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
@@ -155,7 +156,7 @@
                                                     <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
                                                     <textbox id="linkXPath" flex="1"/>
                                                     <button id="pickLinkPath" flex="1" label="&setting.button.pick;" />
-                                                    <button id="modifyLinkXPath" flex="1" label="..." oncommand="autopagerXPath.modifyXPath('linkXPath');"/>
+                                                    <button id="modifyLinkXPath" flex="1" label="&button.modifyLinkXPath.label;" oncommand="autopagerXPath.modifyXPath('linkXPath');"/>
                                                 </hbox>
                                                 <groupbox id="grpContentXPath" orient="vertical" flex="1">
                                                     <caption label="&setting.label.grpContentXPath;" />
@@ -198,7 +199,7 @@
                                                 <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
                                                 <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
                                                 <button id="pickContainerPath" flex="1" label="&setting.button.pick;" oncommand="pickupContent('containerXPath')" />
-                                                <button id="modifyContainerXPath" flex="1" label="..." oncommand="autopagerXPath.modifyXPath('containerXPath');"/>
+                                                <button id="modifyContainerXPath" flex="1" label="&button.modifyContainerXPath.label;" oncommand="autopagerXPath.modifyXPath('containerXPath');"/>
                                             </hbox>
                                             <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
                                                 <caption label="&setting.label.grpRemoveXPath;" />
@@ -225,7 +226,7 @@
                                 <descrition>
                             &setting.label.lblSetting;
                                 </descrition>
-                        
+
                                 <hbox align="center">
                                     <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;"/>
                                     <textbox id="lbSettinglOwner" value=""/>
@@ -240,6 +241,7 @@
                                     <menulist id="settingtype" flex="1">
                                         <menupopup>
                                             <menuitem label="&setting.type.autopager;" value="autopager-xml" selected="true"/>
+                                            <menuitem label="&setting.type.autopagerlite;" value="autopager-lite"/>
                                             <menuitem label="&setting.type.autopagertext;" value="autopager-freetext"/>
                                             <menuitem label="&setting.type.autopagerize;" value="autopagerize"/>
                                             <menuitem label="&setting.type.autopagerizeJson;" value="autopagerize-json"/>
@@ -268,13 +270,26 @@
                                     <textbox multiline="true" id="settingdesc" rows="4" flex="1"/>
                                 </hbox>
                                 <hbox align="center">
+                                    <label control="rulecount" value="&label.value;"/>
                                     <textbox  hidden="true" id="rulecount" flex="1" value="0" readonly="true"/>
                                 </hbox>
+                                <vbox flex="1"  id="idsPanel">
+                                    <hbox>
+                                        <checkbox id="ir" label="&checkbox.ir.label;" checked="true" />
+                                    </hbox>
+                                    <hbox align="center">
+                                        <vbox flex="1">
+                                            <label id="idsLabel" control="ids" value="&label.idsLabel.value;"/>
+                                            <textbox multiline="true" rows="4" id="ids" flex="1"/>
+                                        </vbox>
+                                    </hbox>
+                                </vbox>
+
                             </vbox>
                         </vbox>
                     </deck>
                 </hbox>
-                
+
             </tabpanel>
             <tabpanel id="general-setting">
                 <vbox flex="1">
@@ -294,7 +309,7 @@
                         <label control="confirm" value = "&setting.label.confirmstyle;"/>
                         <textbox id="confirm" flex="1"/>
                     </hbox>
-                    <!-- 
+                    <!--
                     <hbox align="center">
                         <label control="timeout" value = "&setting.label.timeout;"/>
                         <textbox id="timeout" flex="1"/>
@@ -332,7 +347,7 @@
                                     <textbox id="smartMargin" flex="1"/>
                                     <label control="smartMargin" value="&setting.label.marginEnd;"/>
                                 </hbox>
-                                
+
                             </groupbox>
                         </hbox>
                     </vbox>
@@ -345,7 +360,7 @@
                                         <textbox id="discoverytext" flex="1"/>
                                     </hbox>
                                 </vbox>
-                                
+
                             </groupbox>
                         </hbox>
                     </vbox>
@@ -386,5 +401,7 @@
             </tabpanel>
         </tabpanels>
     </tabbox>
-    
+
 </dialog>
+
+

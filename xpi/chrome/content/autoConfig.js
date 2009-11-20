@@ -85,7 +85,11 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.5.3.5").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.5.5.6").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        var ids = autopagerMain.loadUTF8Pref("ids");
+        if (!autopagerMain.loadBoolPref("with-lite-recommended-rules"))
+            ids = ids + "&ir=false";
+        url = url.replace(/\{ids\}/,ids);
         return url;
     },
 	updateOnline :function (force)
@@ -98,6 +102,28 @@ var UpdateSites=
 					for(var i=0;i<this.updateSites.length;i++)
 					{
 							var site= this.updateSites[i];
+							if ( (force || site.enabled) && site.url.length >0)
+							{
+								site.triedTime = 0;
+								site.triedBackup = 0;
+								this.updateSiteOnline(site,force,0);
+							}
+					}
+			}
+	},
+	updateRepositoryOnline :function (repositoryName,force)
+	{
+			if (force || UpdateSites.updatedCount<=0)
+			{
+					UpdateSites.updatedCount=0;
+					this.init();
+					UpdateSites.submitCount=0;
+					for(var i=0;i<this.updateSites.length;i++)
+					{
+							var site= this.updateSites[i];
+                                                        if (site.filename != repositoryName)
+                                                            continue;
+                                                        
 							if ( (force || site.enabled) && site.url.length >0)
 							{
 								site.triedTime = 0;
@@ -214,6 +240,37 @@ var UpdateSites=
             }
         return newSites;
         
+    },
+    getNextMatchedSiteConfig: function(allSites,url,pos)
+    {
+	var key;
+        var started = (pos ==null || pos.key==null || pos.index==null);
+        for ( key in allSites){
+            //alert(key)
+            var tmpsites = allSites[key];
+            if (tmpsites==null || !tmpsites.updateSite.enabled)
+                continue;
+            for (var i = 0; i < tmpsites.length; i++) {
+                if (!started)
+                    started = ((key == pos.key) && i>=pos.index);
+                else
+                {
+                    var site = tmpsites[i];
+                    var pattern = autopagerMain.getRegExp(site);
+                    if (pattern.test(url)) {
+                        var newSite = autopagerConfig.cloneSite (site);
+                        newSite.updateSite = tmpsites.updateSite;
+                        pos = new Array();
+                        pos.key = key;
+                        pos.index = i;
+                        pos.site=newSite;
+                        return pos;
+                    }
+                }
+            }
+        }
+        return null;
+
     },
     getMatchedSiteConfigByGUID: function(allSites,guid,includeLocal,count)
     {

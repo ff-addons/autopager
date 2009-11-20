@@ -1,3 +1,5 @@
+<!ENTITY autopager-workshop.button.modifyXPath.label "...">
+<!ENTITY autopager-workshop.label.value "Frames">
 <!ENTITY autopager.label.value "自动翻页">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "页容器">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
@@ -57,9 +59,14 @@
 <!ENTITY autopager.status.xpathUtils "XPath工具">
 <!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
+<!ENTITY button.modifyContainerXPath.label "...">
+<!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "结果">
 <!ENTITY caption.results-caption2.label "结果">
+<!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "使用方法">
+<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "忽略规则格式版本检查">
@@ -152,6 +159,7 @@
 <!ENTITY setting.type.autopager "autopager xml">
 <!ENTITY setting.type.autopagerize "autopagerize">
 <!ENTITY setting.type.autopagerizeJson "autopagerize josn">
+<!ENTITY setting.type.autopagerlite "autopager lite">
 <!ENTITY setting.type.autopagertext "autopager text">
 <!ENTITY setting.update.bidaily "每两天">
 <!ENTITY setting.update.daily "每天">
@@ -162,6 +170,7 @@
 <!ENTITY setting.update.startup "每次启动">
 <!ENTITY setting.update.weekly "每周">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "关闭自动翻页容器">
+<!ENTITY statusbar.label.value "Click to view the paging rules online">
 <!ENTITY statusbar.menu.autopager-about.label "帮助">
 <!ENTITY statusbar.menu.fix.label "解决翻页问题">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自动修复">
@@ -177,8 +186,24 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "显示在线配置">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "教程">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "显示教程页">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
+<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
+<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
 <!ENTITY statusbar.menuitem.label "选项">
+<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
+<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "自动翻页核心选项">
+<!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
 <!ENTITY toolbarbutton.addSite.tooltiptext "添加站点配置">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "清除当前设置">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自动识别">

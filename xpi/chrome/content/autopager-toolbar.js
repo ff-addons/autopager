@@ -2,6 +2,8 @@ var autopagerToolbar =
 {
     addAutopagerButton : function() {
         var toolbox = document.getElementById("navigator-toolbox");
+        if (!toolbox)
+            return;
         var toolboxDocument = toolbox.ownerDocument;
 
         var hasAutopagerButton = false;
@@ -82,26 +84,30 @@ var autopagerToolbar =
 
     autopagerToobarInit : function() {
         //var autopagerHome = "http://www.teesoft.info/content/view/27/1/";
-        var autopagerHome = "http://autopager.teesoft.info/index.html";
+        var autopagerHome = "http://autopager.teesoft.info/index.html?app=autopager";
         //    var autopagerHome = "http://www.teesoft.info";
 
         var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
         var prefBranch = prefService.getBranch("autopager.");
         if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "?i=0.5.3.5",null))
+            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "&i=0.5.5.6",null))
             {
-                prefBranch.setCharPref("last_version", "0.5.3.5");
+                prefBranch.setCharPref("last_version", "0.5.5.6");
                 autopagerToolbar.addAutopagerButton();
+                if (autopagerToolbar.isFennec())
+                {
+                    prefBranch.setBoolPref("noprompt", true);
+                }
                 //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
             }
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = prefBranch.getCharPref("last_version");
-            if (lastVersion != "0.5.3.5")
+            if (lastVersion != "0.5.5.6")
             {
-                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "?u=" + lastVersion + "&i=0.5.3.5",null))
+                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.5.5.6",null))
                 {
-                    prefBranch.setCharPref("last_version", "0.5.3.5");
+                    prefBranch.setCharPref("last_version", "0.5.5.6");
                 //autopagerToolbar.addAutopagerButton();
                     //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }
@@ -125,10 +131,10 @@ var autopagerToolbar =
                 tab = browser.addTab(url,ops);
                 browser.selectedTab = tab;
             }
-            else if (window.Browser)
+            else if (window.Browser && window.Browser._content)
             {
                 try{
-                    tab = Browser._content.newTab(true);
+                    tab = window.Browser._content.newTab(true);
                     if (tab) {
                         var content = Browser._content;
                         var browser = content.getBrowserForDisplay(content.getDisplayForTab(tab));
@@ -154,6 +160,9 @@ var autopagerToolbar =
             return window.open(url, "_blank")!=null;
         }
         return false;
+    },isFennec : function()
+    {
+     return (navigator.userAgent.indexOf(" Fennec/")!=-1);
     }
 };
 

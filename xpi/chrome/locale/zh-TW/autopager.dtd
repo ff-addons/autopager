@@ -1,3 +1,5 @@
+<!ENTITY autopager-workshop.button.modifyXPath.label "...">
+<!ENTITY autopager-workshop.label.value "Frames">
 <!ENTITY autopager.label.value "Auto Pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "頁面存放區">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
@@ -57,9 +59,14 @@
 <!ENTITY autopager.status.xpathUtils "XPath 工具">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">
+<!ENTITY button.modifyContainerXPath.label "...">
+<!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "結果">
 <!ENTITY caption.results-caption2.label "結果">
+<!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "用法">
+<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "忽略規則格式版本檢查">
@@ -142,7 +149,7 @@
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
 <!ENTITY setting.label.smartlinks "只在符合的連結少於">
 <!ENTITY setting.label.smartlinksEnd "個連結時才自動翻頁">
-<!ENTITY setting.label.smarttext "尋找下個連結搜尋的文字／圖片、來源／ID／Class 連結 (用 &apos;|&apos; 分隔):">
+<!ENTITY setting.label.smarttext "尋找下個連結搜尋的文字／圖片、來源／ID／Class 連結 (用 '|' 分隔):">
 <!ENTITY setting.label.timeout "頁面載入逾時設定 (秒):">
 <!ENTITY setting.label.update "自動更新">
 <!ENTITY setting.text.tipContainerXPath "若你不知道此選項的用途，請勿亂動。\n若網站主要內容位於有 overflow-y 及 scrollbar 屬性的 Container 中時，將只監視這個 Container 中的頁面捲動。請參考 www.cuil.com 的設定範例。">
@@ -152,8 +159,9 @@
 <!ENTITY setting.type.autopager "Autopager XML">
 <!ENTITY setting.type.autopagerize "Autopagerize">
 <!ENTITY setting.type.autopagerizeJson "Autopagerize JSON">
+<!ENTITY setting.type.autopagerlite "autopager lite">
 <!ENTITY setting.type.autopagertext "Autopager Text">
-<!ENTITY setting.update.bidaily "每两天">
+<!ENTITY setting.update.bidaily "每幾天">
 <!ENTITY setting.update.daily "每天">
 <!ENTITY setting.update.global "使用全域設定">
 <!ENTITY setting.update.monthly "每月">
@@ -162,6 +170,7 @@
 <!ENTITY setting.update.startup "每次啟動時">
 <!ENTITY setting.update.weekly "每週">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "關閉 AutoPager 頁面存放區">
+<!ENTITY statusbar.label.value "Click to view the paging rules online">
 <!ENTITY statusbar.menu.autopager-about.label "說明">
 <!ENTITY statusbar.menu.fix.label "修復翻頁錯誤">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自動修復">
@@ -177,8 +186,24 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "於線上資料庫顯示規則">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "教學">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "顯示教學頁面">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
+<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
+<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
 <!ENTITY statusbar.menuitem.label "核心設定">
+<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
+<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager 核心設定">
+<!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "自動辨識">

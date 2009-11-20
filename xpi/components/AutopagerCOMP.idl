@@ -10,4 +10,5 @@ interface nsIAutopagerCOMP : nsISupports
   void setUpdateSites(in nsIMutableArray sites);
   nsIMutableArray getSiteConfirms();
   void setSiteConfirms(in nsIMutableArray sites);
+  nsIMutableArray getDiscoveredUrls();
 };

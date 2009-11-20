@@ -34,7 +34,7 @@ var autopagerSidebar =
         var doc = autopagerUtils.currentDocument();
         if (this.currUrl != doc.documentURI)
           this.loadXPathForNode(doc);
-      
+        this.loadFrames(this.currentDoc);
       
         var res = autopagerXPath.discovery(doc,autopagerSidebar.xpathes);
         this.showXPathList(document.getElementById("autoLinkPathTreeBody"),res.linkXPaths)
@@ -136,7 +136,8 @@ var autopagerSidebar =
                         }
                     },true);
         document.getElementById("contentXPath").addEventListener('focus',function(){autopagerSidebar.tabbox.selectedIndex=2;},false);
-        
+
+        this.loadFrames(this.currentDoc);
         this.loadXPathForNode(this.currentDoc);
 
 		this.tabbox = document.getElementById("autopager-workshop-tabbox");
@@ -204,6 +205,30 @@ var autopagerSidebar =
         }
       }         
     },
+    loadFrames : function(doc) {
+        autopagerUtils.log("getXPathForNode called");
+        var ele = document.getElementById("menuFrame");
+        this.clearNode(ele.menupopup)
+        this.addDocToList(doc,ele);
+        ele.value = doc.documentURI
+        for (var i=0;i<doc.defaultView.frames.length;i++)
+        {
+            this.addDocToList(doc.defaultView.frames[i].document,ele)
+        }
+    },
+    addDocToList : function (doc,ele)
+    {
+        var m = document.createElement("menuitem");
+        m.setAttribute("label", doc.documentURI);
+        m.setAttribute("value", doc.documentURI);
+        m.doc = doc
+        m.addEventListener("command", function(e){
+            if (e.target.doc.defaultView.frameElement!=null)
+                autopagerSelector.blinkElement(e.target.doc.defaultView.frameElement)
+            autopagerSidebar.loadXPathForNode(e.target.doc);
+        }, false);
+        ele.menupopup.appendChild(m);
+    },
     loadXPathForNode : function(doc) {
         autopagerUtils.log("getXPathForNode called");
         this.currUrl = doc.documentURI;
@@ -221,8 +246,11 @@ var autopagerSidebar =
                 var self = arguments.callee;
                 var iframe = document.getElementById( "resultsFrame");
                 iframe.removeEventListener("DOMContentLoaded",self,false);
-                autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
-                var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+                autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
+                var div = iframe.contentDocument.getElementById("container");
+                if (div==null)
+                    div = iframe.contentDocument.documentElement;
+                var b=autopagerSidebar.addNode(div,"b");
                 autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
             }
             , false);
@@ -233,8 +261,11 @@ var autopagerSidebar =
                 var self = arguments.callee;
                 var iframe = document.getElementById( "resultsFrame2");
                 iframe.removeEventListener("DOMContentLoaded",self,false);
-                autopagerSidebar.clearNoneLink(iframe.contentDocument.body);
-                var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+                autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
+                var div = iframe.contentDocument.getElementById("container");
+                if (div==null)
+                    div = iframe.contentDocument.documentElement;
+                var b=autopagerSidebar.addNode(div,"b");
                 autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
             }
             , false);
@@ -244,10 +275,19 @@ var autopagerSidebar =
         else
         {
             var iframe = document.getElementById( "resultsFrame");
-            var b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+            autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
+            var div = iframe.contentDocument.getElementById("container");
+            if (div==null)
+                div = iframe.contentDocument.documentElement;
+            var b=autopagerSidebar.addNode(div,"b");
             autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
             iframe = document.getElementById( "resultsFrame2");
-            b=autopagerSidebar.addNode(iframe.contentDocument.body,"b");
+            autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
+
+            div = iframe.contentDocument.getElementById("container");
+            if (div==null)
+                div = iframe.contentDocument.documentElement;
+            b=autopagerSidebar.addNode(div,"b");
             autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
         }
 		var sites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),this.currUrl,10);
@@ -383,9 +423,9 @@ var autopagerSidebar =
     }
     , updateHtmlResults:function(results,contentFrame,color,focus) {
         var doc = contentFrame.contentDocument;
-        autopagerSidebar.clearNoneLink(contentFrame.contentDocument.body);
+        autopagerSidebar.clearNoneLink(contentFrame.contentDocument.documentElement);
 
-        var table = autopagerSidebar.addNode(contentFrame.contentDocument.body,"table");
+        var table = autopagerSidebar.addNode(contentFrame.contentDocument.documentElement,"table");
         var tbody = autopagerSidebar.addNode(table,"tbody");
         
 
@@ -639,9 +679,9 @@ var autopagerSidebar =
 
             //enable this by default for best compatibility
             site.enableJS = true;
-            autopagerMain.workingAutoSites = autopagerConfig.loadConfig();
-            autopagerConfig.insertAt(autopagerMain.workingAutoSites,0,site);
-            autopagerConfig.saveConfig(autopagerMain.workingAutoSites);
+            var personalRules = autopagerConfig.loadConfig();
+            autopagerConfig.insertAt(personalRules,0,site);
+            autopagerConfig.saveConfig(personalRules);
             document.autopagerXPathModel = "";
             document.autopagerWizardStep = "";
 			window.autopagerSelectUrl = autopagerSidebar.currUrl;

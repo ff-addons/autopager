@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.5.3.5"
+                     em:version="0.5.5.6"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too."
                      em:creator="Wind Li"
@@ -20,7 +20,7 @@
         <em:contributor>PageDown at http://www.teesoft.info</em:contributor>
         <em:translator>[fr-FR] myahoo at http://www.babelzilla.org</em:translator>
         <em:translator>[nl-NL] markh at http://www.babelzilla.org</em:translator>
-        <em:translator>[de-DE] Team erweiterungen.de, Archaeopteryx at http://www.babelzilla.org</em:translator>
+        <em:translator>[de-DE] Team erweiterungen.de, Archaeopteryx, ChrisE at http://www.babelzilla.org</em:translator>
         <em:translator>[ja-JP] drry at http://www.babelzilla.org</em:translator>
         <em:translator>[pt-BR] pedsann at http://www.babelzilla.org</em:translator>
         <em:translator>[zh-TW] Jose Sun @ moztw.org</em:translator>
@@ -30,7 +30,7 @@
 	<RDF:Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 		<em:minVersion>1.5</em:minVersion>
-		<em:maxVersion>3.6b1pre</em:maxVersion>
+		<em:maxVersion>3.7a1pre</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 

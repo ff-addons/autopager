@@ -6,6 +6,7 @@ var autopagerRefinement =
         partnerCode: 'autopager',
         authCode: 'fbt62709'
     },
+    prompting: false,
     pref: Components.classes["@mozilla.org/preferences-service;1"].
     getService(Components.interfaces.nsIPrefService).getBranch("autopager"),
     entryPoint : function(event) {
@@ -64,7 +65,7 @@ var autopagerRefinement =
                     doc.documentElement.scRefinementQuery = doc.getElementById("yschsp").value;
                     var div = doc.getElementById('web');
                     var insertPoint = autopagerRefinement.scGetDescendents(div, "ol")[0];
-                    autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint, ' margin-left: 20px;');
+                    autopagerRefinement.startSCAjaxRequestForRefinementLinks(doc,insertPoint, '');
                 } else if (autopagerRefinement.scContainsSubstring(host, '.bing.com')  && (pathname == '/search')) {
                     doc.documentElement.scRefinementQuery = doc.getElementById("sb_form_q").value;
                     var div = doc.getElementById('results');
@@ -117,6 +118,13 @@ var autopagerRefinement =
         }
     },
     startSCAjaxRequestForRefinementLinks : function(doc, insertPoint, yStyle) {
+
+        if (!autopagerRefinement.pref.getBoolPref(".refinements-prompted"))
+        {
+            autopagerRefinement.promptAutoPagerRefinements();
+            return;
+        }
+
         var div = doc.createElement("div");
         div.innerHTML = '<div id=scTopOfPageRefinementLinks scTopPos=1 partner="' + autopagerRefinement.partner.partnerCode + '" style="height: 20px; margin-top: 7px; margin-bottom: 7px;' + yStyle + '"></div>';
         insertPoint.parentNode.insertBefore(div, insertPoint);
@@ -232,6 +240,50 @@ var autopagerRefinement =
         {
             links[i].addEventListener("click", autopagerRefinement.disableRefinement, true)
             links[i].setAttribute("class", "disableRefinementListented");
+        }
+
+    },
+    promptAutoPagerRefinements : function ()
+    {
+        if (autopagerMain.loadBoolPref("refinements-prompted") || autopagerRefinement.prompting)
+        {
+            return;
+        }
+        autopagerRefinement.prompting = true;
+        var message = autopagerConfig.autopagerGetString("enable-refinements");
+        var notificationBox = gBrowser.getNotificationBox();
+        var notification = notificationBox.getNotificationWithValue("autopager-enable-refinements");
+        if (notification) {
+            notification.label = message;
+        }
+        else {
+            var buttons = [{
+                label: autopagerConfig.autopagerGetString("Yes"),
+                accessKey: "Y",
+                callback: function(){
+                    autopagerMain.saveBoolPref("refinements-prompted",true)
+                    autopagerMain.saveBoolPref("refinement",true)
+                    autopagerLite.discoveryRules(content.document);
+                }
+            },{
+                label: autopagerConfig.autopagerGetString("No"),
+                accessKey: "N",
+                callback: function(){
+                    autopagerMain.saveBoolPref("refinements-prompted",true)
+                    autopagerMain.saveBoolPref("refinement",false)
+                }
+            },{
+                label: autopagerConfig.autopagerGetString("WhatIs"),
+                accessKey: "H",
+                callback: function(){
+                    autopagerToolbar.autopagerOpenIntab("http://autopager.teesoft.info/refinement.html");
+                }
+            }];
+
+            const priority = notificationBox.PRIORITY_INFO_MEDIUM;
+            notificationBox.appendNotification(message, "autopager-lite-discovery",
+                "chrome://autopager/skin/autopager32.gif",
+                priority, buttons);
         }
 
     }

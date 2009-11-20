@@ -26,6 +26,7 @@ var hashSites = null;
     var selectedSite;
     var contentXPath;
     var xpath="";
+    var ids,ir;
     var siteSearch;
     var btnPickRemovePath, btnPickContentPath,btnPickContainerPath,btnModifyContainerXPath,btnModifyLinkXPath
 
@@ -225,6 +226,10 @@ function autopagerOpenIntab(url,obj)
          autopagerMain.saveUTF8Pref("pagebreak",txtPagebreak.value);
          autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
          autopagerMain.savePref("update",mnuUpdate.value);
+         var newIds = autopagerLite.processIds(ids.value)
+         if (newIds != autopagerMain.loadPref("ids"))
+            autopagerMain.savePref("ids",newIds);
+         autopagerMain.saveBoolPref("with-lite-recommended-rules",ir.checked);
 
          AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
          //AutoPagerUpdateTypes.saveAllSettingSiteConfig();
@@ -312,6 +317,10 @@ function autopagerOpenIntab(url,obj)
         txtLoading.value = autopagerMain.getLoadingStyle();
         mnuUpdate = document.getElementById("updatePeriod");
         mnuUpdate.value = autopagerMain.loadPref("update");
+        ids = document.getElementById("ids");
+        ids.value = autopagerMain.loadPref("ids");
+        ir = document.getElementById("ir");
+        ir.checked = autopagerMain.loadBoolPref("with-lite-recommended-rules");
         txtPagebreak = document.getElementById("pagebreak");
         txtPagebreak.value = autopagerMain.loadUTF8Pref("pagebreak");
         
@@ -833,7 +842,7 @@ function autopagerOpenIntab(url,obj)
         settingdesc.readOnly = readOnly;
         btnSiteUp.disabled =false;
         btnSiteDown.disabled =false;
-        
+        document.getElementById("idsPanel").hidden =  (updateSite.updateType.type != "autopager-lite");
     }
 	function updateDetails(event) {
             setTimeout(doUdateDetails,10);

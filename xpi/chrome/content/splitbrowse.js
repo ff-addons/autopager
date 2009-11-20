@@ -88,10 +88,10 @@ const XULDOMUtils = {
             if(currentTB) {
                 browsers = currentTB.browsers;
                 currentTab = mostRecentTab = currentTB && currentTB.selectedBrowser;
-                if (!browsers && Browser._content)
+                if (!browsers && window.Browser && window.Browser._content)
                 {
                     browsers = [];
-                    var content = Browser._content;
+                    var content = window.Browser._content;
                     var tabList = content.tabList.childNodes;
                     for (var t = 0; t < tabList.length; t++)
                         browsers.push(content.getBrowserForDisplay(content.getDisplayForTab(tabList[t])));
@@ -172,23 +172,6 @@ var splitbrowse = {
     getBrowserNode : function(doc)
     {
         var ctx = this.domUtils.findContentWindow(doc);
-        /*
-  	try{
-	  	var browsers = document.getElementsByTagName("browser");
-	  	for(var i=0;i<browsers.length;++i)
-	  	{
-	  		var b = browsers[i];
-	  		if (b.contentWindow == ctx)
-	  		{
-	  			return b;
-	  		}
-	  	}
-	}catch(e)
-	{
-		//alert(e);
-	}
-	alert("go to built in");
-  	*/
         var browser = this.domUtils.findBrowserForNode(doc);
         if (browser!=null)
             return browser;
@@ -201,7 +184,23 @@ var splitbrowse = {
                 return b;
             }
         }
-        return null;
+
+        try{
+            var browsers = document.getElementsByTagName("browser");
+            if (browsers)
+                for(var i=0;i<browsers.length;++i)
+                {
+                    var b = browsers[i];
+                    if (b.contentWindow == ctx)
+                    {
+                        return b;
+                    }
+                }
+        }catch(e)
+        {
+        //alert(e);
+        }
+	return null;
     },
     cloneHistoryEntry: function(aEntry) {
         if (!aEntry)
@@ -490,7 +489,7 @@ var splitbrowse = {
     },
     getDelayMiliseconds : function ( doc ){
         var browser = splitbrowse.getBrowserNode(doc);
-        if (browser.getAttribute(splitbrowse.getSplitKey())) {
+        if (browser && browser.getAttribute(splitbrowse.getSplitKey())) {
             if (browser.auotpagerContentDoc)
             {
                 if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)

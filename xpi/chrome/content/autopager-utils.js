@@ -2,23 +2,21 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 const autopagerUtils = {
     log: (location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
-        var consoleService = Components.classes['@mozilla.org/consoleservice;1']
-                .getService(Components.interfaces.nsIConsoleService);
-        consoleService.logStringMessage(message)            
+            var consoleService = Components.classes['@mozilla.org/consoleservice;1']
+            .getService(Components.interfaces.nsIConsoleService);
+            consoleService.logStringMessage(message)
         }
-      } : function(message) {
+    } : function(message) {
         if (autopagerPref.loadBoolPref("debug"))
-           debug(message)
+            debug(message)
     },
     consoleLog: function(message) {
         var consoleService = Components.classes['@mozilla.org/consoleservice;1']
-                .getService(Components.interfaces.nsIConsoleService);
+        .getService(Components.interfaces.nsIConsoleService);
         consoleService.logStringMessage(message)
     },
     consoleError: function(message) {
@@ -26,15 +24,15 @@ const autopagerUtils = {
     },
     currentDocument: function()
     {
-	return this.currentBrowser().contentDocument;  
+        return this.currentBrowser().contentDocument;
     },
     currentBrowser: function()
     {
         var windowManager = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-	var browser = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
+        var browser = windowManager.getMostRecentWindow("navigator:browser").document.getElementById("content");
 
 
-	return browser;  
+        return browser;
     },
     currentWindow: function()
     {
@@ -43,112 +41,127 @@ const autopagerUtils = {
         return browserWindow;
     },
     cloneBrowser: function(targetB, originalB)
-  {
-      var webNav = targetB.webNavigation;
-    var newHistory = webNav.sessionHistory;
+    {
+        var webNav = targetB.webNavigation;
+        var newHistory = webNav.sessionHistory;
 
-    if (newHistory == null)
+        if (newHistory == null)
         {
             newHistory = Components.classes["@mozilla.org/browser/shistory-internal;1"].getService(Components.interfaces.nsISHistory);
             webNav.sessionHistory = newHistory;
         }
-    newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+        newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
-    // delete history entries if they are present
+        // delete history entries if they are present
     
-    if (newHistory.count > 0)
-      newHistory.PurgeHistory(newHistory.count);
-    var originalHistory  = originalB.webNavigation.sessionHistory;
-    originalHistory = originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+        if (newHistory.count > 0)
+            newHistory.PurgeHistory(newHistory.count);
+        var originalHistory  = originalB.webNavigation.sessionHistory;
+        originalHistory = originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
 
-    var entry = originalHistory.getEntryAtIndex(originalHistory.index,false).QueryInterface(Components.interfaces.nsISHEntry);
-     var newEntry = this.cloneHistoryEntry(entry);
-     if (newEntry)
-        newHistory.addEntry(newEntry, true);
+        var entry = originalHistory.getEntryAtIndex(originalHistory.index,false).QueryInterface(Components.interfaces.nsISHEntry);
+        var newEntry = this.cloneHistoryEntry(entry);
+        if (newEntry)
+            newHistory.addEntry(newEntry, true);
     
 
-    webNav.gotoIndex(0);
+        webNav.gotoIndex(0);
     
-  },
-  cloneHistoryEntry: function(aEntry) {
-    if (!aEntry)
-      return null;
-    aEntry = aEntry.QueryInterface(Components.interfaces.nsISHContainer);
-    var newEntry = aEntry.clone(true);
-    newEntry = newEntry.QueryInterface(Components.interfaces.nsISHContainer);
-    newEntry.loadType = Math.floor(aEntry.loadType);
-    if (aEntry.childCount) {
-      for (var j = 0; j < aEntry.childCount; j++) {
-          var childEntry = this.cloneHistoryEntry(aEntry.GetChildAt(j));
-          if (childEntry)
-            newEntry.AddChild(childEntry, j);
-      }
+    },
+    cloneHistoryEntry: function(aEntry) {
+        if (!aEntry)
+            return null;
+        aEntry = aEntry.QueryInterface(Components.interfaces.nsISHContainer);
+        var newEntry = aEntry.clone(true);
+        newEntry = newEntry.QueryInterface(Components.interfaces.nsISHContainer);
+        newEntry.loadType = Math.floor(aEntry.loadType);
+        if (aEntry.childCount) {
+            for (var j = 0; j < aEntry.childCount; j++) {
+                var childEntry = this.cloneHistoryEntry(aEntry.GetChildAt(j));
+                if (childEntry)
+                    newEntry.AddChild(childEntry, j);
+            }
+        }
+        return newEntry;
     }
-    return newEntry;
-  }
-,  findContentWindow: function(doc) {
-  	var ctx = doc;
-    if(!ctx)
-        return null;
-    const ci = Components.interfaces;
-    const lm = this.lookupMethod;
-    if(!(ctx instanceof ci.nsIDOMWindow)) {
-      if(ctx instanceof ci.nsIDOMDocument) {
-        ctx = lm(ctx, "defaultView")();
-      } else if(ctx instanceof ci.nsIDOMNode) {
-        ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
-      } else return null; 
-    }
-    if(!ctx) return null;
-    ctx = lm(ctx, "top")();
+    ,
+    findContentWindow: function(doc) {
+        var ctx = doc;
+        if(!ctx)
+            return null;
+        const ci = Components.interfaces;
+        const lm = this.lookupMethod;
+        if(!(ctx instanceof ci.nsIDOMWindow)) {
+            if(ctx instanceof ci.nsIDOMDocument) {
+                ctx = lm(ctx, "defaultView")();
+            } else if(ctx instanceof ci.nsIDOMNode) {
+                ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
+            } else return null;
+        }
+        if(!ctx) return null;
+        ctx = lm(ctx, "top")();
     
-    return ctx;
-  },
-  windowEnumerator : function(aWindowtype) {
-  if (typeof(aWindowtype) == "undefined")
-     aWindowtype = "navigator:browser";
-  var WindowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
-                        .getService(Components.interfaces.nsIWindowMediator);
-  return WindowManager.getEnumerator(aWindowtype);
-},
-numberOfWindows : function(all, aWindowtype) {
-  var enumerator = autopagerUtils.windowEnumerator(aWindowtype);
-  var count = 0;
-  while ( enumerator.hasMoreElements() ) {
-    var win = enumerator.getNext();
-    if ("SessionManager" in win && win.SessionManager.windowClosed)
-      continue;
-    count++;
-    if (!all && count == 2)
-      break;
-  }
-  return count;
-},
-isLastWindow : function(aWindowtype) {
-  var count = autopagerUtils.numberOfWindows(false,aWindowtype);
-  return count <=1;
-},
-clone : function(obj){
-    if(obj == null || typeof obj != 'object')
-        return obj;
-    var temp = new obj.constructor();
+        return ctx;
+    },
+    windowEnumerator : function(aWindowtype) {
+        if (typeof(aWindowtype) == "undefined")
+            aWindowtype = "navigator:browser";
+        var WindowManager = Components.classes['@mozilla.org/appshell/window-mediator;1']
+        .getService(Components.interfaces.nsIWindowMediator);
+        return WindowManager.getEnumerator(aWindowtype);
+    },
+    numberOfWindows : function(all, aWindowtype) {
+        var enumerator = autopagerUtils.windowEnumerator(aWindowtype);
+        var count = 0;
+        while ( enumerator.hasMoreElements() ) {
+            var win = enumerator.getNext();
+            if ("SessionManager" in win && win.SessionManager.windowClosed)
+                continue;
+            count++;
+            if (!all && count == 2)
+                break;
+        }
+        return count;
+    },
+    isLastWindow : function(aWindowtype) {
+        var count = autopagerUtils.numberOfWindows(false,aWindowtype);
+        return count <=1;
+    },
+    clone : function(obj){
+        if(obj == null || typeof obj != 'object')
+            return obj;
+        var temp = new obj.constructor();
 
-    for(var key in obj)
+        for(var key in obj)
+        {
+            temp[key] = this.clone(obj[key]);
+        }
+        return temp;
+    },
+    getLocale : function ()
     {
-        temp[key] = this.clone(obj[key]);
-    }
-    return temp;
-},
-getLocale : function ()
-{
         return navigator.language;
-},
-isChineseLocale : function ()
-{
-    var l = navigator.language;
-    return (l == 'zh-CN' || l == 'zh-TW');
-},
+    },
+    isChineseLocale : function ()
+    {
+        var l = navigator.language;
+        return (l == 'zh-CN' || l == 'zh-TW');
+    },
+    clearUrl : function (sourceUri)
+    {
+        var uri = autopagerUtils.parseUri(sourceUri)
+        return autopagerUtils.doClearedUrl(uri)
+    },
+    doClearedUrl : function (uri)
+    {
+        var u = uri["protocol"] + "://" + uri["host"] + ":" + uri["port"] + uri["directoryPath"] + uri["fileName"];
+        for(var k in uri["searchParts"])
+        {
+            u += k + "=&";
+        }
+        return u;
+    },
     parseUri : function (sourceUri){
         var uriPartNames = ["href","protocol","host","hostname","port","pathname","directoryPath","fileName","search","hash"];
         var uriParts = new RegExp("^(?:([^:/?#.]+):)?(?://)?(([^:/?#]*)(?::(\\d*))?)?((/(?:[^?#](?![^?#/]*\\.[^?#/.]+(?:[\\?#]|$)))*/?)?([^?#/]*))?(?:\\?([^#]*))?(?:#(.*))?").exec(sourceUri);
@@ -239,7 +252,7 @@ isChineseLocale : function ()
     isNotMain : function(str,num)
     {
         return ((str.match(/[0123456789-_]/g) && str.match(/[0123456789-_]/g).length>=num)
-                || str.replace(/[0123456789-_]/g,'').length==0);
+            || str.replace(/[0123456789-_]/g,'').length==0);
     },
     getMainDirDepth : function (location ,num)
     {
@@ -248,13 +261,13 @@ isChineseLocale : function ()
             align = 1;
         var lastPos =0;
         for(lastPos=location.pathes.length-1-align;
-                        lastPos>=0 && this.isNotMain(location.pathes[lastPos],num) ;lastPos--)
-        {
+            lastPos>=0 && this.isNotMain(location.pathes[lastPos],num) ;lastPos--)
+            {
         }
 
-//        if (lastPos ==0 && align==0 && location.pathes.length==1 &&
-//                (location.pathes[lastPos].match(/[0123456789-_]/g) == null || location.pathes[lastPos].match(/[0123456789-_]/g).length<num))
-//                return 1;
+        //        if (lastPos ==0 && align==0 && location.pathes.length==1 &&
+        //                (location.pathes[lastPos].match(/[0123456789-_]/g) == null || location.pathes[lastPos].match(/[0123456789-_]/g).length<num))
+        //                return 1;
         return lastPos+1;
     }
 }
