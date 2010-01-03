@@ -67,6 +67,7 @@ const XULDOMUtils = {
             .getInterface(ci.nsIWebNavigation)
             .QueryInterface(ci.nsIDocShell);
         } catch(e) {
+            autopagerBwUtil.consoleError(e);
             return null;
         }
     },
@@ -191,14 +192,19 @@ var splitbrowse = {
                 for(var i=0;i<browsers.length;++i)
                 {
                     var b = browsers[i];
-                    if (b.contentWindow == ctx)
+                    try{
+                        if (b && typeof b.contentWindow != "undefined" && b.contentWindow == ctx)
+                        {
+                            return b;
+                        }
+                    }catch(e)
                     {
-                        return b;
+                        //autopagerBwUtil.consoleError(e);
                     }
                 }
         }catch(e)
         {
-        //alert(e);
+            autopagerBwUtil.consoleError(e);
         }
 	return null;
     },
@@ -273,10 +279,11 @@ var splitbrowse = {
     //
     //    var html = targetB.contentDocument.documentElement.innerHTML
     },
-    getSplitBrowser : function (doc,createNew,clone)
+    getSplitBrowser : function (doc,createNew,clone,listener)
     {
         var browser = this.getBrowserNode(doc);
-  	
+  	if (!browser)
+            return null;
         if (!browser.getAttribute(this.autopagerPrefix + "splitbrowse-id"))
         {
             document.splitBrowserCount ++;
@@ -287,7 +294,7 @@ var splitbrowse = {
         var id = this.autopagerPrefix + "-split-browser-" + subfix;
         var splitBrowser = document.getElementById(id);
     
-        //this.hidden = !autopagerMain.loadBoolPref("debug");
+        //this.hidden = !autopagerPref.loadBoolPref("debug");
         if (!splitBrowser && createNew)
         {
             var vbox = document.getElementById("autopager-split-box");
@@ -311,7 +318,8 @@ var splitbrowse = {
             vbox.appendChild(splitBrowser);
             //var f =  document.commandDispatcher.focusedElement
             splitBrowser.setAttribute(this.getSplitKey(),true);
-            splitBrowser.addProgressListener(splitpanelProgressListener,
+            var sl = new splitpanelProgressListener(listener)
+            splitBrowser.addProgressListener(sl,
                 Components.interfaces.nsIWebProgress.NOTIFY_ALL);
             splitBrowser.autopagerSplitWinFirstDocSubmited = false;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
@@ -320,16 +328,19 @@ var splitbrowse = {
             //	    		browser.setAttribute("flex", "1");
             //this.setVisible(splitBrowser,!this.hidden);
                    
-            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",this.onclose,false);
+            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){splitbrowse.onclose(event,sl)},false);
         }
 
         if (splitBrowser != null)
         {
+            var autopagerUseSafeEvent = false
+            if (listener)
+                autopagerUseSafeEvent = listener.autopagerUseSafeEvent
             splitBrowser.docShell.allowPlugins = false;
 //            splitBrowser.docShell.allowAuth = false;
 //            splitBrowser.docShell.allowMetaRedirects = false;
-            splitBrowser.docShell.allowSubframes = doc.documentElement.autopagerUseSafeEvent || (doc.defaultView != doc.defaultView.top);
-            splitBrowser.docShell.allowImages = doc.documentElement.autopagerUseSafeEvent;
+            splitBrowser.docShell.allowSubframes = autopagerUseSafeEvent || (doc.defaultView != doc.defaultView.top);
+            splitBrowser.docShell.allowImages = autopagerUseSafeEvent;
         }
         if (splitBrowser != null && clone)
         {
@@ -338,7 +349,9 @@ var splitbrowse = {
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             //alert(doc.documentElement.autopagerUseSafeEvent)
-            splitbrowse.switchToCollapsed(false);            
+            splitbrowse.switchToCollapsed(false);
+            if (listener)
+                splitBrowser.listener = listener
             window.setTimeout(function(){
                 if (!doc.documentElement.autopagerUseSafeEvent )
                 {
@@ -400,14 +413,14 @@ var splitbrowse = {
         //splitBar.collapsed = hidden;
         splitSplitter.setAttribute("hidden",hidden);
     },
-    open : function(doc,hidden)
+    open : function(doc,hidden,listener)
     {
         var splitBrowser =null;
         this.hidden = hidden;
         try {
-            splitBrowser = this.getSplitBrowser(doc,!hidden,false);
+            splitBrowser = this.getSplitBrowser(doc,!hidden,false,listener);
         }catch (e) {
-            alert(e);
+            autopagerBwUtil.consoleError(e);
         }
         if (!hidden)
             this.show(splitBrowser);
@@ -417,13 +430,14 @@ var splitbrowse = {
         //splitBrowser.loadURI( "http://www.mozilla.org", null, null );
         return splitBrowser;
     },
-    close : function(doc)
+    close : function(doc,listener)
     {
         try{
-            var splitBrowser = this.getSplitBrowser(doc,false,false);
+            var splitBrowser = this.getSplitBrowser(doc,false,false,listener);
             if (splitBrowser==null)
                 return;
-            splitBrowser.removeProgressListener(splitpanelProgressListener);
+            if (listener && listener.splitpanelProgressListener)
+                splitBrowser.removeProgressListener(listener.splitpanelProgressListener);
      
             var parent = splitBrowser.parentNode;
             if (parent == null)
@@ -431,9 +445,11 @@ var splitbrowse = {
             splitBrowser.parentNode.removeChild(splitBrowser);
         //splitBrowser.destroy();
         //content.focus();
-        }catch (e) {}         
+        }catch (e) {
+            autopagerBwUtil.consoleError(e)
+        }
     },
-    onclose:function(event)
+    onclose:function(event,sl)
     {
         var browser=splitbrowse.getBrowserFromTarget(event.target);
         if (browser == null)
@@ -447,7 +463,7 @@ var splitbrowse = {
     
         if (splitBrowser != null)
         {
-            splitBrowser.removeProgressListener(splitpanelProgressListener);
+            splitBrowser.removeProgressListener(sl);
             var parent = splitBrowser.parentNode;
             parent.removeChild(splitBrowser);
         //splitBrowser.destroy();
@@ -470,21 +486,24 @@ var splitbrowse = {
         try{
             win.loadURI(url,null,null);
         }catch (e) {
-            alert(e);
+            autopagerBwUtil.consoleError(e);
         }
     },
     // ***** set start navigation ui
-    start : function()
+    start : function(sl)
     {
     },
     // ***** set done navigation ui
-    done : function(doc)
+    done : function(doc,sl)
     {
         //alert("done");
        if (doc.location.href=='about:blank')
             return true;
         window.setTimeout(function(){
-            autopagerMain.onSplitDocLoaded(doc,true);
+            if (sl && sl.listener)
+                sl.listener.onSplitDocLoaded(doc,true);
+            else
+                autopagerMain.onSplitDocLoaded(doc,true);
         },splitbrowse.getDelayMiliseconds(doc));
     },
     getDelayMiliseconds : function ( doc ){
@@ -499,19 +518,26 @@ var splitbrowse = {
         return autopagerMain.getDelayMiliseconds();
     }
 };
-var splitpanelProgressListener = {    
+var splitpanelProgressListener  = function (listener)
+{
+    this.listener = listener;
+    if (listener)
+        listener.splitpanelProgressListener = this
+};
+
+splitpanelProgressListener.prototype = {
     onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
     {
     const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
         const nsIChannel = Components.interfaces.nsIChannel;
         if (aStateFlags & nsIWebProgressListener.STATE_START &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-            splitbrowse.start();
+            splitbrowse.start(this);
             return;
         } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK && aStatus==0) {
             //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
-            splitbrowse.done( aWebProgress.DOMWindow.document);
+            splitbrowse.done( aWebProgress.DOMWindow.document,this);
         
             return;
         }
@@ -522,7 +548,7 @@ var splitpanelProgressListener = {
     },
     onLocationChange : function(webProgress, request, location)
     {
-            splitbrowse.start();
+            splitbrowse.start(this);
         return;
     },
     onProgressChange : function(webProgress, request,
@@ -543,5 +569,6 @@ var splitpanelProgressListener = {
         throw Components.results.NS_NOINTERFACE;
     }
 };
-document.splitBrowserCount = 0;
+if (typeof document != "undefined")
+    document.splitBrowserCount = 0;
 window.addEventListener("load",splitbrowse.init,false);

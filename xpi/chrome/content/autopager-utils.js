@@ -2,8 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-const autopagerUtils = {
-    log: (location.protocol=="chrome:") ? function(message) {
+var autopagerUtils = {
+    log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
             var consoleService = Components.classes['@mozilla.org/consoleservice;1']
@@ -13,15 +13,7 @@ const autopagerUtils = {
     } : function(message) {
         if (autopagerPref.loadBoolPref("debug"))
             debug(message)
-    },
-    consoleLog: function(message) {
-        var consoleService = Components.classes['@mozilla.org/consoleservice;1']
-        .getService(Components.interfaces.nsIConsoleService);
-        consoleService.logStringMessage(message)
-    },
-    consoleError: function(message) {
-        Components.utils.reportError(message)
-    },
+    },    
     currentDocument: function()
     {
         return this.currentBrowser().contentDocument;
@@ -241,8 +233,7 @@ const autopagerUtils = {
     },
     getPattern : function (location ,depth)
     {
-        var url=location.protocol + "://" + location.host + (location.port!=""?location.port : "");
-        var last;
+        var url=location.protocol + "://" + location.host ;//+ (location.port!=""?location.port : "");
         for(var lastPos=0;lastPos<depth && lastPos<location.pathes.length;lastPos++)
         {
             url += "/" + location.pathes[lastPos]
@@ -269,5 +260,170 @@ const autopagerUtils = {
         //                (location.pathes[lastPos].match(/[0123456789-_]/g) == null || location.pathes[lastPos].match(/[0123456789-_]/g).length<num))
         //                return 1;
         return lastPos+1;
+    },
+    getRegExp :function(site)
+    {
+        try{
+            if (site.regex==null)
+            {
+                if (site.isRegex)
+                    try{
+                        site.regex = new RegExp(site.urlPattern);
+                    }catch(re)
+                    {
+                        //error create regexp, try to use it as pattern
+                        site.regex = convert2RegExp(site.urlPattern);
+                    }
+                else
+                    site.regex = convert2RegExp(site.urlPattern);
+            }
+        }catch(e)
+        {
+            site.regex = /no-such-regex/;
+        }
+        return site.regex;
+    }
+    ,
+    printStackTrace : function() {
+        var callstack = [];
+        var ex = null;
+        try {
+            i.dont.exist+=0; //doesn't exist- that's the point
+        } catch(e) {
+            ex = e;
+        }
+        callstack = this.getStack(ex);
+        this.output(callstack);
+    },
+    getStack : function(e) {
+        var callstack = [];
+        var isCallstackPopulated = false;
+
+        if (e.stack) { //Firefox
+            var lines = e.stack.split("\n");
+            for (var i=0, len=lines.length; i<len; i++) {
+                if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(:/)) {
+                    callstack.push(lines[i]);
+                }
+            }
+            //Remove call to printStackTrace()
+            callstack.shift();
+            isCallstackPopulated = true;
+        }
+        else if (window.opera && e.message) { //Opera
+            var lines = e.message.split("\n");
+            for (var i=0, len=lines.length; i<len; i++) {
+                if (lines[i].match(/^\s*[A-Za-z0-9\-_\$]+\(/)) {
+                    var entry = lines[i];
+                    //Append next line also since it has the file info
+                    if (lines[i+1]) {
+                        entry += " at " + lines[i+1];
+                        i++;
+                    }
+                    callstack.push(entry);
+                }
+            }
+            //Remove call to printStackTrace()
+            callstack.shift();
+            isCallstackPopulated = true;
+        }
+
+        if (!isCallstackPopulated) { //IE and Safari
+            var currentFunction = arguments.callee.caller;
+            while (currentFunction) {
+                var fn = currentFunction.toString();
+                var fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf("(")) || "anonymous";
+                callstack.push(fname);
+                currentFunction = currentFunction.caller;
+            }
+        }
+        return callstack;
+    }
+    ,
+    output : function(arr) {
+        //Optput however you want
+        alert(arr.join("\n"));
+    }
+    ,
+    outputStack : function(ex) {
+        var callstack = this.getStack(ex);
+        this.output(callstack);
+    }
+    ,
+    getTopDoc : function (doc)
+    {
+        return doc.defaultView? doc.defaultView.top.document : (doc.top?doc.top:doc);
+    }
+    ,
+    findUrlInElement : function (ele)
+    {
+        if (ele !=null && ele.href)
+            return ele.href;
+            
+        var href = this.findUrlInBelowElement(ele);
+        if (href != null && typeof href == 'string')
+            return href;
+        href = this.findUrlInUpperElement(ele);
+        return href;
+
+    }
+    ,
+    findUrlInBelowElement : function (ele)
+    {
+        if (!ele.childNodes)
+            return null;
+        var childNode=null;
+        for (var i = 0; (childNode = ele.childNodes[i]); i++)
+        {
+            if (childNode !=null && childNode.href)
+                return childNode.href;
+        }
+        for (i = 0; (childNode = ele.childNodes[i]); i++)
+        {
+            var href = this.findUrlInBelowElement(childNode);
+            if (href != null && typeof href == 'string')
+                return href;
+        }
+        return null;
+    }
+    ,
+    findUrlInUpperElement : function (ele)
+    {
+        while(ele !=null && ele.parentNode!=null && ele.parentNode!=ele)
+        {
+            if (ele !=null && ele.href)
+                return ele.href;
+            ele = ele.parentNode
+        }
+        return null;
+    }
+    ,
+    getUrl : function (doc)
+    {
+        if (!doc)
+            return "";
+
+        if (doc.location && doc.location.href)
+            return doc.location.href;
+        if (doc && doc.documentElement && doc.documentElement.getAttribute("url"))
+            return doc.documentElement.getAttribute("url");
+        return "";
+    }
+    ,
+    isValidDoc : function (doc)
+    {
+        if (doc == null)
+            return false;
+        if (!(doc instanceof HTMLDocument))
+        {
+            return false;
+        }
+        if (doc.defaultView == null)
+            return false;
+        if (doc.location == null)
+        {
+            return false;
+        }
+        return true;
     }
 }

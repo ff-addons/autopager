@@ -63,6 +63,7 @@
 <!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Ergebnisse">
 <!ENTITY caption.results-caption2.label "Ergebnisse">
+<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
 <!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "Befehle">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">

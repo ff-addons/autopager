@@ -1,4 +1,3 @@
-
 var autopagerRefinement =
 {
     partner : { 
@@ -7,11 +6,9 @@ var autopagerRefinement =
         authCode: 'fbt62709'
     },
     prompting: false,
-    pref: Components.classes["@mozilla.org/preferences-service;1"].
-    getService(Components.interfaces.nsIPrefService).getBranch("autopager"),
     entryPoint : function(event) {
         var doc = event;
-        if (!autopagerRefinement.pref.getBoolPref(".refinement"))
+        if (!autopagerPref.loadBoolPref("refinement") || autopagerBwUtil.isFennec())
             return;
         if (doc == null || !(doc instanceof HTMLDocument))
         {
@@ -119,7 +116,7 @@ var autopagerRefinement =
     },
     startSCAjaxRequestForRefinementLinks : function(doc, insertPoint, yStyle) {
 
-        if (!autopagerRefinement.pref.getBoolPref(".refinements-prompted"))
+        if (!autopagerPref.loadBoolPref("refinements-prompted"))
         {
             autopagerRefinement.promptAutoPagerRefinements();
             return;
@@ -130,17 +127,20 @@ var autopagerRefinement =
         insertPoint.parentNode.insertBefore(div, insertPoint);
         var url = 'http://' + autopagerRefinement.partner.authCode + '.surfcanyon.com/queryReformulation?partner=' + autopagerRefinement.partner.partnerCode + '&authCode=' + autopagerRefinement.partner.authCode + '&q=' + doc.documentElement.scRefinementQuery.replace(/ /g, '+');
         var target = "";
-        if (autopagerRefinement.pref.getBoolPref(".refinementinneww"))
+        if (autopagerPref.loadBoolPref("refinementinneww"))
         {
             target = 'target="blank"';
         }
-        var xhr = new window.XMLHttpRequest();
-        xhr.open("GET", url, true);
+        var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
-                var parser = new window.DOMParser();
-                var text = xhr.responseText;
-                var xmlRoot = parser.parseFromString(text, "text/xml");
+                var xmlRoot = xhr.responseXML;
+                if (xmlRoot==null)
+                {
+                    var parser = new window.DOMParser();
+                    var text = xhr.responseText;
+                    xmlRoot = parser.parseFromString(text, "text/xml");
+                }
                 var itemNodes = xmlRoot.getElementsByTagName('refinement');
                 var items = [];
                 var runningLength = 0;
@@ -169,6 +169,9 @@ var autopagerRefinement =
                 }
             }
         };
+        //url = "http://www.google.com";
+        xhr.overrideMimeType("text/xml");
+        xhr.open("GET", url, true);
         xhr.send(null);
     },
     makeRefinementQuery : function(doc,refinement) {
@@ -224,7 +227,7 @@ var autopagerRefinement =
         event.preventDefault();
         if (confirm("Remove AutoPager Refinement links?\nYou can always re-enable them later in the options menu."))
         {
-            autopagerRefinement.pref.setBoolPref(".refinement",false)
+            autopagerPref.saveBoolPref("refinement",false)
             var divs = autopagerRefinement.evaluate(event.target.ownerDocument,"//div[@id='scTopOfPageRefinementLinks']",1)
             for(var i=0;i<divs.length;i++)
                 divs[i].parentNode.removeChild(divs[i])
@@ -245,7 +248,7 @@ var autopagerRefinement =
     },
     promptAutoPagerRefinements : function ()
     {
-        if (autopagerMain.loadBoolPref("refinements-prompted") || autopagerRefinement.prompting)
+        if (autopagerPref.loadBoolPref("refinements-prompted") || autopagerRefinement.prompting)
         {
             return;
         }
@@ -261,22 +264,22 @@ var autopagerRefinement =
                 label: autopagerConfig.autopagerGetString("Yes"),
                 accessKey: "Y",
                 callback: function(){
-                    autopagerMain.saveBoolPref("refinements-prompted",true)
-                    autopagerMain.saveBoolPref("refinement",true)
+                    autopagerPref.saveBoolPref("refinements-prompted",true)
+                    autopagerPref.saveBoolPref("refinement",true)
                     autopagerLite.discoveryRules(content.document);
                 }
             },{
                 label: autopagerConfig.autopagerGetString("No"),
                 accessKey: "N",
                 callback: function(){
-                    autopagerMain.saveBoolPref("refinements-prompted",true)
-                    autopagerMain.saveBoolPref("refinement",false)
+                    autopagerPref.saveBoolPref("refinements-prompted",true)
+                    autopagerPref.saveBoolPref("refinement",false)
                 }
             },{
                 label: autopagerConfig.autopagerGetString("WhatIs"),
                 accessKey: "H",
                 callback: function(){
-                    autopagerToolbar.autopagerOpenIntab("http://autopager.teesoft.info/refinement.html");
+                    autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/refinement.html");
                 }
             }];
 

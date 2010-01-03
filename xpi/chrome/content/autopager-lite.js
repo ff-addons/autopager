@@ -22,7 +22,7 @@ var autopagerLite =
         {
             url = url + "?url=" + encodeURIComponent(doc.location.href);
         }
-        autopagerToolbar.autopagerOpenIntab(url);
+        autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
     {
@@ -45,7 +45,7 @@ var autopagerLite =
         var icon = document.getElementById("autopagerlite_status");
         if (icon)
         {
-            if (autopagerMain.loadBoolPref("with-lite-discovery-aways-display"))
+            if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
                 hidden = false;
             icon.setAttribute("hidden", hidden);
         }
@@ -55,7 +55,7 @@ var autopagerLite =
         var icon = document.getElementById("autopagerlite_status");
         if (icon)
         {
-            if (autopagerMain.loadBoolPref("with-lite-discovery-aways-display"))
+            if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
                 hidden = false;
             if (!hidden && (label==null||label.length==0))
                 label="?";
@@ -63,11 +63,15 @@ var autopagerLite =
             icon.setAttribute("hidden", hidden);
         }
     },
-    discoveryRules : function (doc)
+    apSiteRegex : function ()
+    {
+        return /ap\.teesoft.info\/.*/;
+    }
+    ,discoveryRules : function (doc)
     {
         if (doc && doc.location && doc.location.href)
         {
-            if (doc.location.href.match(/ap\.teesoft.info\/.*/))
+            if (doc.location.href.match(autopagerLite.apSiteRegex()))
                 autopagerLite.processDiscoverResult("0");
             else
             {
@@ -99,7 +103,10 @@ var autopagerLite =
     },
     promptLiteDiscovery : function ()
     {
-        if (autopagerMain.loadBoolPref("lite-discovery-prompted"))
+        if (autopagerBwUtil.isFennec())
+            return;
+
+        if (autopagerPref.loadBoolPref("lite-discovery-prompted"))
         {
             return;
         }
@@ -114,23 +121,23 @@ var autopagerLite =
                 label: autopagerConfig.autopagerGetString("Yes"),
                 accessKey: "Y",
                 callback: function(){
-                    autopagerMain.saveBoolPref("lite-discovery-prompted",true)
-                    autopagerMain.saveBoolPref("with-lite-discovery",true)
+                    autopagerPref.saveBoolPref("lite-discovery-prompted",true)
+                    autopagerPref.saveBoolPref("with-lite-discovery",true)
                     autopagerLite.discoveryRules(content.document);
                 }
             },{
                 label: autopagerConfig.autopagerGetString("No"),
                 accessKey: "N",
                 callback: function(){
-                    autopagerMain.saveBoolPref("lite-discovery-prompted",true)
-                    autopagerMain.saveBoolPref("with-lite-discovery",false)
-                    autopagerMain.saveBoolPref("with-lite-discovery-aways-display",true)
+                    autopagerPref.saveBoolPref("lite-discovery-prompted",true)
+                    autopagerPref.saveBoolPref("with-lite-discovery",false)
+                    autopagerPref.saveBoolPref("with-lite-discovery-aways-display",true)
                 }
             },{
                 label: autopagerConfig.autopagerGetString("Help"),
                 accessKey: "H",
                 callback: function(){
-                    autopagerToolbar.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");
+                    autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");
                 }
             }];
 
@@ -149,7 +156,7 @@ var autopagerLite =
             values = [];
         else
             values = result.split(",");
-        autopagerLite.setStatus(values.length,values.length==0 && autopagerMain.loadBoolPref("hide-lite-discovery-on-no-rules"));
+        autopagerLite.setStatus(values.length,values.length==0 && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
         {
             gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
@@ -160,7 +167,7 @@ var autopagerLite =
         if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
         {
             var length = gBrowser.selectedTab.linkedBrowser.getAttribute("autopagerMatchedRules");
-            autopagerLite.setStatus(length,(length==null || length.length==0) && autopagerMain.loadBoolPref("hide-lite-discovery-on-no-rules"));
+            autopagerLite.setStatus(length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         }
 
     },
@@ -174,7 +181,7 @@ var autopagerLite =
                     getBrowser().mTabContainer.addEventListener("TabSelect", autopagerLite.TabSelected, false);
                 }
         }catch(e){}
-        if (autopagerMain.loadBoolPref("with-lite-discovery-aways-display"))
+        if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
             autopagerLite.hiddenStatus(false);
     },
     onContentLoad : function (event)
@@ -200,6 +207,8 @@ var autopagerLite =
         for(var i=0;i<sheets.length;i++)
         {
             var sheet = sheets.item(i);
+            if (!sheet || !sheet.href)
+                continue;
             if (sheet.href.match(/ap\.teesoft\.info/))
             {
                 if (sheet.cssRules)
@@ -234,8 +243,19 @@ var autopagerLite =
                 }, true)
             }
         }
+        var idsEle = doc.getElementById("apRulesForm:ids_body");
+        if (idsEle)
+        {
+            idsEle.addEventListener("DOMAttrModified",autopagerLite.idsChanged,false);
+        }
     },
-    enableRules : function(doc,enabled)
+    idsChanged : function (e)
+    {
+        var node = e.target
+        var ids = node.getAttribute("name");
+        autopagerPref.savePref("ids",autopagerLite.processIds(ids));
+    }
+    ,enableRules : function(doc,enabled)
     {
         var inputs = doc.getElementsByTagName("input");
         var ids = "";
@@ -248,28 +268,26 @@ var autopagerLite =
             }
         }
         if (enabled)
-            autopagerMain.savePref("ids",autopagerLite.processIds(autopagerMain.loadPref("ids") + "," + ids));
+            autopagerPref.savePref("ids",autopagerLite.processIds(autopagerPref.loadPref("ids") + "," + ids));
         else
-            autopagerMain.savePref("ids",autopagerLite.removeIds(autopagerMain.loadPref("ids") ,"," + ids + ","));
+            autopagerPref.savePref("ids",autopagerLite.removeIds(autopagerPref.loadPref("ids") ,"," + ids + ","));
 
         //TODO:update the rules online
     },
     processIds : function (idStr)
     {
         var strs = idStr.replace(/\s+/g,",").split(",");
-        var newS = "";
+        var newS = ",";
         var numReg = new RegExp("\\d+")
         for(var i=0;i<strs.length;i++)
         {
             var s = strs[i];
-            if (numReg.test(s))
+            if (numReg.test(s) && newS.indexOf("," + s + ",")==-1)
             {
-                if (newS.length>0)
-                    newS+=",";
-                newS += s;
+                newS += s + ",";
             }
         }
-        return newS;
+        return newS.substring(1,newS.length - 1);
     },
     removeIds : function (idStr,removedStr)
     {
@@ -291,6 +309,17 @@ var autopagerLite =
     switchToLite : function(doc,liteMode)
     {
         autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
+       if (liteMode)
+       {
+           autopagerPref.saveBoolPref("noprompt",true);
+           autopagerPref.saveBoolPref("disable-by-default",false);
+       }
+    },
+    isInLiteMode : function ()
+    {
+//        if (!autopagerBwUtil.isFennec())
+            return autopagerPref.loadBoolPref("work-in-lite-mode");
+//        return true;
     }
 }
 

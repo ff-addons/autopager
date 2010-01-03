@@ -27,19 +27,7 @@ var AutoPagerize= {
     },
     onJsonLoad :function(doc,updatesite)
     {
-        var info = null;
-        //try native json first
-        
-        var Ci = Components.interfaces;
-        var Cc = Components.classes;
-
-        if (Cc["@mozilla.org/dom/json;1"])
-        {
-            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
-            info = nativeJSON.decode(doc);
-        }
-        else
-            info = autopagerJSON.parse(doc);
+        var info = autopagerBwUtil.decodeJSON(doc);
         //alert(info)
         var sites = new Array();
         for(var i=0;i<info.length;i++){

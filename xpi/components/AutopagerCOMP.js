@@ -33,6 +33,7 @@ AutopagerCOMP.prototype = {
         updateSites: [],
         siteConfirms : [],
         discoverdUrls : [],
+        publishingSite : [],
         // define the function we want to expose in our interface
         loadAll: function() {
             return this.allSiteSetting;
@@ -57,6 +58,15 @@ AutopagerCOMP.prototype = {
         {
             return this.discoverdUrls;
         },
+        getPublishingSite : function ()
+        {
+          return this.publishingSite;
+        },
+        setPublishingSite : function (publishingSite)
+        {
+          this.publishingSite = publishingSite;
+        },
+
         QueryInterface: function(aIID)
         {
                 if (!aIID.equals(nsIAutopagerCOMP) &&

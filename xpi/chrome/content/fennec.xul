@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay SYSTEM "chrome://autopager/locale/autopager.dtd">
+<?xml-stylesheet href="chrome://autopager/skin/autopager-split.css" type="text/css"?>
+
+<overlay id="autopageFennecStatus"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+         onload="autopagerFennecInit()">
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
+    <script type="application/x-javascript">
+        function autopagerFennecInit()
+        {
+            autopagerPref.saveBoolPref("noprompt",true);
+            autopagerPref.saveBoolPref("disable-by-default",false);
+        }
+        autopagerFennecInit();
+    </script>
+<window id="main-window"></window>
+</overlay>

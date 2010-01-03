@@ -86,83 +86,32 @@ var autopagerToolbar =
         //var autopagerHome = "http://www.teesoft.info/content/view/27/1/";
         var autopagerHome = "http://autopager.teesoft.info/index.html?app=autopager";
         //    var autopagerHome = "http://www.teesoft.info";
-
-        var prefService = Components.classes["@mozilla.org/preferences;1"].getService(Components.interfaces.nsIPrefService);
-        var prefBranch = prefService.getBranch("autopager.");
-        if (!prefBranch.prefHasUserValue("last_version")) {  // new user
-            if (autopagerToolbar.autopagerOpenIntab(autopagerHome + "&i=0.5.5.6",null))
+        var lv = autopagerPref.loadPref("last_version");
+        if (typeof lv=="undefined" || lv==null || lv=="") {  // new user        
+            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "&i=0.6.0.8",null))
             {
-                prefBranch.setCharPref("last_version", "0.5.5.6");
+                autopagerPref.savePref("last_version", "0.6.0.8");
                 autopagerToolbar.addAutopagerButton();
-                if (autopagerToolbar.isFennec())
+                if (autopagerBwUtil.isFennec())
                 {
-                    prefBranch.setBoolPref("noprompt", true);
+                    autopagerPref.saveBoolPref("noprompt", true);
                 }
-                //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
+                //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
             }
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
-            var lastVersion = prefBranch.getCharPref("last_version");
-            if (lastVersion != "0.5.5.6")
+            var lastVersion = autopagerPref.loadPref("last_version");
+            if (lastVersion != "0.6.0.8")
             {
-                if (autopagerToolbar.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.5.5.6",null))
+                if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.6.0.8",null))
                 {
-                    prefBranch.setCharPref("last_version", "0.5.5.6");
+                    autopagerPref.savePref("last_version", "0.6.0.8");
                 //autopagerToolbar.addAutopagerButton();
-                    //autopagerToolbar.autopagerOpenIntab("chrome://autopager/content/options.xul");
+                    //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }
                 autopagerConfig.autopagerUpdate();
             }
         }
-    },
-    autopagerOpenIntab : function(url,obj)
-    {
-        var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-        var w = wm && wm.getMostRecentWindow('navigator:browser', true);
-        if(w && !w.closed) {
-            var browser = w.getBrowser();//w.getBrowser();
-            var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-            .getService(Components.interfaces.nsIIOService);
-            var ops = ioService.newURI("http://www.teesoft.info", null, null);
-            var uri = ioService.newURI(url, null, null);
-            var tab = null;
-            if (browser.addTab)
-            {
-                tab = browser.addTab(url,ops);
-                browser.selectedTab = tab;
-            }
-            else if (window.Browser && window.Browser._content)
-            {
-                try{
-                    tab = window.Browser._content.newTab(true);
-                    if (tab) {
-                        var content = Browser._content;
-                        var browser = content.getBrowserForDisplay(content.getDisplayForTab(tab));
-                        newWindow = browser.contentWindow;
-                    }
-                    newWindow.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                    .getInterface(Components.interfaces.nsIWebNavigation)
-                    .loadURI(uri.spec,
-                        Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE,
-                        null, null, null);
-                    newWindow.focus();
-                    return true;
-                }catch(e)
-                {
-                    alert(e)
-                }
-            }else
-            {
-                return window.open(url, "_blank")!=null;
-            }
-            return tab;
-        } else {
-            return window.open(url, "_blank")!=null;
-        }
-        return false;
-    },isFennec : function()
-    {
-     return (navigator.userAgent.indexOf(" Fennec/")!=-1);
     }
 };
 

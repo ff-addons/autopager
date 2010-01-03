@@ -20,13 +20,18 @@
     </stringbundleset>
     
     
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-strings.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-rules.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
@@ -36,7 +41,11 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-highlight.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-refinement.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
+
 
     <tooltip  id="helptip"  flex="1">
         <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
@@ -150,7 +159,10 @@
                                                 <textbox id="margin" flex="1"/>
                                                 <label control="margin" value="&setting.label.marginEnd;"/>
                                             </hbox>
+                                            <hbox align="left">
                                             <checkbox id="chkEnableJS" label="&setting.label.chkEnableJS;" checked="false" />
+                                            <checkbox id="chkForceJS" label="&checkbox.chkForceJS.label;" checked="false" />
+                                            </hbox>
                                             <vbox id="auto-xpath" flex="1">
                                                 <hbox align="center">
                                                     <label control="linkXPath" value="&setting.label.lblLinkXPath;"/>
@@ -403,5 +415,6 @@
     </tabbox>
 
 </dialog>
+
 
 

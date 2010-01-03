@@ -13,6 +13,7 @@
     </stringbundleset>
     
     
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
@@ -20,19 +21,20 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
 
     
     
     <hbox id="loading-hbox">
         <button id="loadingReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{autopagerMain.getAutopagerPrefs().clearUserPref('.loading');}catch(e){}; txtLoading.value = autopagerMain.getLoadingStyle();"/>
+            oncommand="try{autopagerPref.resetPref('loading');}catch(e){}; txtLoading.value = autopagerMain.getLoadingStyle();"/>
     </hbox>
     <hbox  id="pagebreak-hbox">
         <button id="pagebreakReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{autopagerMain.getAutopagerPrefs().clearUserPref('.pagebreak');}catch(e){}; txtPagebreak.value = autopagerMain.loadUTF8Pref('pagebreak');"/>
+            oncommand="try{autopagerPref.resetPref('pagebreak');}catch(e){}; txtPagebreak.value = autopagerPref.loadUTF8Pref('pagebreak');"/>
     </hbox>
     <hbox  id="confirm-hbox">
         <button id="confirmReset" label="&reset.label;" accesskey="&reset.accesskey;"
-            oncommand="try{autopagerMain.getAutopagerPrefs().clearUserPref('.optionstyle');}catch(e){};try{txtConfirmStyle.value = autopagerMain.loadUTF8Pref('optionstyle');}catch(e){}"/>
+            oncommand="try{autopagerPref.resetPref('optionstyle');}catch(e){};try{txtConfirmStyle.value = autopagerPref.loadUTF8Pref('optionstyle');}catch(e){}"/>
     </hbox>
 </overlay>

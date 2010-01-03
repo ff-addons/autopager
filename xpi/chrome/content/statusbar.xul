@@ -5,6 +5,8 @@
 <overlay id="autopagestatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-strings.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
@@ -12,14 +14,18 @@
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-rules.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-refinement.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-sitesetting.js" />
+
 
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
@@ -165,11 +171,13 @@
         </menupopup>
         <menupopup id="autopager-menu-popup">
             <menuitem
+                    id="ap-sitewizard"
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
                     oncommand="autopagerMain.sitewizard( content.document);"
                 />
             <menuitem
+                    id="ap-setting"
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
                     oncommand="autopagerMain.openSettingForDoc(content.document);"
@@ -268,7 +276,7 @@
                     oncommand="autopagerMain.requestHelp(event.target,content.document);"
                 />
             <menuseparator class="autopager-sep-global"/>
-            <menu label="&autopager.status.xpathUtils;">
+            <menu id="ap-xpath" label="&autopager.status.xpathUtils;">
                 <menupopup id="autopager-xpath-menupopup">
                     <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
@@ -352,6 +360,10 @@
             <menu id="autopager-about" class="autopager-menu-class" label="&statusbar.menu.autopager-about.label;"
                       >
                 <menupopup id="autopager-about-menupopup" >
+
+                    <menuitem id="autopager-alert" label="alert" tooltiptext="alert"
+                                  oncommand="autopagerBwUtil.openAlert('test title','test alert','http://ap.teesoft.info/')"
+                        />
                     <menuitem id="autopager-donation" label="&statusbar.menuitem.autopager-donation.label;" tooltiptext="&statusbar.menuitem.autopager-donation.tooltiptext;"
                                   oncommand="autopagerMain.showDonation()"
                         />
@@ -407,7 +419,7 @@
             tooltiptext="&autopager.tooltip;"
             oncontextmenu="event.target.open = true;event.preventDefault();"
             context="autopager-toolbar-popup"
-            oncommand="if (event.target == this) autopagerMain.showWorkshop();">
+            oncommand="if (event.target == this) autopagerMain.onToolbarClick();">
             <menupopup id="autopager-toolbar-popup"  onpopupshowing="autopagerMain.FillPopup(event.target,'tb')">
             </menupopup>
         </toolbarbutton>
@@ -420,7 +432,8 @@
             tooltiptext="&autopager.tooltip;"
             buttonstyle="pictures"
             insertafter="tool-bookmarks"
-            popup="autopager-toolbar-popup"
+            popupdisabled="autopager-toolbar-popup"
+            oncommand="autopagerLite.openRulesSelector(content.document);"
             />
     </toolbar>
 </overlay>

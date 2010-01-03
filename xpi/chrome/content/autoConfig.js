@@ -3,30 +3,29 @@ var UpdateSites=
     updateSites: null,
     submitCount:0,
     AutopagerCOMP:null,
-	updatedCount: 0,
+    updatedCount: 0,
     init:function()
     {
         
         if (this.updateSites == null || this.AutopagerCOMP==null)
-        {
-            try {
-                // this is needed to generally allow usage of components in javascript
-                //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                this.AutopagerCOMP = Components.classes['@www.teesoft.com/AutopagerCOMP;1'].getService().wrappedJSObject;
-                //alert(myComponent.loadAll());
-            } catch (anError) {
-            }
-    
+        {                
             this.updateSites = this.getUpdateSites();
         }
     },
+    getAutopagerCOMP : function()
+    {
+        if (this.AutopagerCOMP==null)
+            this.AutopagerCOMP = autopagerRules.getAutopagerCOMP();
+        return this.AutopagerCOMP;
+    },
     getUpdateSites : function()
     {
-        var sites = this.AutopagerCOMP.getUpdateSites();
+        var sites = this.getAutopagerCOMP().getUpdateSites();
         if (sites==null || sites.length==0)
         {
+        
             sites = AutoPagerUpdateTypes.getUpdateSites();
-            this.AutopagerCOMP.setUpdateSites(sites);
+            this.getAutopagerCOMP().setUpdateSites(sites);
         }
         return sites;
     },
@@ -38,7 +37,8 @@ var UpdateSites=
         {
         var updateperiod = updatesite.updateperiod;
         if (updateperiod == -2) //global
-            updateperiod = autopagerMain.loadPref("update");
+            updateperiod = autopagerPref.loadPref("update");
+        
         if (updateperiod == "-1")
             needUpdate = true;
         else if (0 == updateperiod)
@@ -51,10 +51,10 @@ var UpdateSites=
             var today = new Date();
             var lastUpdate = updatesite.lastupdate;
             var lasttry = updatesite.lasttry;
-            if (lastUpdate==null || lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > updateperiod)
+            if (typeof lastUpdate=="undefined" || lastUpdate==null || lastUpdate=="null" || lastUpdate.length == 0 || (today.getTime() - lastUpdate) /(1000 * 60 * 60) > updateperiod)
             {
                 //try if not try in last 1 minutes
-                if (lasttry==null || lasttry.length == 0 || (today.getTime() - lasttry) /(1000 * 60) > 1)
+                if (typeof lasttry=="undefined" || lasttry==null || lasttry.length == 0 || (today.getTime() - lasttry) /(1000 * 60) > 1)
                 {
                     needUpdate = true;
                     updatesite.lasttry = today.getTime();
@@ -63,11 +63,12 @@ var UpdateSites=
             //alert(updatesite.filename + " " + (today.getTime() - lastUpdate) /(1000 * 60 * 60))
         }
         }        
+        
         if (needUpdate)
         {
             apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
             //alert("update " + updatesite.filename)
-         }
+        }
     },
     updateSiteOnlineBackup :function (updatesite,error)
     {
@@ -77,7 +78,7 @@ var UpdateSites=
     getUrl : function (url,force,error)
     {
         var all=0;
-        if (autopagerMain.loadBoolPref("include-unsafe-rules"))
+        if (autopagerPref.loadBoolPref("include-unsafe-rules"))
             all=1;
         var t='';
         if (force)
@@ -85,26 +86,29 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.5.5.6").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
-        var ids = autopagerMain.loadUTF8Pref("ids");
-        if (!autopagerMain.loadBoolPref("with-lite-recommended-rules"))
+        url = url.replace(/\{version\}/,"0.6.0.8").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        var ids = autopagerPref.loadUTF8Pref("ids");
+        if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
         url = url.replace(/\{ids\}/,ids);
         return url;
     },
 	updateOnline :function (force)
 	{
-			if (force || UpdateSites.updatedCount<=0)
+            if (!autopagerRules.isAllowUpdate())
+                return;
+            		if (force || UpdateSites.updatedCount<=0)
 			{
 					UpdateSites.updatedCount=0;
 					this.init();
 					UpdateSites.submitCount=0;
+                                        
 					for(var i=0;i<this.updateSites.length;i++)
 					{
-							var site= this.updateSites[i];
+                                            		var site= this.updateSites[i];
 							if ( (force || site.enabled) && site.url.length >0)
 							{
-								site.triedTime = 0;
+                                                                site.triedTime = 0;
 								site.triedBackup = 0;
 								this.updateSiteOnline(site,force,0);
 							}
@@ -138,7 +142,7 @@ var UpdateSites=
 		//TODO:notification the update failed
 		UpdateSites.submitCount--;
 		if (UpdateSites.submitCount<=0)
-			autopagerMain.savePref("lastupdate",(new Date()).getTime());
+			autopagerPref.savePref("lastupdate",(new Date()).getTime());
              
 		if (obj.triedTime < 2)
 		{
@@ -163,8 +167,9 @@ var UpdateSites=
         var sites = updatesite.callback(doc,updatesite);
         if (sites==null || sites.length==0)
             return;
+        
         sites.updateSite = updatesite;
-        var file = autopagerConfig.getConfigFile(updatesite.filename.replace(/\.xml/,".json"));
+        var file = autopagerBwUtil.getConfigFile(updatesite.filename.replace(/\.xml/,".json"));
         if (file)
         {
             autopagerConfig.saveConfigToJsonFile(sites,file,true);
@@ -172,10 +177,10 @@ var UpdateSites=
             try{
                   if (updatesite.filename != "autopager.xml")
                   {
-                    var overrideContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonOverridefile));
+                    var overrideContents= autopagerBwUtil.getConfigFileContents(jsonOverridefile);
                     if (overrideContents!=null && overrideContents.length>0)
                     {
-                        var overrides = autopagerJsonSetting.decodeJSON(overrideContents);
+                        var overrides = autopagerBwUtil.decodeJSON(overrideContents);
                         autopagerJsonSetting.mergeOverrides(sites,overrides);
                     }
                   }
@@ -185,7 +190,7 @@ var UpdateSites=
         }
         UpdateSites.submitCount--;
         //if (UpdateSites.submitCount<=0)
-        autopagerMain.savePref("lastupdate",(new Date()).getTime());
+        autopagerPref.savePref("lastupdate",(new Date()).getTime());
         updatesite.lastupdate = (new Date()).getTime();
         var allSites = UpdateSites.loadAll();
         allSites[updatesite.filename] = sites;
@@ -204,7 +209,7 @@ var UpdateSites=
     },
     loadAll:function()
     {
-        if (this.AutopagerCOMP.loadAll().length==0)
+        if (this.getAutopagerCOMP().loadAll().length==0)
         {
             var allSiteSetting = {};
 			allSiteSetting["testing.xml"] = null;
@@ -213,9 +218,9 @@ var UpdateSites=
                 var sites = autopagerConfig.reLoadConfig(allSiteSetting,this.updateSites[i]);
                 allSiteSetting[this.updateSites[i].filename] = sites;
             }
-            this.AutopagerCOMP.setAll(allSiteSetting);
+            this.getAutopagerCOMP().setAll(allSiteSetting);
         }
-        return this.AutopagerCOMP.loadAll();
+        return this.getAutopagerCOMP().loadAll();
     },
     getMatchedSiteConfig: function(allSites,url,count)
     {
@@ -228,7 +233,7 @@ var UpdateSites=
                         continue;
                     for (var i = 0; i < tmpsites.length; i++) {
                             var site = tmpsites[i];
-                             var pattern = autopagerMain.getRegExp(site);
+                             var pattern = autopagerUtils.getRegExp(site);
                             if (pattern.test(url)) { 
                                 var newSite = autopagerConfig.cloneSite (site);
 								newSite.updateSite = tmpsites.updateSite;
@@ -240,37 +245,6 @@ var UpdateSites=
             }
         return newSites;
         
-    },
-    getNextMatchedSiteConfig: function(allSites,url,pos)
-    {
-	var key;
-        var started = (pos ==null || pos.key==null || pos.index==null);
-        for ( key in allSites){
-            //alert(key)
-            var tmpsites = allSites[key];
-            if (tmpsites==null || !tmpsites.updateSite.enabled)
-                continue;
-            for (var i = 0; i < tmpsites.length; i++) {
-                if (!started)
-                    started = ((key == pos.key) && i>=pos.index);
-                else
-                {
-                    var site = tmpsites[i];
-                    var pattern = autopagerMain.getRegExp(site);
-                    if (pattern.test(url)) {
-                        var newSite = autopagerConfig.cloneSite (site);
-                        newSite.updateSite = tmpsites.updateSite;
-                        pos = new Array();
-                        pos.key = key;
-                        pos.index = i;
-                        pos.site=newSite;
-                        return pos;
-                    }
-                }
-            }
-        }
-        return null;
-
     },
     getMatchedSiteConfigByGUID: function(allSites,guid,includeLocal,count)
     {
@@ -316,11 +290,11 @@ function Site()
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
         this.containerXPath="";
         this.removeXPath=[];
-	this.desc = null;
+	//this.desc = null;
 	this.testLink = [];
 	this.oldSite = null;
 	this.margin = autopagerMain.getDefaultMargin();
-	
+
 	this.maxLinks = -1;
         this.isTemp = false;
         this.tmpPaths = [];
@@ -343,11 +317,10 @@ function SiteConfirm()
 
 var autopagerConfig =
 {
-    autopagerStrbundle:null,
+    autopagerStrbundle : new autopagerStrings("autopager"),
     autoSites : null,
     formatVersion: 1,
-    autopagerDomParser : Components.classes["@mozilla.org/xmlextras/domparser;1"]
-		    .createInstance(Components.interfaces.nsIDOMParser),
+    autopagerDomParser : autopagerBwUtil.newDOMParser(),
     openSetting : function(url,obj) {
         window.autopagerSelectUrl=url;
         window.autopagerOpenerObj = obj;
@@ -375,11 +348,11 @@ var autopagerConfig =
 	  configStream.close();
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
     },
     saveConfirm : function(sites) {
-	this.saveConfirmToFile(sites, autopagerConfig.getConfigFile("site-confim.xml"));
+	this.saveConfirmToFile(sites, autopagerBwUtil.getConfigFile("site-confim.xml"));
     }
  ,
 getConfigFile : function(fileName) {
@@ -403,7 +376,7 @@ getConfigFile : function(fileName) {
 	  }
   }catch(e)
   {
-  	autopagerUtils.consoleLog(e);
+  	autopagerBwUtil.consoleLog(e);
   }
   return file;
   
@@ -432,7 +405,7 @@ getConfigFile : function(fileName) {
                }
 	}catch(e)
 	{
-		autopagerUtils.consoleLog(e);
+		autopagerBwUtil.consoleLog(e);
 	}
   return sites;
 }
@@ -443,10 +416,10 @@ getConfigFile : function(fileName) {
      {
          var confirmContents="";
          try{
-             confirmContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI("site-confim.xml"));
+             confirmContents= autopagerBwUtil.getConfigFileContents("site-confim.xml");
          }catch(e)
          {
-             autopagerUtils.consoleLog(e);
+             autopagerBwUtil.consoleLog(e);
          }
          confirms = this.loadConfirmFromStr(confirmContents);
          UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
@@ -528,6 +501,8 @@ doCloneSite : function(newSite,site)
 	newSite.regex  = site.regex;
 
 	newSite.guid  = site.guid;
+        if (site.id)
+            newSite.id  = site.id;
 	newSite.isRegex  = site.isRegex;
 	newSite.margin  = site.margin;
 	newSite.minipages  = site.minipages;
@@ -547,18 +522,25 @@ doCloneSite : function(newSite,site)
 			newSite.contentXPath[i] = site.contentXPath[i];
 
         newSite.testLink = [];
-	for(var i=0;i<site.testLink.length;++i)
+        if (site.testLink)
+	{
+            newSite.testLink = []
+            for(var i=0;i<site.testLink.length;++i)
 			newSite.testLink[i] = site.testLink[i];
+        }
 
-        newSite.removeXPath = [];
-	for(var i=0;i<site.removeXPath.length;++i)
-			newSite.removeXPath[i] = site.removeXPath[i];
+        if (site.removeXPath)
+        {
+            newSite.removeXPath = [];
+            for(var i=0;i<site.removeXPath.length;++i)
+                            newSite.removeXPath[i] = site.removeXPath[i];
+        }
 
         newSite.linkXPath = site.linkXPath;
         newSite.containerXPath = site.containerXPath;
         
-        
-	newSite.desc = site.desc;
+        if (site.desc)
+            newSite.desc = site.desc;
 	
     if (typeof site.formatVersion != 'undefined')
                 newSite.formatVersion = site.formatVersion;
@@ -575,6 +557,7 @@ doCloneSite : function(newSite,site)
 		{
 			var oldSite = site.oldSite;
 			if (oldSite.urlPattern  != site.urlPattern 
+                                                || oldSite.id  != site.id
                                                 || oldSite.guid  != site.guid
                                                 || oldSite.isRegex  != site.isRegex
 						|| oldSite.margin  != site.margin
@@ -677,7 +660,7 @@ removeFromArray : function(array,item) {
 	try{
 		
 		if (autopagerConfig.autopagerStrbundle == null)
-			autopagerConfig.autopagerStrbundle = document.getElementById("autopager-Strings");
+			autopagerConfig.autopagerStrbundle = new autopagerStrings("autopager");
 		return autopagerConfig.autopagerStrbundle.getString(name);
 	}catch(e)
 	{
@@ -691,7 +674,7 @@ autopagerFormatString :function(name,parms)
 	
 	try{
 		if (autopagerConfig.autopagerStrbundle == null)
-			autopagerConfig.autopagerStrbundle = document.getElementById("autopager-Strings");
+			autopagerConfig.autopagerStrbundle = new autopagerStrings("autopager");
 		return autopagerConfig.autopagerStrbundle.getFormattedString(name, parms);
 	}catch(e)
 	{
@@ -703,10 +686,10 @@ getConfigFileURI : function(fileName) {
 	try{
   return Components.classes["@mozilla.org/network/io-service;1"]
                    .getService(Components.interfaces.nsIIOService)
-                   .newFileURI(autopagerConfig.getConfigFile(fileName));
+                   .newFileURI(autopagerBwUtil.getConfigFile(fileName));
 	}catch(e)
 	{
-		autopagerUtils.consoleLog(e);
+		autopagerBwUtil.consoleLog(e);
 	}
 },
 getRemoteURI : function(url)
@@ -717,7 +700,7 @@ getRemoteURI : function(url)
                    .newURI(url,"UTF-8",null);
 	}catch(e)
 	{
-		//alert(e);
+		//autopagerBwUtil.consoleError(e);
 	}
 }
 ,
@@ -767,7 +750,7 @@ loadConfig :function() {
     var jsonOverridefile = updateSite.filename.replace(/\.xml/,".json.override");
     try{
 
-        configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonfile));
+        configContents= autopagerBwUtil.getConfigFileContents(jsonfile);
         if (configContents!=null && configContents.length>0)
         {
           var sites= null;
@@ -776,10 +759,10 @@ loadConfig :function() {
           loaded = true;
           if (updateSite.filename != "autopager.xml")
           {
-            var overrideContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(jsonOverridefile));
+            var overrideContents= autopagerBwUtil.getConfigFileContents(jsonOverridefile);
             if (overrideContents!=null && overrideContents.length>0)
             {
-                var overrides = autopagerJsonSetting.decodeJSON(overrideContents);
+                var overrides = autopagerBwUtil.decodeJSON(overrideContents);
                 autopagerJsonSetting.mergeOverrides(sites,overrides);
             }
 
@@ -792,25 +775,36 @@ loadConfig :function() {
     if (!loaded)
     {
         try{
-            configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(updateSite.filename));
+            configContents= autopagerBwUtil.getConfigFileContents(updateSite.filename);
             var sites= null;
             sites = autopagerConfig.loadConfigFromStr(configContents,false);
             sites.updateSite = updateSite;
             //save to json
             if (sites.length>0)
             {
-                autopagerConfig.saveConfigToJsonFile(sites,autopagerConfig.getConfigFile(jsonfile),true);
+                autopagerConfig.saveConfigToJsonFile(sites,autopagerBwUtil.getConfigFile(jsonfile),true);
                 //todo:delete old xml file
             }
         }catch(e)
         {
-            autopagerUtils.consoleLog(e);
+            autopagerBwUtil.consoleLog(e);
         }
     }
     allSiteSetting[updateSite.filename] = sites;
     return sites                
 },
-importFromURL :function(func)
+importText :function(str)
+{
+	try{
+                var configContents = "<root>" + str + "</root>";
+		sites =  autopagerConfig.loadConfigFromStr(configContents,false);
+		autopagerConfig.mergeSetting(sites,false);
+	}catch(e)
+	{
+		autopagerBwUtil.consoleError(e);
+	}
+}
+,importFromURL :function(func)
 {
 	var url = prompt(autopagerConfig.autopagerGetString("inputurl"),
                         UpdateSites.defaultSite());
@@ -856,7 +850,7 @@ importFromClip :function()
 		autopagerConfig.mergeSetting(sites,false);
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
 }
 ,importFromFile : function()
@@ -877,7 +871,7 @@ importFromClip :function()
 		autopagerConfig.mergeSetting(sites,false);
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
 },
 exportSetting : function()
@@ -975,7 +969,7 @@ loadConfigFromUrl : function(url) {
     }
     catch(e)
     {
-    	alert(e);
+    	autopagerBwUtil.consoleError(e);
     }
  },
  getValue :function(node)
@@ -1128,7 +1122,7 @@ loadConfigFromStr : function(configContents,remote) {
                   sites = autopagerConfig.loadConfigFromDoc(doc);
 	}catch(e)
 	{
-		autopagerUtils.consoleLog(e);
+		autopagerBwUtil.consoleLog(e);
 	}
   if (remote && sites.length ==0 )
   {
@@ -1169,7 +1163,7 @@ saveAllOverride : function (allSites)
         if (updateSite.fileName =='smartpaging.xml' || updateSite.fileName == 'testing.xml' || updateSite.fileName == 'autopager.xml')
             continue;
         var jsonfile = updateSite.filename.replace(/\.xml/,".json.override");
-        autopagerConfig.saveOverrideToJsonFile(allSites[key], autopagerConfig.getConfigFile(jsonfile));
+        autopagerConfig.saveOverrideToJsonFile(allSites[key], autopagerBwUtil.getConfigFile(jsonfile));
     }
 },
 saveOverrideToJsonFile: function(sites,saveFile)
@@ -1183,19 +1177,19 @@ saveOverrideToJsonFile: function(sites,saveFile)
         fStream.close();
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
 },
 
 saveConfigXML : function(sites) {
-	autopagerConfig.saveConfigToFile(sites,autopagerConfig.getConfigFile("autopager.xml"),true);
+	autopagerConfig.saveConfigToFile(sites,autopagerBwUtil.getConfigFile("autopager.xml"),true);
         var allConfigs = UpdateSites.loadAll();
         //sites.updateSite = allConfigs["autopager.xml"].updateSite;
         allConfigs["autopager.xml"] = sites;
         UpdateSites.AutopagerCOMP.setAll(allConfigs);          
 },
 saveConfigJSON : function(sites) {
-	autopagerConfig.saveConfigToJsonFile(sites,autopagerConfig.getConfigFile("autopager.json"),true);
+	autopagerConfig.saveConfigToJsonFile(sites,autopagerBwUtil.getConfigFile("autopager.json"),true);
         var allConfigs = UpdateSites.loadAll();
         //sites.updateSite = allConfigs["autopager.xml"].updateSite;
         allConfigs["autopager.xml"] = sites;
@@ -1204,18 +1198,14 @@ saveConfigJSON : function(sites) {
 saveConfigToJsonFile: function(sites,saveFile,includeChangeInfo)
 {
     try{
-        var fStream = autopagerConfig.getWriteStream(saveFile);
-        var configStream = autopagerConfig.getConverterWriteStream(fStream);
         var str = autopagerJsonSetting.saveNormalToCompactString(sites);
-        configStream.writeString(str);
-        configStream.close();
-        fStream.close();
+        autopagerBwUtil.saveContentToFile(str,saveFile);
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
     //UpdateSites.allSiteSetting= UpdateSites.loadAll();
-    autopagerMain.setDatePrefs("settingupdatedate", new Date());
+    autopagerPref.setDatePrefs("settingupdatedate", new Date());
 },
 saveConfig : function(sites) {
 	autopagerConfig.saveConfigJSON(sites);
@@ -1311,11 +1301,11 @@ if (sites!=null)
 	  configStream.close();
 	}catch(e)
 	{
-		alert(e);
+		autopagerBwUtil.consoleError(e);
 	}
         //UpdateSites.allSiteSetting= UpdateSites.loadAll();
 
-        autopagerMain.setDatePrefs("settingupdatedate", new Date());
+        autopagerPref.setDatePrefs("settingupdatedate", new Date());
 },
 getWriteStream : function(file) {
   var stream = Components.classes["@mozilla.org/network/file-output-stream;1"]

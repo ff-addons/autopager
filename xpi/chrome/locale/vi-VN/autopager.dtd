@@ -63,6 +63,7 @@
 <!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Kết quả">
 <!ENTITY caption.results-caption2.label "Kết quả">
+<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
 <!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "Sử dụng">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">

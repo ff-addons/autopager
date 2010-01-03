@@ -2,18 +2,24 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-const autopagerPref =
+var autopagerPref =
 {
-  autopagerPrefs : Components.classes["@mozilla.org/preferences-service;1"].
-        getService(Components.interfaces.nsIPrefService).getBranch("autopager")
-        .QueryInterface(Components.interfaces.nsIPrefBranch2),
+  autopagerPrefs : null,
         
-    unicodeConverter: Components
-      .classes["@mozilla.org/intl/scriptableunicodeconverter"]
-      .createInstance(Components.interfaces.nsIScriptableUnicodeConverter),
-      
+    unicodeConverter: null,
+getAutopagerPrefs : function () {
+    if (this.autopagerPrefs == null && (typeof Components == 'object')) {
+        this.autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
+        getService(Components.interfaces.nsIPrefService).getBranch("autopager")
+        .QueryInterface(Components.interfaces.nsIPrefBranch2);
+    }
+    return this.autopagerPrefs;
+},
 init : function()
 {
+    this.unicodeConverter = Components
+      .classes["@mozilla.org/intl/scriptableunicodeconverter"]
+      .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
   this.unicodeConverter.charset = "utf-8";  
 },
 loadUTF8Pref : function(name) {
@@ -28,13 +34,13 @@ saveUTF8Pref : function(name,value) {
     try{
         this.savePref(name,this.unicodeConverter.ConvertFromUnicode(value));
     }catch(e) {
-        savePref(name,value);
+        this.savePref(name,value);
     }	  	
 },
 loadPref : function(name) {
     try{
-        
-        return this.autopagerPrefs.getCharPref("." +  name); // get a pref
+        //if (this.getAutopagerPrefs().prefHasUserValue("." +  name))
+        return this.getAutopagerPrefs().getCharPref("." +  name); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
     }
@@ -43,7 +49,7 @@ loadPref : function(name) {
 getDatePrefs : function(name){
    var date = new Date();
    try{        
-        var timestamp = this.autopagerPrefs.getCharPref("." +  name); // get a pref
+        var timestamp = this.loadPref( name); // get a pref
           date.setTime(timestamp);
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -52,8 +58,7 @@ getDatePrefs : function(name){
 },
 setDatePrefs : function(name,date){
    try{
-        if (this.autopagerPrefs.getCharPref("." +  name)!=date.getTime())
-        this.autopagerPrefs.setCharPref("." +  name,date.getTime()); // get a pref
+       this.savePref(name,date.getTime());
     }catch(e) {
         //autopagerMain.alertErr(e);
     }     
@@ -62,33 +67,36 @@ setDatePrefs : function(name,date){
 loadBoolPref : function(name) {
     try{
         
-        return this.autopagerPrefs.getBoolPref("." +  name); // get a pref
+        return this.getAutopagerPrefs().getBoolPref("." +  name); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
     }
-    return "";
+    return false;
 },
 savePref : function(name,value) {
     try{
-        if (this.autopagerPrefs.getCharPref("." +  name)!=value)
-            return this.autopagerPrefs.setCharPref("." +  name,value); // set a pref
+        if (this.loadPref(name)!=value)
+            return this.getAutopagerPrefs().setCharPref("." +  name,value); // set a pref
+//        else if (this.getAutopagerPrefs().prefHasUserValue("." +  name))
+//            this.resetPref(name);
     }catch(e) {
-        //autopagerMain.alertErr(e);
+        this.getAutopagerPrefs().setCharPref("." +  name,value);
     }
-    return "";
 },
 saveBoolPref : function(name,value) {
     try{
-        if (this.autopagerPrefs.getBoolPref("." +  name)!=value)
-            return this.autopagerPrefs.setBoolPref("." +  name,value); // get a pref
+        if (this.loadBoolPref(name)!=value)
+            return this.getAutopagerPrefs().setBoolPref("." +  name,value); // get a pref
+//        else if (this.getAutopagerPrefs().prefHasUserValue("." +  name))
+//            this.resetPref(name);
     }catch(e) {
         //autopagerMain.alertErr(e);
+        return this.getAutopagerPrefs().setBoolPref("." +  name,value);
     }
-    return "";
 },
 resetPref : function(name,value) {
     try{
-        this.autopagerPrefs.clearUserPref("." +  name);
+        this.getAutopagerPrefs().clearUserPref("." +  name);
     }catch(e) {
         //autopagerMain.alertErr(e);
     }

@@ -112,9 +112,12 @@ var AutoPagerUpdateTypes =
 //                        "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
 //                        "pagerization configurations",
 //                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
-            var lite = autopagerPref.loadBoolPref("work-in-lite-mode");
+            var lite = autopagerLite.isInLiteMode();
             var withlite = autopagerPref.loadBoolPref("with-lite-rules");
+
             if(!lite)
+            {
+            if (!autopagerBwUtil.isFennec())
             {
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
@@ -141,7 +144,7 @@ var AutoPagerUpdateTypes =
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
                         "default configurations on autopager.mozdev.org",
                         "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
-
+            }
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "Experimental configurations @ teesoft.info, please don't enable this.",
@@ -218,9 +221,9 @@ var AutoPagerUpdateTypes =
         var newSites = [];
         try{
             var file = "all-sites.xml";
-            if (autopagerPref.loadBoolPref("work-in-lite-mode"))
+            if (autopagerLite.isInLiteMode())
                 file = "all-sites-lite.xml";
-            configContents= autopagerConfig.autopagerGetContents(autopagerConfig.getConfigFileURI(file));
+            configContents= autopagerBwUtil.getConfigFileContents(file);
             var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
             sites = this.loadSettingSitesFromDoc(doc);
 			var defaultSites = this.getDefaultSites();
@@ -297,7 +300,7 @@ var AutoPagerUpdateTypes =
                       
         }catch(e)
         {
-            //alert(e);
+            //autopagerBwUtil.consoleError(e);
         }
         return newSites;
         
@@ -371,9 +374,9 @@ var AutoPagerUpdateTypes =
     },
     saveSettingSiteConfig : function(sites) {
         var file = "all-sites.xml";
-        if (autopagerPref.loadBoolPref("work-in-lite-mode"))
+        if (autopagerLite.isInLiteMode())
             file = "all-sites-lite.xml";
-        this.saveSettingSiteConfigToFile(sites,autopagerConfig.getConfigFile(file));
+        this.saveSettingSiteConfigToFile(sites,autopagerBwUtil.getConfigFile(file));
     },
     loadSettingSiteConfigFromJSON : function(configContents) {
         var sites = autopagerJSON.parse(configContents);
@@ -404,12 +407,11 @@ var AutoPagerUpdateTypes =
             configStream.close();
         }catch(e)
         {
-            alert(e);
+            autopagerBwUtil.consoleError(e);
         }
 
     },
     saveSettingSiteConfigToFile : function(sites,saveFile) {
-        
         try{
             var doc = document.implementation.createDocument("", "all-sites", null);
             doc.firstChild.appendChild(doc.createTextNode("\n"))
@@ -459,12 +461,14 @@ var AutoPagerUpdateTypes =
                     doc.firstChild.appendChild(doc.createTextNode("\n"));
                 }
             }
-            var configStream = autopagerConfig.getWriteStream(saveFile);
-            new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
-            configStream.close();
+            autopagerBwUtil.saveContentToFile(new XMLSerializer().serializeToString(doc),saveFile);
+
+//            var configStream = autopagerConfig.getWriteStream(saveFile);
+//            new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
+//            configStream.close();
         }catch(e)
         {
-            alert(e);
+            autopagerBwUtil.consoleError(e);
         }
     }
 }

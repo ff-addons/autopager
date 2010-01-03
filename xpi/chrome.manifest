@@ -5,6 +5,8 @@ content autopagerimg                                          jar:chrome/autopag
 skin        autopager        classic/1.0                    jar:chrome/autopager.jar!/skin/classic/
 
 overlay        chrome://browser/content/browser.xul        chrome://autopager/content/statusbar.xul
+overlay        chrome://browser/content/browser.xul        chrome://autopager/content/fennec.xul application={a23983c0-fd0e-11dc-95ff-0800200c9a66}
+
 overlay        chrome://autopager/content/autopager.xul        chrome://autopager/content/autopager-reset.xul
 overlay        chrome://navigator/content/navigator.xul        chrome://autopager/content/statusbar.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 overlay  chrome://browser/content/sanitize.xul        chrome://autopager/content/autopagerSanitizeUI.xul

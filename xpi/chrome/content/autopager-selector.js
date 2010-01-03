@@ -180,15 +180,12 @@ autopagerSelector.initHelpBox = function() {
 	if (helpBoxRows!=null && helpBoxRows.firstChild)
 		added = true;;
 
-	// Help box hasn't been filled yet, need to do it now
-	var stringService = Components.classes["@mozilla.org/intl/stringbundle;1"]
-																.getService(Components.interfaces.nsIStringBundleService);
-	var strings = stringService.createBundle("chrome://autopager/locale/commands.properties");
+        var strings = new autopagerStrings("commands");
 
 	for (var i = 0; i < this.commands.length; i++) {
 		var command = this.commands[i];
-		var key = strings.GetStringFromName("command." + command + ".key");
-		var label = strings.GetStringFromName("command." + command + ".label");
+		var key = strings.getString("command." + command + ".key");
+		var label = strings.getString("command." + command + ".label");
 		this.commands[command + "_key"] = key.toLowerCase();
 		this.commands[command + "_label"] = label;
 

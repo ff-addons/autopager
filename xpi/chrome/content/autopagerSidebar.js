@@ -68,7 +68,7 @@ var autopagerSidebar =
 
         function callback(doc,obj)
             {
-                autopagerSidebar.xpathes =  autopagerJsonSetting.parse(doc);
+                autopagerSidebar.xpathes =  autopagerBwUtil.decodeJSON(doc);
             }
             function onerror(doc,obj)
             {
@@ -78,7 +78,7 @@ var autopagerSidebar =
 
     autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
 
-        if (autopagerMain.loadBoolPref("show-help"))
+        if (autopagerPref.loadBoolPref("show-help"))
         {
             window.addEventListener("mouseover",autopagerSidebar.onMouseOver,false);
             window.addEventListener("mouseout",autopagerSidebar.onMouseOut,false);
@@ -238,7 +238,7 @@ var autopagerSidebar =
         this.loadIFrame(doc,"resultsFrame2","results-caption2");
         this.loadIFrame(doc,"resultsFrame","results-caption");
 
-        if (autopagerMain.loadBoolPref("tweaking-workshop-result-style"))
+        if (autopagerPref.loadBoolPref("tweaking-workshop-result-style"))
         {
             setTimeout(function(){
             var iframe = document.getElementById( "resultsFrame");
@@ -853,7 +853,7 @@ var autopagerSidebar =
     window.removeEventListener("mouseout",autopagerSidebar.onMouseOut,false);
 
 		var sidebar = window.top.document.getElementById("sidebar");
-        autopagerMain.saveBoolPref("show-workshop-in-sidebar",sidebar!=null);
+        autopagerPref.saveBoolPref("show-workshop-in-sidebar",sidebar!=null);
         if (sidebar)
         {
             sidebar.removeEventListener("DOMAttrModified",this.changed,false);

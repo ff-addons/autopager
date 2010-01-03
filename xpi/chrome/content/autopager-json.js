@@ -5,7 +5,7 @@ var autopagerJsonSetting= {
     },
     loadCompactFromString : function (str)
     {
-        var info = autopagerJsonSetting.decodeJSON(str);
+        var info = autopagerBwUtil.decodeJSON(str);
         var sites = new Array();
         if (info)
         {
@@ -20,43 +20,9 @@ var autopagerJsonSetting= {
         }
         return sites;
     },
-    decodeJSON : function (str)
-    {
-        var info = null;
-        //try native json first
-
-        var Ci = Components.interfaces;
-        var Cc = Components.classes;
-
-        try{
-            if (Cc["@mozilla.org/dom/json;1"])
-            {
-                var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
-                info = nativeJSON.decode(str);
-            }
-            else
-                info = autopagerJSON.parse(str);
-        }catch(e){
-        }
-        return info;
-    },
-
     saveCompactToString : function (sites)
     {
-        var str = null;
-        //try native json first
-
-        var Ci = Components.interfaces;
-        var Cc = Components.classes;
-
-        if (Cc["@mozilla.org/dom/json;1"])
-        {
-            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
-            str = nativeJSON.encode(sites);
-        }
-        else
-            str = autopagerJSON.stringify(sites);
-        return str;
+        return autopagerBwUtil.encodeJSON(sites);
     },
     saveNormalToCompactString : function (normalSites)
     {
@@ -70,7 +36,6 @@ var autopagerJsonSetting= {
         }
 
         str = autopagerJsonSetting.saveCompactToString(sites);
-
         return str;
     },
     saveOverrideToCompactString : function (normalSites)
@@ -99,7 +64,7 @@ var autopagerJsonSetting= {
 
             for(var i=0;i<normalSites.length;i++){
                 var site = normalSites[i]
-                if (site.guid == override.g)
+                if (site.guid == override.g || (override.k && site.id == override.k))
                 {
                     autopagerJsonSetting.mergeOverrideToNormal(site,override);
                 }
@@ -113,16 +78,23 @@ var autopagerJsonSetting= {
     {
             var newSite = new Site();
             newSite.urlPattern  = site.u;
-            newSite.guid  = site.g;
+            if (typeof site.k != 'undefined')
+            {
+                newSite.id = site.k;
+                newSite.guid  = site.k;
+            }
+            else
+                newSite.guid  = site.g;
+            
             if (typeof site.r != 'undefined')
                 newSite.isRegex  = site.r;
-            
+
             if (typeof site.e != 'undefined')
                 newSite.enabled  = site.e;
 
             if (typeof site.j != 'undefined')
                 newSite.enableJS  = site.j;
-            
+
             if (typeof site.x == 'undefined')
             {}
             else if (typeof site.x == 'string')
@@ -149,7 +121,7 @@ var autopagerJsonSetting= {
                 newSite.quickLoad  = site.q;
             else
                 newSite.quickLoad = false;
-            
+
             if (typeof site.f != 'undefined')
                 newSite.fixOverflow  = site.f;
 
@@ -183,7 +155,7 @@ var autopagerJsonSetting= {
                 newSite.ajax=site.a;
             if (typeof site.w != 'undefined')
                 newSite.needMouseDown = site.w;
-            
+
             if (typeof site.p != 'undefined')
                 newSite.published = site.p;
             if (typeof site.i != 'undefined')
@@ -373,6 +345,10 @@ var autopagerJsonSetting= {
                  override.i = normal.minipages;
             if (normal.delaymsecs != oldSite.delaymsecs)
                 override.s = normal.delaymsecs;
+
+            if (typeof normal.id != 'undefined')
+                override.k = normal.id;
+
             var count=0;
             for(var key in override)
             {
@@ -417,15 +393,18 @@ var autopagerJsonSetting= {
             site.n = normal.linkXPath;
             if (typeof normal.desc != 'undefined' && normal.desc!=null && normal.desc.length>0)
                 site.d = normal.desc;
-            if (normal.testLink.length>0)
+            if (normal.testLink && normal.testLink.length>0)
                 site.t = normal.testLink[0];
             if (normal.containerXPath!=null && normal.containerXPath.length>0)
                 site.h = normal.containerXPath;
 
-            if (normal.removeXPath.length==1)
-                site.l = normal.removeXPath[0];
-            else if (normal.removeXPath.length>1)
-                site.l = normal.removeXPath;
+            if (normal.removeXPath)
+            {
+                if (normal.removeXPath.length==1)
+                    site.l = normal.removeXPath[0];
+                else if (normal.removeXPath.length>1)
+                    site.l = normal.removeXPath;
+            }
 
             if (normal.ajax)
                 site.a = normal.ajax;
@@ -440,23 +419,8 @@ var autopagerJsonSetting= {
                 site.s = normal.delaymsecs;
             if (typeof normal.formatVersion != 'undefined')
                 site.v = normal.formatVersion;
+            if (typeof normal.id != 'undefined')
+                site.k = normal.id;
             return site;
-    },
-    parse : function (str)
-    {
-        var info = null;
-        //try native json first
-
-        var Ci = Components.interfaces;
-        var Cc = Components.classes;
-
-        if (Cc["@mozilla.org/dom/json;1"])
-        {
-            var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
-            info = nativeJSON.decode(str);
-        }
-        else
-            info = autopagerJSON.parse(str);
-        return info;
     }
 }

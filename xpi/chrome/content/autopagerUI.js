@@ -6,7 +6,7 @@ var hashSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
-    var chkEnabled, chkEnableJS,chkAjax,chkneedMouseDown
+    var chkEnabled, chkEnableJS,chkForceJS,chkAjax,chkneedMouseDown
     var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic,btnReset;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
     var btnUp,btnDown,btnFilterUp,btnFilterDown, btnSiteUp,btnSiteDown;
@@ -30,7 +30,7 @@ var hashSites = null;
     var siteSearch;
     var btnPickRemovePath, btnPickContentPath,btnPickContainerPath,btnModifyContainerXPath,btnModifyLinkXPath
 
-if (autopagerMain.loadBoolPref("show-help"))
+if (autopagerPref.loadBoolPref("show-help"))
     {
     var tips = new autopagerTip("AutopagerUI:");
 
@@ -93,7 +93,7 @@ if (autopagerMain.loadBoolPref("show-help"))
             for(index=0; index<treeSites.view.rowCount; ++index)
             {
                 var treerow = treeSites.view.wrappedJSObject.getItemAtIndex(index);
-                if (treerow.site != null && autopagerMain.getRegExp(treerow.site).test(url))
+                if (treerow.site != null && autopagerUtils.getRegExp(treerow.site).test(url))
                     return index;
             }
             
@@ -141,7 +141,7 @@ if (autopagerMain.loadBoolPref("show-help"))
         for(var index=0; index<view.getChildCount(); ++index)
 	{
 		  var treerow = view.wrappedJSObject.getChildAtIndex(index);
-                  if (treerow.site != null && (treerow.site.urlPattern == url ||  autopagerMain.getRegExp(treerow.site).test(url)))
+                  if (treerow.site != null && (treerow.site.urlPattern == url ||  autopagerUtils.getRegExp(treerow.site).test(url)))
                   {
                           treeSites.view.wrappedJSObject.selectItem(treerow);
                           return true;
@@ -155,31 +155,9 @@ if (autopagerMain.loadBoolPref("show-help"))
     }
 
 
-function autopagerOpenIntab(url,obj)
-{
-    var wm =  CC['@mozilla.org/appshell/window-mediator;1'].getService(CI.nsIWindowMediator);
-    var w = wm && wm.getMostRecentWindow('navigator:browser', true);
-    if(w && !w.closed) {
-        var browser = null;
-
-        if (window.opener.getBrowser)
-            browser =  window.opener.getBrowser();
-          else if (window.opener.gBrowser)
-              browser = window.opener.gBrowser ;
-
-        var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                      .getService(Components.interfaces.nsIIOService);
-        var ops = ioService.newURI(url, null, null);
-        var tab = browser.addTab(url,ops);
-        browser.selectedTab = tab;
-        return tab;
-    } else {
-        return window.open(url, "_blank");
-    }        
-}
     function handleHelpButton()
     {
-        autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
+        autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
     }
     function handleOkButton() {
        	handleApplyButton();         
@@ -205,31 +183,31 @@ function autopagerOpenIntab(url,obj)
         //autopagerConfig.autoSites = autopagerConfig.loadConfig();
         
 	autopagerMain.saveMyName(mynameText.value);
-        autopagerMain.saveBoolPref("smartenable",smartenable.checked);
-	autopagerMain.saveUTF8Pref("smarttext",smarttext.value);
-        autopagerMain.savePref("smartlinks",smartlinks.value);
-	autopagerMain.savePref("smartMargin",smartMargin.value);
-        autopagerMain.savePref("loadingDelayMiliseconds",gdelaymsecs.value);
+        autopagerPref.saveBoolPref("smartenable",smartenable.checked);
+	autopagerPref.saveUTF8Pref("smarttext",smarttext.value);
+        autopagerPref.savePref("smartlinks",smartlinks.value);
+	autopagerPref.savePref("smartMargin",smartMargin.value);
+        autopagerPref.savePref("loadingDelayMiliseconds",gdelaymsecs.value);
 
-        autopagerMain.saveUTF8Pref("discoverytext",discoverytext.value);
-        autopagerMain.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
-        autopagerMain.saveBoolPref("noprompt",!showPrompt.checked);
-        autopagerMain.saveBoolPref("modalprompt",simpleModalPrompt.checked);
-        autopagerMain.saveBoolPref("hide-status",!showStatusBar.checked);
-        autopagerMain.saveBoolPref("show-help",showHelpTip.checked);
+        autopagerPref.saveUTF8Pref("discoverytext",discoverytext.value);
+        autopagerPref.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
+        autopagerPref.saveBoolPref("noprompt",!showPrompt.checked);
+        autopagerPref.saveBoolPref("modalprompt",simpleModalPrompt.checked);
+        autopagerPref.saveBoolPref("hide-status",!showStatusBar.checked);
+        autopagerPref.saveBoolPref("show-help",showHelpTip.checked);
 
-		//autopagerMain.savePref("timeout",txtTimeout.value);
+		//autopagerPref.savePref("timeout",txtTimeout.value);
          autopagerMain.setCtrlKey(chkCtrl.checked);
          autopagerMain.setAltKey(chkAlt.checked );
          autopagerMain.setShiftKey(chkShift.checked);
          autopagerMain.setLoadingStyle(txtLoading.value);
-         autopagerMain.saveUTF8Pref("pagebreak",txtPagebreak.value);
-         autopagerMain.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
-         autopagerMain.savePref("update",mnuUpdate.value);
+         autopagerPref.saveUTF8Pref("pagebreak",txtPagebreak.value);
+         autopagerPref.saveUTF8Pref("optionstyle",txtConfirmStyle.value);
+         autopagerPref.savePref("update",mnuUpdate.value);
          var newIds = autopagerLite.processIds(ids.value)
-         if (newIds != autopagerMain.loadPref("ids"))
-            autopagerMain.savePref("ids",newIds);
-         autopagerMain.saveBoolPref("with-lite-recommended-rules",ir.checked);
+         if (newIds != autopagerPref.loadPref("ids"))
+            autopagerPref.savePref("ids",newIds);
+         autopagerPref.saveBoolPref("with-lite-recommended-rules",ir.checked);
 
          AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
          //AutoPagerUpdateTypes.saveAllSettingSiteConfig();
@@ -289,6 +267,7 @@ function autopagerOpenIntab(url,obj)
         
         chkEnabled = document.getElementById("chkEnabled");
         chkEnableJS = document.getElementById("chkEnableJS");
+        chkForceJS = document.getElementById("chkForceJS");
         chkAjax = document.getElementById("chkAjax");
         chkneedMouseDown = document.getElementById("chkneedMouseDown");
 
@@ -316,16 +295,16 @@ function autopagerOpenIntab(url,obj)
         txtLoading = document.getElementById("loading");
         txtLoading.value = autopagerMain.getLoadingStyle();
         mnuUpdate = document.getElementById("updatePeriod");
-        mnuUpdate.value = autopagerMain.loadPref("update");
+        mnuUpdate.value = autopagerPref.loadPref("update");
         ids = document.getElementById("ids");
-        ids.value = autopagerMain.loadPref("ids");
+        ids.value = autopagerPref.loadPref("ids");
         ir = document.getElementById("ir");
-        ir.checked = autopagerMain.loadBoolPref("with-lite-recommended-rules");
+        ir.checked = autopagerPref.loadBoolPref("with-lite-recommended-rules");
         txtPagebreak = document.getElementById("pagebreak");
-        txtPagebreak.value = autopagerMain.loadUTF8Pref("pagebreak");
+        txtPagebreak.value = autopagerPref.loadUTF8Pref("pagebreak");
         
         txtConfirmStyle = document.getElementById("confirm");
-        txtConfirmStyle.value = autopagerMain.loadUTF8Pref("optionstyle");
+        txtConfirmStyle.value = autopagerPref.loadUTF8Pref("optionstyle");
         //var chkCtrl,chkAlt,chkShift;
         chkCtrl = document.getElementById("chkCtrl");
         chkAlt = document.getElementById("chkAlt");
@@ -336,43 +315,43 @@ function autopagerOpenIntab(url,obj)
         
         
         alwaysEnableJavaScript = document.getElementById("alwaysEnableJavaScript");
-        alwaysEnableJavaScript.checked = autopagerMain.loadBoolPref("alwaysEnableJavaScript");
+        alwaysEnableJavaScript.checked = autopagerPref.loadBoolPref("alwaysEnableJavaScript");
         
         showPrompt = document.getElementById("showPrompt");
-        showPrompt.checked = !autopagerMain.loadBoolPref("noprompt");
+        showPrompt.checked = !autopagerPref.loadBoolPref("noprompt");
 
         simpleModalPrompt = document.getElementById("simpleModalPrompt");
-        simpleModalPrompt.checked = autopagerMain.loadBoolPref("modalprompt");
+        simpleModalPrompt.checked = autopagerPref.loadBoolPref("modalprompt");
 
         showStatusBar = document.getElementById("showStatusBar");
-        showStatusBar.checked = !autopagerMain.loadBoolPref("hide-status");
+        showStatusBar.checked = !autopagerPref.loadBoolPref("hide-status");
 
         showHelpTip = document.getElementById("showHelpTip");
-        showHelpTip.checked = autopagerMain.loadBoolPref("show-help");
+        showHelpTip.checked = autopagerPref.loadBoolPref("show-help");
 
 
         smartenable = document.getElementById("smartenable");
-        smartenable.checked = autopagerMain.loadBoolPref("smartenable");
+        smartenable.checked = autopagerPref.loadBoolPref("smartenable");
 
 		grpSmart = document.getElementById("grpSmart");
 		
 		smarttext = document.getElementById("smarttext");
-        smarttext.value = autopagerMain.loadUTF8Pref("smarttext");
+        smarttext.value = autopagerPref.loadUTF8Pref("smarttext");
         
         smartlinks = document.getElementById("smartlinks");
-        smartlinks.value = autopagerMain.loadPref("smartlinks");
+        smartlinks.value = autopagerPref.loadPref("smartlinks");
         
         discoverytext = document.getElementById("discoverytext");
-        discoverytext.value = autopagerMain.loadUTF8Pref("discoverytext");
+        discoverytext.value = autopagerPref.loadUTF8Pref("discoverytext");
         
         smartMargin = document.getElementById("smartMargin");
-        smartMargin.value = autopagerMain.loadPref("smartMargin");
+        smartMargin.value = autopagerPref.loadPref("smartMargin");
 
         gdelaymsecs = document.getElementById("gdelaymsecs");
-        gdelaymsecs.value = autopagerMain.loadPref("loadingDelayMiliseconds");
+        gdelaymsecs.value = autopagerPref.loadPref("loadingDelayMiliseconds");
 
         //txtTimeout = document.getElementById("timeout");
-        //txtTimeout.value = autopagerMain.loadPref("timeout");
+        //txtTimeout.value = autopagerPref.loadPref("timeout");
 
         enableSmartControl(smartenable.checked);
 
@@ -464,7 +443,15 @@ function autopagerOpenIntab(url,obj)
         
         chkEnableJS.addEventListener("command", function() {
            if (selectedSite != null) {
-             selectedSite.enableJS = chkEnableJS.checked;
+             selectedSite.enableJS = getEnableJS()
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
+        chkForceJS.addEventListener("command", function() {
+           if (selectedSite != null) {
+             if (chkForceJS.checked)
+                 chkEnableJS.checked = true
+             selectedSite.enableJS = getEnableJS()
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
@@ -475,7 +462,8 @@ function autopagerOpenIntab(url,obj)
              if (selectedSite.ajax)
              {
                 chkEnableJS.checked = true;
-                selectedSite.enableJS = true;
+                chkForceJS.checked = true;
+                selectedSite.enableJS = 2;
              }
              onSiteChange(selectedListItem,selectedSite);
            }
@@ -830,7 +818,7 @@ function autopagerOpenIntab(url,obj)
         settingdesc.value =  updateSite.desc;
         rulecount.value =  count;
         
-        rulecount.hidden = !autopagerMain.loadBoolPref("show-rulecount")
+        rulecount.hidden = !autopagerPref.loadBoolPref("show-rulecount")
 
         var readOnly = updateSite.defaulted;
         chkSettingEnabled.readOnly = readOnly;
@@ -893,9 +881,39 @@ function autopagerOpenIntab(url,obj)
                 margin.value = selectedSite.margin;
                 minipages.value = selectedSite.minipages;
                 delaymsecs.value = selectedSite.delaymsecs;
-                description.value = selectedSite.desc;
+                description.value = "";
+                if (selectedSite.desc && selectedSite.desc!="")
+                    description.value = selectedSite.desc;
+                else if (selectedSite.id)
+                {
+                    description.value = "loading"
+                    try{
+                        try{
+                            xmlhttp = new XMLHttpRequest();
+                        }catch(e){
+                            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        xmlhttp.overrideMimeType("text/plan");
+                        xmlhttp.onreadystatechange = function (aEvt) {
+                            if(xmlhttp.readyState == 4) {
+                                if(xmlhttp.status == 200) {
+                                    description.value = xmlhttp.responseText
+                                }
+                            }
+                        }
+
+                        xmlhttp.open("GET", "http://ap.teesoft.info/discover/desc?id=" +selectedSite.id, true);
+                        //window.content.status = "loading ... " + url;
+                        xmlhttp.send(null);
+
+                    }catch (e){
+                        description.value = "failed to load"
+                    }
+
+                }
                 chkEnabled.checked = selectedSite.enabled;
-                chkEnableJS.checked = selectedSite.enableJS;
+                chkEnableJS.checked = selectedSite.enableJS>0;
+                chkForceJS.checked = selectedSite.enableJS>1;
                 chkAjax.checked = selectedSite.ajax
                 chkneedMouseDown.checked = selectedSite.needMouseDown
                 chkQuickLoad.checked = selectedSite.quickLoad;
@@ -918,7 +936,8 @@ function autopagerOpenIntab(url,obj)
             setChangedClass(delaymsecs, oldSite!=null && delaymsecs.value != oldSite.delaymsecs)
             setChangedClass(description, oldSite!=null && description.value != oldSite.desc)
             setChangedClass(chkEnabled, oldSite!=null && chkEnabled.checked != oldSite.enabled)
-            setChangedClass(chkEnableJS, oldSite!=null && chkEnableJS.checked != oldSite.enableJS)
+            setChangedClass(chkEnableJS, oldSite!=null && ( (oldSite.enableJS !=2 && oldSite.enableJS != chkEnableJS.checked) || chkEnableJS.checked != (oldSite.enableJS >0)))
+            setChangedClass(chkForceJS, oldSite!=null && chkForceJS.checked != (oldSite.enableJS>1))
             setChangedClass(chkAjax, oldSite!=null && chkAjax.checked != oldSite.ajax)
             setChangedClass(chkneedMouseDown, oldSite!=null && chkneedMouseDown.checked != oldSite.needMouseDown)
             setChangedClass(chkQuickLoad, oldSite!=null && chkQuickLoad.checked != oldSite.quickLoad)
@@ -970,6 +989,7 @@ function autopagerOpenIntab(url,obj)
         contentXPath.readOnly =disabled;
         chkEnabled.disabled =disabled;
         chkEnableJS.disabled =disabled;
+        chkForceJS.disabled =disabled;
         chkAjax.disabled =disabled;
         chkneedMouseDown.disabled = disabled;
         chkQuickLoad.disabled =disabled;
@@ -1135,9 +1155,9 @@ function autopagerOpenIntab(url,obj)
 		site.published = true;
         window.autopagerPublicSite=site;
 //        window.opener.autopagerPublicSite=site;
-        
+        autopagerRules.setPublishingSite(site);
         var browser = window.open("http://www.teesoft.info/aprules/submit");
-
+        //var browser = window.open("http://local-ap.teesoft.info/aprules/new/");
     }
     
     function handleDeleteSiteButton() {
@@ -1472,4 +1492,13 @@ function getAllRepository(allSites)
         repositories.push(allSites[i].updateSite)
     }
     return repositories;
+}
+function getEnableJS()
+{
+    var enableJS = false
+    if (chkEnableJS.checked)
+        enableJS = true;
+    if (chkForceJS.checked)
+        enableJS = 2;
+    return enableJS;
 }

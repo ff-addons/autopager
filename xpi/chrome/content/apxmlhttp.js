@@ -117,7 +117,7 @@ _handleParse: function (event) {
             htmlDoc.documentElement.appendChild(htmlDoc.importNode( fragment,true));
         }catch(e)
         {
-            //alert(e)
+            //autopagerBwUtil.consoleError(e)
         }
         
         return htmlDoc;
@@ -142,7 +142,7 @@ _handleParse: function (event) {
             }
         }catch(e)
         {
-            //alert(e)
+            //autopagerBwUtil.consoleError(e)
         }
         return nodes;
     },
@@ -163,11 +163,16 @@ _handleParse: function (event) {
             xmlhttp.overrideMimeType(type);
             xmlhttp.onreadystatechange = function (aEvt) {
             if(xmlhttp.readyState == 4) 
-            {
+            {       
                     if(xmlhttp.status == 200)
                     {
-                        if ((xmlhttp.channel.contentType != null && (xmlhttp.channel.contentType.indexOf("text\/plain")>-1
-                                    || xmlhttp.channel.contentType.indexOf("application\/json")>-1))
+                        var contentType =""
+                        if (xmlhttp.channel && xmlhttp.channel.contentType)
+                            contentType = xmlhttp.channel.contentType;
+                        else if(xmlhttp.getAllResponseHeader)
+                            contentType = xmlhttp.getAllResponseHeader("Content-Type");
+                        if ((contentType != "" && contentType != null  && (contentType.indexOf("text\/plain")>-1
+                                    || contentType.indexOf("application\/json")>-1))
                                     || xmlhttp.responseText.substring(0,2)=='[{')
                             loadCallBack(xmlhttp.responseText,obj)
                         else
@@ -176,8 +181,7 @@ _handleParse: function (event) {
                             if (doc == null)
                             {
                                 try{
-                                    var domParser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-                                    .createInstance(Components.interfaces.nsIDOMParser);
+                                    var domParser = autopagerBwUtil.newDOMParser();
                                     doc = domParser.parseFromString(xmlhttp.responseText, "text/xml");
                                     if (doc != null && doc.childNodes[0].localName == "parsererror")
                                         doc = null;
