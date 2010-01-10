@@ -14,6 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.menuitem.autopager-load-all.label "所有页">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
 <!ENTITY autopager.menuitem.autopager-show.label "显示">
 <!ENTITY autopager.sanitizer.entry "自动翻页网站确认信息">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">

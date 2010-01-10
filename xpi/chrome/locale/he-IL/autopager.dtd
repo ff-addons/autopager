@@ -14,6 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.menuitem.autopager-load-all.label "כל הדפים">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
 <!ENTITY autopager.menuitem.autopager-show.label "הצג">
 <!ENTITY autopager.sanitizer.entry "AutoPager Site Confirmation">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">

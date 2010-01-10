@@ -279,7 +279,7 @@ var splitbrowse = {
     //
     //    var html = targetB.contentDocument.documentElement.innerHTML
     },
-    getSplitBrowser : function (doc,createNew,clone,listener)
+    getSplitBrowser : function (doc,url,createNew,clone,listener)
     {
         var browser = this.getBrowserNode(doc);
   	if (!browser)
@@ -345,7 +345,6 @@ var splitbrowse = {
         if (splitBrowser != null && clone)
         {
             splitBrowser.loadURI("about:blank",null,null);
-            //splitBrowser.auotpagerContentDoc = doc;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             //alert(doc.documentElement.autopagerUseSafeEvent)
@@ -353,13 +352,27 @@ var splitbrowse = {
             if (listener)
                 splitBrowser.listener = listener
             window.setTimeout(function(){
-                if (!doc.documentElement.autopagerUseSafeEvent )
+                if (url!=null)
                 {
-                    splitbrowse.cloneBrowser(splitBrowser,browser);
-                }
+                    splitBrowser.autopagerSplitWinFirstDocSubmited=true;
+                    splitBrowser.autopagerSplitWinFirstDocloaded = true;
+                    if (listener)
+                    {
+                        listener.autopagerSplitDocInited = true;
+                        listener.autopagerEnabledSite = true;
+                    }
+                    splitBrowser.loadURI(url,null,null);
+               }
                 else
                 {
-                    splitBrowser.loadURI( doc.location.href, null, null );
+                    if (!doc.documentElement.autopagerUseSafeEvent )
+                    {
+                        splitbrowse.cloneBrowser(splitBrowser,browser);
+                    }
+                    else
+                    {
+                        splitBrowser.loadURI( doc.location.href, null, null );
+                    }
                 }
             },10);
         }
@@ -418,7 +431,7 @@ var splitbrowse = {
         var splitBrowser =null;
         this.hidden = hidden;
         try {
-            splitBrowser = this.getSplitBrowser(doc,!hidden,false,listener);
+            splitBrowser = this.getSplitBrowser(doc,null,!hidden,false,listener);
         }catch (e) {
             autopagerBwUtil.consoleError(e);
         }
@@ -433,7 +446,7 @@ var splitbrowse = {
     close : function(doc,listener)
     {
         try{
-            var splitBrowser = this.getSplitBrowser(doc,false,false,listener);
+            var splitBrowser = this.getSplitBrowser(doc,null,false,false,listener);
             if (splitBrowser==null)
                 return;
             if (listener && listener.splitpanelProgressListener)

@@ -14,6 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "A">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Alle Seiten">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
 <!ENTITY autopager.menuitem.autopager-show.label "angezeigt">
 <!ENTITY autopager.sanitizer.entry "AutoPager Seitenbestätigung">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">

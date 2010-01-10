@@ -56,18 +56,90 @@ var autopagerJsonSetting= {
 
         return str;
     },
-    mergeOverrides : function (normalSites,overrides)
+    mergeOverrides : function (updateSite,normalSites,overrides)
+    {
+        if (overrides==null || updateSite==null)
+            return;
+        var guids = []
+        var file = updateSite.filename
+        if (file=="autopagerTee.xml" || file =="autopagerBeta.xml")
+        {
+            for(var o=0;o<overrides.length;o++)
+            {
+                var override = overrides[o]
+                if (override.g && (typeof override.g!="number" && !override.g.match(/^a?[0-9]+$/)))
+                {
+                    guids.push(override.g)
+                }
+            }
+        }
+        if (guids.length>0)
+        {
+            try{
+                try{
+                    xmlhttp = new XMLHttpRequest();
+                }catch(e){
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.overrideMimeType("application/json");
+                xmlhttp.onreadystatechange = function (aEvt) {
+                    if(xmlhttp.readyState == 4) {
+                        if(xmlhttp.status == 200) {
+                            var maps = autopagerBwUtil.decodeJSON(xmlhttp.responseText);
+                            var newOverrides = [];
+                            for(var o=0;o<overrides.length;o++)
+                            {
+                                var override = overrides[o]
+                                if (override.g)
+                                {
+                                    if ((typeof override.g=="number" || !override.g.match(/^a?[0-9]+$/)))
+                                    {
+                                        newOverrides.push(override)
+                                    }else if (maps!=null && typeof maps[override.g] != "undefined")
+                                    {
+                                        override.g = maps[override.g];
+                                        override.k = override.g;
+                                        newOverrides.push(override)
+                                    }
+                                }
+                            }
+                            autopagerJsonSetting.doMergeOverrides(normalSites,newOverrides);
+                            var jsonfile = updateSite.filename.replace(/\.xml/,".json.override");
+                            autopagerConfig.saveOverrideToJsonFile(normalSites, autopagerBwUtil.getConfigFile(jsonfile));
+                        }
+                    }
+                }
+
+                xmlhttp.open("GET", "http://ap.teesoft.info/discover/guid2id?gids=" +guids.join(","), true);
+                //window.content.status = "loading ... " + url;
+                xmlhttp.send(null);
+
+            }catch (e){
+                autopagerBwUtil.consoleError(e);
+            }
+            
+        }
+        else
+        {
+            autopagerJsonSetting.doMergeOverrides(normalSites,overrides)
+        }
+    }
+    ,doMergeOverrides : function (normalSites,overrides)
     {
         for(var o=0;o<overrides.length;o++)
         {
-            var override = overrides[o]
+            try{
+                var override = overrides[o]
 
-            for(var i=0;i<normalSites.length;i++){
-                var site = normalSites[i]
-                if (site.guid == override.g || (override.k && site.id == override.k))
-                {
-                    autopagerJsonSetting.mergeOverrideToNormal(site,override);
+                for(var i=0;i<normalSites.length;i++){
+                    var site = normalSites[i]
+                    if (site.guid == override.g || (override.k && site.id == override.k))
+                    {
+                        autopagerJsonSetting.mergeOverrideToNormal(site,override);
+                    }
                 }
+            }catch (e){
+                autopagerBwUtil.consoleError(e);
             }
         }
     },
@@ -83,7 +155,7 @@ var autopagerJsonSetting= {
                 newSite.id = site.k;
                 newSite.guid  = site.k;
             }
-            else
+            if (typeof site.g != 'undefined')
                 newSite.guid  = site.g;
             
             if (typeof site.r != 'undefined')

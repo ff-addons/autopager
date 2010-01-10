@@ -14,6 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "В">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Все страницы">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel, alt">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
 <!ENTITY autopager.menuitem.autopager-show.label "показать">
 <!ENTITY autopager.sanitizer.entry "Подтверждение сайта AutoPager">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">

@@ -88,9 +88,9 @@ var autopagerToolbar =
         //    var autopagerHome = "http://www.teesoft.info";
         var lv = autopagerPref.loadPref("last_version");
         if (typeof lv=="undefined" || lv==null || lv=="") {  // new user        
-            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "&i=0.6.0.8",null))
+            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "&i=0.6.0.9",null))
             {
-                autopagerPref.savePref("last_version", "0.6.0.8");
+                autopagerPref.savePref("last_version", "0.6.0.9");
                 autopagerToolbar.addAutopagerButton();
                 if (autopagerBwUtil.isFennec())
                 {
@@ -101,11 +101,11 @@ var autopagerToolbar =
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = autopagerPref.loadPref("last_version");
-            if (lastVersion != "0.6.0.8")
+            if (lastVersion != "0.6.0.9")
             {
-                if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.6.0.8",null))
+                if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.6.0.9",null))
                 {
-                    autopagerPref.savePref("last_version", "0.6.0.8");
+                    autopagerPref.savePref("last_version", "0.6.0.9");
                 //autopagerToolbar.addAutopagerButton();
                     //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }

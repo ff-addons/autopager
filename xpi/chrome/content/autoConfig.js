@@ -86,7 +86,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.0.8").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.0.9").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -181,11 +181,12 @@ var UpdateSites=
                     if (overrideContents!=null && overrideContents.length>0)
                     {
                         var overrides = autopagerBwUtil.decodeJSON(overrideContents);
-                        autopagerJsonSetting.mergeOverrides(sites,overrides);
+                        autopagerJsonSetting.mergeOverrides(updatesite,sites,overrides);
                     }
                   }
             }catch(e)
             {
+                autopagerBwUtil.consoleError(e);
             }
         }
         UpdateSites.submitCount--;
@@ -763,7 +764,7 @@ loadConfig :function() {
             if (overrideContents!=null && overrideContents.length>0)
             {
                 var overrides = autopagerBwUtil.decodeJSON(overrideContents);
-                autopagerJsonSetting.mergeOverrides(sites,overrides);
+                autopagerJsonSetting.mergeOverrides(updateSite,sites,overrides);
             }
 
           }

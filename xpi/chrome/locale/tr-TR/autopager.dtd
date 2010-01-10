@@ -14,6 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "T">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Sonraki Tüm Sayfaları">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
 <!ENTITY autopager.menuitem.autopager-show.label "göster">
 <!ENTITY autopager.sanitizer.entry "AutoPager site onayları">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">

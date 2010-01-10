@@ -9,7 +9,7 @@ pref("autopager.smarttext", "next|>|下一页|次を表示");
 pref("autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页|Volgende|Volg|Verder|Напред|Следва|Næste|Nächste|Naechste|Weiter|Vorwärts|Vorwaerts|Volgende|Continue|Onward|Venonta|Seuraava|Suivant|Prochaine|Επόμενη|Næst|Successive|Successiva|Successivo|Prossima|Prossime|Prossimo|Altra|Altro|次へ|다음|Neste|Dalej|Następna|Następne|Następny|Więcej|Próximo|Înainte|Înaintare|Următor|Următoare|След|Следующая|Siguiente|Próxima|Próximos|Nästa|Sonraki|Devam|İlerle");
 pref("autopager.smartlinks", "2");
 pref("autopager.smartMargin", "1");
-pref("autopager.alwaysEnableJavaScript", true);
+pref("autopager.alwaysEnableJavaScript", false);
 
 pref("autopager.enablehotkeys.ctrlkey", true);
 pref("autopager.enablehotkeys.altkey", true);

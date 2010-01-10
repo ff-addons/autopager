@@ -735,7 +735,7 @@ onInitDoc : function(doc,safe)
                         //if (sitepos.site.enabled)
                         paging.autopagerSplitDocInited = false;
                         paging.enableJS = autopagerBwUtil.supportHiddenBrowser() &&
-                            (sitepos.site.enableJS ||sitepos.site.ajax || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                            (sitepos.site.enableJS ||sitepos.site.ajax || (autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
                             && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
 
                         var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),sitepos.site.guid,doc.location.host);
@@ -802,7 +802,7 @@ onInitDoc : function(doc,safe)
                         de.setAttribute('contentXPath',sitepos.site.contentXPath);
                         de.setAttribute('containerXPath',sitepos.site.containerXPath);
                         de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                        de.setAttribute('autopagerVersion',"0.6.0.8");
+                        de.setAttribute('autopagerVersion',"0.6.0.9");
                         de.setAttribute('autopagerGUID',sitepos.site.guid);
                         de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -950,9 +950,21 @@ clearLoadStatus : function (doc)
 
     splitbrowse.close(doc);
 
-},
+}
+,pauseLoadPages : function(doc)
+{
+    var obj = doc.documentElement
 
-loadPages : function (doc,pages)
+    if (doc.documentElement.autopagerPagingObj)
+    {
+        obj = doc.documentElement.autopagerPagingObj
+    }
+
+    if (obj.autopagerPage!=null && obj.autopagerPage!=0)
+        obj.forceLoadPage = obj.autopagerPage;
+
+}
+,loadPages : function (doc,pages)
 {
     var obj = doc.documentElement
 
@@ -1526,6 +1538,9 @@ getContentType : function(doc) {
     return type;
 },
 getSplitBrowserForDoc : function(doc,clone,listener) {
+    return autopagerMain.getSplitBrowserForDocWithUrl(doc,null,clone,listener);
+},
+getSplitBrowserForDocWithUrl : function(doc,url,clone,listener) {
     
 	var doClone = clone;
 	if (clone && (doc.documentElement.autopagerSplitCloning==true))
@@ -1535,7 +1550,7 @@ getSplitBrowserForDoc : function(doc,clone,listener) {
 	{
 		doc.documentElement.autopagerSplitCloning = clone;
     }
-    var browse = splitbrowse.getSplitBrowser(doc,true,doClone,listener);
+    var browse = splitbrowse.getSplitBrowser(doc,url,true,doClone,listener);
     doc.documentElement.autopagerSplitCloning = false;
     //splitbrowse.setVisible(browse,autopagerPref.loadBoolPref("debug"));
     if (clone && browse)
