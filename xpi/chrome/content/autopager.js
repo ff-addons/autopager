@@ -621,6 +621,8 @@ onInitDoc : function(doc,safe)
                             {
                                 if (!browser.autopagerProgressListenerAttached)
                                 {
+                                    de.setAttribute('autopagerAjax',sitepos.site.ajax);
+                                    doc.autopagerAjax = sitepos.site.ajax
                                     browser.addProgressListener(apBrowserProgressListener,
                                         Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
                                     browser.autopagerProgressListenerAttached = true;
@@ -734,9 +736,10 @@ onInitDoc : function(doc,safe)
                         de.autopagerPagingObj = paging
                         //if (sitepos.site.enabled)
                         paging.autopagerSplitDocInited = false;
-                        paging.enableJS = autopagerBwUtil.supportHiddenBrowser() &&
-                            (sitepos.site.enableJS ||sitepos.site.ajax || (autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
-                            && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
+                        paging.enableJS = autopagerBwUtil.supportHiddenBrowser()
+                            &&
+                            ((sitepos.site.enableJS ||sitepos.site.ajax || (autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                            && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2));
 
                         var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),sitepos.site.guid,doc.location.host);
                         if (siteConfirm!=null)
@@ -774,7 +777,10 @@ onInitDoc : function(doc,safe)
                         //alert(urlNodes);
                         if (urlNodes != null && urlNodes.length >0)
                         {
-                            nextUrl = autopagerMain.getNextUrl(doc,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")),urlNodes[0]);
+                            nextUrl = autopagerMain.getNextUrl(doc,
+                                autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                                ,urlNodes[0]);
+                            paging.enableJS = autopagerBwUtil.supportHiddenBrowser() && (paging.enableJS  || nextUrl.constructor != String);
                             autopagerMain.watchForNodeChange(nextUrl.parentNode);
                             autopagerMain.watchForNodeAttrChange(nextUrl);
                         } else
@@ -787,7 +793,7 @@ onInitDoc : function(doc,safe)
 
                         paging.autopagerPage = 1;
                         paging.autopagerinsertPoint = insertPoint;
-                        if  (paging.hasContentXPath && paging.enableJS)
+                        if  (autopagerBwUtil.supportHiddenBrowser() && paging.hasContentXPath && paging.enableJS)
                         {
                                 paging.autopagernextUrl= null;
 
@@ -802,7 +808,7 @@ onInitDoc : function(doc,safe)
                         de.setAttribute('contentXPath',sitepos.site.contentXPath);
                         de.setAttribute('containerXPath',sitepos.site.containerXPath);
                         de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                        de.setAttribute('autopagerVersion',"0.6.0.9");
+                        de.setAttribute('autopagerVersion',"0.6.0.10");
                         de.setAttribute('autopagerGUID',sitepos.site.guid);
                         de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -1523,7 +1529,7 @@ getHtmlBody  : function(html,enableJS) {
 },
 getContentType : function(doc) {
     //var nodes = doc.getElementsByTagName("meta");
-    var nodes  = doc.evaluate("//head/meta[@http-equiv]", doc, null, 0, null);
+    var nodes  = doc.evaluate("//head/meta[@http-equiv='Content-Type']", doc, null, 0, null);
     
     for (var node = null; (node = nodes.iterateNext()); ) {
         if (node.content != "")
@@ -2419,7 +2425,10 @@ alertErr : function(e) {
   },
   showHelp : function()
     {
-        autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/help.html");
+        if (autopagerBwUtil.isFennec())
+            content.location.href="http://autopager.teesoft.info/help.html"
+        else
+            autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/help.html");
     },
  showDonation : function()
     {
@@ -2501,7 +2510,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
                if (doc)
                    autopagerMain.onContentLoad(doc);
            }
-           autopagerBwUtil.openAlert('Page Reload Needed','Rules Updated','http://ap.teesoft.info/',callback)
+           autopagerBwUtil.openAlert('Page Reload Needed','Rules Updated',autopagerPref.loadPref("repository-site"),callback)
            break;
        case ".work-in-lite-mode":
            var e = autopagerLite.isInLiteMode();
@@ -2574,7 +2583,7 @@ var apBrowserProgressListener = {
         if (!webProgress.isLoadingDocument
             && webProgress.DOMWindow
             && webProgress.DOMWindow.document
-            && webProgress.DOMWindow.document.documentElement.getAttribute('autopagerAjax') == "true")
+            && webProgress.DOMWindow.document.autopagerAjax)
         {
             window.setTimeout(function(){
                 autopagerMain.clearLoadedPages(webProgress.DOMWindow.document);

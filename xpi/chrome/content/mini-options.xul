@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE autopager SYSTEM "chrome://autopager/locale/autopager.dtd" >
+
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <setting pref="autopager.enabled" type="bool" title="&autopager.status.enabled;">
+    &autopager.status.enabledTip;
+  </setting>
+  <setting pref="autopager.work-in-lite-mode" type="bool" title="&statusbar.menuitem.liteModel.label;"/>
+  <setting type="button">
+    <button label="&statusbar.menuitem.autopagerlite-discover.label;"
+        oncommand="autopagerLite.openRulesSelector(content.document);BrowserUI.hidePanel();"/>
+  </setting>
+  <!--
+  disabled until fennec can handle dialog
+  <setting type="button">
+    <button label="&options.dialog.autopager-options.title;"
+        oncommand="autopagerBwUtil.autopagerOpenIntab('chrome://autopager/content/options.xul');BrowserUI.hidePanel();"/>
+  </setting>
+  -->
+  <script type="application/x-javascript">
+      //if (!autopagerBwUtil.isFennec())
+      {
+          window.close();
+          window.open('chrome://autopager/content/options.xul', 'autopager-core',
+            'chrome,resizable,centerscreen');
+      }
+  </script>
+</vbox>

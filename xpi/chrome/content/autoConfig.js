@@ -86,7 +86,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.0.9").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.0.10").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -323,10 +323,22 @@ var autopagerConfig =
     formatVersion: 1,
     autopagerDomParser : autopagerBwUtil.newDOMParser(),
     openSetting : function(url,obj) {
-        window.autopagerSelectUrl=url;
-        window.autopagerOpenerObj = obj;
-        window.open("chrome://autopager/content/autopager.xul", "autopager",
-        "chrome,resizable,centerscreen");
+        var settingUrl = "chrome://autopager/content/autopager.xul";
+        if (!autopagerBwUtil.isFennec())
+        {
+            window.autopagerSelectUrl=url;
+            window.autopagerOpenerObj = obj;
+            window.open(settingUrl, "autopager",
+                "chrome,resizable,centerscreen");
+        }else
+        {
+            content.location.href=settingUrl;
+            if (typeof Browser!="undefined" && Browser._browserView)
+            {
+                var bv = Browser._browserView
+                bv.setZoomLevel(0.5);
+            }
+        }
     },
     saveConfirmToFile : function(sites,saveFile) {
 	try{

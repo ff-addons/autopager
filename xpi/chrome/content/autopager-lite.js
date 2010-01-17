@@ -17,7 +17,7 @@ var autopagerLite =
     },
     openRulesSelector : function(doc)
     {
-        var url="http://ap.teesoft.info/";
+        var url=autopagerPref.loadPref("repository-site");
         if (doc && doc.location && doc.location.href)
         {
             url = url + "?url=" + encodeURIComponent(doc.location.href);
@@ -86,7 +86,7 @@ var autopagerLite =
                         autopagerLite.processDiscoverResult(text);
                 }else
                 {
-                    var url="http://ap.teesoft.info/discover/discover?ir=false&url=" + encodeURIComponent(doc.location.href);
+                    var url=autopagerPref.loadPref("repository-site") + "discover/discover?ir=false&url=" + encodeURIComponent(doc.location.href);
                     autopagerLite.asyncRequest(url,"text/plan",function(xmlhttp){
                         if (xmlhttp)
                         {
@@ -199,6 +199,23 @@ var autopagerLite =
         }
         if (!doc || !doc.location || !doc.location.href || !(doc.location.href.match(/ap\.teesoft\.info/)))
             return;
+
+        if (autopagerBwUtil.isFennec() && typeof Browser!="undefined" && Browser._browserView)
+        {
+            var bv = Browser._browserView
+            bv.setZoomLevel(2);
+//            var browser = Browser;
+//            if (browser && browser.markupDocumentViewer)
+//            {
+//                var zoomFactor=2
+//              if (FullZoom.siteSpecific) {
+//                FullZoom._cps.setPref(browser.currentURI, FullZoom.name, zoomFactor);
+//              } else {
+//                browser.markupDocumentViewer.fullZoom = zoomFactor;
+//              }
+//            }
+        }
+
         var selectAll = doc.getElementById("apRulesForm:rulesTable:selectAll");
         if (selectAll)
             selectAll.checked = false;

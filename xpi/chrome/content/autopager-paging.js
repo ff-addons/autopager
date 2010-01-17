@@ -401,17 +401,21 @@ AutoPagring.prototype.processNextDoc = function(doc,url) {
     {
         this.processByClickOnly(doc,url);
     }
-    else if (this.enableJS || this.inSplitWindow) {
+    else if (autopagerBwUtil.supportHiddenBrowser() &&  (this.enableJS || this.inSplitWindow || url==null || url.constructor != String)) {
         this.inSplitWindow = true;
+        this.site.enableJS = true;
+        this.enableJS = true;
         this.processInSplitWin(doc);
     }else if (autopagerBwUtil.supportHiddenBrowser() && url!=null && url.constructor == String)
     {
         this.inSplitWindow = true;
         this.processInSplitWinByUrl(doc,url);
     }
-    else{
+    else if (url!=null && url.constructor == String){
         this.processNextDocUsingXMLHttpRequest(doc,url);
     }
+    else
+        autopagerMain.enabledInThisSession(doc,false);
 },
 AutoPagring.prototype.processByClickOnly = function(doc,url)
 {

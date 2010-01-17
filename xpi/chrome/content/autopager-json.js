@@ -110,7 +110,7 @@ var autopagerJsonSetting= {
                     }
                 }
 
-                xmlhttp.open("GET", "http://ap.teesoft.info/discover/guid2id?gids=" +guids.join(","), true);
+                xmlhttp.open("GET", autopagerPref.loadPref("repository-site") + "discover/guid2id?gids=" +guids.join(","), true);
                 //window.content.status = "loading ... " + url;
                 xmlhttp.send(null);
 

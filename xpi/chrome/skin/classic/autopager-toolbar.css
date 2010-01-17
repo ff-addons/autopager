@@ -20,7 +20,7 @@ toolbar[iconsize="small"] #autopager-button.ap-site-disabled {
   list-style-image: url("chrome://autopager/skin/autopager-small-site.off.gif");
 }
 #autopager-button-fennec {
-  list-style-image: url("chrome://autopager/skin/autopager.gif");
+  list-style-image: url("chrome://autopager/skin/autopager64.png");
 }
 #autopager-button-fennec.ap-disabled{
   list-style-image: url("chrome://autopager/skin/autopager.off.gif");
@@ -30,7 +30,7 @@ toolbar[iconsize="small"] #autopager-button.ap-site-disabled {
 }
 
 toolbar[iconsize="small"] #autopager-button-fennec {
-  list-style-image: url("chrome://autopager/skin/autopager-small.on.gif");
+  list-style-image: url("chrome://autopager/skin/autopager32.ico");
 }
 toolbar[iconsize="small"] #autopager-button-fennec.ap-disabled {
   list-style-image: url("chrome://autopager/skin/autopager-small.off.gif");

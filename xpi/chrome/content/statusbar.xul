@@ -370,9 +370,6 @@
                       >
                 <menupopup id="autopager-about-menupopup" >
 
-                    <menuitem id="autopager-alert" label="alert" tooltiptext="alert"
-                                  oncommand="autopagerBwUtil.openAlert('test title','test alert','http://ap.teesoft.info/')"
-                        />
                     <menuitem id="autopager-donation" label="&statusbar.menuitem.autopager-donation.label;" tooltiptext="&statusbar.menuitem.autopager-donation.tooltiptext;"
                                   oncommand="autopagerMain.showDonation()"
                         />
@@ -434,6 +431,7 @@
         </toolbarbutton>
     </toolbarpalette>
 
+    <!--
     <toolbar id="toolbar-main">
         <toolbarbutton id="autopager-button-fennec"
             class="autopager-toolbar-additional autopager-fennec"
@@ -445,4 +443,17 @@
             oncommand="autopagerLite.openRulesSelector(content.document);"
             />
     </toolbar>
+    -->
+    <vbox id="browser-controls">
+          <toolbarspring insertafter="tool-star"/>
+        <toolbarbutton id="autopager-button-fennec"
+            class="browser-control-button button-image autopager-fennec-big"
+            label="&autopager.toolbarLabel;"
+            tooltiptext="&autopager.tooltip;"
+            buttonstyle="pictures"
+            insertafter="tool-star"
+            popupdisabled="autopager-toolbar-popup"
+            oncommand="autopagerLite.openRulesSelector(content.document);"
+            />
+    </vbox>
 </overlay>

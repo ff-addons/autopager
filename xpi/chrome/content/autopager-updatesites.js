@@ -53,7 +53,7 @@ var AutoPagerUpdateTypes =
             "default configurations on teesoft.info"));
             
             this.types.push(new AutoPagerUpdateType("autopager-lite","all",
-            "http://ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+            autopagerPref.loadPref("repository-site") + "discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
             "application/json; charset=utf-8",
             "ap-",this.autopagerConfigCallback,"//site",
             "Lite configurations on teesoft.info"));
@@ -171,7 +171,7 @@ var AutoPagerUpdateTypes =
             if(withlite || lite)
             {
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
+                        autopagerPref.loadPref("repository-site") +"discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "AutoPager Lite Configurations @ teesoft.info",
                         "autopagerLite.xml","//site",true,"autopager-lite",-2,
                                 ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",

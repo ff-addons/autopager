@@ -902,7 +902,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                             }
                         }
 
-                        xmlhttp.open("GET", "http://ap.teesoft.info/discover/desc?id=" +selectedSite.id, true);
+                        xmlhttp.open("GET", autopagerPref.loadPref("repository-site") +"discover/desc?id=" +selectedSite.id, true);
                         //window.content.status = "loading ... " + url;
                         xmlhttp.send(null);
 
