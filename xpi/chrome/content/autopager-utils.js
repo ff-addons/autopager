@@ -1,7 +1,3 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 var autopagerUtils = {
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -425,5 +421,190 @@ var autopagerUtils = {
             return false;
         }
         return true;
+    }
+    ,
+    getFormName : function(node)
+    {
+        while(node && node.localName.toLowerCase()!="form"
+            && node.localName.toLowerCase()!="body"
+            && node != node.parentNode)
+        node = node.parentNode;
+        if (!node || node.localName.toLowerCase()!="form" || (!node.id && !node.name))
+            return "_default_";
+        if (!node.id)
+            return node.id;
+        if (!node.name)
+            return node.name;
+        return "_default_";
+    }
+    ,
+    serializeUserInput : function(aFrame)
+    {
+        var data = {};
+        try {
+            var xpe = new XPathEvaluator();
+            var nsResolver = xpe.createNSResolver(aFrame.document.documentElement);
+            var xpathResult = aFrame.document.evaluate(
+                'descendant::textbox | descendant::*[local-name() = "input" or local-name() = "INPUT" or local-name() = "textarea" or local-name() = "TEXTAREA"]',
+                aFrame.document,
+                nsResolver,
+                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+                null
+                );
+            if (xpathResult.snapshotLength) {
+                var node;
+                for (var i = 0, maxi = xpathResult.snapshotLength; i < maxi; i++)
+                {
+                    node = xpathResult.snapshotItem(i);
+                    if (node.wrappedJSObject) node = node.wrappedJSObject;
+                    if (!node.id && !node.name)
+                        continue;
+
+                    var formName = autopagerUtils.getFormName(node);
+                    var form = data[formName];
+                    if (typeof form == "undefined")
+                    {
+                        form = {}
+                        data[formName]=form;
+                    }
+                    var text = {};
+                    text.id = node.id;
+                    text.name = node.name;
+                    form[text.id +"|" + text.name] = text
+                    switch (node.localName.toLowerCase())
+                    {
+                        case 'input':
+                            if (/^(true|readonly|disabled)$/i.test(node.getAttribute('readonly') || node.getAttribute('disabled') || ''))
+                                continue;
+                            switch ((node.getAttribute('type') || '').toLowerCase())
+                            {
+                                case 'checkbox':
+                                    text.value = node.checked ? true : false;
+                                    break;
+
+                                case 'radio':
+                                case 'text':
+                                    text.value = node.value;
+                                    break;
+                                case 'submit':
+                                case 'reset':
+                                case 'button':
+                                case 'image':
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'textbox':
+                        case 'text':
+                        case 'textarea':
+                            if (node.value)
+                                text.value = node.value;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                }
+            }
+        }
+        catch(e) {
+            autopagerBwUtil.consoleError(e);
+        }
+        //data.innerHTML = aFrame.document.documentElement.innerHTML
+        var frames = aFrame.frames;
+        if (frames.length) {
+            data.children = [];
+            for (var i = 0, maxi = frames.length; i < maxi; i++)
+            {
+                data.children.push(autopagerUtils.serializeUserInput(frames[i]));
+            }
+        }
+
+        return data;
+    }
+    ,
+    deSerializeUserInput : function(aFrame,data)
+    {
+        try {
+            var xpe = new XPathEvaluator();
+            var nsResolver = xpe.createNSResolver(aFrame.document.documentElement);
+            var xpathResult = aFrame.document.evaluate(
+                'descendant::textbox | descendant::*[local-name() = "input" or local-name() = "INPUT" or local-name() = "textarea" or local-name() = "TEXTAREA"]',
+                aFrame.document,
+                nsResolver,
+                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+                null
+                );
+            if (xpathResult.snapshotLength) {
+                var node;
+                for (var i = 0, maxi = xpathResult.snapshotLength; i < maxi; i++)
+                {
+                    node = xpathResult.snapshotItem(i);
+                    if (node.wrappedJSObject) node = node.wrappedJSObject;
+                    if (!node.id && !node.name)
+                        continue;
+
+                    var formName = autopagerUtils.getFormName(node);
+                    var form = data[formName];
+                    if (typeof form == "undefined")
+                    {
+                        continue;
+                    }
+                    var text = form[node.id +"|" + node.name];
+                    if (typeof text == "undefined")
+                    {
+                        continue;
+                    }
+                    switch (node.localName.toLowerCase())
+                    {
+                        case 'input':
+                            if (/^(true|readonly|disabled)$/i.test(node.getAttribute('readonly') || node.getAttribute('disabled') || ''))
+                                continue;
+                            switch ((node.getAttribute('type') || '').toLowerCase())
+                            {
+                                case 'checkbox':
+                                    node.checked  = text.value;
+                                    break;
+
+                                case 'radio':
+                                case 'text':
+                                    node.value = text.value ;
+                                    break;
+                                case 'submit':
+                                case 'reset':
+                                case 'button':
+                                case 'image':
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'textbox':
+                        case 'text':
+                        case 'textarea':
+                            if (text.value)
+                                node.value = text.value;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                }
+            }
+        }
+        catch(e) {
+            autopagerBwUtil.consoleError(e);
+        }
+        //aFrame.document.documentElement.innerHTML = data.innerHTML
+        var frames = aFrame.frames;
+        if (frames.length && data.children ) {
+            for (var i = 0, maxi = Math.min(frames.length,data.children.length); i < maxi; i++)
+            {
+                autopagerUtils.deSerializeUserInput(frames[i],data.children[i]);
+            }
+        }
+
+        return data;
     }
 }

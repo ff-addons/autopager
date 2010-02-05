@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "Utilizări">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "l">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
@@ -207,6 +208,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "Opţiuni principale AutoPager">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Adaugă un sait">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Elimină tot">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Identifică">

@@ -13,7 +13,7 @@ var hashSites = null;
     var chkCtrl,chkAlt,chkShift,chkQuickLoad;
     var txtLoading,txtPagebreak,txtConfirmStyle,txtTimeout;
     var mnuUpdate;
-    var linkXPath,containerXPath;
+    var linkXPath,containerXPath, monitorXPath;
 
     var chkSettingEnabled,lbSettinglOwner,settingurl
     var settingtype,settingUpdatePeriod,settingxpath,settingdesc,rulecount
@@ -28,7 +28,7 @@ var hashSites = null;
     var xpath="";
     var ids,ir;
     var siteSearch;
-    var btnPickRemovePath, btnPickContentPath,btnPickContainerPath,btnModifyContainerXPath,btnModifyLinkXPath
+    var btnPickRemovePath, btnPickContentPath,btnPickContainerPath,btnPickCleanPath,btnModifyCleanPath,btnModifyContainerXPath,btnModifyLinkXPath
 
 if (autopagerPref.loadBoolPref("show-help"))
     {
@@ -275,6 +275,8 @@ if (autopagerPref.loadBoolPref("show-help"))
         chkFixOverflow = document.getElementById("chkFixOverflow");
         linkXPath  = document.getElementById("linkXPath");
         containerXPath  = document.getElementById("containerXPath");
+        monitorXPath  = document.getElementById("monitorXPath");
+
         btnPickLinkPath  = document.getElementById("pickLinkPath");
         
         settingDeck = document.getElementById("settingDeck");
@@ -359,6 +361,8 @@ if (autopagerPref.loadBoolPref("show-help"))
         btnPickContentPath = document.getElementById("pickContentPath")
         btnPickContainerPath = document.getElementById("pickContainerPath")
         btnModifyContainerXPath = document.getElementById("modifyContainerXPath")
+        btnPickCleanPath = document.getElementById("pickCleanPath")
+        btnModifyCleanPath = document.getElementById("pickCleanPath")
         btnModifyLinkXPath = document.getElementById("modifyLinkXPath")
 
         treeSites.addEventListener("select", updateDetails, false);
@@ -495,6 +499,12 @@ if (autopagerPref.loadBoolPref("show-help"))
         containerXPath.addEventListener("change", function() {
            if (selectedSite != null) {
              selectedSite.containerXPath = containerXPath.value;
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
+        monitorXPath.addEventListener("change", function() {
+           if (selectedSite != null) {
+             selectedSite.monitorXPath = monitorXPath.value;
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
@@ -921,6 +931,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                 populateXPath(selectedSite.contentXPath,contentXPath);
                 linkXPath.value    = selectedSite.linkXPath;
                 containerXPath.value    = selectedSite.containerXPath;
+                monitorXPath.value    = selectedSite.monitorXPath;
                 populateXPath(selectedSite.removeXPath,lstRemoveXPath);
                 lstRemoveXPath.value    = selectedSite.removeXPath;
                 lblOwner.value = selectedSite.owner;
@@ -945,6 +956,7 @@ if (autopagerPref.loadBoolPref("show-help"))
             setChangedClass(contentXPath, oldSite!=null && !autopagerJsonSetting.arrayEqual(selectedSite.contentXPath,oldSite.contentXPath))
             setChangedClass(linkXPath, oldSite!=null && linkXPath.value != oldSite.linkXPath)
             setChangedClass(containerXPath, oldSite!=null && containerXPath.value != oldSite.containerXPath)
+            setChangedClass(monitorXPath, oldSite!=null && monitorXPath.value != oldSite.monitorXPath)
             setChangedClass(lstRemoveXPath, oldSite!=null && !autopagerJsonSetting.arrayEqual(selectedSite.removeXPath,oldSite.removeXPath))
             //setChangedClass(urlPattern, oldSite!=null && selectedSite.urlPattern != oldSite.urlPattern)
             setChangedClass(lblOwner, oldSite!=null && lblOwner.value != oldSite.owner)
@@ -979,6 +991,9 @@ if (autopagerPref.loadBoolPref("show-help"))
         btnPickContentPath.disabled = disabled
         btnPickContainerPath.disabled = disabled
         btnModifyContainerXPath.disabled = disabled
+        btnPickCleanPath.disabled = disabled
+        btnModifyCleanPath.disabled = disabled
+
         btnModifyLinkXPath.disabled = disabled
         //btnEditPath.disabled =disabled;
         btnDeleteRemovePath.disabled =disabled;

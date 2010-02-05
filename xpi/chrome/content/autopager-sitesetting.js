@@ -63,6 +63,7 @@ loadfromclip : function(doc)
         autopagerSiteSetting.autopagerSetField(doc,site,"delaymsecs");
         autopagerSiteSetting.autopagerSetField(doc,site,"linkXPath");
         autopagerSiteSetting.autopagerSetField(doc,site,"containerXPath");
+        autopagerSiteSetting.autopagerSetField(doc,site,"monitorXPath");
         autopagerSiteSetting.autopagerSetFieldArray(doc,site,"contentXPath");
         autopagerSiteSetting.autopagerSetField(doc,site,"desc");
         autopagerSiteSetting.autopagerSetCheck(doc,site,"enableJS");

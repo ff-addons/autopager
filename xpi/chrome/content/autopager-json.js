@@ -210,6 +210,8 @@ var autopagerJsonSetting= {
                 newSite.testLink.push(site.t);
             if (typeof site.h != 'undefined')
                 newSite.containerXPath=site.h;
+            if (typeof site.b != 'undefined')
+                newSite.monitorXPath=site.b;
 
             if (typeof site.l != 'undefined')
             {
@@ -302,6 +304,8 @@ var autopagerJsonSetting= {
                 normalSite.testLink.push(site.t);
             if (typeof site.h != 'undefined')
                 normalSite.containerXPath=site.h;
+            if (typeof site.b != 'undefined')
+                normalSite.monitorXPath=site.b;
 
             if (typeof site.l != 'undefined')
             {
@@ -398,6 +402,10 @@ var autopagerJsonSetting= {
             if (normal.containerXPath!=null && normal.containerXPath.length>0)
                 override.h = normal.containerXPath;
 
+            if (normal.monitorXPath != oldSite.monitorXPath)
+            if (normal.monitorXPath!=null && normal.monitorXPath.length>0)
+                override.b = normal.monitorXPath;
+
             if (!autopagerJsonSetting.arrayEqual(normal.removeXPath,oldSite.removeXPath))
             {
                 if (normal.removeXPath.length==1)
@@ -469,6 +477,8 @@ var autopagerJsonSetting= {
                 site.t = normal.testLink[0];
             if (normal.containerXPath!=null && normal.containerXPath.length>0)
                 site.h = normal.containerXPath;
+            if (normal.monitorXPath!=null && normal.monitorXPath.length>0)
+                site.b = normal.monitorXPath;
 
             if (normal.removeXPath)
             {

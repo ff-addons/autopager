@@ -86,7 +86,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.0.10").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.0.13").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -290,6 +290,7 @@ function Site()
 
 	this.linkXPath = "//a[contains(.//text(),'Next')]";
         this.containerXPath="";
+        this.monitorXPath="";
         this.removeXPath=[];
 	//this.desc = null;
 	this.testLink = [];
@@ -551,6 +552,7 @@ doCloneSite : function(newSite,site)
 
         newSite.linkXPath = site.linkXPath;
         newSite.containerXPath = site.containerXPath;
+        newSite.monitorXPath = site.monitorXPath;
         
         if (site.desc)
             newSite.desc = site.desc;
@@ -586,6 +588,7 @@ doCloneSite : function(newSite,site)
 						|| oldSite.owner  != site.owner
 						|| oldSite.linkXPath != site.linkXPath
 						|| oldSite.containerXPath != site.containerXPath
+						|| oldSite.monitorXPath != site.monitorXPath
 						|| oldSite.removeXPath.length != site.removeXPath.length
 						|| oldSite.desc != site.desc
 						|| oldSite.contentXPath.length != site.contentXPath.length
@@ -1108,6 +1111,9 @@ loadConfigFromUrl : function(url) {
       else if (nodeName == "published") {
                         published	= (autopagerConfig.getValue(childNode) == 'true');
       }
+      else if (nodeName == "monitorXPath") {
+                        site.monitorXPath	= autopagerConfig.getValue(childNode);
+      }
       childNode = childNode.nextSibling
     }
     site.ajax = ajax;
@@ -1293,7 +1299,10 @@ if (sites!=null)
 	    autopagerConfig.createNode(siteNode,"linkXPath",siteObj.linkXPath);
             if (siteObj.containerXPath!=null && siteObj.containerXPath.length>0)
                 autopagerConfig.createNode(siteNode,"containerXPath",siteObj.containerXPath);
-            
+
+            if (siteObj.monitorXPath!=null && siteObj.monitorXPath.length>0)
+                autopagerConfig.createNode(siteNode,"monitorXPath",siteObj.monitorXPath);
+
 	    if (siteObj.desc!=null && siteObj.desc.length>0)
                 autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
 	

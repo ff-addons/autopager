@@ -103,6 +103,8 @@ var autopagerLite =
     },
     promptLiteDiscovery : function ()
     {
+        //disabled, server can't handle two many requests
+        return;
         if (autopagerBwUtil.isFennec())
             return;
 
@@ -339,5 +341,3 @@ var autopagerLite =
 //        return true;
     }
 }
-
-autopagerLite.apRuleSiteOnInit();

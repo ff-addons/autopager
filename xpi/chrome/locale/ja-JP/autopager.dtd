@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Include Recommneded Rules">
 <!ENTITY label.Usages.value "使用方法">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
@@ -207,6 +208,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPagerの主要なオプション">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
 <!ENTITY toolbarbutton.addSite.tooltiptext "サイトを追加します">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "すべて一掃します">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "ディスカバリ">

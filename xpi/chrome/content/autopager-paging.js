@@ -811,7 +811,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
 
 
                     newNode = container.importNode (newNode,true);
-                    autopagerMain.removeElements(newNode,this.site.removeXPath,this.enableJS||this.inSplitWindow)
+                    autopagerMain.removeElements(newNode,this.site.removeXPath,this.enableJS||this.inSplitWindow,true)
 
 
                     newNode = insertPoint.parentNode.insertBefore(newNode,insertPoint);
@@ -825,8 +825,8 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                     autopagerMain.alertErr(e);
                 }
             }
-            div = autopagerMain.createDiv(container,"","display:none;");
-            div.setAttribute("id","apBreakEnd" + this.autopagerPage);
+            div = autopagerMain.createDiv(container,"apBreakEnd" + this.autopagerPage,"display:none;");
+            //div.setAttribute("id","apBreakEnd" + this.autopagerPage);
             insertPoint.parentNode.insertBefore(div,insertPoint);
 
             //alert(nodes.length);
@@ -1263,7 +1263,7 @@ AutoPagring.prototype.onSplitDocLoadedWithDelay = function(doc,timeout)
                 paging.autopagerSplitDocInited = false;
                 var topDoc = content.document;
 
-                    topthis.autopagerPagingCount = 0
+                    this.autopagerPagingCount = 0
                 setTimeout(function(){
                     topDoc =content.document;
                     de = topDoc.documentElement;

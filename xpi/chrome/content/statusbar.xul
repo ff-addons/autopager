@@ -456,4 +456,7 @@
             oncommand="autopagerLite.openRulesSelector(content.document);"
             />
     </vbox>
+    <script type="application/x-javascript">
+        autopagerMain.autopagerOnLoad();autopagerLite.apRuleSiteOnInit();
+    </script>
 </overlay>

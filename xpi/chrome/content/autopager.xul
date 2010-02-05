@@ -47,12 +47,6 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
 
 
-    <tooltip  id="helptip"  flex="1">
-        <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
-      style="color: red;"
-      onclick=" tips.openHelpTip(this.parentNode);" class="text-link"/>
-    </tooltip>
-    
     <tabbox id="autopager-tabbox" flex="1">
         <tabs>
             <tab label="&setting.label.sites;"/>
@@ -209,9 +203,19 @@
                                             </hbox>
                                             <hbox align="center">
                                                 <label control="containerXPath" value="&setting.label.lblContainerXPath;"/>
-                                                <textbox id="containerXPath" flex="1" tooltiptext="&setting.text.tipContainerXPath;"/>
+                                            </hbox>
+                                            <hbox align="center">
+                                                <textbox id="containerXPath" flex="3" tooltiptext="&setting.text.tipContainerXPath;"/>
                                                 <button id="pickContainerPath" flex="1" label="&setting.button.pick;" oncommand="pickupContent('containerXPath')" />
                                                 <button id="modifyContainerXPath" flex="1" label="&button.modifyContainerXPath.label;" oncommand="autopagerXPath.modifyXPath('containerXPath');"/>
+                                            </hbox>
+                                            <hbox align="center">
+                                                <label id="monitorXPathLbl" control="monitorXPath" value="&label.monitorXPathLbl.value;"/>
+                                            </hbox>
+                                            <hbox align="center">
+                                                <textbox id="monitorXPath" flex="3" tooltiptext="&textbox.monitorXPath.tooltiptext;"/>
+                                                <button id="pickCleanPath" flex="1" label="&setting.button.pick;" oncommand="pickupContent('monitorXPath')" />
+                                                <button id="modifyCleanPath" flex="1" label="&button.modifyContainerXPath.label;" oncommand="autopagerXPath.modifyXPath('monitorXPath');"/>
                                             </hbox>
                                             <groupbox id="grpRemoveXPath" orient="vertical" flex="1">
                                                 <caption label="&setting.label.grpRemoveXPath;" />
@@ -409,12 +413,17 @@
                             </menupopup>
                         </menulist>
                     </hbox>
+    <tooltip  id="helptip"  flex="1">
+        <image width="48" height="48" src="chrome://autopager/skin/help.jpg"
+      style="color: red;"
+      onclick=" tips.openHelpTip(this.parentNode);" class="text-link"/>
+    </tooltip>
                 </vbox>
             </tabpanel>
         </tabpanels>
-    </tabbox>
-
+    </tabbox>    
 </dialog>
+
 
 
 

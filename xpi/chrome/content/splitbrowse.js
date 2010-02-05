@@ -212,9 +212,30 @@ var splitbrowse = {
         if (!aEntry)
             return null;
         aEntry = aEntry.QueryInterface(Components.interfaces.nsISHContainer);
-        var newEntry = aEntry.clone(true);
+        //var newEntry = aEntry.clone();
+        var newEntry = Components.classes['@mozilla.org/browser/session-history-entry;1'].createInstance(Components.interfaces.nsISHEntry);
+        newEntry = newEntry.QueryInterface(Components.interfaces.nsIHistoryEntry);
         newEntry = newEntry.QueryInterface(Components.interfaces.nsISHContainer);
+
+        newEntry.setURI(aEntry.URI);
+        newEntry.setTitle(aEntry.title);
+        newEntry.setIsSubFrame(aEntry.isSubFrame);
+
+        if (aEntry.postData)
+            newEntry.postData = aEntry.postData.QueryInterface(Components.interfaces.nsISeekableStream)
+
+
         newEntry.loadType = Math.floor(aEntry.loadType);
+        var cacheKeyNum = 0;
+        if ('cacheKey' in aEntry && aEntry.cacheKey) {
+            cacheKeyNum = aEntry.cacheKey.QueryInterface(Components.interfaces.nsISupportsPRUint32).data;
+        }
+        var cacheKey = Components.classes['@mozilla.org/supports-PRUint32;1'].createInstance(Components.interfaces.nsISupportsPRUint32);
+			cacheKey.type = cacheKey.TYPE_PRUINT32;
+			cacheKey.data = parseInt(cacheKeyNum);
+			cacheKey = cacheKey.QueryInterface(Components.interfaces.nsISupports);
+        newEntry.cacheKey         = cacheKey;
+
         if (aEntry.childCount) {
             for (var j = 0; j < aEntry.childCount; j++) {
                 var childEntry = this.cloneHistoryEntry(aEntry.GetChildAt(j));
@@ -224,28 +245,64 @@ var splitbrowse = {
         }
         return newEntry;
     },
+    cloneWithSessionStore : function(targetB, originalB)
+    {
+        var ss = null;
+        if ("@mozilla.org/browser/sessionstore;1" in Components.classes) {
+          ss = Components.classes["@mozilla.org/browser/sessionstore;1"]
+                         .getService(Components.interfaces.nsISessionStore);
+        }
+        if (!ss || !ss.getWindowState || !ss.setWindowState)
+          return false;
+      var state = ss.getTabState(originalB)
+      ss.setTabState(targetB,state);
+
+      return true;
+    },
     cloneBrowser: function(targetB, originalB)
     {
-      
+        var d = autopagerUtils.serializeUserInput(originalB.contentWindow)
+        targetB.addEventListener('DOMContentLoaded', function() {
+            targetB.removeEventListener('DOMContentLoaded', arguments.callee, false);
+            autopagerUtils.deSerializeUserInput(targetB.contentWindow, d);
+        }, false);
+
+//        if (splitbrowse.cloneWithSessionStore(targetB, originalB))
+//            return;
         var webNav = targetB.webNavigation;
         var newHistory = webNav.sessionHistory;
 
-        newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+        newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
         // delete history entries if they are present
         if (newHistory.count > 0)
             newHistory.PurgeHistory(newHistory.count);
         var originalHistory  = originalB.webNavigation.sessionHistory;
-        originalHistory = originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
+        originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
 
-        var entry = originalHistory.getEntryAtIndex(originalHistory.index,false).QueryInterface(Components.interfaces.nsISHEntry);
+        var entry = originalHistory.getEntryAtIndex(originalHistory.index,false);
+        entry = entry.QueryInterface(Components.interfaces.nsISHEntry);
         var newEntry = this.cloneHistoryEntry(entry);
         if (newEntry)
             newHistory.addEntry(newEntry, true);
     
 
-        webNav.gotoIndex(0);
+        gotoHistoryIndex(10);
+
+        function gotoHistoryIndex(attempts) {
+          try {
+            webNav.gotoIndex(0);
+          }
+          catch(e) {
+            // do some math to increase the timeout
+            // each time we try to update the history index
+            if (attempts)
+              setTimeout(gotoHistoryIndex, (11 - attempts) * (15 - attempts), --attempts);
+          }
+        }
+
+        //webNav.gotoIndex(0);
     
     //    //
     //    //targetB.contentDocument.documentElement.innerHTML = originalB.contentDocument.documentElement.innerHTML
@@ -367,7 +424,10 @@ var splitbrowse = {
                 {
                     if (!doc.documentElement.autopagerUseSafeEvent )
                     {
+                        //autopagerBwUtil.consoleError("load in hidden browser");
                         splitbrowse.cloneBrowser(splitBrowser,browser);
+//                        var newTab = gBrowser.addTab();
+//                        splitbrowse.cloneBrowser(newTab.ownerDocument.defaultView.gBrowser.getBrowserForTab(newTab),browser);
                     }
                     else
                     {

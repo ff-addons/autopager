@@ -14,7 +14,7 @@ var autopagerTroubleShoting =
         }
 
         //check whether AutoPager enabled on the site
-        var matched = this.reEnableOnDoc(autopagerUtils.getTopDoc(doc));
+        var matched = autopagerTroubleShoting.reEnableOnDoc(autopagerUtils.getTopDoc(doc),autofix);
         UpdateSites.updateOnline(true);
         //check whether there is rules for this site
         if (!matched)
@@ -56,7 +56,7 @@ var autopagerTroubleShoting =
             //alert(doc.defaultView.frames.length);
             for(var i=0;i<doc.defaultView.frames.length;++i) {
                 var frame = doc.defaultView.frames[i].document;
-                if (this.reEnableOnDoc(frame) && !matched)
+                if (autofix.reEnableOnDoc(frame,autofix) && !matched)
                     matched = true
             }
         }
