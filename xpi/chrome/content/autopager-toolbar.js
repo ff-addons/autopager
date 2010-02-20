@@ -88,9 +88,9 @@ var autopagerToolbar =
         //    var autopagerHome = "http://www.teesoft.info";
         var lv = autopagerPref.loadPref("last_version");
         if (typeof lv=="undefined" || lv==null || lv=="") {  // new user        
-            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "&i=0.6.0.13",null))
+            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "&i=0.6.0.14",null))
             {
-                autopagerPref.savePref("last_version", "0.6.0.13");
+                autopagerPref.savePref("last_version", "0.6.0.14");
                 autopagerToolbar.addAutopagerButton();
                 if (autopagerBwUtil.isFennec())
                 {
@@ -101,11 +101,11 @@ var autopagerToolbar =
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
             var lastVersion = autopagerPref.loadPref("last_version");
-            if (lastVersion != "0.6.0.13")
+            if (lastVersion != "0.6.0.14")
             {
-                if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.6.0.13",null))
+                if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "&u=" + lastVersion + "&i=0.6.0.14",null))
                 {
-                    autopagerPref.savePref("last_version", "0.6.0.13");
+                    autopagerPref.savePref("last_version", "0.6.0.14");
                 //autopagerToolbar.addAutopagerButton();
                     //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
                 }
@@ -115,8 +115,8 @@ var autopagerToolbar =
     }
 };
 
-window.addEventListener("load", function() {
-    var self = arguments.callee;
-    window.removeEventListener("load",self,false);
-    setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-}, false);
+//window.addEventListener("load", function() {
+//    var self = arguments.callee;
+//    window.removeEventListener("load",self,false);
+//    setTimeout(autopagerToolbar.autopagerToobarInit, 250);
+//}, false);

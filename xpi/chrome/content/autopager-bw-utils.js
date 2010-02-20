@@ -96,25 +96,33 @@ autopagerOpenIntab : function(url,obj)
         {
             var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
             var w = wm && wm.getMostRecentWindow('navigator:browser', true);
-            var browser = null
+            var b = null
             if(w && !w.closed)
             {
-                browser = w.getBrowser();//w.getBrowser();
+                b = w.getBrowser();//w.getBrowser();
             }else if (typeof getBrowser!="undefined")
-                browser = getBrowser();
+                b = getBrowser();
 
-            if (browser)
+            if (b)
             {
-                var browser = w.getBrowser();//w.getBrowser();
+                var b = w.getBrowser();//w.getBrowser();
                 var ioService = Components.classes["@mozilla.org/network/io-service;1"]
                 .getService(Components.interfaces.nsIIOService);
                 var ops = ioService.newURI("http://www.teesoft.info", null, null);
                 var uri = ioService.newURI(url, null, null);
                 var tab = null;
-                if (browser.addTab)
+                if (typeof b.addTab !="undefined")
                 {
-                    tab = browser.addTab(url,ops);
-                    browser.selectedTab = tab;
+                    try{
+                        tab = b.addTab(url,ops);
+                        b.selectedTab = tab;
+                    }catch(e)
+                    {
+                         if (window.Browser && window.Browser._content)
+                         {
+                             tab = window.Browser._content.newTab(true);
+                         }
+                    }
                 }
                 else if (window.Browser && window.Browser._content)
                 {
@@ -122,8 +130,8 @@ autopagerOpenIntab : function(url,obj)
                         tab = window.Browser._content.newTab(true);
                         if (tab) {
                             var content = Browser._content;
-                            var browser = content.getBrowserForDisplay(content.getDisplayForTab(tab));
-                            newWindow = browser.contentWindow;
+                            var b = content.getBrowserForDisplay(content.getDisplayForTab(tab));
+                            newWindow = b.contentWindow;
                         }
                         newWindow.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                         .getInterface(Components.interfaces.nsIWebNavigation)

@@ -213,13 +213,7 @@ doContentLoad : function(event) {
     if (!(autopagerMain.isValidDoc(doc)))
         return false;
 
-//    doc.addEventListener("AutoPagerBeforeInsert", function (e){alert("AutoPagerBeforeInsert:" + e.target)}, true)
-//    doc.addEventListener("AutoPagerAfterInsert", function (e){alert("AutoPagerAfterInsert:" + e.target)}, true)
 
-    try{
-        autopagerRefinement.entryPoint(doc);
-    }catch(e){}
-    
     autopagerMain.showStatus();
     if (doc.defaultView && doc.defaultView.name=="autoPagerLoadDivifr")
         return false;
@@ -817,7 +811,7 @@ onInitDoc : function(doc,safe)
                         de.setAttribute('contentXPath',sitepos.site.contentXPath);
                         de.setAttribute('containerXPath',sitepos.site.containerXPath);
                         de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                        de.setAttribute('autopagerVersion',"0.6.0.13");
+                        de.setAttribute('autopagerVersion',"0.6.0.14");
                         de.setAttribute('autopagerGUID',sitepos.site.guid);
                         de.setAttribute('autopagerAjax',sitepos.site.ajax);
 

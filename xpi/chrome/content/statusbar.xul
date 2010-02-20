@@ -22,7 +22,6 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-refinement.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-sitesetting.js" />
 
@@ -222,7 +221,6 @@
                             <menuitem type="radio" name="update" label="&setting.update.once;" value="0"/>
                         </menupopup>
                     </menu>
-                    <menuitem type="checkbox"  id="showRefinements" pref="refinement" label="&options.checkbox.showRefinements.label;" checked="true"/>
                     <menuitem type="checkbox"  id="setAgent" pref="set-x-autopager-httphead" label="&options.checkbox.setAgent.label;" checked="true"/>
                     <menuseparator class="autopager-sep-global"/>
                     <menuitem type="checkbox"  id="discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
@@ -457,6 +455,13 @@
             />
     </vbox>
     <script type="application/x-javascript">
-        autopagerMain.autopagerOnLoad();autopagerLite.apRuleSiteOnInit();
+        window.addEventListener("load", function() {
+            var self = arguments.callee;
+            window.removeEventListener("load",self,false);
+            setTimeout(autopagerToolbar.autopagerToobarInit, 250);
+            splitbrowse.init();
+            autopagerMain.autopagerOnLoad();
+            autopagerLite.apRuleSiteOnInit();
+        }, false);
     </script>
 </overlay>

@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
 <!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
-<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
 <!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
 <!ENTITY options.dialog.autopager-options.title "AutoPager Options">

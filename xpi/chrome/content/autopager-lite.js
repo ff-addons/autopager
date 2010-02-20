@@ -177,12 +177,18 @@ var autopagerLite =
     {
         // During initialisation
         window.addEventListener("DOMContentLoaded", autopagerLite.onContentLoad, false);
-        try{
-            if (getBrowser && getBrowser() && getBrowser().mTabContainer)
-                {
-                    getBrowser().mTabContainer.addEventListener("TabSelect", autopagerLite.TabSelected, false);
-                }
-        }catch(e){}
+        if (autopagerBwUtil.supportHiddenBrowser())
+        {
+            var container = null;
+            if (gBrowser && gBrowser.tabContainer)
+                    container = gBrowser.tabContainer;
+            else if (getBrowser && getBrowser() && getBrowser().mTabContainer)
+                    container = getBrowser().mTabContainer;
+            if (container)
+            {
+                    container.addEventListener("TabSelect", autopagerLite.TabSelected, false);
+            }
+        }
         if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
             autopagerLite.hiddenStatus(false);
     },

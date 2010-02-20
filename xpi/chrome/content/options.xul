@@ -63,8 +63,6 @@
                 </menupopup>
             </menulist>
         </hbox>
-        <checkbox id="showRefinements" pref="refinement" label="&options.checkbox.showRefinements.label;" checked="true"/>
-        <checkbox id="setAgent" pref="set-x-autopager-httphead" label="&options.checkbox.setAgent.label;" checked="true"/>
     </vbox>
       <script type="application/x-javascript">
       if (autopagerBwUtil.isFennec())

@@ -777,10 +777,16 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                 div.setAttribute("id","apBreakStart" + this.autopagerPage);
                 insertPoint.parentNode.insertBefore(div,insertPoint);                
             }
-            div.innerHTML = "<span><a target='_blank' href='http://autopager.teesoft.info/help.html'>" + autopagerConfig.autopagerGetString("pagebreak2") + "</a>&nbsp;&nbsp;" +
-                        autopagerConfig.autopagerFormatString("pagelink",[nextPageHref,"&nbsp;&nbsp;&nbsp;" + (++this.autopagerPage) + "&nbsp;&nbsp;&nbsp;"])
-                        + autopagerMain.getNavLinks(this.autopagerPage,sh)
-                        + "</span>";
+            var innerHTML = "<a target='_blank' href='http://autopager.teesoft.info/help.html'>" + autopagerConfig.autopagerGetString("pagebreak2") + "</a>&nbsp;&nbsp;" +
+                            autopagerConfig.autopagerFormatString("pagelink",[nextPageHref,"&nbsp;&nbsp;&nbsp;" + (++this.autopagerPage) + "&nbsp;&nbsp;&nbsp;"])
+                            + autopagerMain.getNavLinks(this.autopagerPage,sh);
+            try{
+                div.innerHTML = "<span>" +  innerHTML+ "</span>";
+            }catch(e){
+                div.innerHTML="<a href='http://autopager.teesoft.info/help.html'>Page break by AutoPager.</a>"
+                    + autopagerConfig.autopagerFormatString("pagelink",[nextPageHref.replace(/\&/g,"&amp;"),"   " + (this.autopagerPage) + "   "])
+                    ;
+            }
 
             //load preload xpaths, like //style for make WOT works
             var preXPath=autopagerMain.getPreloadXPaths();
@@ -851,8 +857,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             }
             this.autopagernextUrl = nextUrl;
 //            de.setAttribute("autopagernextUrlObj",nextUrl)
-            autopagerRefinement.listenOndisableRefinement(container);
-
+ 
                if (autopagerMain.tweakingSession && container.defaultView && container.defaultView.top == container.defaultView)
                {
     //               if (this.autopagerPreviousURL && this.autopagerPreviousURL != autopagerUtils.getUrl(doc))

@@ -277,7 +277,7 @@ var splitbrowse = {
         // delete history entries if they are present
         if (newHistory.count > 0)
             newHistory.PurgeHistory(newHistory.count);
-        var originalHistory  = originalB.webNavigation.sessionHistory;
+        var originalHistory  = originalB.webNavigation.QueryInterface(Components.interfaces.nsIWebNavigation).sessionHistory;
         originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
 
@@ -644,4 +644,3 @@ splitpanelProgressListener.prototype = {
 };
 if (typeof document != "undefined")
     document.splitBrowserCount = 0;
-window.addEventListener("load",splitbrowse.init,false);

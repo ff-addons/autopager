@@ -43,7 +43,6 @@
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-selector.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-refinement.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
 
 
