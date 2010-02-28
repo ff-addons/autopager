@@ -218,7 +218,7 @@ autopagerOpenIntab : function(url,obj)
     }
     ,supportHiddenBrowser : function ()
     {
-        return true;
+        return !autopagerPref.loadBoolPref("disable-hidden-browser");
         //return !autopagerBwUtil.isFennec();
     }
     ,createHTMLDocumentFromStr : function(str,urlStr) {
@@ -250,5 +250,27 @@ autopagerOpenIntab : function(url,obj)
     ,processXPath : function (xpath)
     {
         return xpath;
+    }
+    , isInPrivateMode : function()
+    {
+        try{
+            var pbs = Components.classes["@mozilla.org/privatebrowsing;1"]
+                                .getService(Components.interfaces.nsIPrivateBrowsingService);
+            var inPrivateBrowsingMode = pbs.privateBrowsingEnabled;
+            return inPrivateBrowsingMode;
+        }catch(e)
+        {
+            return false;
+        }
+    }
+    , apBrowserId : function()
+    {
+        //AutoPager supported browser id
+        //Firefox 0, Fennec 1, MicroB 2, Chrome 3
+        if  (navigator.userAgent.indexOf(" Fennec/")!=-1)
+            return 1;
+        if (navigator.userAgent.indexOf(" Maemo/")!=-1)
+            return 2;
+        return 0;
     }
 }

@@ -9,13 +9,15 @@ var autopagerJsonSetting= {
         var sites = new Array();
         if (info)
         {
+            var browserId = autopagerBwUtil.apBrowserId();
             for(var i=0;i<info.length;i++){
                 var site = info[i]
-
-                var newSite = autopagerJsonSetting.compactToNormal(site);
-    //            alert(newSite)
-                newSite.oldSite = null;
-                sites.push(newSite);
+                if (autopagerJsonSetting.supported(site,browserId))
+                {
+                    var newSite = autopagerJsonSetting.compactToNormal(site);
+                    newSite.oldSite = null;
+                    sites.push(newSite);
+                }
             }
         }
         return sites;
@@ -504,5 +506,14 @@ var autopagerJsonSetting= {
             if (typeof normal.id != 'undefined')
                 site.k = normal.id;
             return site;
+    },
+    supported : function (site,browserId)
+    {
+        //browser flag
+        if (typeof site.bf != 'undefined')
+        {
+            return site.bf & (1<<browserId);
+        }
+        return true;
     }
 }

@@ -501,6 +501,9 @@ promptNewVersion : function (version)
 },
 promptNewRule : function (doc,force)
 {
+    if (autopagerBwUtil.isInPrivateMode())
+        return false;
+    
         if (!gBrowser || !gBrowser.getNotificationBox || !gBrowser.getNotificationBox())
         {
             autopagerMain.enabledThisSite(doc,true);
@@ -509,7 +512,7 @@ promptNewRule : function (doc,force)
     var host = doc.location.host;
     var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
 
-    if (!force && autopagerPref.loadBoolPref("noprompt"))
+    if (!force && autopagerUtils.noprompt())
     {
         return false;
     }
@@ -590,306 +593,319 @@ onInitDoc : function(doc,safe)
         {
             if (sitepos!=null)
             {
-                //doesn't support ajax on some browsers,ignore the rules
-                if (!autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.ajax || sitepos.site.enableJS==2))
+                var checkSiteRule = function()
                 {
-                    return 0;
-                }
-                //autopagerMain.log("4 " + new Date().getTime())
-                var pattern = autopagerUtils.getRegExp(sitepos.site);
-                if (pattern.test(url)) {
-                    //should not equal
-                    //if (sitepos.site.quickLoad == safe)
-                    if (safe)
-                        return 0;
-                    if (typeof sitepos.site.formatVersion != 'undefined'
-                        && sitepos.site.formatVersion > autopagerConfig.formatVersion)
-                        {
-                        autopagerMain.promptNewVersion(sitepos.site.formatVersion);
-                        //not use it, try next
+                    //doesn't support ajax on some browsers,ignore the rules
+                    if (!autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.ajax || sitepos.site.enableJS==2))
+                    {
                         return 0;
                     }
-                    var msg="";
-                    var info = "";
-               
-
-                    var de = doc.documentElement;
-                    if (typeof de.autoPagerRunning == "undefined" || !de.autoPagerRunning) {
-                        autopagerMain.prepareSessionTweaking(doc);
-
-                        if (sitepos.site.ajax)
-                        {
-                            var browser = splitbrowse.getBrowserNode(doc);
-                            if (browser && !browser.getAttribute(splitbrowse.getSplitKey()))
-                            {
-                                if (!browser.autopagerProgressListenerAttached)
-                                {
-                                    de.setAttribute('autopagerAjax',sitepos.site.ajax);
-                                    doc.autopagerAjax = sitepos.site.ajax
-                                    browser.addProgressListener(apBrowserProgressListener,
-                                        Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
-                                    browser.autopagerProgressListenerAttached = true;
-                                }
-                            }
-                        }
-
-                        de.patternRegExp = pattern;
-                        de.autopagerHasMatchedURL=true;
-                        var insertPoint = null;
-                        var nextUrl = null;
-
-                        //autopagerMain.log("5 " + new Date().getTime())
-                        var urlNodes = null;
-                        if (sitepos.site.isTemp )
-                            tryTime = 2;
-                    
-                    if (!sitepos.site.isTemp)
-                            urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.linkXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
-                        else{
-                            sitepos.site.linkXPath = null;
-                            for(var t=0;t<sitepos.site.tmpPaths.length; ++t) {
-                                //autopagerMain.log("6.1 " + new Date().getTime())
-                                autopagerMain.log(sitepos.site.tmpPaths[t])
-                                urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.tmpPaths[t],sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
-                                //autopagerMain.log("6 " + new Date().getTime())
-                                if ( urlNodes != null  && urlNodes.length >0
-                                    && urlNodes.length <= sitepos.site.maxLinks) {
-                                    sitepos.site.linkXPath = sitepos.site.tmpPaths[t];
-                                    //alert(sitepos.site.linkXPath);
-                                    break;
-                                }
-                            }
-                        }
-
-                        //autopagerMain.log("7 " + new Date().getTime())
-                        if (urlNodes == null || urlNodes.length ==0)
-                        {
-                            if (sitepos.site.isTemp )
-                                de.setAttribute("autopagerEnabledSite", false) ;
+                    //autopagerMain.log("4 " + new Date().getTime())
+                    var pattern = autopagerUtils.getRegExp(sitepos.site);
+                    if (pattern.test(url)) {
+                        //should not equal
+                        //if (sitepos.site.quickLoad == safe)
+                        if (safe)
                             return 0;
-                        }
-                        //autopagerMain.log("8 " + new Date().getTime())
-                        var visible = false;
-                        for(var l in urlNodes)
-                        {
-                            var style = null;
-                            if (doc.defaultView)
-                            {
-                                style = doc.defaultView.getComputedStyle(urlNodes[l],null);
-                            }
-                            else
-                                style = urlNodes[l].style;
-                            //alert(urlNodes[l].offsetLeft)
-                            if (!(style.display=="none" || style.display=="hidden"  || style.visibility=="invisible"))
-                            {
-                                var pos = autopagerMain.myGetPos(urlNodes[l]);
-                                var left = pos.x;
-                                var top = pos.y;
-
-                                visible = !((left +urlNodes[l].offsetWidth)<= 0 || (top + urlNodes[l].offsetHeight) <=0);
-                                if (visible)
-                                    break;
-                            }
-                        
-                        }
-                        if (!visible)
-                        {
-                            de.setAttribute("autopagerEnabledSite", false);
-                            return 1;
-                        }
-                        //autopagerMain.log("9 " + new Date().getTime())
-
-                        de.contentBottomMargin = 0;
-                        var oldNodes = null;
-                        var parentNodes = [];
-                        if (sitepos.site.contentXPath!=null && sitepos.site.contentXPath.length>0)
-                        {
-                            de.hasContentXPath = true;
-                            oldNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.contentXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
-                            var maxH = 0;
-                            if (oldNodes==null || oldNodes.length==0)
-                            {
-                                return 0;
-                            }
-                            for(var n=0;n<oldNodes.length;n++)
-                            {
-                                var node = oldNodes[n];
-                                var h = autopagerMain.getOffsetTop(node) + node.scrollHeight
-                                if (h>maxH)
-                                {
-                                    maxH = h;
-                                }
-                                if (sitepos.site.ajax)
-                                {
-                                    if (parentNodes.indexOf(node.parentNode)==-1)
-                                    {
-                                        parentNodes.push(node.parentNode);
-                                        autopagerMain.watchForNodeChange(node.parentNode);
-                                    }
-                                }
-                            }
-                            var sh = (doc && doc.scrollHeight)
-                            ? doc.scrollHeight : doc.body.scrollHeight;
-                            h = sh - maxH;
-                            de.contentBottomMargin = h>0?h:0;
-                        }else
-                            de.hasContentXPath = false;
-
                         var paging = new AutoPagring(sitepos.site)
-                        de.autopagerPagingObj = paging
-                        //if (sitepos.site.enabled)
-                        paging.autopagerSplitDocInited = false;
-                        paging.enableJS = autopagerBwUtil.supportHiddenBrowser()
-                            &&
-                            ((sitepos.site.enableJS ||sitepos.site.ajax || (autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
-                            && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2));
-
-                        var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),sitepos.site.guid,doc.location.host);
-                        if (siteConfirm!=null)
-                        {
-                            paging.autopagerUserConfirmed= true;
-                            paging.autopagerSessionAllowed= siteConfirm.UserAllowed;
-                            paging.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
-                            paging.autopagerSessionAllowedPageCount = siteConfirm.AllowedPageCount;
-                            paging.autopagerUserAllowed=siteConfirm.UserAllowed;
-                        }
-                        //autopagerMain.log("10 " + new Date().getTime())
-
-                        if (oldNodes!= null && oldNodes.length >0)
-                            insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
-                        if(insertPoint == null)
-                        {
-                            if (oldNodes!= null && oldNodes.length >0)
-                            {
-                                var br = autopagerMain.createDiv(doc,"","display:none;");
-                                oldNodes[oldNodes.length - 1].parentNode.appendChild(br);
-                                insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
-                            }else
-                                insertPoint = autopagerMain.getLastDiv(doc);
-                        }
-                        //alert(oldNodes[oldNodes.length - 1]);
-                        if (autopagerMain.autopagerDebug)
-                            autopagerMain.logInfo(insertPoint, "go");
-//                        de.setAttribute('linkXPath',sitepos.site.linkXPath);
-                
-                        var tooManyLinks = false;
-                        if (sitepos.site.maxLinks  != -1 && urlNodes != null
-                            && urlNodes.length > sitepos.site.maxLinks )
-                            tooManyLinks = true;
-                
-                        //alert(urlNodes);
-                        if (urlNodes != null && urlNodes.length >0)
-                        {
-                            nextUrl = autopagerMain.getNextUrl(doc,
-                                autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
-                                ,urlNodes[0]);
-                            paging.enableJS = autopagerBwUtil.supportHiddenBrowser() && (paging.enableJS  || nextUrl.constructor != String);
-                            autopagerMain.watchForNodeChange(nextUrl.parentNode);
-                            autopagerMain.watchForNodeAttrChange(nextUrl);
-                        } else
-                            nextUrl = null;
-
-                        var autopagerEnabled =	(insertPoint != null) && (nextUrl != null)
-                        && sitepos.site.enabled && !(tooManyLinks);
-
-                        paging.autopagerEnabledSite = autopagerEnabled
-
-                        paging.autopagerPage = 1;
-                        paging.autopagerinsertPoint = insertPoint;
-                        if  (autopagerBwUtil.supportHiddenBrowser() && paging.hasContentXPath && paging.enableJS)
-                        {
-                                paging.autopagernextUrl= null;
-
-                        }
-                        else{
-                            paging.autopagernextUrl = nextUrl;
-
-                        }
-                            
-                        paging.autopagerUseSafeEvent = (doc.defaultView.top != doc.defaultView) || (!sitepos.site.quickLoad);
-                        de.setAttribute('fixOverflow',sitepos.site.fixOverflow);
-                        de.setAttribute('contentXPath',sitepos.site.contentXPath);
-                        de.setAttribute('containerXPath',sitepos.site.containerXPath);
-                        de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                        de.setAttribute('autopagerVersion',"0.6.0.14");
-                        de.setAttribute('autopagerGUID',sitepos.site.guid);
-                        de.setAttribute('autopagerAjax',sitepos.site.ajax);
-
-
-                        paging.autopagerSplitCreated = false;
-                
                         if (sitepos.site.monitorXPath)
                         {
                             autopagerMain.monitorForCleanPages(doc,paging)
                         }
 
-                        if (autopagerEnabled) {
-                            if(sitepos.site.fixOverflow)
-                                autopagerMain.fixOverflow(doc);
-
-
-                            try{
-                                var needLoadSplit =autopagerBwUtil.supportHiddenBrowser()
-                                        &&  de.hasContentXPath
-                                        && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
-                                        && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
-                                if (needLoadSplit)
-                                {
-                                    doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
-                                    var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true,paging);
-                                }
-                            }catch(e)
-                            {}
-                            msg = autopagerConfig.autopagerFormatString("enableurl",[ url ]);
-                            info = autopagerConfig.autopagerFormatString("enableinfo",[url,sitepos.site.linkXPath,sitepos.site.contentXPath]);
-                        }
-                        else if (!autopagerMain.getGlobalEnabled()) {
-                            msg = autopagerConfig.autopagerFormatString("globaldisabled",[url]);
-                            info = msg;
-                        }
-
-
-                        if (msg.length>0)
-                            autopagerMain.logInfo(msg, info);
-                        
-                        setTimeout(function(){paging.scrollWatcher(doc)},1000);
-
-                        if (paging.autopagerEnabledSite && doc.defaultView.top != doc.defaultView && doc.defaultView.frameElement!=null) //we are in a frame
-                        {
-                            var fr = doc.defaultView.frameElement
-                            if (fr.getAttribute("scrolling")!=null && fr.getAttribute("scrolling").toLowerCase()=='no')
+                        if (typeof sitepos.site.formatVersion != 'undefined'
+                            && sitepos.site.formatVersion > autopagerConfig.formatVersion)
                             {
-                                fr.setAttribute("scrolling",'yes')
+                            autopagerMain.promptNewVersion(sitepos.site.formatVersion);
+                            //not use it, try next
+                            return 0;
+                        }
+                        var msg="";
+                        var info = "";
+
+
+                        var de = doc.documentElement;
+                        if (typeof de.autoPagerRunning == "undefined" || !de.autoPagerRunning) {
+                            autopagerMain.prepareSessionTweaking(doc);
+
+                            if (sitepos.site.ajax)
+                            {
+                                var browser = splitbrowse.getBrowserNode(doc);
+                                if (browser && !browser.getAttribute(splitbrowse.getSplitKey()))
+                                {
+                                    if (!browser.autopagerProgressListenerAttached)
+                                    {
+                                        de.setAttribute('autopagerAjax',sitepos.site.ajax);
+                                        doc.autopagerAjax = sitepos.site.ajax
+                                        browser.addProgressListener(apBrowserProgressListener,
+                                            Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
+                                        browser.autopagerProgressListenerAttached = true;
+                                    }
+                                }
                             }
-                        }
-                        autopagerLite.hiddenStatus(true);
 
-                        paging.tmpScrollWatcher =function(event){paging.scrollWatcher(event);}
-                        paging.tmpPageUnLoad =function(event){paging.onPageUnLoad(event);}
-                        paging.tmpInterval =function(event){paging.scrollWatcherOnDoc(doc);}
-                        //paging.intervalId = window.setInterval(paging.tmpInterval, 200);
-                        //doc.removeEventListener("scroll",function(event){paging.scrollWatcher(event)},false);
-                        doc.addEventListener("scroll",paging.tmpScrollWatcher,false);
-                        if (!autopagerBwUtil.supportHiddenBrowser())
-                            window.addEventListener("beforeunload",paging.tmpPageUnLoad,true);
-                        else if(doc.defaultView)
-                            doc.defaultView.addEventListener("beforeunload",paging.tmpPageUnLoad,true);
+                            de.patternRegExp = pattern;
+                            de.autopagerHasMatchedURL=true;
+                            var insertPoint = null;
+                            var nextUrl = null;
+
+                            //autopagerMain.log("5 " + new Date().getTime())
+                            var urlNodes = null;
+                            if (sitepos.site.isTemp )
+                                tryTime = 2;
+
+                        if (!sitepos.site.isTemp)
+                                urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.linkXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
+                            else{
+                                sitepos.site.linkXPath = null;
+                                for(var t=0;t<sitepos.site.tmpPaths.length; ++t) {
+                                    //autopagerMain.log("6.1 " + new Date().getTime())
+                                    autopagerMain.log(sitepos.site.tmpPaths[t])
+                                    urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.tmpPaths[t],sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
+                                    //autopagerMain.log("6 " + new Date().getTime())
+                                    if ( urlNodes != null  && urlNodes.length >0
+                                        && urlNodes.length <= sitepos.site.maxLinks) {
+                                        sitepos.site.linkXPath = sitepos.site.tmpPaths[t];
+                                        //alert(sitepos.site.linkXPath);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            //autopagerMain.log("7 " + new Date().getTime())
+                            if (urlNodes == null || urlNodes.length ==0)
+                            {
+                                if (sitepos.site.isTemp )
+                                    de.setAttribute("autopagerEnabledSite", false) ;
+                                return 0;
+                            }
+                            //autopagerMain.log("8 " + new Date().getTime())
+                            var visible = false;
+                            for(var l in urlNodes)
+                            {
+                                var style = null;
+                                if (doc.defaultView)
+                                {
+                                    style = doc.defaultView.getComputedStyle(urlNodes[l],null);
+                                }
+                                else
+                                    style = urlNodes[l].style;
+                                //alert(urlNodes[l].offsetLeft)
+                                if (!(style.display=="none" || style.display=="hidden"  || style.visibility=="invisible"))
+                                {
+                                    var pos = autopagerMain.myGetPos(urlNodes[l]);
+                                    var left = pos.x;
+                                    var top = pos.y;
+
+                                    visible = !((left +urlNodes[l].offsetWidth)<= 0 || (top + urlNodes[l].offsetHeight) <=0);
+                                    if (visible)
+                                        break;
+                                }
+
+                            }
+                            if (!visible)
+                            {
+                                de.setAttribute("autopagerEnabledSite", false);
+                                return 1;
+                            }
+                            //autopagerMain.log("9 " + new Date().getTime())
+
+                            de.contentBottomMargin = 0;
+                            var oldNodes = null;
+                            var parentNodes = [];
+                            if (sitepos.site.contentXPath!=null && sitepos.site.contentXPath.length>0)
+                            {
+                                de.hasContentXPath = true;
+                                oldNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.contentXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
+                                var maxH = 0;
+                                if (oldNodes==null || oldNodes.length==0)
+                                {
+                                    return 0;
+                                }
+                                for(var n=0;n<oldNodes.length;n++)
+                                {
+                                    var node = oldNodes[n];
+                                    var h = autopagerMain.getOffsetTop(node) + node.scrollHeight
+                                    if (h>maxH)
+                                    {
+                                        maxH = h;
+                                    }
+                                    if (sitepos.site.ajax)
+                                    {
+                                        if (parentNodes.indexOf(node.parentNode)==-1)
+                                        {
+                                            parentNodes.push(node.parentNode);
+                                            autopagerMain.watchForNodeChange(node.parentNode);
+                                        }
+                                    }
+                                }
+                                var sh = (doc && doc.scrollHeight)
+                                ? doc.scrollHeight : doc.body.scrollHeight;
+                                h = sh - maxH;
+                                de.contentBottomMargin = h>0?h:0;
+                            }else
+                                de.hasContentXPath = false;
+
+                            de.autopagerPagingObj = paging
+                            //if (sitepos.site.enabled)
+                            paging.autopagerSplitDocInited = false;
+                            paging.enableJS = autopagerBwUtil.supportHiddenBrowser()
+                                &&
+                                ((sitepos.site.enableJS ||sitepos.site.ajax || (autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                                && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2));
+
+                            var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),sitepos.site.guid,doc.location.host);
+                            if (siteConfirm!=null)
+                            {
+                                paging.autopagerUserConfirmed= true;
+                                paging.autopagerSessionAllowed= siteConfirm.UserAllowed;
+                                paging.autopagerAllowedPageCount=siteConfirm.AllowedPageCount;
+                                paging.autopagerSessionAllowedPageCount = siteConfirm.AllowedPageCount;
+                                paging.autopagerUserAllowed=siteConfirm.UserAllowed;
+                            }
+                            //autopagerMain.log("10 " + new Date().getTime())
+
+                            if (oldNodes!= null && oldNodes.length >0)
+                                insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
+                            if(insertPoint == null)
+                            {
+                                if (oldNodes!= null && oldNodes.length >0)
+                                {
+                                    var br = autopagerMain.createDiv(doc,"","display:none;");
+                                    oldNodes[oldNodes.length - 1].parentNode.appendChild(br);
+                                    insertPoint = oldNodes[oldNodes.length - 1].nextSibling;
+                                }else
+                                    insertPoint = autopagerMain.getLastDiv(doc);
+                            }
+                        var div = autopagerMain.createDiv(doc,"apBreakEnd","display:none;");
+                        //div.setAttribute("id","apBreakEnd" + this.autopagerPage);
+                        insertPoint = insertPoint.parentNode.insertBefore(div,insertPoint);
+
+                            //alert(oldNodes[oldNodes.length - 1]);
+                            if (autopagerMain.autopagerDebug)
+                                autopagerMain.logInfo(insertPoint, "go");
+    //                        de.setAttribute('linkXPath',sitepos.site.linkXPath);
+
+                            var tooManyLinks = false;
+                            if (sitepos.site.maxLinks  != -1 && urlNodes != null
+                                && urlNodes.length > sitepos.site.maxLinks )
+                                tooManyLinks = true;
+
+                            //alert(urlNodes);
+                            if (urlNodes != null && urlNodes.length >0)
+                            {
+                                nextUrl = autopagerMain.getNextUrl(doc,
+                                    autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                                    ,urlNodes[0]);
+                                paging.enableJS = autopagerBwUtil.supportHiddenBrowser() && (paging.enableJS  || nextUrl.constructor != String);
+                                autopagerMain.watchForNodeChange(nextUrl.parentNode);
+                                autopagerMain.watchForNodeAttrChange(nextUrl);
+                            } else
+                                nextUrl = null;
+
+                            var autopagerEnabled =	(insertPoint != null) && (nextUrl != null)
+                            && sitepos.site.enabled && !(tooManyLinks);
+
+                            paging.autopagerEnabledSite = autopagerEnabled
+
+                            paging.autopagerPage = 1;
+                            paging.autopagerinsertPoint = insertPoint;
+                            if  (autopagerBwUtil.supportHiddenBrowser() && paging.hasContentXPath && paging.enableJS)
+                            {
+                                    paging.autopagernextUrl= null;
+
+                            }
+                            else{
+                                paging.autopagernextUrl = nextUrl;
+
+                            }
+
+                            paging.autopagerUseSafeEvent = (doc.defaultView.top != doc.defaultView) || (!sitepos.site.quickLoad);
+                            de.setAttribute('fixOverflow',sitepos.site.fixOverflow);
+                            de.setAttribute('contentXPath',sitepos.site.contentXPath);
+                            de.setAttribute('containerXPath',sitepos.site.containerXPath);
+                            de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
+                            de.setAttribute('autopagerVersion',"0.6.0.20");
+                            de.setAttribute('autopagerGUID',sitepos.site.guid);
+                            de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
 
-                        if (autopagerBwUtil.isFennec())
-                        {
-                            //paging.tmpMouseDown =function(event){paging.onMouseDown(event);}
-                            //window.addEventListener("mousedown",paging.tmpMouseDown,false);
-                            paging.tmpRenderStateChanged =function(event){paging.onRenderStateChanged(event);}
-                            var browsers = document.getElementById("browsers");
-                            browsers.addEventListener("RenderStateChanged",paging.tmpRenderStateChanged,false);
-                        }
+                            paging.autopagerSplitCreated = false;
 
-                        if (sitepos.site.enabled==false)
+                            if (autopagerEnabled) {
+                                if(sitepos.site.fixOverflow)
+                                    autopagerMain.fixOverflow(doc);
+
+
+                                try{
+                                    var needLoadSplit =autopagerBwUtil.supportHiddenBrowser()
+                                            &&  de.hasContentXPath
+                                            && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                                            && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
+                                    if (needLoadSplit)
+                                    {
+                                        doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
+                                        var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true,paging);
+                                    }
+                                }catch(e)
+                                {}
+                                msg = autopagerConfig.autopagerFormatString("enableurl",[ url ]);
+                                info = autopagerConfig.autopagerFormatString("enableinfo",[url,sitepos.site.linkXPath,sitepos.site.contentXPath]);
+                            }
+                            else if (!autopagerMain.getGlobalEnabled()) {
+                                msg = autopagerConfig.autopagerFormatString("globaldisabled",[url]);
+                                info = msg;
+                            }
+
+
+                            if (msg.length>0)
+                                autopagerMain.logInfo(msg, info);
+
+                            setTimeout(function(){paging.scrollWatcher(doc)},1000);
+
+                            if (paging.autopagerEnabledSite && doc.defaultView.top != doc.defaultView && doc.defaultView.frameElement!=null) //we are in a frame
+                            {
+                                var fr = doc.defaultView.frameElement
+                                if (fr.getAttribute("scrolling")!=null && fr.getAttribute("scrolling").toLowerCase()=='no')
+                                {
+                                    fr.setAttribute("scrolling",'yes')
+                                }
+                            }
+                            autopagerLite.hiddenStatus(true);
+
+                            paging.tmpScrollWatcher =function(event){paging.scrollWatcher(event);}
+                            paging.tmpPageUnLoad =function(event){paging.onPageUnLoad(event);}
+                            paging.tmpInterval =function(event){paging.scrollWatcherOnDoc(doc);}
+                            //paging.intervalId = window.setInterval(paging.tmpInterval, 200);
+                            //doc.removeEventListener("scroll",function(event){paging.scrollWatcher(event)},false);
+                            doc.addEventListener("scroll",paging.tmpScrollWatcher,false);
+                            if (!autopagerBwUtil.supportHiddenBrowser())
+                                window.addEventListener("beforeunload",paging.tmpPageUnLoad,true);
+                            else if(doc.defaultView)
+                                doc.defaultView.addEventListener("beforeunload",paging.tmpPageUnLoad,true);
+
+
+                            if (autopagerBwUtil.isFennec())
+                            {
+                                //paging.tmpMouseDown =function(event){paging.onMouseDown(event);}
+                                //window.addEventListener("mousedown",paging.tmpMouseDown,false);
+                                paging.tmpRenderStateChanged =function(event){paging.onRenderStateChanged(event);}
+                                var browsers = document.getElementById("browsers");
+                                browsers.addEventListener("RenderStateChanged",paging.tmpRenderStateChanged,false);
+                            }
+
+                            if (sitepos.site.enabled==false)
+                                return 1;
                             return 1;
-                        return 1;
+                        }
                     }
                 }
+                var ret = checkSiteRule();
+                if (ret!=1 && sitepos.site.delaymsecs>0)
+                {
+                    window.setTimeout(checkSiteRule,sitepos.site.delaymsecs);
+                }
+                return ret;
             }
             else
             {
@@ -935,11 +951,32 @@ onAjaxAttrModified : function (e)
 },
 monitorForCleanPages : function (doc,paging)
 {
-    var nodes = autopagerMain.findNodeInDoc(doc,paging.site.monitorXPath,paging.enableJS || paging.inSplitWindow);
-    for(var i=0;i<nodes.length;i++)
+    if (paging.site.monitorXPath)
     {
-        nodes[i].addEventListener("change", autopagerMain.onClearLoadMonitor, false);
-        nodes[i].addEventListener("click", autopagerMain.onClearLoadMonitor, false);
+        var nodes = autopagerMain.findNodeInDoc(doc,paging.site.monitorXPath + " | //div[@class='autoPagerS' and contains(@id,'apBreakStart')]/span/a[2]",paging.enableJS || paging.inSplitWindow);
+        var monitor = paging.getChangeMonitor();
+        for(var i=0;i<nodes.length;i++)
+        {
+            nodes[i].removeEventListener("change", monitor, false);
+            nodes[i].removeEventListener("click", monitor, false);
+
+            nodes[i].addEventListener("change", monitor, false);
+            nodes[i].addEventListener("click", monitor, false);
+        }
+        monitor = paging.getDOMNodeMonitor();
+        //var xpath = paging.site.contentXPath;
+        var xpath = "/*/*";
+        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
+        for(var i=0;i<nodes.length;i++)
+        {
+            //nodes[i].removeEventListener("DOMNodeRemoved", monitor, false);
+            nodes[i].removeEventListener("DOMNodeInserted", monitor, false);
+
+            //nodes[i].addEventListener("DOMNodeRemoved", monitor, false);
+            nodes[i].addEventListener("DOMNodeInserted", monitor, false);
+        }
+
+        //autopagerMain.removeUrlClickTrack(doc);
     }
 },
 onClearLoadMonitor : function (evt)
@@ -951,24 +988,41 @@ clearLoadedPages : function (doc)
 {
     autopagerMain.doClearLoadedPages(doc,false);
 },
-doClearLoadedPages : function (doc,lazyLoad)
+doClearLoadedPages : function (doc,lazyLoad,paging)
 {
-    if (doc && doc.documentElement && doc.documentElement.autopagerPagingObj)
+    if ((paging == null || typeof paging == 'undefined')
+        && doc && doc.documentElement && doc.documentElement.autopagerPagingObj)
     {
-        var xpath="//div[@id='apBreakStart1']/preceding-sibling::*[1]/following-sibling::*[./following-sibling::div[@id='apBreakEnd" + doc.documentElement.autopagerPagingObj.autopagerPage
-            + "']] | //div[@id='apBreakEnd" + doc.documentElement.autopagerPagingObj.autopagerPage + "']";
-        autopagerMain.removeElements(doc,[xpath],true,false);
+        paging = doc.documentElement.autopagerPagingObj;
     }
+        var xpath="//div[contains(@id,'apBreakStart')]/preceding-sibling::*[1]/following-sibling::*[./following-sibling::div[contains(@id,'apBreakEnd')"
+            + "]] | //div[contains(@id,'apBreakEnd')]";
+        autopagerMain.removeElements(doc,[xpath],true,false);
     autopagerMain.clearLoadStatus(doc);
+    if (doc.documentElement.autopagerPagingObj)
+        doc.documentElement.autopagerPagingObj=null
     if (!lazyLoad)
     {
         autopagerMain.onContentLoad(doc);
     }
     else
     {
-        window.setTimeout(function(){
-            autopagerMain.onContentLoad(doc)
-        },2000);
+        var delaymsecs = 1000;
+        if (paging && !paging.cleaning)
+        {
+            paging.cleaning = true;
+            if (paging.site.delaymsecs>0)
+                delaymsecs += paging.site.delaymsecs
+            window.setTimeout(function(){
+                autopagerMain.onContentLoad(doc)
+                paging.cleaning = false;
+            },delaymsecs);
+        }else
+        {
+            window.setTimeout(function(){
+                autopagerMain.onContentLoad(doc)
+            },delaymsecs);
+        }
     }
 },
 clearLoadStatus : function (doc)
@@ -1328,7 +1382,12 @@ getSelectorLoadFrame : function(doc) {
             div = autopagerMain.createDiv(doc,divName,"");
         }
         else {	
-            div = autopagerMain.createDiv(doc,divName,  "border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px;");
+            div = autopagerMain.createDiv(doc,divName,  "border: 0px; margin: 0px; padding: 0px; position: absolute; width: "
+                + window.innerWidth + "px; display: block; z-index: -90; left: "
+                + (-100 - window.innerWidth) + "px; top: "
+                + (-100 - window.innerHeight) + "px; height: "
+                + window.innerHeight + "px;");
+//              div = autopagerMain.createDiv(doc,divName,  "");
         }
         div.innerHTML=
             "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
@@ -1343,17 +1402,17 @@ getSelectorLoadFrame : function(doc) {
 //        doc.ownerDocument.autopagerFrame = frame;
     }
     //fix for enable to work at restored session
-    try{
-            frame.removeEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
-            frame.removeEventListener("load", autopagerMain.onFrameLoad, false);
+//    try{
+//            frame.removeEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
+//            frame.removeEventListener("load", autopagerMain.onFrameLoad, false);
          frame.contentDocument.clear();
         frame.normalize();
         frame.contentDocument.documentElement.innerHTML = "<html><body>autopaging</body></html>";
-    }catch(e){}
-    if (doc.documentElement.autopagerUseSafeEvent)
-        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
-    else
-        frame.addEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
+//    }catch(e){}
+////    if (doc.documentElement.autopagerUseSafeEvent)
+//        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
+////    else
+//        frame.addEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
     return frame;
 },
 getLastDiv: function(doc) {
@@ -1513,6 +1572,11 @@ onFrameLoad : function(event) {
     }
 },
 
+hasTopLocationRefer : function (html)
+{
+    return autopagerMain.topLocationMark.test(html);
+},
+topLocationMark : /top\.location(\.href)*[ ]*\=/,
 headStartMark:/<[Hh][Ee][Aa][Dd][ ]+/,
 headEndMark:/<[ ]*\/[ ]*[Hh][Ee][Aa][Dd]>/,
 htmlEndMark:/<[ ]*\/[ ]*[Hh][Tt][Mm][Ll]>/,
@@ -1537,11 +1601,12 @@ getHtmlInnerHTML : function(html,enableJS,url,type) {
         }
 
         var headStart = s.search(autopagerMain.headStartMark);
-        htmlEnd = s.search(autopagerMain.htmlEndMark);
+        htmlEnd = s.search(autopagerMain.htmlEndMark);        
+        //htmlEnd = s.length
         if (htmlEnd>0)
             s = s.substring(0,htmlEnd);
         
-        var h = "<head><base href='" + url +
+        var h = "<html><head><base href='" + url +
             "'><meta http-equiv='Content-Type' content='" + type +"'/> ";
 
         if (headStart >0)
@@ -1703,7 +1768,18 @@ loadChannelToFrame : function (frame,channel,enableJS)
 },
 evaluateWrapper: function (doc, aExpr, aNode)
 {
-    return doc.evaluate(aExpr, aNode, null, 0, null);
+        var xpe = new XPathEvaluator();
+        var defaultNSResolver = xpe.createNSResolver(doc.documentElement);
+        function nsResolver(prefix) {
+          var ns = {
+            'xhtml' : 'http://www.w3.org/1999/xhtml',
+            'mathml': 'http://www.w3.org/1998/Math/MathML'
+          };
+          return ns[prefix] || defaultNSResolver(prefix);
+        }
+
+        var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
+    return result;// doc.evaluate(aExpr, aNode, null, 0, null);
 },
 // Evaluate an XPath expression aExpression against a given DOM node
 // or Document object (aNode), returning the results as an array
@@ -1954,7 +2030,7 @@ return links;
 getNextUrl : function(container,enableJS,node) {
     if(node == null)
         return null;
-    if (!enableJS && node.tagName == "A")
+    if (!enableJS && (node.tagName == "A" || node.tagName == "a"))
         return autopagerMain.fixUrl(container,node.href);
     if (node.tagName == "INPUT")
         return node;
@@ -2601,7 +2677,34 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
     {
         var browser = splitbrowse.getBrowserNode(doc);
         return (browser && browser.getAttribute(splitbrowse.getSplitKey()))
-    }    
+    },
+    removeUrlClickTrack : function (doc)
+    {
+        var links = autopagerMain.findNodeInDoc(doc,"//div[@id='navcnt']//a[@href]",false);
+        try {
+            for (var i=0;i<links.length;i++) {
+                var thisLink = links[i];
+                thisLink.addEventListener("mousedown",function(event) {
+                    event.preventDefault();
+                    return true;
+                },true);
+                thisLink.addEventListener("click",function(event) {
+                    event.preventDefault();
+                    event.target.ownerDocument.location.href = event.target.href;
+                    return true;
+                },true);
+            }
+
+            // sneaky google sometimes bypass the above, this will fix it
+            if (doc.defaultView)
+                doc.defaultView.clk = function() { };        
+            window.clk = function() { };
+        }
+        catch (e) {
+            alert(e)
+        }
+    }
+
 };
 
 

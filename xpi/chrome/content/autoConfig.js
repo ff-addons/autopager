@@ -86,7 +86,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.0.14").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.0.20").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -412,7 +412,7 @@ getConfigFile : function(fileName) {
 					site.host = autopagerConfig.getValue(childNode);
 		      }
 		      else if (childNode.nodeName == "UserAllowed") {
-					site.UserAllowed	= (autopagerConfig.getValue(childNode) == 'true');
+					site.UserAllowed	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
 		      }
 		  }
                  sites.push(site);
@@ -1036,7 +1036,7 @@ loadConfigFromUrl : function(url) {
       else  if (nodeName == "guid") {
                         site.guid = autopagerConfig.getValue(childNode);
       }else if (nodeName == "urlIsRegex") {
-                        isRegex	= (autopagerConfig.getValue(childNode) == 'true');
+                        isRegex	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "margin") {
                 var val = autopagerConfig.getValue(childNode);
@@ -1081,35 +1081,35 @@ loadConfigFromUrl : function(url) {
                         site.removeXPath.push(autopagerConfig.getValue(childNode));
       }
       else if (nodeName == "enabled") {
-                        enabled	= (autopagerConfig.getValue(childNode) == 'true');
+                        enabled	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "enableJS") {
-                        enableJS	= (autopagerConfig.getValue(childNode) == 'true');
+                        enableJS	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
                         //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
       }
       else if (nodeName == "needMouseDown") {
-                        needMouseDown	= (autopagerConfig.getValue(childNode) == 'true');
+                        needMouseDown	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "ajax") {
-                        ajax	= (autopagerConfig.getValue(childNode) == 'true');
+                        ajax	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "quickLoad") {
-                        quickLoad	= (autopagerConfig.getValue(childNode) == 'true');
+                        quickLoad	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "fixOverflow") {
-                        fixOverflow	= (autopagerConfig.getValue(childNode) == 'true');
+                        fixOverflow	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
                         //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
       }
       else if (nodeName == "createdByYou") {
-                        createdByYou	= (autopagerConfig.getValue(childNode) == 'true');
+                        createdByYou	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "changedByYou") {
-                        changedByYou	= (autopagerConfig.getValue(childNode) == 'true');
+                        changedByYou	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }else if (nodeName == "owner") {
                         site.owner	= autopagerConfig.getValue(childNode) ;
       }
       else if (nodeName == "published") {
-                        published	= (autopagerConfig.getValue(childNode) == 'true');
+                        published	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
       }
       else if (nodeName == "monitorXPath") {
                         site.monitorXPath	= autopagerConfig.getValue(childNode);

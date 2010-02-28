@@ -14,6 +14,7 @@ pref("autopager.alwaysEnableJavaScript", false);
 pref("autopager.enablehotkeys.ctrlkey", true);
 pref("autopager.enablehotkeys.altkey", true);
 pref("autopager.enablehotkeys.shiftkey", false);
+pref("autopager.disable-hidden-browser", false);
 pref("autopager.loading", "position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; max-width:160px;max-height:20px;right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;");
 pref("autopager.optionstyle", "line-height:normal;width:200px;position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;text-align:left !important;");
 

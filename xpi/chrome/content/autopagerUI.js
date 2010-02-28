@@ -320,7 +320,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         alwaysEnableJavaScript.checked = autopagerPref.loadBoolPref("alwaysEnableJavaScript");
         
         showPrompt = document.getElementById("showPrompt");
-        showPrompt.checked = !autopagerPref.loadBoolPref("noprompt");
+        showPrompt.checked = !autopagerUtils.noprompt();
 
         simpleModalPrompt = document.getElementById("simpleModalPrompt");
         simpleModalPrompt.checked = autopagerPref.loadBoolPref("modalprompt");

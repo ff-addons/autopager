@@ -257,6 +257,29 @@ var autopagerUtils = {
         //                return 1;
         return lastPos+1;
     },
+    correctRegExp : function( pattern ) {
+        var s = new String(pattern);
+        var res = new String("");
+        var escaped = false;
+        var c = '';
+        for (var i = 0 ; i < s.length ; i++) {
+            c = s[i];
+            if(c == '\\')
+            {
+                escaped = !escaped;
+                res += c;
+            }else
+            {
+                if (c == '/' && !escaped)
+                {
+                    res += "\\";
+                }
+                res+=c;
+                escaped = false;
+            }
+        }
+        return new RegExp(res, "i");
+    },
     getRegExp :function(site)
     {
         try{
@@ -264,11 +287,16 @@ var autopagerUtils = {
             {
                 if (site.isRegex)
                     try{
+                        //site.regex = new RegExp(autopagerUtils.correctRegExp(site.urlPattern));
                         site.regex = new RegExp(site.urlPattern);
                     }catch(re)
                     {
-                        //error create regexp, try to use it as pattern
-                        site.regex = convert2RegExp(site.urlPattern);
+                        try{
+                            site.regex = new RegExp(autopagerUtils.correctRegExp(site.urlPattern));
+                        }catch(e){
+                            //error create regexp, try to use it as pattern
+                            site.regex = convert2RegExp(site.urlPattern);
+                        }        
                     }
                 else
                     site.regex = convert2RegExp(site.urlPattern);
@@ -607,4 +635,31 @@ var autopagerUtils = {
 
         return data;
     }
+    ,noprompt : function()
+    {
+        return autopagerPref.loadBoolPref("noprompt") || autopagerBwUtil.isInPrivateMode()
+            || autopagerBwUtil.isFennec();
+    },
+    contains : function(parent, descendant) {
+  // We use browser specific methods for this if available since it is faster
+  // that way.
+
+  // IE / Safari(some) DOM
+  if (typeof parent.contains != 'undefined' && !goog.dom.BAD_CONTAINS_SAFARI_ &&
+      descendant.nodeType == goog.dom.NodeType.ELEMENT) {
+    return parent == descendant || parent.contains(descendant);
+  }
+
+  // W3C DOM Level 3
+  if (typeof parent.compareDocumentPosition != 'undefined') {
+    return parent == descendant ||
+        Boolean(parent.compareDocumentPosition(descendant) & 16);
+  }
+
+  // W3C DOM Level 1
+  while (descendant && parent != descendant) {
+    descendant = descendant.parentNode;
+  }
+  return descendant == parent;
+}
 }
