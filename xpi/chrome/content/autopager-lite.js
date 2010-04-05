@@ -17,11 +17,18 @@ var autopagerLite =
     },
     openRulesSelector : function(doc)
     {
-        var url=autopagerPref.loadPref("repository-site");
         if (doc && doc.location && doc.location.href)
         {
-            url = url + "?url=" + encodeURIComponent(doc.location.href);
+            autopagerLite.openRulesSelectorForUrl(doc.location.href);
         }
+        autopagerBwUtil.autopagerOpenIntab(url);
+    },
+    openRulesSelectorForUrl : function(pageurl)
+    {
+        var url=autopagerPref.loadPref("repository-site");
+        if (!pageurl)
+            pageurl = "";
+        url = url + "discover/r?apv=0.6.0.26&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -50,29 +57,57 @@ var autopagerLite =
             icon.setAttribute("hidden", hidden);
         }
     },
-    setStatus : function (label,hidden)
+    setStatus : function (doc,length,hidden)
     {
+        var event = doc.createEvent("Events");
+        if (length==null || length=="0" || length=="?")
+            event.initEvent("AutoPagerLiteRulesNotFound", true, true);
+        else
+            event.initEvent("AutoPagerLiteRulesFound", true, true);
+        doc.dispatchEvent(event)
+
         var icon = document.getElementById("autopagerlite_status");
         if (icon)
         {
             if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
                 hidden = false;
-            if (!hidden && (label==null||label.length==0))
-                label="?";
-            icon.setAttribute("label", label);
+            if (!hidden && (length==null||length.length==0))
+                length="?";
+            icon.setAttribute("label", length);
             icon.setAttribute("hidden", hidden);
         }
     },
     apSiteRegex : function ()
     {
-        return /ap\.teesoft.info\/.*/;
+        return /\.teesoft\.info\/.*/;
     }
     ,discoveryRules : function (doc)
+    {
+        if (doc && doc.location && doc.location.href && !doc.documentElement.apDiscovered)
+        {
+            doc.documentElement.apDiscovered = true;
+            if (doc.location.href.match(autopagerLite.apSiteRegex()))
+                autopagerLite.processDiscoverResult(doc,"0");
+            else
+            {
+                var href = doc.location.href;
+                autopagerRules.discoverRule(href,function(pattern){
+                    if (!pattern)
+                        return;
+                    if (pattern.k)
+                        autopagerLite.processDiscoverResult(doc,pattern.k);
+                    else
+                        autopagerLite.processDiscoverResult(doc,"0");
+                });
+            }
+        }
+    }
+    ,discoveryRulesOnLine : function (doc)
     {
         if (doc && doc.location && doc.location.href)
         {
             if (doc.location.href.match(autopagerLite.apSiteRegex()))
-                autopagerLite.processDiscoverResult("0");
+                autopagerLite.processDiscoverResult(doc,"0");
             else
             {
                 var href = doc.location.href;
@@ -81,9 +116,9 @@ var autopagerLite =
                 if (text)
                 {
                     if (text == " ")
-                        autopagerLite.processDiscoverResult("");
+                        autopagerLite.processDiscoverResult(doc,"");
                     else
-                        autopagerLite.processDiscoverResult(text);
+                        autopagerLite.processDiscoverResult(doc,text);
                 }else
                 {
                     var url=autopagerPref.loadPref("repository-site") + "discover/discover?ir=false&url=" + encodeURIComponent(doc.location.href);
@@ -94,7 +129,7 @@ var autopagerLite =
                                 UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = xmlhttp.responseText
                             else
                                 UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = " "
-                            autopagerLite.processDiscoverResult(xmlhttp.responseText);
+                            autopagerLite.processDiscoverResult(doc,xmlhttp.responseText);
                         }
                     })
                 }
@@ -103,8 +138,6 @@ var autopagerLite =
     },
     promptLiteDiscovery : function ()
     {
-        //disabled, server can't handle two many requests
-        return;
         if (autopagerBwUtil.isFennec())
             return;
 
@@ -113,63 +146,61 @@ var autopagerLite =
             return;
         }
         var message = autopagerConfig.autopagerGetString("lite-discovery");
-        var notificationBox = gBrowser.getNotificationBox();
-        var notification = notificationBox.getNotificationWithValue("autopager-lite-discovery");
-        if (notification) {
-            notification.label = message;
-        }
-        else {
-            var buttons = [{
-                label: autopagerConfig.autopagerGetString("Yes"),
-                accessKey: "Y",
-                callback: function(){
-                    autopagerPref.saveBoolPref("lite-discovery-prompted",true)
-                    autopagerPref.saveBoolPref("with-lite-discovery",true)
+        var id = "autopager-lite-discovery";
+        var buttons = [{
+            label: autopagerConfig.autopagerGetString("Yes"),
+            accessKey: "Y",
+            callback: function(){
+                autopagerPref.saveBoolPref("lite-discovery-prompted",true);
+                autopagerPref.saveBoolPref("with-lite-discovery",true);
+                if (typeof content!='undefined' && content.document)
+                {
+                    content.document.documentElement.apDiscovered=false;
                     autopagerLite.discoveryRules(content.document);
                 }
-            },{
-                label: autopagerConfig.autopagerGetString("No"),
-                accessKey: "N",
-                callback: function(){
-                    autopagerPref.saveBoolPref("lite-discovery-prompted",true)
-                    autopagerPref.saveBoolPref("with-lite-discovery",false)
-                    autopagerPref.saveBoolPref("with-lite-discovery-aways-display",true)
+                else{
+                    document.documentElement.apDiscovered=false;
+                    autopagerLite.discoveryRules(document);
                 }
-            },{
-                label: autopagerConfig.autopagerGetString("Help"),
-                accessKey: "H",
-                callback: function(){
-                    autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");
-                }
-            }];
-
-            const priority = notificationBox.PRIORITY_INFO_MEDIUM;
-            notificationBox.appendNotification(message, "autopager-lite-discovery",
-                "chrome://autopager/skin/autopager32.gif",
-                priority, buttons);
-        }
-
+            }
+        },{
+            label: autopagerConfig.autopagerGetString("No"),
+            accessKey: "N",
+            callback: function(){
+                autopagerPref.saveBoolPref("lite-discovery-prompted",true)
+                autopagerPref.saveBoolPref("with-lite-discovery",false)
+                autopagerPref.saveBoolPref("with-lite-discovery-aways-display",true)
+            }
+        },{
+            label: autopagerConfig.autopagerGetString("Help"),
+            accessKey: "H",
+            callback: function(){
+                autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");
+            }
+        }];
+        autopagerUtils.notification(id,message,buttons);
     },
 
-    processDiscoverResult : function (result)
+    processDiscoverResult : function (doc,result)
     {
         var values;
         if (result.length==0)
             values = [];
         else
             values = result.split(",");
-        autopagerLite.setStatus(values.length,values.length==0 && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
-        if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
-        {
-            gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
-        }
+        autopagerLite.setStatus(doc,values.length,values.length==0 && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
+        doc.documentElement.setAttribute("autopagerMatchedRules",values.length);
+//        if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
+//        {
+//            gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
+//        }
     },
     TabSelected : function(event)
     {
         if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
         {
-            var length = gBrowser.selectedTab.linkedBrowser.getAttribute("autopagerMatchedRules");
-            autopagerLite.setStatus(length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
+            var length = gBrowser.selectedTab.linkedBrowser.contentDocument.documentElement.getAttribute("autopagerMatchedRules");
+            autopagerLite.setStatus(gBrowser.selectedTab.linkedBrowser.contentDocument,length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         }
 
     },
@@ -177,6 +208,7 @@ var autopagerLite =
     {
         // During initialisation
         window.addEventListener("DOMContentLoaded", autopagerLite.onContentLoad, false);
+        window.addEventListener("load", autopagerLite.onContentLoad, false);
         if (autopagerBwUtil.supportHiddenBrowser())
         {
             var container = null;
@@ -186,7 +218,7 @@ var autopagerLite =
                     container = getBrowser().mTabContainer;
             if (container)
             {
-                    container.addEventListener("TabSelect", autopagerLite.TabSelected, false);
+                    container.addEventListener("TabSelect", autopagerLite.TabSelected, true);
             }
         }
         if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
@@ -271,14 +303,18 @@ var autopagerLite =
         var idsEle = doc.getElementById("apRulesForm:ids_body");
         if (idsEle)
         {
-            idsEle.addEventListener("DOMAttrModified",autopagerLite.idsChanged,false);
+            //idsEle.addEventListener("DOMAttrModified",autopagerLite.idsChanged,false);
+            idsEle.addEventListener("AutoPagerSetIds",autopagerLite.idsChanged,false);
         }
     },
     idsChanged : function (e)
     {
         var node = e.target
-        var ids = node.getAttribute("name");
-        autopagerPref.savePref("ids",autopagerLite.processIds(ids));
+        //var ids = node.getAttribute("name");
+        var ids = node.textContent;
+        ids = autopagerLite.processIds(ids)
+        autopagerPref.savePref("ids",ids);
+        autopagerUtils.Set_Cookie(node.ownerDocument, "ids", ids, 365, 'ap.teesoft.info'/*, path, secure */)
     }
     ,enableRules : function(doc,enabled)
     {
@@ -333,12 +369,21 @@ var autopagerLite =
     },
     switchToLite : function(doc,liteMode)
     {
-        autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
+       autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
        if (liteMode)
        {
+           autopagerPref.saveBoolPref("with-lite-discovery",true);
            autopagerPref.saveBoolPref("noprompt",true);
            autopagerPref.saveBoolPref("disable-by-default",false);
        }
+//       else
+//           autopagerPref.saveBoolPref("with-lite-rules",true);
+       UpdateSites.getAutopagerCOMP().setUpdateSites(null);
+       UpdateSites.updateSites=null;
+       UpdateSites.init();
+       UpdateSites.getAutopagerCOMP().setAll(null);
+       UpdateSites.loadAll();
+       UpdateSites.updatePatternOnline(true);
     },
     isInLiteMode : function ()
     {

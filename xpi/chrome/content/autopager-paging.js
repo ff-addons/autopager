@@ -401,26 +401,31 @@ AutoPagring.prototype.onStopPaging = function(doc) {
         autopagerMain.monitorForCleanPages(doc,this)
     }
 }
+AutoPagring.prototype.isFullLink = function(url) {
+    var reg = /^[ ]*javascript/;
+    return url.constructor == String && !reg.test(url.toLowerCase());
+}
 AutoPagring.prototype.processNextDoc = function(doc,url) {
     if (!this.hasContentXPath)
     {
         this.processByClickOnly(doc,url);
     }
-    else if (autopagerBwUtil.supportHiddenBrowser() &&  (this.enableJS || this.inSplitWindow || url==null || url.constructor != String)) {
+    else if (autopagerBwUtil.supportHiddenBrowser() &&  (this.enableJS || this.inSplitWindow || url==null || !this.isFullLink(url))) {
         this.inSplitWindow = true;
         this.site.enableJS = true;
         this.enableJS = true;
         this.processInSplitWin(doc);
-    }else if (autopagerBwUtil.supportHiddenBrowser() && url!=null && url.constructor == String)
+    }else if (autopagerBwUtil.supportHiddenBrowser() && url!=null && this.isFullLink(url))
     {
         this.inSplitWindow = true;
         this.processInSplitWinByUrl(doc,url);
     }
-    else if (url!=null && url.constructor == String){
+    else if (url!=null && this.isFullLink(url)){
         this.processNextDocUsingXMLHttpRequest(doc,url);
     }
     else
-        autopagerMain.enabledInThisSession(doc,false);
+        this.autopagerRunning = false;
+        //autopagerMain.enabledInThisSession(doc,false);
 },
 AutoPagring.prototype.processByClickOnly = function(doc,url)
 {
@@ -883,8 +888,11 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                     //this will be fire on the hidden loaded doc
                     var event = container.createEvent("Events");
                     event.initEvent("AutoPagerBeforeInsert", true, true);
-                    newNode.dispatchEvent(event)
-
+                    try{
+                        newNode.dispatchEvent(event)
+                    }catch(e)
+                    {}
+                    //autopagerMain.changeIds(newNode,container,insertPoint.parentNode);
 
                     newNode = container.importNode (newNode,true);
                     autopagerMain.removeElements(newNode,this.site.removeXPath,this.enableJS||this.inSplitWindow,true)
@@ -893,9 +901,12 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                     newNode = insertPoint.parentNode.insertBefore(newNode,insertPoint);
 
                     //this will be fire on the displayed doc
-                    container.createEvent("Events");
+                    event = container.createEvent("Events");
                     event.initEvent("AutoPagerAfterInsert", true, true);
-                    newNode.dispatchEvent(event)
+                    try{
+                        newNode.dispatchEvent(event)
+                    }catch(e)
+                    {}
 
                 }catch(e) {
                     autopagerMain.alertErr(e);

@@ -1171,8 +1171,12 @@ if (autopagerPref.loadBoolPref("show-help"))
         window.autopagerPublicSite=site;
 //        window.opener.autopagerPublicSite=site;
         autopagerRules.setPublishingSite(site);
-        var browser = window.open("http://www.teesoft.info/aprules/submit");
+        //var browser = window.open("http://www.teesoft.info/aprules/submit");
         //var browser = window.open("http://local-ap.teesoft.info/aprules/new/");
+        var url=autopagerPref.loadPref("repository-site");
+        url = url + "new?apv=0.6.0.26&id=&f=" + (new Date().getTime());
+        autopagerBwUtil.autopagerOpenIntab(url);
+        
     }
     
     function handleDeleteSiteButton() {

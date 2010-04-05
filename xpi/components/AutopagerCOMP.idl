@@ -8,6 +8,8 @@ interface nsIAutopagerCOMP : nsISupports
   void setAll(in nsIMutableArray setting);
   nsIMutableArray getUpdateSites();
   void setUpdateSites(in nsIMutableArray sites);
+  nsIMutableArray getPatterns();
+  void setPatterns(in nsIMutableArray sites);
   nsIMutableArray getSiteConfirms();
   void setSiteConfirms(in nsIMutableArray sites);
   nsIMutableArray getDiscoveredUrls();

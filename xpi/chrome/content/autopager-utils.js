@@ -308,6 +308,33 @@ var autopagerUtils = {
         return site.regex;
     }
     ,
+    getRegExp2 :function(pattern)
+    {
+        try{
+            if (pattern.rg==null)
+            {
+                if (pattern.r)
+                    try{
+                        pattern.rg = new RegExp(pattern.u);
+                    }catch(re)
+                    {
+                        try{
+                            pattern.rg = new RegExp(autopagerUtils.correctRegExp(pattern.u));
+                        }catch(e){
+                            //error create regexp, try to use it as pattern
+                            pattern.rg = convert2RegExp(pattern.u);
+                        }
+                    }
+                else
+                    pattern.rg = convert2RegExp(pattern.u);
+            }
+        }catch(e)
+        {
+            pattern.rg = /no-such-regex/;
+        }
+        return pattern.rg;
+    }
+    ,
     printStackTrace : function() {
         var callstack = [];
         var ex = null;
@@ -635,31 +662,123 @@ var autopagerUtils = {
 
         return data;
     }
-    ,noprompt : function()
+    ,
+    noprompt : function()
     {
         return autopagerPref.loadBoolPref("noprompt") || autopagerBwUtil.isInPrivateMode()
-            || autopagerBwUtil.isFennec();
+        || autopagerBwUtil.isFennec();
     },
     contains : function(parent, descendant) {
-  // We use browser specific methods for this if available since it is faster
-  // that way.
+        // We use browser specific methods for this if available since it is faster
+        // that way.
 
-  // IE / Safari(some) DOM
-  if (typeof parent.contains != 'undefined' && !goog.dom.BAD_CONTAINS_SAFARI_ &&
-      descendant.nodeType == goog.dom.NodeType.ELEMENT) {
-    return parent == descendant || parent.contains(descendant);
-  }
+        // IE / Safari(some) DOM
+        if (typeof parent.contains != 'undefined') {
+            return parent == descendant || parent.contains(descendant);
+        }
 
-  // W3C DOM Level 3
-  if (typeof parent.compareDocumentPosition != 'undefined') {
-    return parent == descendant ||
-        Boolean(parent.compareDocumentPosition(descendant) & 16);
-  }
+        // W3C DOM Level 3
+        if (typeof parent.compareDocumentPosition != 'undefined') {
+            return parent == descendant ||
+            Boolean(parent.compareDocumentPosition(descendant) & 16);
+        }
 
-  // W3C DOM Level 1
-  while (descendant && parent != descendant) {
-    descendant = descendant.parentNode;
-  }
-  return descendant == parent;
-}
+        // W3C DOM Level 1
+        while (descendant && parent != descendant) {
+            descendant = descendant.parentNode;
+        }
+        return descendant == parent;
+    }
+
+    ,
+    Set_Cookie : function(doc, name, value, expires, domain, path, secure )
+    {
+        // set time, it's in milliseconds
+        var today = new Date();
+        today.setTime( today.getTime() );
+
+        /*
+if the expires variable is set, make the correct
+expires time, the current script below will set
+it for x number of days, to make it for hours,
+delete * 24, for minutes, delete * 60 * 24
+*/
+        if ( expires )
+        {
+            expires = expires * 1000 * 60 * 60 * 24;
+        }
+        var expires_date = new Date( today.getTime() + (expires) );
+
+        var oldCookie = doc.cookie
+        var a_all_cookies = oldCookie.split( ';' );
+        oldCookie = ''
+        for (var i = 0; i < a_all_cookies.length; i++ )
+        {
+            // now we'll split apart each name=value pair
+            var a_temp_cookie = a_all_cookies[i].split( '=' );
+            // and trim left/right whitespace while we're at it
+            var cookie_name = a_temp_cookie[0].replace(/^\s+|\s+$/g, '');
+
+            // if the extracted name matches passed check_name
+            if ( cookie_name != name )
+            {
+                oldCookie += ";" +  a_all_cookies[i]
+            }
+        }
+        doc.cookie = name + "=" +escape( value ) +
+        ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) +
+        ( ( path ) ? ";path=" + path : "" ) +
+        ( ( domain ) ? ";domain=" + domain : "" ) +
+        ( ( secure ) ? ";secure" : "" )
+        + oldCookie;
+    }
+    // this fixes an issue with the old method, ambiguous values
+    // with this test document.cookie.indexOf( name + "=" );
+    ,
+    Get_Cookie : function(doc, check_name ) {
+        // first we'll split this cookie up into name/value pairs
+        // note: document.cookie only returns name=value, not the other components
+        var a_all_cookies = doc.cookie.split( ';' );
+        var a_temp_cookie = '';
+        var cookie_name = '';
+        var cookie_value = '';
+        var b_cookie_found = false; // set boolean t/f default f
+
+        for (var i = 0; i < a_all_cookies.length; i++ )
+        {
+            // now we'll split apart each name=value pair
+            a_temp_cookie = a_all_cookies[i].split( '=' );
+
+
+            // and trim left/right whitespace while we're at it
+            cookie_name = a_temp_cookie[0].replace(/^\s+|\s+$/g, '');
+
+            // if the extracted name matches passed check_name
+            if ( cookie_name == check_name )
+            {
+                b_cookie_found = true;
+                // we need to handle case where cookie has no value but exists (no = sign, that is):
+                if ( a_temp_cookie.length > 1 )
+                {
+                    cookie_value = unescape( a_temp_cookie[1].replace(/^\s+|\s+$/g, '') );
+                }
+                // note that in cases where cookie is initialized but no value, null is returned
+                return cookie_value;
+                break;
+            }
+            a_temp_cookie = null;
+            cookie_name = '';
+        }
+        if ( !b_cookie_found )
+        {
+            return null;
+        }
+    }
+    ,notification : function (id,message,buttons)
+    {
+        if (typeof autopagerBwUtil.notification != "undefined")
+        {
+            autopagerBwUtil.notification(id,message,buttons)
+        }
+    }
 }

@@ -155,11 +155,12 @@ onPageUnLoad : function(event) {
 },
 handleCurrentDoc : function()
 {
-    if (content && content.document)
+    if (typeof content != 'undefined' && content.document)
     {
 		document.autoPagerInited = false;
         this.onContentLoad(content.document);
-    }
+    }else
+        this.onContentLoad(document);
 },
 isValidDoc : function (doc)
 {
@@ -217,10 +218,8 @@ doContentLoad : function(event) {
     autopagerMain.showStatus();
     if (doc.defaultView && doc.defaultView.name=="autoPagerLoadDivifr")
         return false;
-    if (!document.autoPagerInited) {
-        document.autoPagerInited = true;
-        window.setTimeout(function(){autopagerConfig.autopagerUpdate();},400);
-   }
+
+    autopagerMain.sendEnableEvent(doc);
     autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
 //    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     autopagerMain.flashIconNotify = autopagerPref.loadBoolPref("flashIconNotify");
@@ -466,110 +465,78 @@ setShiftKey:function(value)
 },
 promptNewVersion : function (version)
 {
-    var message = autopagerConfig.autopagerFormatString("unsupport-version",[version,autopagerConfig.formatVersion]);
-    autopagerBwUtil.consoleLog(message);
-    if (autopagerPref.loadBoolPref("ignore-format-version-check"))
-    {
-        return;
-    }
-        var notificationBox = gBrowser.getNotificationBox();
-        var notification = notificationBox.getNotificationWithValue("autopager-version-unsupport");
-        if (notification) {
-          notification.label = message;
+        var message = autopagerConfig.autopagerFormatString("unsupport-version",[version,autopagerConfig.formatVersion]);
+        autopagerBwUtil.consoleLog(message);
+        if (autopagerPref.loadBoolPref("ignore-format-version-check"))
+        {
+            return;
         }
-        else {
-          var buttons = [{
+        var buttons = [{
             label: autopagerConfig.autopagerGetString("IgnoreVersionCheck"),
             accessKey: "I",
             callback: function(){
                 autopagerPref.saveBoolPref("ignore-format-version-check",true)
             }
-          },{
+        },{
             label: autopagerConfig.autopagerGetString("CheckUpdate"),
             accessKey: "U",
-//            popup: "autopager-menu-popup",
+            //            popup: "autopager-menu-popup",
             callback: function(){
                 autopagerMain.showHelp();
             }
-          }];
+        }];
 
-          const priority = notificationBox.PRIORITY_WARNING_MEDIUM;
-          notificationBox.appendNotification(message, "autopager-version-unsupport",
-                                             "chrome://browser/skin/Info.png",
-                                             priority, buttons);
-        }
+        autopagerUtils.notification("autopager-version-unsupport",message,buttons);
 },
 promptNewRule : function (doc,force)
 {
-    if (autopagerBwUtil.isInPrivateMode())
-        return false;
+        if (autopagerBwUtil.isInPrivateMode())
+            return false;
     
-        if (!gBrowser || !gBrowser.getNotificationBox || !gBrowser.getNotificationBox())
+        if (typeof autopagerBwUtil.notification == "undefined")
         {
             autopagerMain.enabledThisSite(doc,true);
             return false;
         }
-    var host = doc.location.host;
-    var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
+        var host = doc.location.host;
+        var owner = doc.documentElement.getAttribute("autopagerSettingOwner")
 
-    if (!force && autopagerUtils.noprompt())
-    {
-        return false;
-    }
-    var message = autopagerConfig.autopagerFormatString("enableonsite",[host,owner]);
-        var notificationBox = gBrowser.getNotificationBox();
-        var notification = notificationBox.getNotificationWithValue("autopager-new-rule");
-        if (notification) {
-          notification.autopagerDoc = doc
-          notification.label = message;
+        if (!force && autopagerUtils.noprompt())
+        {
+            return false;
         }
-        else {
-            var buttons = [
-            {
-                label: autopagerConfig.autopagerGetString("Yes"),
-                accessKey: "Y",
-                callback: function(){
-                    autopagerMain.enabledThisSite(notificationBox.getNotificationWithValue("autopager-new-rule").autopagerDoc,true);
-                }
+        var message = autopagerConfig.autopagerFormatString("enableonsite",[host,owner]);
+        var buttons = [
+        {
+            label: autopagerConfig.autopagerGetString("Yes"),
+            accessKey: "Y",
+            callback: function(){
+                autopagerMain.enabledThisSite(doc,true);
             }
-            ,{
-                label: autopagerConfig.autopagerGetString("No"),
-                accessKey: "N",
-                callback: function(){
-                    autopagerMain.enabledThisSite(notificationBox.getNotificationWithValue("autopager-new-rule").autopagerDoc,false);
-                }
+        }
+        ,{
+            label: autopagerConfig.autopagerGetString("No"),
+            accessKey: "N",
+            callback: function(){
+                autopagerMain.enabledThisSite(doc,false);
             }
-            ,{
-                label: autopagerConfig.autopagerGetString("Options"),
-                accessKey: "O",
-                popup: "autopager-notification-popup",
-                callback: function(){
-                    autopagerPref.saveBoolPref("noprompt",true)
-                }
+        }
+        ,{
+            label: autopagerConfig.autopagerGetString("Options"),
+            accessKey: "O",
+            popup: "autopager-notification-popup",
+            callback: function(){
+                autopagerPref.saveBoolPref("noprompt",true)
             }
-            ];
+        }
+        ];
 
-          const priority = notificationBox.PRIORITY_INFO_MEDIUM;
-          notificationBox.appendNotification(message, "autopager-new-rule",
-                                             "chrome://autopager/skin/autopager32.gif",
-                                             priority, buttons);
-          notification = notificationBox.getNotificationWithValue("autopager-new-rule");
-          notification.autopagerDoc = doc;
-        }
+        autopagerUtils.notification("autopager-new-rule",message,buttons);
         return true;
 },
 onNoMatchedRule : function (doc)
 {
-    if (autopagerPref.loadBoolPref("with-lite-discovery") && !doc.documentElement.apDiscovered)
-    {
-        if (autopagerPref.loadBoolPref("lite-discovery-prompted"))
-        {
-            doc.documentElement.apDiscovered = true
-            autopagerLite.discoveryRules(doc);
-        }
-        else
-            autopagerLite.promptLiteDiscovery(doc);
-    }
+    autopagerLite.discoveryRules(doc);
 },
 onInitDoc : function(doc,safe)
 {
@@ -825,7 +792,7 @@ onInitDoc : function(doc,safe)
                             de.setAttribute('contentXPath',sitepos.site.contentXPath);
                             de.setAttribute('containerXPath',sitepos.site.containerXPath);
                             de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                            de.setAttribute('autopagerVersion',"0.6.0.20");
+                            de.setAttribute('autopagerVersion',"0.6.0.26");
                             de.setAttribute('autopagerGUID',sitepos.site.guid);
                             de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -893,7 +860,6 @@ onInitDoc : function(doc,safe)
                                 var browsers = document.getElementById("browsers");
                                 browsers.addEventListener("RenderStateChanged",paging.tmpRenderStateChanged,false);
                             }
-
                             if (sitepos.site.enabled==false)
                                 return 1;
                             return 1;
@@ -1896,7 +1862,7 @@ removeElements : function (node,xpath,enableJS,useInnerXpath)
        try{
 			var orgPath = autopagerMain.preparePath(doc,xpath[i],enableJS);
 			aExpr = orgPath;
-                        if (!useInnerXpath)
+                        if (useInnerXpath)
                         {
                             aExpr = aExpr.replace(/^( )*\/\//g,"*//");
                             aExpr = aExpr.replace(/\|( )*\/\//g,"| *//");
@@ -2658,7 +2624,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
                autopagerPref.saveBoolPref("noprompt",true);
                autopagerPref.saveBoolPref("disable-by-default",false);
            }
-           alert("You need restart firefox to make this change take effect.");
+           //alert("You need restart firefox to make this change take effect.");
            autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");
            break;
        case ".with-lite-discovery-aways-display":
@@ -2704,7 +2670,30 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
             alert(e)
         }
     }
-
+    ,changeIds : function(node,doc,container)
+    {
+        if (node.id)
+        {
+            var id = node.id
+            while(doc.getElementById(id))
+            {
+                id = node.id + Math.random();
+            }
+        }
+    }
+    ,sendEnableEvent:function(doc)
+    {
+        var event = doc.createEvent("Events");
+        if (autopagerMain.loadEnableStat())
+            event.initEvent("AutoPagerEnabled", true, true);
+        else
+            event.initEvent("AutoPagerDisabled", true, true);
+        try{
+            doc.dispatchEvent(event)
+        }catch(e)
+        {}
+        
+    }
 };
 
 

@@ -38,7 +38,7 @@ var autopagerSiteSetting =
         doc = autopagerUtils.getTopDoc(doc)
         if (!doc || !doc.location || !doc.location.href || !(doc.location.href.match(/\.teesoft\.info/)))
             return;
-        var flag =doc.getElementById("autopagerRulesSubmitter");
+        var flag =doc.getElementById("r");
         if (!flag)
             return;
         autopagerSiteSetting.loadfromclip(doc);
@@ -50,7 +50,7 @@ loadfromclip : function(doc)
     var site = autopagerRules.getPublishingSite();
     if (site!=null)
     {
-        var guid =doc.getElementsByName("guid");
+        var guid =doc.getElementsByName('r:'+"guid");
         if (guid && guid.length>0)
         {   
         //var site = window.opener.autopagerPublicSite;
@@ -76,6 +76,7 @@ loadfromclip : function(doc)
         autopagerRules.setPublishingSite(null);
         autopagerSiteSetting.autopagerSetFieldArray(doc,site,"removeXPath");
         autopagerSiteSetting.autopagerSetFieldArray(doc,site,"testLink");
+        window.focus();
         }
          
     }
@@ -87,18 +88,18 @@ autopagerSetCheck : function(doc,site,name,attr)
   if (!attr)
       attr = name;
     if (site[attr] == 1 || site[attr])
-      doc.getElementsByName(name)[0].checked = true;
+      this.getElementsByName(doc,name).checked = true;
     else
-       doc.getElementsByName(name)[0].checked = false;
+       this.getElementsByName(doc,name).checked = false;
 },
 autopagerSetCheck2 : function(doc,name,value)
 {
-    doc.getElementsByName(name)[0].checked = value;
+    this.getElementsByName(doc,name).checked = value;
 }
 ,autopagerSetField : function(doc,site,name)
 {
     if (site[name])
-        doc.getElementsByName(name)[0].value = site[name];
+        this.getElementsByName(doc,name).value = site[name];
 }
 ,autopagerSetFieldArray:function(doc,site,name)
 {
@@ -112,13 +113,20 @@ autopagerSetCheck2 : function(doc,name,value)
         var n = 1 + i;
         if (i!=0)
             el = el + n;
-        doc.getElementsByName(el)[0].value = values[i];
+        this.getElementsByName(doc,el).value = values[i];
     }
   }
   catch(e)
   {
   }
     
+}
+,getElementsByName : function(doc,name)
+{
+    var ele = doc.getElementById('r:' + name)
+    if (!ele || ele.tagName.toUpperCase()=='TABLE')
+        ele = doc.getElementsByName('r:' + name)[0]
+    return ele;
 }
 }
 autopagerSiteSetting.onInit();

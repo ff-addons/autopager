@@ -5,8 +5,8 @@ var autopagerRules =
     {
         if (this.AutopagerCOMP == null)
         {
-                // this is needed to generally allow usage of components in javascript
-                //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            // this is needed to generally allow usage of components in javascript
+            //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             this.AutopagerCOMP = Components.classes['@www.teesoft.com/AutopagerCOMP;1'].getService().wrappedJSObject;
         }
         return this.AutopagerCOMP;
@@ -39,36 +39,73 @@ var autopagerRules =
                 start = pos.index +1
             //alert(key + ":" +firstCall + ":" + start + ":" + (!firstCall && key == pos.key))
             for (var i = start; i < tmpsites.length; i++) {
-//                if (!started)
-//                    started = ((key == pos.key) && i>=pos.index);
-//                else
-                {
-                    var site = tmpsites[i];
-                    var pattern = autopagerUtils.getRegExp(site);
-                    if (pattern.test(url)) {
-                        var newSite = autopagerConfig.cloneSite (site);
-                        newSite.updateSite = tmpsites.updateSite;
-                        pos = new Array();
-                        pos.key = key;
-                        pos.index = i;
-                        pos.site=newSite;
-                        return pos;
-                    }
+            //                if (!started)
+            //                    started = ((key == pos.key) && i>=pos.index);
+            //                else
+            {
+                var site = tmpsites[i];
+                var pattern = autopagerUtils.getRegExp(site);
+                if (pattern.test(url)) {
+                    var newSite = autopagerConfig.cloneSite (site);
+                    newSite.updateSite = tmpsites.updateSite;
+                    pos = new Array();
+                    pos.key = key;
+                    pos.index = i;
+                    pos.site=newSite;
+                    return pos;
                 }
+            }
             }
         }
         return null;
 
     },
-        getPublishingSite : function ()
+    discoverRule: function(url,matchCallBack)
+    {
+        if (autopagerPref.loadBoolPref("with-lite-discovery"))
         {
-          return this.getAutopagerCOMP().getPublishingSite();
-        },
-        setPublishingSite : function (publishingSite)
-        {
-          this.getAutopagerCOMP().setPublishingSite(publishingSite);
+            if (autopagerPref.loadBoolPref("lite-discovery-prompted"))
+            {
+                this.doDiscoverRule(url,matchCallBack);
+            }
+            else
+                autopagerLite.promptLiteDiscovery();
         }
-    ,isAllowUpdate : function()
+        else
+            matchCallBack(null);
+    }
+    ,
+    doDiscoverRule: function(url,matchCallBack)
+    {
+        if (!autopagerMain.getGlobalEnabled())
+            return null;
+        var patterns = this.getAutopagerCOMP().getPatterns();
+        if (patterns)
+        {
+            for(var i=0;i<patterns.length;i++)
+            {
+                var pattern = patterns[i];
+                var p = autopagerUtils.getRegExp2(pattern);
+                if (p.test(url)) {
+                    matchCallBack(pattern);
+                    return p;
+                }
+            }
+        }
+        matchCallBack(null);
+        return null;
+    }
+    ,
+    getPublishingSite : function ()
+    {
+        return this.getAutopagerCOMP().getPublishingSite();
+    },
+    setPublishingSite : function (publishingSite)
+    {
+        this.getAutopagerCOMP().setPublishingSite(publishingSite);
+    }
+    ,
+    isAllowUpdate : function()
     {
         return true;
     }

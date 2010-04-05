@@ -65,9 +65,15 @@ AutopagerCOMP.prototype = {
         setPublishingSite : function (publishingSite)
         {
           this.publishingSite = publishingSite;
-        },
-
-        QueryInterface: function(aIID)
+        }
+        ,existingPatterns : null
+        ,getPatterns : function() {
+            return this.existingPatterns;
+        }
+        ,setPatterns : function(patterns) {
+            this.existingPatterns = patterns;
+        }
+        ,QueryInterface: function(aIID)
         {
                 if (!aIID.equals(nsIAutopagerCOMP) &&
                         !aIID.equals(nsISupports))

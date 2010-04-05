@@ -462,6 +462,7 @@
             splitbrowse.init();
             autopagerMain.autopagerOnLoad();
             autopagerLite.apRuleSiteOnInit();
+            window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);
         }, false);
     </script>
 </overlay>

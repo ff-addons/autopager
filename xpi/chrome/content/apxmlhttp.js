@@ -4,7 +4,7 @@ var apxmlhttprequest=
     loadCallBack:null,
     errorCallBack:null,
     obj:null,
-    
+
     /**
    * get from http://lxr.mozilla.org/mozilla/source/browser/components/microsummaries/src/nsMicrosummaryService.js
    * Parse a string of HTML text.  Used by _load() when it retrieves HTML.
@@ -14,7 +14,7 @@ var apxmlhttprequest=
    *          a string containing the HTML content
    *
    */
-   
+
   createHTMLDocumentByString2: function(htmlText) {
     // Find a window to stick our hidden iframe into.
     var windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1'].
@@ -29,12 +29,12 @@ var apxmlhttprequest=
       throw(this._uri.spec + " can't parse; no browser window");
     var document = window.document;
     var rootElement = document.documentElement;
-  
+
     // Create an iframe, make it hidden, and secure it against untrusted content.
     var _iframe = document.createElement('iframe');
     _iframe.setAttribute("collapsed", true);
     _iframe.setAttribute("type", "content");
-  
+
     // Insert the iframe into the window, creating the doc shell.
     rootElement.appendChild(_iframe);
 
@@ -53,7 +53,7 @@ var apxmlhttprequest=
     _iframe.docShell.allowMetaRedirects = false;
     _iframe.docShell.allowSubframes = false;
     _iframe.docShell.allowImages = false;
-  
+
     var parseHandler = {
       _self: this,
       handleEvent: function (event) {
@@ -62,7 +62,7 @@ var apxmlhttprequest=
         finally { this._self = null }
       }
     };
- 
+
     // Convert the HTML text into an input stream.
     var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
                     createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
@@ -119,7 +119,7 @@ _handleParse: function (event) {
         {
             //autopagerBwUtil.consoleError(e)
         }
-        
+
         return htmlDoc;
     },
     createDocumentFragmentByString: function(doc,str) {
@@ -156,14 +156,14 @@ _handleParse: function (event) {
             var doc=null;
             try{
                   try{
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    xmlhttp = new window.XMLHttpRequest();
                   }catch(e){
-                    xmlhttp = new XMLHttpRequest();
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                   }
             xmlhttp.overrideMimeType(type);
             xmlhttp.onreadystatechange = function (aEvt) {
-            if(xmlhttp.readyState == 4) 
-            {       
+            if(xmlhttp.readyState == 4)
+            {
                     if(xmlhttp.status == 200)
                     {
                         var contentType =""
@@ -192,7 +192,7 @@ _handleParse: function (event) {
                             if (doc == null)
                                 doc = apxmlhttprequest.createHTMLDocumentByString(xmlhttp.responseText);
                             loadCallBack(doc,obj);
-                            
+
                         }
                     }
                     else

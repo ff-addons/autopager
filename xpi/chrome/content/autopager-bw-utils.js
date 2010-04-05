@@ -273,4 +273,20 @@ autopagerOpenIntab : function(url,obj)
             return 2;
         return 0;
     }
+    ,allowModifyHeader : function()
+    {
+        return true;
+    }
+    ,notification : function (id,message,buttons)
+    {
+        var notificationBox = gBrowser.getNotificationBox();
+        var notification = notificationBox.getNotificationWithValue(id);
+        if (notification) {
+            notificationBox.removeNotification(notification)
+        }
+        var priority = notificationBox.PRIORITY_INFO_MEDIUM;
+        notificationBox.appendNotification(message, "autopager-lite-discovery",
+            "chrome://autopager/skin/autopager32.gif",
+            priority, buttons);
+    }
 }
