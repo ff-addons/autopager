@@ -62,8 +62,6 @@ AutoPagring.prototype.onRenderStateChanged = function(event) {
 
     var doc = getBrowser().contentDocument;
     
-    autopagerBwUtil.consoleError(doc);
-
     if (doc != null)
     {
         if (!(doc instanceof HTMLDocument))
@@ -360,8 +358,8 @@ AutoPagring.prototype.loadNextPage = function(doc){
                     autopagerMain.onInitDoc(doc,false);
                     pagring.autopagerSplitCreated = false;
                     pagring.autopagerSplitDocInited = false;
-                    splitbrowse.close(doc);
-                    splitbrowse.close(topDoc);
+                    apSplitbrowse.close(doc);
+                    apSplitbrowse.close(topDoc);
 
                     var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true);
                 },100);
@@ -965,8 +963,8 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
   AutoPagring.prototype.onSplitDocLoaded = function(doc,safe) {
     var furtherscrollWatcher = true;
     var paging = this
-        var browser = splitbrowse.getBrowserNode(doc);
-        if (browser && browser.getAttribute(splitbrowse.getSplitKey())) {
+        var browser = apSplitbrowse.getBrowserNode(doc);
+        if (browser && browser.getAttribute(apSplitbrowse.getSplitKey())) {
             //if (browser.auotpagerContentDoc)
             {
                 var container = browser.auotpagerContentDoc;
@@ -1002,7 +1000,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                                 browser.autopagerSplitWinFirstDocloaded = true;
                                 paging.autopagerSplitDocInited = true;
                                 paging.autopagerEnabledSite = true;
-                            },splitbrowse.getDelayMiliseconds(doc));
+                            },apSplitbrowse.getDelayMiliseconds(doc));
                         }else
                         {
                             this.autopagernextUrl = nextUrl;
@@ -1041,7 +1039,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
 AutoPagring.prototype.scrollFunc = function(browser,doc){
     var furtherscrollWatcher =this.scrollWindow(browser.auotpagerContentDoc,doc);
     this.onStopPaging(browser.auotpagerContentDoc);
-    splitbrowse.switchToCollapsed(true);
+    apSplitbrowse.switchToCollapsed(true);
     return furtherscrollWatcher;
 }
 AutoPagring.prototype.getNextUrlIncludeFrames = function(container,doc)
@@ -1100,7 +1098,7 @@ AutoPagring.prototype.autopagerSimulateClick = function(win,doc,node) {
         //observe http conections
         listener = this.observeConnection(node.ownerDocument);
     }
-    splitbrowse.switchToCollapsed(false);
+    apSplitbrowse.switchToCollapsed(false);
     var focused = (document && document.commandDispatcher)?
             document.commandDispatcher.focusedElement : null;
 
@@ -1196,8 +1194,8 @@ AutoPagring.prototype.onPageUnLoad = function(event) {
     {
         if (autopagerBwUtil.supportHiddenBrowser())
         {
-            //autopagerBwUtil.consoleLog("splitbrowse.close(doc,this);");
-            splitbrowse.close(doc,this);
+            //autopagerBwUtil.consoleLog("apSplitbrowse.close(doc,this);");
+            apSplitbrowse.close(doc,this);
         }
     }catch(e){}
 }
@@ -1334,13 +1332,13 @@ AutoPagring.prototype.onSplitDocLoadedWithDelay = function(doc,timeout)
 {
     var paging = this
     setTimeout(function () {
-    var browser = splitbrowse.getBrowserNode(doc);
+    var browser = apSplitbrowse.getBrowserNode(doc);
     //browser.autopagerSplitWinFirstDocloaded=true;
     doc.documentElement.setAttribute("autopageCurrentPageLoaded",false);
     try{
         paging.scrollWindow(browser.auotpagerContentDoc,doc);
         paging.onStopPaging(browser.auotpagerContentDoc);
-        splitbrowse.switchToCollapsed(true);
+        apSplitbrowse.switchToCollapsed(true);
     }catch(e)
     {
         //var de = doc.documentElement
@@ -1358,8 +1356,8 @@ AutoPagring.prototype.onSplitDocLoadedWithDelay = function(doc,timeout)
                     autopagerMain.onInitDoc(doc,false);
                     paging.autopagerSplitCreated = false;
                     paging.autopagerSplitDocInited = false;
-                    splitbrowse.close(doc);
-                    splitbrowse.close(topDoc);
+                    apSplitbrowse.close(doc);
+                    apSplitbrowse.close(topDoc);
 
                 },100);
 

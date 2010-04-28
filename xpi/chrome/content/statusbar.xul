@@ -13,7 +13,7 @@
     <script type="application/x-javascript" src="chrome://autopager/content/convert2RegExp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/json.js" />
+    <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
     <script type="application/x-javascript" src="chrome://autopager/content/autopager-rules.js" />
@@ -33,7 +33,7 @@
             <spring flex="1"/>
             <image id="autopager-close-toolbar"
                 tooltiptext="&statusbar.image.autopager-close-toolbar.tooltiptext;"
-                class="tabs-closebutton url" onclick="splitbrowse.open(content.document,true);"
+                class="tabs-closebutton url" onclick="apSplitbrowse.open(content.document,true);"
                 />
         </splitter>
         <vbox id="autopager-split-box" collapsed="false" persist="height" style="min-height: 0px !important;">
@@ -310,10 +310,10 @@
                       hidden='true'>
                 <menupopup id="autopager-menupopup" >
                     <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
-                                  oncommand="splitbrowse.open(content.document,false);"
+                                  oncommand="apSplitbrowse.open(content.document,false);"
                         />
                     <menuitem id="autopager-hidden" label="&autopager.menuitem.autopager-hidden.label;"
-                                  oncommand="splitbrowse.open(content.document,true);"
+                                  oncommand="apSplitbrowse.open(content.document,true);"
                         />
                 </menupopup>
             </menu>
@@ -459,7 +459,7 @@
             var self = arguments.callee;
             window.removeEventListener("load",self,false);
             setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-            splitbrowse.init();
+            apSplitbrowse.init();
             autopagerMain.autopagerOnLoad();
             autopagerLite.apRuleSiteOnInit();
             window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);

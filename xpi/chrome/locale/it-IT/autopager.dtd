@@ -116,7 +116,7 @@
 <!ENTITY setting.label.chkShift "Maiusc">
 <!ENTITY setting.label.chkneedMouseDown "Need Trigger Mouse Down Event for the link">
 <!ENTITY setting.label.confirmstyle "confirm style:">
-<!ENTITY setting.label.delaymsecs "Miliseconds to delay before merge next page">
+<!ENTITY setting.label.delaymsecs "Milliseconds to delay before merge next page">
 <!ENTITY setting.label.disable-by-default "Disabled for individual new site">
 <!ENTITY setting.label.discoverytext "Discovery">
 <!ENTITY setting.label.doubleclick "+ Doppio clic">

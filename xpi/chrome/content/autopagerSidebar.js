@@ -441,13 +441,16 @@ var autopagerSidebar =
             var td2 = autopagerSidebar.addNode(row,"td");
 
             autopagerSidebar.addTextNode(td1, label);
-            if (node.nodeType != 2){
+            if (!node.nodeType){
+                autopagerSidebar.addTextNode(td2, node + "\n");
+            }
+            else if (node.nodeType != 2){
                 var n = contentFrame.contentDocument.importNode(node.cloneNode(true),true);
                 td2.appendChild (n);
             }else{
                 autopagerSidebar.addTextNode(td2, node.nodeName + "=" + node.nodeValue + "\n");
-                var n = contentFrame.contentDocument.importNode(node.ownerElement.cloneNode(true),true);
-                td2.appendChild (n);
+                var n1 = contentFrame.contentDocument.importNode(node.ownerElement.cloneNode(true),true);
+                td2.appendChild (n1);
             }
         }
 
@@ -457,7 +460,7 @@ var autopagerSidebar =
 
 
     , getXPathNodes:function(doc, xpath,max) {
-        return autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]",max);
+        return autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]",true,max);
     }
     ,countProperties:function(obj) {
         var result = 0

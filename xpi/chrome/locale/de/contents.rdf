@@ -4,17 +4,17 @@
 
   <!-- list all the packages being supplied by this jar -->
   <RDF:Seq about="urn:mozilla:locale:root">
-    <RDF:li resource="urn:mozilla:locale:de-DE"/>
+    <RDF:li resource="urn:mozilla:locale:de"/>
   </RDF:Seq>
 
   <!-- locale information -->
-  <RDF:Description about="urn:mozilla:locale:de-DE"
+  <RDF:Description about="urn:mozilla:locale:de"
         chrome:displayName="Deutsch (DE)"
         chrome:author="Wind Li"
-        chrome:name="de-DE">
+        chrome:name="de">
     <chrome:packages>
-      <RDF:Seq about="urn:mozilla:locale:de-DE:packages">
-        <RDF:li resource="urn:mozilla:locale:de-DE:autopager"/>
+      <RDF:Seq about="urn:mozilla:locale:de:packages">
+        <RDF:li resource="urn:mozilla:locale:de:autopager"/>
       </RDF:Seq>
     </chrome:packages>
   </RDF:Description>

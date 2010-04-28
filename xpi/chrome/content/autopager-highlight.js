@@ -57,6 +57,10 @@ const autopagerHightlight =
         this.count = 0;
     },
     createRegionDivs : function(doc,target,subfix,color) {       
+        if (!target.parentNode)
+        {
+            return;
+        }
         var margin = 2;
         var leftDiv = this.getSelectorDiv(doc,"autoPagerBorderLeft" + color + subfix,color);
         var rightDiv =this.getSelectorDiv(doc,"autoPagerBorderRight" +color + subfix,color);

@@ -377,40 +377,7 @@ var AutoPagerUpdateTypes =
         if (autopagerLite.isInLiteMode())
             file = "all-sites-lite.xml";
         this.saveSettingSiteConfigToFile(sites,autopagerBwUtil.getConfigFile(file));
-    },
-    loadSettingSiteConfigFromJSON : function(configContents) {
-        var sites = autopagerJSON.parse(configContents);
-        for (i in sites)
-        {
-            var site = sites[i]
-            site.updateType	= AutoPagerUpdateTypes.getType(site.updateType);
-            site.callback = site.updateType.callback;
-            if (site.contenttype==null && site.contenttype=="")
-                site.contenttype = site.updateType.contentType;
-        }
-        return sites;
-    },
-    saveSettingSiteConfigToJSON : function(sites,saveFile) {
-        var jsonString = autopagerJSON.stringify(sites,function(key, value){
-            if (key=="triedTime")
-                return 0;
-            if ( key=="callback")
-                return null;
-            if (key=="updateType")
-                return value.type;
-                
-            return value;
-        });
-        try{
-            var configStream = autopagerConfig.getWriteStream(saveFile);
-            configStream.write(jsonString,jsonString.length);
-            configStream.close();
-        }catch(e)
-        {
-            autopagerBwUtil.consoleError(e);
-        }
-
-    },
+    },    
     saveSettingSiteConfigToFile : function(sites,saveFile) {
         try{
             var doc = document.implementation.createDocument("", "all-sites", null);

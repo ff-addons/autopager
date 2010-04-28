@@ -347,6 +347,14 @@ var autopagerUtils = {
         this.output(callstack);
     },
     getStack : function(e) {
+        if (typeof e == "undefined")
+        {
+            try {
+                i.dont.exist+=0; //doesn't exist- that's the point
+            } catch(ex) {
+                e = ex;
+            }
+        }
         var callstack = [];
         var isCallstackPopulated = false;
 

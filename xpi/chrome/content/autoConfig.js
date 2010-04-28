@@ -88,7 +88,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.0.26").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.0.28").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -623,7 +623,9 @@ var autopagerConfig =
         if (typeof site.formatVersion != 'undefined')
             newSite.formatVersion = site.formatVersion;
         newSite.oldSite = site;
-
+        newSite.isTemp = site.isTemp
+        newSite.tmpPaths = site.tmpPaths
+        newSite.maxLinks = site.maxLinks
         return newSite;
     }
     ,

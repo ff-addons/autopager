@@ -141,16 +141,16 @@ onPageUnLoad : function(event) {
         }catch(e){}
 
 
-        var browser = splitbrowse.getBrowserNode(doc);
+        var browser = apSplitbrowse.getBrowserNode(doc);
     if (browser && browser.autopagerProgressListenerAttached)
     {
         browser.removeProgressListener(apBrowserProgressListener,
                     Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
         browser.autopagerProgressListenerAttached = false;
-        browser.removeAttribute(splitbrowse.getSplitKey());
+        browser.removeAttribute(apSplitbrowse.getSplitKey());
     }
 
-    splitbrowse.close(doc);
+    apSplitbrowse.close(doc);
     }catch(e){}
 },
 handleCurrentDoc : function()
@@ -233,10 +233,10 @@ doContentLoad : function(event) {
     if (doc.documentElement.getAttribute("autopagerVersion"))
         return null;
         
-    if (splitbrowse)
+    if (apSplitbrowse)
     {
-      var browser = splitbrowse.getBrowserNode(doc);
-     if ((browser&& !browser.getAttribute(splitbrowse.getSplitKey())) || !autopagerBwUtil.supportHiddenBrowser()) {
+      var browser = apSplitbrowse.getBrowserNode(doc);
+     if ((browser&& !browser.getAttribute(apSplitbrowse.getSplitKey())) || !autopagerBwUtil.supportHiddenBrowser()) {
           autopagerMain.handleDocLoad(doc,false);
           return true;
       }
@@ -597,8 +597,8 @@ onInitDoc : function(doc,safe)
 
                             if (sitepos.site.ajax)
                             {
-                                var browser = splitbrowse.getBrowserNode(doc);
-                                if (browser && !browser.getAttribute(splitbrowse.getSplitKey()))
+                                var browser = apSplitbrowse.getBrowserNode(doc);
+                                if (browser && !browser.getAttribute(apSplitbrowse.getSplitKey()))
                                 {
                                     if (!browser.autopagerProgressListenerAttached)
                                     {
@@ -618,8 +618,6 @@ onInitDoc : function(doc,safe)
 
                             //autopagerMain.log("5 " + new Date().getTime())
                             var urlNodes = null;
-                            if (sitepos.site.isTemp )
-                                tryTime = 2;
 
                         if (!sitepos.site.isTemp)
                                 urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.linkXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
@@ -792,7 +790,7 @@ onInitDoc : function(doc,safe)
                             de.setAttribute('contentXPath',sitepos.site.contentXPath);
                             de.setAttribute('containerXPath',sitepos.site.containerXPath);
                             de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                            de.setAttribute('autopagerVersion',"0.6.0.26");
+                            de.setAttribute('autopagerVersion',"0.6.0.28");
                             de.setAttribute('autopagerGUID',sitepos.site.guid);
                             de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -1010,7 +1008,7 @@ clearLoadStatus : function (doc)
 
     doc.documentElement.setAttribute("autopagerVersion","")
 
-    splitbrowse.close(doc);
+    apSplitbrowse.close(doc);
 
 }
 ,pauseLoadPages : function(doc)
@@ -1636,9 +1634,9 @@ getSplitBrowserForDocWithUrl : function(doc,url,clone,listener) {
 	{
 		doc.documentElement.autopagerSplitCloning = clone;
     }
-    var browse = splitbrowse.getSplitBrowser(doc,url,true,doClone,listener);
+    var browse = apSplitbrowse.getSplitBrowser(doc,url,true,doClone,listener);
     doc.documentElement.autopagerSplitCloning = false;
-    //splitbrowse.setVisible(browse,autopagerPref.loadBoolPref("debug"));
+    //apSplitbrowse.setVisible(browse,autopagerPref.loadBoolPref("debug"));
     if (clone && browse)
         browse.auotpagerContentDoc = doc;
     return browse;
@@ -1731,48 +1729,6 @@ loadChannelToFrame : function (frame,channel,enableJS)
     var uriLoader = Cc["@mozilla.org/uriloader;1"].getService(Ci.nsIURILoader);
     uriLoader.openURI(channel, true, frame.contentDocument);
     
-},
-evaluateWrapper: function (doc, aExpr, aNode)
-{
-        var xpe = new XPathEvaluator();
-        var defaultNSResolver = xpe.createNSResolver(doc.documentElement);
-        function nsResolver(prefix) {
-          var ns = {
-            'xhtml' : 'http://www.w3.org/1999/xhtml',
-            'mathml': 'http://www.w3.org/1998/Math/MathML'
-          };
-          return ns[prefix] || defaultNSResolver(prefix);
-        }
-
-        var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-    return result;// doc.evaluate(aExpr, aNode, null, 0, null);
-},
-// Evaluate an XPath expression aExpression against a given DOM node
-// or Document object (aNode), returning the results as an array
-// thanks wanderingstan at morethanwarm dot mail dot com for the
-// initial work.
-autopagerEvaluateXPath : function(aNode, path,enableJS) {
-    var doc = (aNode.ownerDocument == null) ? aNode : aNode.ownerDocument;
-    //var aNode = doc.documentElement;
-    var aExpr = autopagerMain.preparePath(doc,path,enableJS);
-    var found = new Array();
-    try{
-        //var doc = aNode.ownerDocument == null ?
-        //		aNode.documentElement : aNode.ownerDocument.documentElement;
-        var result =  autopagerMain.evaluateWrapper(doc,aExpr, aNode);// doc.evaluate(aExpr, aNode, null, 0, null);
-        
-//        var xpe = new XPathEvaluator();
-//        var nsResolver = xpe.createNSResolver(doc.documentElement);
-//        var result = xpe.evaluate(aExpr, aNode, nsResolver, 0, null);
-//        
-        var res;
-        while ((res = result.iterateNext()))
-            found.push(res);
-        //alert(found.length);
-    }catch(e) {
-        autopagerMain.alertErr(autopagerConfig.autopagerFormatString("unableevaluator",[aExpr,e]));
-    }
-    return found;
 },
 getDocURL : function(doc,enableJS)
 {
@@ -1930,7 +1886,7 @@ changeSessionUrlByScrollHeight : function (container,pos)
 },
 changeSessionUrl : function (container, url,pagenum)
 {
-        var browser = splitbrowse.getBrowserNode(container);
+        var browser = apSplitbrowse.getBrowserNode(container);
         var webNav = browser.webNavigation;
         var newHistory = webNav.sessionHistory;
 
@@ -1947,7 +1903,7 @@ changeSessionUrl : function (container, url,pagenum)
              !newHistory.getEntryAtIndex(newHistory.index-1,false)
             .QueryInterface(Components.interfaces.nsISHEntry).URI.spec == container.location.href))
         {
-            var newEntry = splitbrowse.cloneHistoryEntry(entry);
+            var newEntry = apSplitbrowse.cloneHistoryEntry(entry);
             if (newEntry)
             {
                 var uri = autopagerConfig.getRemoteURI(url);
@@ -2165,11 +2121,11 @@ findNodeInDoc : function(doc,path,enableJS) {
     if (path==null)
         return null;
     else if (autopagerMain.xpath.length>0 && autopagerMain.xpath[0].length == 1)
-        return autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath,enableJS);
+        return autopagerXPath.evaluate(doc,autopagerMain.xpath,enableJS);
     else {
-        var result = autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath[0],enableJS);
+        var result = autopagerXPath.evaluate(doc,autopagerMain.xpath[0],enableJS);
         for(var i=1;i<autopagerMain.xpath.length;i++) {
-            var nodes = autopagerMain.autopagerEvaluateXPath(doc,autopagerMain.xpath[i],enableJS);
+            var nodes = autopagerXPath.evaluate(doc,autopagerMain.xpath[i],enableJS);
             for(var k=0;k<nodes.length;++k) {
                 result.push( nodes[k]);
             }
@@ -2299,7 +2255,6 @@ setGlobalEnabled : function(enabled) {
     var autopagerButton2= document.getElementById("autopager-button-fennec");
     if (autopagerButton2){
         autopagerButton2.setAttribute("hidden", !autopagerLite.isInLiteMode());
-        autopagerBwUtil.consoleError(autopagerButton2);
     }
     var image = document.getElementById("autopager_status");
     if (autopagerButton!=null || image!=null || autopagerButton2!=null)
@@ -2641,8 +2596,8 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
    },
     isAutoPagerHiddenWindow : function (doc)
     {
-        var browser = splitbrowse.getBrowserNode(doc);
-        return (browser && browser.getAttribute(splitbrowse.getSplitKey()))
+        var browser = apSplitbrowse.getBrowserNode(doc);
+        return (browser && browser.getAttribute(apSplitbrowse.getSplitKey()))
     },
     removeUrlClickTrack : function (doc)
     {

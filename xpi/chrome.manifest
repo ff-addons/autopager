@@ -18,10 +18,10 @@ style        chrome://navigator/content/navigator.xul        chrome://autopager/
 
 locale        autopager        zh-CN                       jar:chrome/autopager.jar!/locale/zh-CN/
 locale        autopager        zh-TW                       jar:chrome/autopager.jar!/locale/zh-TW/
-locale        autopager        nl-NL                       jar:chrome/autopager.jar!/locale/nl-NL/
+locale        autopager        nl                       jar:chrome/autopager.jar!/locale/nl/
 locale        autopager        en-US                       jar:chrome/autopager.jar!/locale/en-US/
-locale        autopager        fr-FR                       jar:chrome/autopager.jar!/locale/fr-FR/
-locale        autopager        de-DE                       jar:chrome/autopager.jar!/locale/de-DE/
+locale        autopager        fr                       jar:chrome/autopager.jar!/locale/fr/
+locale        autopager        de                       jar:chrome/autopager.jar!/locale/de/
 locale        autopager        it-IT                       jar:chrome/autopager.jar!/locale/it-IT/
 locale        autopager        ja-JP                       jar:chrome/autopager.jar!/locale/ja-JP/
 locale        autopager        pt-BR                       jar:chrome/autopager.jar!/locale/pt-BR/
@@ -29,7 +29,7 @@ locale        autopager        ru-RU                       jar:chrome/autopager.
 locale        autopager        tr-TR                       jar:chrome/autopager.jar!/locale/tr-TR/
 locale        autopager        hu-HU                       jar:chrome/autopager.jar!/locale/hu-HU/
 locale        autopager        he-IL                       jar:chrome/autopager.jar!/locale/he-IL/
-locale        autopager        vi-VN                       jar:chrome/autopager.jar!/locale/vi-VN/
+locale        autopager        vi                       jar:chrome/autopager.jar!/locale/vi/
 locale        autopager        pl-PL                       jar:chrome/autopager.jar!/locale/pl-PL/
 locale        autopager        ro-RO                 jar:chrome/autopager.jar!/locale/ro-RO/
 locale        autopager        es                 jar:chrome/autopager.jar!/locale/es/

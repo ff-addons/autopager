@@ -183,19 +183,44 @@ autopagerOpenIntab : function(url,obj)
 		    .createInstance(Components.interfaces.nsIDOMParser):new window.DOMParser()
 
     }
+    ,doDecodeJSON : function (str)
+    {
+        try{
+            return JSON.parse(str);
+        }catch(e){
+            this.consoleLog("error parser:" +e + ":"  + str)
+        }
+    }
     ,decodeJSON : function (str)
     {
-        var info = null;
+        var info = [];
+        if (str==="")
+            return info;
         //try native json first
         try{
-            if (Components && Components.classes["@mozilla.org/dom/json;1"])
+            info = JSON.parse(str);
+        }catch(ex){
+            //try parse it manually
+            var strs = str.split("},{");
+            var v
+            if (strs.length>=1)
             {
-                var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-                info = nativeJSON.decode(str);
+                v = this.doDecodeJSON( strs[0] + "}]");
+                if (v && v[0])
+                    info.push(v[0]);
             }
-            else
-                info = autopagerJSON.parse(str);
-        }catch(e){
+            for(var index=1; index<strs.length-1;index++)
+            {
+                v = this.doDecodeJSON( "{" + strs[index] + "}");
+                if (v)
+                    info.push(v);
+            }
+            if (strs.length>1)
+            {
+                v = this.doDecodeJSON("[{" + strs[strs.length-1]);
+                if (v && v[0])
+                    info.push(v[0]);
+            }
         }
         return info;
     }
@@ -212,8 +237,6 @@ autopagerOpenIntab : function(url,obj)
             var nativeJSON = Cc["@mozilla.org/dom/json;1"].createInstance(Ci.nsIJSON);
             str = nativeJSON.encode(obj);
         }
-        else
-            str = autopagerJSON.stringify(obj);
         return str;
     }
     ,supportHiddenBrowser : function ()

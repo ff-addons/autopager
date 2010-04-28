@@ -4,9 +4,9 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.6.0.26"
+                     em:version="0.6.0.28"
                      em:id="autopager@mozilla.org"
-                     em:description="AutoPager is a firefox/mozilla extensions to autoloading next page at backgrand.And you can use it an XPath generator too."
+                     em:description="AutoPager is a Firefox/Mozilla extension for autoloading the next page in the background. You can also use it as an XPath generator."
                      em:creator="Wind Li"
                      em:optionsURL="chrome://autopager/content/mini-options.xul"
                      em:homepageURL="http://www.teesoft.info/"
@@ -18,9 +18,9 @@
         <em:contributor>ErkanYV at gmail.com</em:contributor>
         <em:contributor>avro at http://www.teesoft.info</em:contributor>
         <em:contributor>PageDown at http://www.teesoft.info</em:contributor>
-        <em:translator>[fr-FR] myahoo at http://www.babelzilla.org</em:translator>
-        <em:translator>[nl-NL] markh at http://www.babelzilla.org</em:translator>
-        <em:translator>[de-DE] Team erweiterungen.de, Archaeopteryx, ChrisE at http://www.babelzilla.org</em:translator>
+        <em:translator>[fr] myahoo at http://www.babelzilla.org</em:translator>
+        <em:translator>[nl] markh at http://www.babelzilla.org</em:translator>
+        <em:translator>[de] Team erweiterungen.de, Archaeopteryx, ChrisE at http://www.babelzilla.org</em:translator>
         <em:translator>[ja-JP] drry at http://www.babelzilla.org</em:translator>
         <em:translator>[pt-BR] pedsann at http://www.babelzilla.org</em:translator>
         <em:translator>[zh-TW] Jose Sun @ moztw.org</em:translator>
@@ -30,7 +30,7 @@
 	<RDF:Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 		<em:minVersion>1.5</em:minVersion>
-		<em:maxVersion>3.7a1pre</em:maxVersion>
+		<em:maxVersion>3.7a5pre</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 
@@ -66,7 +66,7 @@
 	<RDF:Description>
 		<em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id>
 		<em:minVersion>1.0a1</em:minVersion>
-		<em:maxVersion>1.1a2pre</em:maxVersion>
+		<em:maxVersion>1.1.*</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 

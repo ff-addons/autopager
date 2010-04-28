@@ -28,7 +28,7 @@ var autopagerLite =
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "discover/r?apv=0.6.0.26&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "discover/r?apv=0.6.0.28&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -212,9 +212,9 @@ var autopagerLite =
         if (autopagerBwUtil.supportHiddenBrowser())
         {
             var container = null;
-            if (gBrowser && gBrowser.tabContainer)
+            if (typeof gBrowser != 'undefined' && gBrowser.tabContainer)
                     container = gBrowser.tabContainer;
-            else if (getBrowser && getBrowser() && getBrowser().mTabContainer)
+            else if (typeof getBrowser != 'undefined' && getBrowser() && getBrowser().mTabContainer)
                     container = getBrowser().mTabContainer;
             if (container)
             {
