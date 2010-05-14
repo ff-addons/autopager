@@ -1,5 +1,5 @@
 <!ENTITY autopager-workshop.button.modifyXPath.label "...">
-<!ENTITY autopager-workshop.label.value "Frames">
+<!ENTITY autopager-workshop.label.value "Cadre">
 <!ENTITY autopager.label.value "Paginare automată">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Suport pagină">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "i">
@@ -14,8 +14,8 @@
 <!ENTITY autopager.menuitem.autopager-load-all.key "a">
 <!ENTITY autopager.menuitem.autopager-load-all.label "Toate paginile">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
-<!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
-<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
+<!ENTITY autopager.menuitem.autopager-pause-load.key "P">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pauză">
 <!ENTITY autopager.menuitem.autopager-show.label "vizibil">
 <!ENTITY autopager.sanitizer.entry "Confirmare auto-paginare sait">
 <!ENTITY autopager.sanitizer.entry.accesskey "C">
@@ -65,17 +65,16 @@
 <!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Rezultate">
 <!ENTITY caption.results-caption2.label "Rezultate">
-<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommneded Rules">
+<!ENTITY checkbox.chkForceJS.label "Forţeazăîn modul JavaScript">
+<!ENTITY checkbox.ir.label "Include regulile recomandate">
 <!ENTITY label.Usages.value "Utilizări">
-<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.idsLabel.value "Identificatori reguli selectate (separaţi prin ,)">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
-<!ENTITY label.value "Count">
+<!ENTITY label.value "Numără">
 <!ENTITY openautopagerSidebar.commandkey "l">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignoră verificarea versiunii formatului XPath">
 <!ENTITY options.checkbox.setAgent.label "Adaugă AutoPager la şirul de identificare (user-agent) al navigatorului">
-<!ENTITY options.checkbox.showRefinements.label "Afişează &quot;rafinamente&quot; AutoPager">
 <!ENTITY options.checkbox.tweakSession.label "Reafişează ultima pagină vizibilă după restart">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Configuraţie">
 <!ENTITY options.dialog.autopager-options.title "Opţiuni">
@@ -105,7 +104,7 @@
 <!ENTITY setting.label.advanced "Complex">
 <!ENTITY setting.label.allwaysEnableJavaScript "Activează întotdeauna JavaScript în timpul încărcării paginii">
 <!ENTITY setting.label.btnEdit "Editează">
-<!ENTITY setting.label.chkAjax "Nu se încărcă evenimente. Acesta este un sait AJAX">
+<!ENTITY setting.label.chkAjax "Nu încărca evenimente. Acesta este un sait AJAX">
 <!ENTITY setting.label.chkAlt "Alt">
 <!ENTITY setting.label.chkCtrl "Ctrl">
 <!ENTITY setting.label.chkEnableJS "Activează JavaScript în timpul încărcării paginii">
@@ -114,7 +113,7 @@
 <!ENTITY setting.label.chkIsRegex "Expresie regulată">
 <!ENTITY setting.label.chkQuickLoad "Încarcă rapid (nesigur pentru unele saituri)">
 <!ENTITY setting.label.chkShift "Shift">
-<!ENTITY setting.label.chkneedMouseDown "Necesită apăsarea butonului mausului pentru legătură">
+<!ENTITY setting.label.chkneedMouseDown "Solicită declanşarea evenimentului 'Apăsare maus' pentru legătură">
 <!ENTITY setting.label.confirmstyle "Stil casetă opţiuni pagină:">
 <!ENTITY setting.label.delaymsecs "Întârziere înaintea îmbinării paginii următoare (ms):">
 <!ENTITY setting.label.disable-by-default "Dezactivat pentru noile saituri">
@@ -174,7 +173,7 @@
 <!ENTITY setting.update.startup "La fiecare pornire">
 <!ENTITY setting.update.weekly "În fiecare săptămână">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Închide suportul de pagină AutoPager">
-<!ENTITY statusbar.label.value "Click to view the paging rules online">
+<!ENTITY statusbar.label.value "Vizualizează online regulile paginilor">
 <!ENTITY statusbar.menu.autopager-about.label "Ajutor">
 <!ENTITY statusbar.menu.fix.label "Rezolvă probleme">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Rezolvă automat">
@@ -190,25 +189,25 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Afişează regulile din arhiva online">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "Exemple">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Afişează pagina de învăţare prin exemple">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
-<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
-<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
-<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
-<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
-<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
-<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Caută reguli online">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Caută reguli online">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Comută în modul simplificat">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Comută în modul simplificat (AutoPager Lite)">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Comută în modul normal">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Comută în modul normal">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Dezactivează paginarea automată implicită">
+<!ENTITY statusbar.menuitem.discover.label "Descoperă online regulile potrivite">
+<!ENTITY statusbar.menuitem.highlightContents.label "Evidenţiază cuprinsul">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Evidenţiază cuprinsul în document">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Evidenţiază următoarea legătură">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Evidenţiază următoarea legătură în document">
 <!ENTITY statusbar.menuitem.label "Opţiuni">
-<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
-<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
-<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
+<!ENTITY statusbar.menuitem.liteModel.label "Funcţionază în modul simplificat">
+<!ENTITY statusbar.menuitem.noPrompt.label "Afişează pentru noile saituri">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Afişează întotdeauna pictograma pentru descoprire">
 <!ENTITY statusbar.menuitem.tooltiptext "Opţiuni principale AutoPager">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
+<!ENTITY textbox.monitorXPath.tooltiptext "Curăţă paginile încărcate când elementere urmte de XPath s-au modificat?">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Adaugă un sait">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Elimină tot">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Identifică">

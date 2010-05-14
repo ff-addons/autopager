@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.6.0.28"
+                     em:version="0.6.1.6"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a Firefox/Mozilla extension for autoloading the next page in the background. You can also use it as an XPath generator."
                      em:creator="Wind Li"
@@ -25,6 +25,17 @@
         <em:translator>[pt-BR] pedsann at http://www.babelzilla.org</em:translator>
         <em:translator>[zh-TW] Jose Sun @ moztw.org</em:translator>
         <em:translator>[tr-TR] ErkanYV at gmail.com</em:translator>
+        <em:translator>[ro-RO] alexxed,x10firefox at http://www.babelzilla.org</em:translator>
+        <em:translator>[ru-RU] SeLarin at http://www.babelzilla.org</em:translator>
+        <em:translator>[it-IT]  at http://www.babelzilla.org</em:translator>
+        <em:translator>[tr-TR] ErkanYV at gmail.com, erkanyv at http://www.babelzilla.org</em:translator>
+        <em:translator>[hu-HU] gusztinrudolf at http://www.babelzilla.org</em:translator>
+        <em:translator>[he-IL] rugh at http://www.babelzilla.org</em:translator>
+        <em:translator>[vi] loveleeyoungae at http://www.babelzilla.org</em:translator>
+        <em:translator>[pl-PL] kbec at http://www.babelzilla.org</em:translator>
+        <em:translator>[es] dani186 at http://www.babelzilla.org</em:translator>
+        <em:translator>[fi-FI] Olli at http://www.babelzilla.org</em:translator>
+        <em:translator>[sq-AL] Mustafi at http://www.babelzilla.org</em:translator>
 <em:targetApplication>
 <!-- Mozilla Firefox -->
 	<RDF:Description>

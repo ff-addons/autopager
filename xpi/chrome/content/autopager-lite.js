@@ -21,14 +21,13 @@ var autopagerLite =
         {
             autopagerLite.openRulesSelectorForUrl(doc.location.href);
         }
-        autopagerBwUtil.autopagerOpenIntab(url);
     },
     openRulesSelectorForUrl : function(pageurl)
     {
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "discover/r?apv=0.6.0.28&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "discover/r?apv=0.6.1.6&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -219,6 +218,10 @@ var autopagerLite =
             if (container)
             {
                     container.addEventListener("TabSelect", autopagerLite.TabSelected, true);
+                    window.addEventListener("unload", function(){
+                        window.removeEventListener("unload", arguments.callee, false);
+                        container.removeEventListener("TabSelect", autopagerLite.TabSelected, true);
+                    },false);
             }
         }
         if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))

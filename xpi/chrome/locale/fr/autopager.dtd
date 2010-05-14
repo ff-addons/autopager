@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignorer la vérification du format">
 <!ENTITY options.checkbox.setAgent.label "Ajouter AutoPager à la signature « User Agent » du navigateur">
-<!ENTITY options.checkbox.showRefinements.label "Afficher l'affinage d'AutoPager">
 <!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Plus…">
 <!ENTITY options.dialog.autopager-options.title "Options AutoPager">
@@ -179,8 +178,8 @@
 <!ENTITY statusbar.menu.fix.label "Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
-<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shoting">
-<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shooting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shooting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">

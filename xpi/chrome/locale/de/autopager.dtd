@@ -15,7 +15,7 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "Alle Seiten">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
-<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Anhalten">
 <!ENTITY autopager.menuitem.autopager-show.label "angezeigt">
 <!ENTITY autopager.sanitizer.entry "AutoPager Seitenbestätigung">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">
@@ -65,17 +65,16 @@
 <!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Ergebnisse">
 <!ENTITY caption.results-caption2.label "Ergebnisse">
-<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommneded Rules">
+<!ENTITY checkbox.chkForceJS.label "JavaScript-Modus erzwingen">
+<!ENTITY checkbox.ir.label "Empfohlene Regeln hinzufügen">
 <!ENTITY label.Usages.value "Befehle">
-<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
-<!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
-<!ENTITY label.value "Count">
+<!ENTITY label.idsLabel.value "IDs der gewählte Regeln (getrennt durch ,)">
+<!ENTITY label.monitorXPathLbl.value "XPath anzeigen:">
+<!ENTITY label.value "Anzahl">
 <!ENTITY openautopagerSidebar.commandkey "Q">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Format-Versionsprüfung ignorieren">
 <!ENTITY options.checkbox.setAgent.label "AutoPager zur Browserkennung hinzufügen">
-<!ENTITY options.checkbox.showRefinements.label "Versionsverbesserungen von AutoPager anzeigen">
 <!ENTITY options.checkbox.tweakSession.label "Sitzung optimieren. Letzte sichtbare Seite nach einem Neustart wiederherstellen">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Erweiterte Konfiguration...">
 <!ENTITY options.dialog.autopager-options.title "AutoPager - Einstellungen">
@@ -174,7 +173,7 @@
 <!ENTITY setting.update.startup "Bei jedem Start">
 <!ENTITY setting.update.weekly "Wöchentlich">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "AutoPager-Seitenhalter schließen">
-<!ENTITY statusbar.label.value "Click to view the paging rules online">
+<!ENTITY statusbar.label.value "Hier klicken um die Online-Regeln anzuzeigen">
 <!ENTITY statusbar.menu.autopager-about.label "Hilfe">
 <!ENTITY statusbar.menu.fix.label "Fehler beheben">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Automatisch beheben">
@@ -190,25 +189,25 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Konfigurationen der Online-Sammlung anzeigen">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "Tutorials">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Tutorialseite anzeigen">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
-<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
-<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
-<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
-<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
-<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
-<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Online nach Regeln suchen">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Online nach Regeln suchen">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "In Lite-Modus wechseln">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "AutoPager in den Lite-Modus umschalten">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "In normalen Modus wechseln">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "AutoPager in den normalen Modus umschalten">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Blättern standardmäßig deaktivieren">
+<!ENTITY statusbar.menuitem.discover.label "Passende Regeln online suchen">
+<!ENTITY statusbar.menuitem.highlightContents.label "Inhalt markieren">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Inhalt im Dokument markieren">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Weiter-Links markieren">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Weiter-Links im Dokument markieren">
 <!ENTITY statusbar.menuitem.label "Optionen">
-<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
-<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
-<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
+<!ENTITY statusbar.menuitem.liteModel.label "Funktioniert im Lite-Modell">
+<!ENTITY statusbar.menuitem.noPrompt.label "Dies auf der neuen Seite anzeigen">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Fund-Icon immer anzeigen">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager-Haupteinstellungen">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
+<!ENTITY textbox.monitorXPath.tooltiptext "Geladene Seiten entfernen wenn Elemente des folgenden XPaths geklickt/geändert werden">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Seite hinzufügen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Liste leeren">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Herausfinden">

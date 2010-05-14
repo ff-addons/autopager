@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Format Version のチェックを無視する">
 <!ENTITY options.checkbox.setAgent.label "AutoPager をユーザエージェントに加える">
-<!ENTITY options.checkbox.showRefinements.label "AutoPager のリファレンスを表示する">
 <!ENTITY options.checkbox.tweakSession.label "Tweak Session、再読み込み時に最後に見ていたページから調整読み込み">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "詳細設定">
 <!ENTITY options.dialog.autopager-options.title "AutoPager のオプション">

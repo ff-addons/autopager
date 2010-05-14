@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Opmaakversiecontrole negeren">
 <!ENTITY options.checkbox.setAgent.label "AutoPager toevoegen aan User Agent van browser">
-<!ENTITY options.checkbox.showRefinements.label "AutoPager-verfijningen weergeven">
 <!ENTITY options.checkbox.tweakSession.label "Sessie tweaken, herstellen naar laatste zichtbare pagina na herstarten">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Meer">
 <!ENTITY options.dialog.autopager-options.title "AutoPager opties">

@@ -25,21 +25,21 @@
 <!ENTITY autopager.status.createXPathTip "Create XPath by select a node on the page.">
 <!ENTITY autopager.status.disableOnSite "Disable On Site">
 <!ENTITY autopager.status.disableOnSiteTip "Disable On Site">
-<!ENTITY autopager.status.enabled "Enable AutoPager">
+<!ENTITY autopager.status.enabled "Włącz AutoPager">
 <!ENTITY autopager.status.enabledTip "Auto Pager enabled or not.">
-<!ENTITY autopager.status.export "Export Setting">
-<!ENTITY autopager.status.exportTip "Export Auto Pager Settings.">
-<!ENTITY autopager.status.exportclip "Export To Clipboard">
-<!ENTITY autopager.status.exportclipTip "Export Auto Pager Settings To Clipboard.">
-<!ENTITY autopager.status.exportfile "Export To File">
-<!ENTITY autopager.status.exportfileTip "Export Auto Pager Settings To File.">
-<!ENTITY autopager.status.importclip "Import from Clipboard">
-<!ENTITY autopager.status.importclipTip "Import Auto Pager Settings from a Clipboard.">
-<!ENTITY autopager.status.importexport "Import/Export">
-<!ENTITY autopager.status.importfile "Import from File">
-<!ENTITY autopager.status.importfileTip "Import Auto Pager Settings from a File.">
-<!ENTITY autopager.status.importurl "Import from URL">
-<!ENTITY autopager.status.importurlTip "Import Auto Pager Settings from URL.">
+<!ENTITY autopager.status.export "Eksportuj ustawienia">
+<!ENTITY autopager.status.exportTip "Eksportuj ustawienia AutoPager">
+<!ENTITY autopager.status.exportclip "Eksportuj do schowka">
+<!ENTITY autopager.status.exportclipTip "Eksportuj ustawienia AutoPager do schowka">
+<!ENTITY autopager.status.exportfile "Eksportuj do pliku">
+<!ENTITY autopager.status.exportfileTip "Eksportuj ustawienia AutoPager do pliku">
+<!ENTITY autopager.status.importclip "Importuj ze schowka">
+<!ENTITY autopager.status.importclipTip "Importuj ustawienia AutoPager ze schowka">
+<!ENTITY autopager.status.importexport "Import/Eksport">
+<!ENTITY autopager.status.importfile "Importuj z pliku">
+<!ENTITY autopager.status.importfileTip "Importuj ustawienia AutoPager z pliku">
+<!ENTITY autopager.status.importurl "Importuj po adresie URL">
+<!ENTITY autopager.status.importurlTip "Importuj ustawienia AutoPager po adresie URL">
 <!ENTITY autopager.status.myname "My Name:">
 <!ENTITY autopager.status.mynameTip "Your Name, it will be added to the config your created.">
 <!ENTITY autopager.status.reportSite "Report Issue On Site">
@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignore Format Version Check">
 <!ENTITY options.checkbox.setAgent.label "Add AutoPager to browser User Agent">
-<!ENTITY options.checkbox.showRefinements.label "Show AutoPager Refinements">
 <!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "More">
 <!ENTITY options.dialog.autopager-options.title "AutoPager Options">
@@ -179,8 +178,8 @@
 <!ENTITY statusbar.menu.fix.label "Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
-<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shoting">
-<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shooting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shooting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">

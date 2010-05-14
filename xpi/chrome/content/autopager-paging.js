@@ -1180,6 +1180,7 @@ AutoPagring.prototype.onDocUnLoad = function(doc) {
 
         if (this.intervalId)
             window.clearInterval(this.intervalId)
+        autopagerMain.cleanMonitorForCleanPages(doc,this);
 }
 AutoPagring.prototype.onPageUnLoad = function(event) {
     if (event && event.originalTarget && event.originalTarget instanceof HTMLDocument)

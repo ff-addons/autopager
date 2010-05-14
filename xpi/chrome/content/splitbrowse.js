@@ -387,6 +387,7 @@ var apSplitbrowse = {
             //this.setVisible(splitBrowser,!this.hidden);
                    
             browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){
+                event.target.removeEventListener("DOMNodeRemoved", arguments.callee, false);
                 apSplitbrowse.onclose(event,sl)
                 },false);
         }
@@ -469,7 +470,7 @@ var apSplitbrowse = {
     {
         var hidden = !visible;
         this.hidden = hidden;
-        if (splitBrowser == null)
+        if (visible && splitBrowser == null)
             return;
         var splitBox =document.getElementById("autopager-split-box");
         var splitSplitter = document.getElementById("autopager-split-splitter");

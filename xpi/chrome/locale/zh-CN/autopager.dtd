@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "忽略规则格式版本检查">
 <!ENTITY options.checkbox.setAgent.label "将AutoPager字样添加到http头">
-<!ENTITY options.checkbox.showRefinements.label "显示AutoPager精选">
 <!ENTITY options.checkbox.tweakSession.label "重启或后退返回到鼠标下的页面">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "更多选项">
 <!ENTITY options.dialog.autopager-options.title "自动翻页选项">

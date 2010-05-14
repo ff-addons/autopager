@@ -56,6 +56,14 @@ autopagerOnLoad : function() {
             getBrowser().mTabContainer.addEventListener("TabSelect", autopagerMain.TabSelected, false);
         }
     }catch(e){}
+    window.addEventListener("unload", function(){
+        window.removeEventListener("unload", arguments.callee, false);
+        if (getBrowser && getBrowser() && getBrowser().mTabContainer)
+        {
+            getBrowser().mTabContainer.removeEventListener("TabSelect", autopagerMain.TabSelected, false);
+        }
+    }, false);
+
     //window.onscroll = autopagerMain.scrollWatcher;
 	//window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
     window.addEventListener('AutoPagerRefreshPage', this.AutoPagerRefreshPage, true, true);
@@ -790,7 +798,7 @@ onInitDoc : function(doc,safe)
                             de.setAttribute('contentXPath',sitepos.site.contentXPath);
                             de.setAttribute('containerXPath',sitepos.site.containerXPath);
                             de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                            de.setAttribute('autopagerVersion',"0.6.0.28");
+                            de.setAttribute('autopagerVersion',"0.6.1.6");
                             de.setAttribute('autopagerGUID',sitepos.site.guid);
                             de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -938,6 +946,30 @@ monitorForCleanPages : function (doc,paging)
 
             //nodes[i].addEventListener("DOMNodeRemoved", monitor, false);
             nodes[i].addEventListener("DOMNodeInserted", monitor, false);
+        }
+
+        //autopagerMain.removeUrlClickTrack(doc);
+    }
+},
+cleanMonitorForCleanPages : function (doc,paging)
+{
+    if (paging.site.monitorXPath)
+    {
+        var nodes = autopagerMain.findNodeInDoc(doc,paging.site.monitorXPath + " | //div[@class='autoPagerS' and contains(@id,'apBreakStart')]/span/a[2]",paging.enableJS || paging.inSplitWindow);
+        var monitor = paging.getChangeMonitor();
+        for(var i=0;i<nodes.length;i++)
+        {
+            nodes[i].removeEventListener("change", monitor, false);
+            nodes[i].removeEventListener("click", monitor, false);
+        }
+        monitor = paging.getDOMNodeMonitor();
+        //var xpath = paging.site.contentXPath;
+        var xpath = "/*/*";
+        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
+        for(var i=0;i<nodes.length;i++)
+        {
+            //nodes[i].removeEventListener("DOMNodeRemoved", monitor, false);
+            nodes[i].removeEventListener("DOMNodeInserted", monitor, false);
         }
 
         //autopagerMain.removeUrlClickTrack(doc);

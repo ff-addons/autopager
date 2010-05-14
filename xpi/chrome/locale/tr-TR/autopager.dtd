@@ -75,7 +75,6 @@
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Kuralların sürüm kontrolünü yoksay">
 <!ENTITY options.checkbox.setAgent.label "AutoPager'ı kullanıcı aracısına ekle">
-<!ENTITY options.checkbox.showRefinements.label "Arama sayfasında AutoPager tavsiyelerini göster">
 <!ENTITY options.checkbox.tweakSession.label "Yeniden sayfalarken en son görünen sayfadan başla">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Daha fazla">
 <!ENTITY options.dialog.autopager-options.title "AutoPager Seçenekleri">

@@ -178,8 +178,8 @@
 <!ENTITY statusbar.menu.fix.label "Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
-<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shoting">
-<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shoting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shooting">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shooting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">
