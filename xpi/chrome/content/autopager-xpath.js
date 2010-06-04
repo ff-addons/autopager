@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-const autopagerXPath = {
+var autopagerXPath = {
     MAXTextLength : 20,
     MAXLevel: 6,
     discovery:function(doc,xpathes)

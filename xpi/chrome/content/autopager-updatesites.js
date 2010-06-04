@@ -95,10 +95,6 @@ var AutoPagerUpdateTypes =
                     var newSite = autopagerUtils.clone(sites[i]);
                     newSite.referred = sites[i];
                     sites[i]= newSite;
-                    if (sites[i].filename == "chinalist.xml" && autopagerUtils.isChineseLocale())
-                    {
-                        newSite.enabled = true;
-                    }
             }
             //this.saveSettingSiteConfig(sites);
         }
@@ -119,27 +115,27 @@ var AutoPagerUpdateTypes =
             {
             if (!autopagerBwUtil.isFennec())
             {
-            sites.push(new AutoPagerUpdateSite("autopagerize","all",
-                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
-                        "autopagerize configurations",
-                        "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
+//            sites.push(new AutoPagerUpdateSite("autopagerize","all",
+//                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
+//                        "autopagerize configurations",
+//                        "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
             sites.push(new AutoPagerUpdateSite("autopagerize","all",
                         "http://rep.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
                         "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
                         "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
-            sites.push(new AutoPagerUpdateSite("chinalist","all",
-                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
-                        "pagerization chinalist configurations",
-                        "chinalist.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",168,[]));
+//            sites.push(new AutoPagerUpdateSite("chinalist","all",
+//                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
+//                        "pagerization chinalist configurations",
+//                        "chinalist.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",168,[]));
             
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
-                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
-                        "configurations added to blog",
-                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",false,"autopager-freetext",0,[]));
-
-                    
+//            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+//                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
+//                        "configurations added to blog",
+//                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",false,"autopager-freetext",0,[]));
+//
+//
             sites.push(new AutoPagerUpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
                         "default configurations on autopager.mozdev.org",

@@ -188,7 +188,13 @@ autopagerOpenIntab : function(url,obj)
         try{
             return JSON.parse(str);
         }catch(e){
+            if (Components && Components.classes["@mozilla.org/dom/json;1"])
+            {
+                var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+                return nativeJSON.decode(str);
+            }
             this.consoleLog("error parser:" +e + ":"  + str)
+            throw "unable to parser str";
         }
     }
     ,decodeJSON : function (str)
@@ -198,7 +204,7 @@ autopagerOpenIntab : function(url,obj)
             return info;
         //try native json first
         try{
-            info = JSON.parse(str);
+            info = this.doDecodeJSON(str);
         }catch(ex){
             //try parse it manually
             var strs = str.split("},{");

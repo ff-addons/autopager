@@ -1,6 +1,6 @@
 <!ENTITY autopager-workshop.button.modifyXPath.label "...">
 <!ENTITY autopager-workshop.label.value "Frames">
-<!ENTITY autopager.label.value "auto pager">
+<!ENTITY autopager.label.value "Auto Pager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Page Holder">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "L">
 <!ENTITY autopager.menu.autopager-immedialate-load.label "Töltsön be azonnal">

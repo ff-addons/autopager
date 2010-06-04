@@ -5,6 +5,7 @@
 
 var autopagerLite =
 {
+    siteReg: /ap\.teesoft\.info/,
     openRules : function(event) {
         if(event.currentTarget != event.target) return;
         if(event.button == 2) {
@@ -27,7 +28,7 @@ var autopagerLite =
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "discover/r?apv=0.6.1.6&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "discover/r?apv=0.6.1.12&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -80,7 +81,8 @@ var autopagerLite =
     {
         return /\.teesoft\.info\/.*/;
     }
-    ,discoveryRules : function (doc)
+    ,
+    discoveryRules : function (doc)
     {
         if (doc && doc.location && doc.location.href && !doc.documentElement.apDiscovered)
         {
@@ -90,18 +92,31 @@ var autopagerLite =
             else
             {
                 var href = doc.location.href;
-                autopagerRules.discoverRule(href,function(pattern){
-                    if (!pattern)
-                        return;
-                    if (pattern.k)
-                        autopagerLite.processDiscoverResult(doc,pattern.k);
-                    else
-                        autopagerLite.processDiscoverResult(doc,"0");
-                });
+                var text = UpdateSites.AutopagerCOMP.discoverdUrls[href]
+                if (text)
+                {
+                    if (text == " ")
+                        text = "";
+                    autopagerLite.processDiscoverResult(doc,text);
+                }else
+                {
+                    autopagerRules.discoverRule(href,function(pattern){
+                        if (!pattern)
+                            return;
+                        if (pattern.k)
+                            text = pattern.k;
+                        else
+                            text = "0";
+                        UpdateSites.AutopagerCOMP.discoverdUrls[href] = text
+                        autopagerLite.processDiscoverResult(doc,text);
+                    });
+                }
+                
             }
         }
     }
-    ,discoveryRulesOnLine : function (doc)
+    ,
+    discoveryRulesOnLine : function (doc)
     {
         if (doc && doc.location && doc.location.href)
         {
@@ -189,17 +204,18 @@ var autopagerLite =
             values = result.split(",");
         autopagerLite.setStatus(doc,values.length,values.length==0 && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         doc.documentElement.setAttribute("autopagerMatchedRules",values.length);
-//        if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
-//        {
-//            gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
-//        }
+    //        if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
+    //        {
+    //            gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
+    //        }
     },
     TabSelected : function(event)
     {
         if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
         {
-            var length = gBrowser.selectedTab.linkedBrowser.contentDocument.documentElement.getAttribute("autopagerMatchedRules");
-            autopagerLite.setStatus(gBrowser.selectedTab.linkedBrowser.contentDocument,length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
+            var doc = gBrowser.selectedTab.linkedBrowser.contentDocument
+            var length = doc.documentElement.getAttribute("autopagerMatchedRules");
+            autopagerLite.setStatus(doc,length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         }
 
     },
@@ -212,16 +228,16 @@ var autopagerLite =
         {
             var container = null;
             if (typeof gBrowser != 'undefined' && gBrowser.tabContainer)
-                    container = gBrowser.tabContainer;
+                container = gBrowser.tabContainer;
             else if (typeof getBrowser != 'undefined' && getBrowser() && getBrowser().mTabContainer)
-                    container = getBrowser().mTabContainer;
+                container = getBrowser().mTabContainer;
             if (container)
             {
-                    container.addEventListener("TabSelect", autopagerLite.TabSelected, true);
-                    window.addEventListener("unload", function(){
-                        window.removeEventListener("unload", arguments.callee, false);
-                        container.removeEventListener("TabSelect", autopagerLite.TabSelected, true);
-                    },false);
+                container.addEventListener("TabSelect", autopagerLite.TabSelected, true);
+                window.addEventListener("unload", function(){
+                    window.removeEventListener("unload", arguments.callee, false);
+                    container.removeEventListener("TabSelect", autopagerLite.TabSelected, true);
+                },false);
             }
         }
         if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
@@ -240,23 +256,23 @@ var autopagerLite =
             else if (autopagerMain.isValidDoc(event.target))
                 doc = event.target;
         }
-        if (!doc || !doc.location || !doc.location.href || !(doc.location.href.match(/ap\.teesoft\.info/)))
+        if (!doc || !doc.location || !doc.location.href || !(doc.location.href.match(autopagerLite.siteReg)))
             return;
 
         if (autopagerBwUtil.isFennec() && typeof Browser!="undefined" && Browser._browserView)
         {
             var bv = Browser._browserView
             bv.setZoomLevel(2);
-//            var browser = Browser;
-//            if (browser && browser.markupDocumentViewer)
-//            {
-//                var zoomFactor=2
-//              if (FullZoom.siteSpecific) {
-//                FullZoom._cps.setPref(browser.currentURI, FullZoom.name, zoomFactor);
-//              } else {
-//                browser.markupDocumentViewer.fullZoom = zoomFactor;
-//              }
-//            }
+        //            var browser = Browser;
+        //            if (browser && browser.markupDocumentViewer)
+        //            {
+        //                var zoomFactor=2
+        //              if (FullZoom.siteSpecific) {
+        //                FullZoom._cps.setPref(browser.currentURI, FullZoom.name, zoomFactor);
+        //              } else {
+        //                browser.markupDocumentViewer.fullZoom = zoomFactor;
+        //              }
+        //            }
         }
 
         var selectAll = doc.getElementById("apRulesForm:rulesTable:selectAll");
@@ -269,16 +285,16 @@ var autopagerLite =
             var sheet = sheets.item(i);
             if (!sheet || !sheet.href)
                 continue;
-            if (sheet.href.match(/ap\.teesoft\.info/))
+            if (sheet.href.match(autopagerLite.siteReg))
             {
                 if (sheet.cssRules)
-                for(var r=0;r<sheet.cssRules.length;r++)
-                {
-                    if (sheet.cssRules[r].selectorText=='.editor')
+                    for(var r=0;r<sheet.cssRules.length;r++)
                     {
-                        sheet.cssRules[r].style.display="inline";
+                        if (sheet.cssRules[r].selectorText=='.editor')
+                        {
+                            sheet.cssRules[r].style.display="inline";
+                        }
                     }
-                }
             }
         }
         var enableButtons = ["apRulesForm:rulesTable:enable1","apRulesForm:rulesTable:enable2"];
@@ -319,7 +335,8 @@ var autopagerLite =
         autopagerPref.savePref("ids",ids);
         autopagerUtils.Set_Cookie(node.ownerDocument, "ids", ids, 365, 'ap.teesoft.info'/*, path, secure */)
     }
-    ,enableRules : function(doc,enabled)
+    ,
+    enableRules : function(doc,enabled)
     {
         var inputs = doc.getElementsByTagName("input");
         var ids = "";
@@ -336,7 +353,7 @@ var autopagerLite =
         else
             autopagerPref.savePref("ids",autopagerLite.removeIds(autopagerPref.loadPref("ids") ,"," + ids + ","));
 
-        //TODO:update the rules online
+    //TODO:update the rules online
     },
     processIds : function (idStr)
     {
@@ -372,26 +389,26 @@ var autopagerLite =
     },
     switchToLite : function(doc,liteMode)
     {
-       autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
-       if (liteMode)
-       {
-           autopagerPref.saveBoolPref("with-lite-discovery",true);
-           autopagerPref.saveBoolPref("noprompt",true);
-           autopagerPref.saveBoolPref("disable-by-default",false);
-       }
-//       else
-//           autopagerPref.saveBoolPref("with-lite-rules",true);
-       UpdateSites.getAutopagerCOMP().setUpdateSites(null);
-       UpdateSites.updateSites=null;
-       UpdateSites.init();
-       UpdateSites.getAutopagerCOMP().setAll(null);
-       UpdateSites.loadAll();
-       UpdateSites.updatePatternOnline(true);
+        autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
+        if (liteMode)
+        {
+            autopagerPref.saveBoolPref("with-lite-discovery",true);
+            autopagerPref.saveBoolPref("noprompt",true);
+            autopagerPref.saveBoolPref("disable-by-default",false);
+        }
+        //       else
+        //           autopagerPref.saveBoolPref("with-lite-rules",true);
+        UpdateSites.getAutopagerCOMP().setUpdateSites(null);
+        UpdateSites.updateSites=null;
+        UpdateSites.init();
+        UpdateSites.getAutopagerCOMP().setAll(null);
+        UpdateSites.loadAll();
+        UpdateSites.updatePatternOnline(true);
     },
     isInLiteMode : function ()
     {
-//        if (!autopagerBwUtil.isFennec())
-            return autopagerPref.loadBoolPref("work-in-lite-mode");
-//        return true;
+        //        if (!autopagerBwUtil.isFennec())
+        return autopagerPref.loadBoolPref("work-in-lite-mode");
+    //        return true;
     }
 }

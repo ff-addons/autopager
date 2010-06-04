@@ -165,7 +165,7 @@ var autopagerSidebar =
 				regex = new RegExp(urlPattern.value);
 			}else
 			{
-				regex = convert2RegExp(urlPattern.value);
+				regex = autopagerUtils.convert2RegExp(urlPattern.value);
 			}
 			if (url)
 			{

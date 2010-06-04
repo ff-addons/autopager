@@ -13,35 +13,15 @@ var autopagerRules =
     },
     getNextMatchedSiteConfig: function(url,pos,matchCallBack)
     {
-        var posNew= autopagerRules.doGetNextMatchedSiteConfig(autopagerMain.workingAllSites,url,pos);
-        if (!matchCallBack(posNew) && posNew!=null)
-        {
-            autopagerRules.getNextMatchedSiteConfig(url,posNew,matchCallBack)
-        }
-    },
-    doGetNextMatchedSiteConfig: function(allSites,url,pos)
-    {
-        var key;
-        var fileStarted = (pos ==="" || pos ==null || pos.key==null || pos.index==null);
-        var firstCall = fileStarted
-        //var lineStarted = (pos =="" || pos ==null || pos.key==null || pos.index==null);
-        for ( key in allSites){
+//        autopagerBwUtil.consoleLog("Process " + url)
+        var allSites=autopagerMain.workingAllSites
+        for (var key in allSites){
             //alert(key)
             var tmpsites = allSites[key];
             if (tmpsites==null || !tmpsites.updateSite.enabled)
                 continue;
-            if (!fileStarted)
-                fileStarted = ((key == pos.key));
-            if (!fileStarted)
-                continue;
-            var start = 0;
-            if (!firstCall && key == pos.key)
-                start = pos.index +1
-            //alert(key + ":" +firstCall + ":" + start + ":" + (!firstCall && key == pos.key))
-            for (var i = start; i < tmpsites.length; i++) {
-            //                if (!started)
-            //                    started = ((key == pos.key) && i>=pos.index);
-            //                else
+
+            for (var i = 0; i < tmpsites.length; i++) {
             {
                 var site = tmpsites[i];
                 var pattern = autopagerUtils.getRegExp(site);
@@ -52,13 +32,16 @@ var autopagerRules =
                     pos.key = key;
                     pos.index = i;
                     pos.site=newSite;
-                    return pos;
+                    if (matchCallBack(pos))
+                    {
+                        return pos;
+                    }
                 }
             }
             }
         }
+        matchCallBack(null);
         return null;
-
     },
     discoverRule: function(url,matchCallBack)
     {

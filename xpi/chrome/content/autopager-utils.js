@@ -295,11 +295,11 @@ var autopagerUtils = {
                             site.regex = new RegExp(autopagerUtils.correctRegExp(site.urlPattern));
                         }catch(e){
                             //error create regexp, try to use it as pattern
-                            site.regex = convert2RegExp(site.urlPattern);
+                            site.regex = autopagerUtils.convert2RegExp(site.urlPattern);
                         }        
                     }
                 else
-                    site.regex = convert2RegExp(site.urlPattern);
+                    site.regex = autopagerUtils.convert2RegExp(site.urlPattern);
             }
         }catch(e)
         {
@@ -322,11 +322,11 @@ var autopagerUtils = {
                             pattern.rg = new RegExp(autopagerUtils.correctRegExp(pattern.u));
                         }catch(e){
                             //error create regexp, try to use it as pattern
-                            pattern.rg = convert2RegExp(pattern.u);
+                            pattern.rg = autopagerUtils.convert2RegExp(pattern.u);
                         }
                     }
                 else
-                    pattern.rg = convert2RegExp(pattern.u);
+                    pattern.rg = autopagerUtils.convert2RegExp(pattern.u);
             }
         }catch(e)
         {
@@ -789,4 +789,47 @@ delete * 24, for minutes, delete * 60 * 24
             autopagerBwUtil.notification(id,message,buttons)
         }
     }
+// Converts a pattern in this programs simple notation to a regular expression.
+// thanks AdBlock! http://www.mozdev.org/source/browse/adblock/adblock/
+,convert2RegExp : function( pattern ) {
+  var s = new String(pattern);
+  var res = new String("^");
+
+  for (var i = 0 ; i < s.length ; i++) {
+    switch(s[i]) {
+      case '*' :
+        res += ".*";
+        break;
+
+      case '.' :
+      case '?' :
+      case '^' :
+      case '$' :
+      case '+' :
+      case '{' :
+      case '[' :
+      case '|' :
+      case '(' :
+      case ')' :
+      case ']' :
+      case '/' :
+        res += "\\" + s[i];
+        break;
+
+      case '\\' :
+        res += "\\\\";
+        break;
+
+      case ' ' :
+        // Remove spaces from URLs.
+        break;
+
+      default :
+        res += s[i];
+        break;
+    }
+  }
+
+  return new RegExp(res + '$', "i");
+}
 }
