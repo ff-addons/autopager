@@ -31,25 +31,26 @@ var apSplitbrowse = {
                 } else if(ctx instanceof ci.nsIDOMNode) {
                     //ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
                     ctx = ctx.ownerDocument.defaultView;
-                } else return null;
-            }
-            if(!ctx)
+                }
+                else return null;
+                }
+                if(!ctx)
                 return null;
-            //ctx = lm(ctx, "top")();
-            ctx = ctx.top;
+                //ctx = lm(ctx, "top")();
+                ctx = ctx.top;
 
-            return ctx;
-        },
-        findBrowserForNode: function(ctx) {
-            if(!ctx) return null;
-            const ci = Components.interfaces;
-            const lm = this.lookupMethod;
-            if(!(ctx instanceof ci.nsIDOMWindow)) {
+                return ctx;
+                },
+                findBrowserForNode: function(ctx) {
+                if(!ctx) return null;
+                const ci = Components.interfaces;
+                const lm = this.lookupMethod;
+                if(!(ctx instanceof ci.nsIDOMWindow)) {
                 if(ctx instanceof ci.nsIDOMDocument) {
-                    ctx = lm(ctx, "defaultView")();
+                ctx = lm(ctx, "defaultView")();
                 } else if(ctx instanceof ci.nsIDOMNode) {
-                    ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
-                } else return null;
+            ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
+        } else return null;
             }
             if(!ctx) return null;
             ctx = lm(ctx, "top")();
@@ -178,9 +179,9 @@ var apSplitbrowse = {
         if (browser!=null)
             return browser;
   	
-        for(var i=1;i<=document.splitBrowserCount;++i)
+        for(var l=1;l<=document.splitBrowserCount;++l)
         {
-            var b = document.getElementById(this.autopagerPrefix + "-split-browser-" + i);
+            var b = document.getElementById(this.autopagerPrefix + "-split-browser-" + l);
             if (b!=null && b.contentWindow == ctx)
             {
                 return b;
@@ -192,11 +193,11 @@ var apSplitbrowse = {
             if (browsers)
                 for(var i=0;i<browsers.length;++i)
                 {
-                    var b = browsers[i];
+                    var br = browsers[i];
                     try{
-                        if (b && typeof b.contentWindow != "undefined" && b.contentWindow == ctx)
+                        if (br && typeof br.contentWindow != "undefined" && br.contentWindow == ctx)
                         {
-                            return b;
+                            return br;
                         }
                     }catch(e)
                     {
@@ -386,10 +387,14 @@ var apSplitbrowse = {
             //	    		browser.setAttribute("flex", "1");
             //this.setVisible(splitBrowser,!this.hidden);
                    
-            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){
-                event.target.removeEventListener("DOMNodeRemoved", arguments.callee, false);
-                apSplitbrowse.onclose(event,sl)
-                },false);
+//            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){
+//                event.target.removeEventListener("DOMNodeRemoved", arguments.callee, false);
+//                apSplitbrowse.onclose(event,sl)
+//            },false);
+              doc.defaultView.addEventListener("beforeunload",function(event){
+                  doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
+                  apSplitbrowse.onclose(splitBrowser,sl)
+              },true);
         }
 
         if (splitBrowser != null)
@@ -502,147 +507,135 @@ var apSplitbrowse = {
         if (!hidden)
             this.show(splitBrowser);
         else
-        this.hide(splitBrowser);
+            this.hide(splitBrowser);
         // ***** load page
         //splitBrowser.loadURI( "http://www.mozilla.org", null, null );
         return splitBrowser;
-        },
-        close : function(doc,listener)
-        {
-        try{
-        var splitBrowser = this.getSplitBrowser(doc,null,false,false,listener);
-        if (splitBrowser==null)
-        return;
-        if (listener && listener.splitpanelProgressListener)
-        splitBrowser.removeProgressListener(listener.splitpanelProgressListener);
-     
-        var parent = splitBrowser.parentNode;
-        if (parent == null)
-        return;
-        splitBrowser.parentNode.removeChild(splitBrowser);
-        //splitBrowser.destroy();
-        //content.focus();
-        }catch (e) {
-        autopagerBwUtil.consoleError(e)
-        }
-        },
-        onclose:function(event,sl)
-        {
-        var browser=apSplitbrowse.getBrowserFromTarget(event.target);
-        if (browser == null)
-        {
-        return;
-        }
-        var subfix = browser.getAttribute(apSplitbrowse.autopagerPrefix +  "splitbrowse-id");
-
-        var id = apSplitbrowse.autopagerPrefix +"-split-browser-" + subfix;
-        var splitBrowser = document.getElementById(id);
-    
+    },
+    doClose : function(splitBrowser , listener)
+    {
+        window.setTimeout(function(){
+            if (listener && listener.progressListener)
+            {
+                try{
+                    splitBrowser.removeProgressListener(listener.progressListener);
+                }catch(e)
+                {
+                }
+                listener.progressListener.listener = null;
+                listener.progressListener = null;
+            }
+        }, 10);
+    },    
+    onclose:function(splitBrowser,listener)
+    {
         if (splitBrowser != null)
         {
-        splitBrowser.removeProgressListener(sl);
-        var parent = splitBrowser.parentNode;
-        parent.removeChild(splitBrowser);
-        //splitBrowser.destroy();
+            apSplitbrowse.doClose(splitBrowser,listener.listener);
+            var parent = splitBrowser.parentNode;
+            if (parent == null)
+                return;
+            splitBrowser.destroy();
+            parent.removeChild(splitBrowser);
         }
-        },
-        getBrowserFromTarget: function(target)
-        {
+    },
+    getBrowserFromTarget: function(target)
+    {
         if (target.localName == "browser")
-        return target;
+            return target;
         for (var i=0;i<target.childNodes.length;i++)
         {
-        var b = apSplitbrowse.getBrowserFromTarget(target.childNodes[i]);
-        if (b!= null)
-        return b;
+            var b = apSplitbrowse.getBrowserFromTarget(target.childNodes[i]);
+            if (b!= null)
+                return b;
         }
         return null;
-        },
-        loadNewUrl : function(win,url)
-        {
+    },
+    loadNewUrl : function(win,url)
+    {
         try{
-        win.loadURI(url,null,null);
+            win.loadURI(url,null,null);
         }catch (e) {
-        autopagerBwUtil.consoleError(e);
+            autopagerBwUtil.consoleError(e);
         }
-        },
-        // ***** set start navigation ui
-        start : function(sl)
-        {
-        },
-        // ***** set done navigation ui
-        done : function(doc,sl)
-        {
+    },
+    // ***** set start navigation ui
+    start : function(sl)
+    {
+    },
+    // ***** set done navigation ui
+    done : function(doc,sl)
+    {
         //alert("done");
         if (doc.location.href=='about:blank')
-        return true;
+            return true;
         window.setTimeout(function(){
             if (sl && sl.listener)
-            sl.listener.onSplitDocLoaded(doc,true);
+                sl.listener.onSplitDocLoaded(doc,true);
             else
-            autopagerMain.onSplitDocLoaded(doc,true);
-            },apSplitbrowse.getDelayMiliseconds(doc));
-        },
-        getDelayMiliseconds : function ( doc ){
-            var browser = apSplitbrowse.getBrowserNode(doc);
-            if (browser && browser.getAttribute(apSplitbrowse.getSplitKey())) {
+                autopagerMain.onSplitDocLoaded(doc,true);
+        },apSplitbrowse.getDelayMiliseconds(doc));
+    },
+    getDelayMiliseconds : function ( doc ){
+        var browser = apSplitbrowse.getBrowserNode(doc);
+        if (browser && browser.getAttribute(apSplitbrowse.getSplitKey())) {
             if (browser.auotpagerContentDoc)
             {
-            if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)
-            return browser.auotpagerContentDoc.documentElement.delaymsecs;
+                if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)
+                    return browser.auotpagerContentDoc.documentElement.delaymsecs;
             }
-            }
-            return autopagerMain.getDelayMiliseconds();
-            }
-            };
-            var splitpanelProgressListener  = function (listener)
-            {
-            this.listener = listener;
-            if (listener)
-            listener.splitpanelProgressListener = this
-            };
+        }
+        return autopagerMain.getDelayMiliseconds();
+    }
+};
+var splitpanelProgressListener  = function (listener)
+{
+    this.listener = listener;
+    if (listener)
+        listener.progressListener = this
+};
 
-            splitpanelProgressListener.prototype = {
-            onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
-            {
-            const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
-            const nsIChannel = Components.interfaces.nsIChannel;
-            if (aStateFlags & nsIWebProgressListener.STATE_START &&
-                aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
+splitpanelProgressListener.prototype = {
+    onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
+    {
+        const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
+        const nsIChannel = Components.interfaces.nsIChannel;
+        if (aStateFlags & nsIWebProgressListener.STATE_START &&
+            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
             apSplitbrowse.start(this);
             return;
-            } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
-    aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK && aStatus==0) {
-    //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
-    apSplitbrowse.done( aWebProgress.DOMWindow.document,this);
-        
-    return;
-}
-},
-onStatusChange : function(webProgress, request, status, message)
-{
-    return;
-},
-onLocationChange : function(webProgress, request, location)
-{
-    apSplitbrowse.start(this);
-    return;
-},
-onProgressChange : function(webProgress, request,
-    curSelfProgress, maxSelfProgress,
-    curTotalProgress, maxTotalProgress) {
-    return;
-},
-onSecurityChange : function(webProgress, request, state)
-{
-    return;
-},
-QueryInterface : function(aIID)
-{
-    if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-        aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-        aIID.equals(Components.interfaces.nsISupports))
-        return this;
-    throw Components.results.NS_NOINTERFACE;
-}
+        } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
+            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK && aStatus==0) {
+            //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
+            apSplitbrowse.done( aWebProgress.DOMWindow.document,this);
+
+            return;
+        }
+    },
+    onStatusChange : function(webProgress, request, status, message)
+    {
+        return;
+    },
+    onLocationChange : function(webProgress, request, location)
+    {
+        apSplitbrowse.start(this);
+        return;
+    },
+    onProgressChange : function(webProgress, request,
+        curSelfProgress, maxSelfProgress,
+        curTotalProgress, maxTotalProgress) {
+        return;
+    },
+    onSecurityChange : function(webProgress, request, state)
+    {
+        return;
+    },
+    QueryInterface : function(aIID)
+    {
+        if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
+            aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
+            aIID.equals(Components.interfaces.nsISupports))
+            return this;
+        throw Components.results.NS_NOINTERFACE;
+    }
 };

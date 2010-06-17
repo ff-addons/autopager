@@ -831,5 +831,23 @@ delete * 24, for minutes, delete * 60 * 24
   }
 
   return new RegExp(res + '$', "i");
-}
+},
+    handleDocLoad : function(doc,safe)
+    {
+        if (autopagerBwUtil.handleDocLoad)
+        {
+            return autopagerBwUtil.handleDocLoad(doc,safe)
+        }
+
+        autopagerMain.workingAllSites = UpdateSites.loadAll();
+        //doc.documentElement.autopagerContentHandled = true;
+        var tmpSites = autopagerMain.loadTempConfig();
+
+        tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
+            "","text/html; charset=utf-8",
+            "smart paging configurations",
+            "smartpaging.xml","//site",true,"autopager-xml",0);
+        autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
+        return autopagerMain.onInitDoc(doc,safe);
+    }
 }

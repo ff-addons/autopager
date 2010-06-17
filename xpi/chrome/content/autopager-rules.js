@@ -13,6 +13,8 @@ var autopagerRules =
     },
     getNextMatchedSiteConfig: function(url,pos,matchCallBack)
     {
+        if (url.length>256) //truncate the url
+            url = url.substring(0,256);
 //        autopagerBwUtil.consoleLog("Process " + url)
         var allSites=autopagerMain.workingAllSites
         for (var key in allSites){

@@ -89,7 +89,11 @@ autopagerSelector.addEventListener = function(browser,name,func,user)
         if (browser.contentWindow.frames != null) {
             //alert(doc.defaultView.frames.length);
             for(var i=0;i<browser.contentWindow.frames.length;++i) {
-                browser.contentWindow.frames[i].addEventListener(name, func, user);
+                try{
+                  browser.contentWindow.frames[i].addEventListener(name, func, user);
+                }catch(e)
+                {
+                }
             }
         }
     
@@ -101,7 +105,10 @@ autopagerSelector.removeEventListener = function(browser,name,func,user)
         if (browser.contentWindow.frames != null) {
             //alert(doc.defaultView.frames.length);
             for(var i=0;i<browser.contentWindow.frames.length;++i) {
-                browser.contentWindow.frames[i].removeEventListener(name, func, user);
+                try{
+                    browser.contentWindow.frames[i].removeEventListener(name, func, user);
+                }catch(e){
+                }
             }
         }
     
@@ -149,14 +156,16 @@ autopagerSelector.start = function(browser) {
 
 	this.initHelpBox();
 
-	var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-															.getService(Components.interfaces.nsIPrefService);
-	var branch = prefService.getBranch("autopager.");
-	var notshowMenu = false;
-	try {
-		notshowMenu = branch.getBoolPref("selector.notshowhelp");
-	} catch(e) {}
-
+        var notshowMenu = false;
+	if (typeof Components != "undefined")
+        {
+            var prefService = Components.classes["@mozilla.org/preferences-service;1"]
+                                                                                                                            .getService(Components.interfaces.nsIPrefService);
+            var branch = prefService.getBranch("autopager.");
+            try {
+                    notshowMenu = branch.getBoolPref("selector.notshowhelp");
+            } catch(e) {}
+        }
 	if (notshowMenu)
 		this.showMenu();
 }
@@ -220,6 +229,8 @@ autopagerSelector.onMouseOver = function(event) {
 	if (this.paused)
 			return;
 	var elem = event.originalTarget;
+        if (elem==null)
+            elem = event.target;
 	var aardvarkLabel = elem;
 	while (aardvarkLabel && !("autopagerSelectorLabel" in aardvarkLabel))
 		aardvarkLabel = aardvarkLabel.parentNode;

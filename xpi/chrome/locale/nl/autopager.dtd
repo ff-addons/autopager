@@ -1,4 +1,4 @@
-<!ENTITY autopager-workshop.button.modifyXPath.label "...">
+<!ENTITY autopager-workshop.button.modifyXPath.label "…">
 <!ENTITY autopager-workshop.label.value "Frames">
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Paginahouder">
@@ -15,7 +15,7 @@
 <!ENTITY autopager.menuitem.autopager-load-all.label "Alle  pagina’s">
 <!ENTITY autopager.menuitem.autopager-load.modifiers "accel,alt">
 <!ENTITY autopager.menuitem.autopager-pause-load.key "Q">
-<!ENTITY autopager.menuitem.autopager-pause-load.label "Pause">
+<!ENTITY autopager.menuitem.autopager-pause-load.label "Pauzeren">
 <!ENTITY autopager.menuitem.autopager-show.label "weergeven">
 <!ENTITY autopager.sanitizer.entry "AutoPager sitebevestiging">
 <!ENTITY autopager.sanitizer.entry.accesskey "A">
@@ -61,16 +61,16 @@
 <!ENTITY autopager.status.xpathUtils "XPath hulpmiddelen">
 <!ENTITY autopager.toolbarLabel "AutoPager site-instellingen workshop">
 <!ENTITY autopager.tooltip "AutoPager site-instellingen workshop">
-<!ENTITY button.modifyContainerXPath.label "...">
-<!ENTITY button.modifyLinkXPath.label "...">
+<!ENTITY button.modifyContainerXPath.label "…">
+<!ENTITY button.modifyLinkXPath.label "…">
 <!ENTITY caption.results-caption.label "Resultaten">
 <!ENTITY caption.results-caption2.label "Resultaten">
-<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommneded Rules">
+<!ENTITY checkbox.chkForceJS.label "JavaScriptmodus forceren">
+<!ENTITY checkbox.ir.label "Aanbevolen regels opnemen">
 <!ENTITY label.Usages.value "Gebruik">
-<!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
-<!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
-<!ENTITY label.value "Count">
+<!ENTITY label.idsLabel.value "Geselecteerde regel-ID’s (gescheiden door komma’s)">
+<!ENTITY label.monitorXPathLbl.value "XPath volgen:">
+<!ENTITY label.value "Aantal">
 <!ENTITY openautopagerSidebar.commandkey "b">
 <!ENTITY openautopagerSidebar.modifiersKey "alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Opmaakversiecontrole negeren">
@@ -152,7 +152,7 @@
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
 <!ENTITY setting.label.smartlinksEnd "koppelingen worden gevonden.">
-<!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door &apos;|&apos;):">
+<!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door ‘|’):">
 <!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
 <!ENTITY setting.label.update "Bijwerken">
 <!ENTITY setting.text.tipContainerXPath "Wijzig dit niet als dit u niets zegt.\nDit helpt als de voornaamste inhoud van de site een container heeft met overflow-y en een schuifbalk. Kijk bijvoorbeeld op www.cuil.com.">
@@ -173,7 +173,7 @@
 <!ENTITY setting.update.startup "Bij elke keer opstarten">
 <!ENTITY setting.update.weekly "Elke week">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "AutoPager paginahouder sluiten">
-<!ENTITY statusbar.label.value "Click to view the paging rules online">
+<!ENTITY statusbar.label.value "Klik om de pagineringsregels online te bekijken">
 <!ENTITY statusbar.menu.autopager-about.label "Help">
 <!ENTITY statusbar.menu.fix.label "Problemen repareren">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Automatisch repareren">
@@ -189,29 +189,29 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Regels in de online repository weergeven">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "Handleidingen">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Pagina met handleidingen weergeven">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
-<!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
-<!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
-<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
-<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
-<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
-<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Regels online doorzoeken">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Regels online doorzoeken">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Naar Lite-modus omschakelen">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Naar AutoPager Lite-modus omschakelen">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Naar normale modus omschakelen">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Naar normale AutoPager-modus omschakelen">
+<!ENTITY statusbar.menuitem.disable-on-default.label "Pagineren standaard uitschakelen">
+<!ENTITY statusbar.menuitem.discover.label "Overeenkomende regels online ontdekken">
+<!ENTITY statusbar.menuitem.highlightContents.label "Inhoud accentueren">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Inhoud in het document accentueren">
+<!ENTITY statusbar.menuitem.highlightLinks.label "Volgende koppelingen accentueren">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Volgende koppelingen in het document accentueren">
 <!ENTITY statusbar.menuitem.label "Opties">
-<!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
-<!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">
-<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
+<!ENTITY statusbar.menuitem.liteModel.label "Werkt in de Lite-modus">
+<!ENTITY statusbar.menuitem.noPrompt.label "Dit in nieuwe site weergeven">
+<!ENTITY statusbar.menuitem.showDiscoverPanel.label "Pictogram Ontdekken altijd weergeven">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager hoofdopties">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
+<!ENTITY textbox.monitorXPath.tooltiptext "Geladen pagina’s opschonen wanneer elementen volgens dit xpath worden aangeklikt/gewijzigd">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site toevoegen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Alles wissen">
 <!ENTITY toolbarbutton.discoverPath.tooltiptext "Ontdekking">
-<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "In eigen vesnter openen">
+<!ENTITY toolbarbutton.openInOwnWin.tooltiptext "In eigen venster openen">
 <!ENTITY toolbarbutton.openInSidebar.tooltiptext "In zijbalk openen">
 <!ENTITY toolbarbutton.pickupContentPath.tooltiptext "Inhoud oppikken">
 <!ENTITY toolbarbutton.pickupLinkPath.tooltiptext "Koppeling oppikken">

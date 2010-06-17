@@ -158,7 +158,7 @@ onPageUnLoad : function(event) {
         browser.removeAttribute(apSplitbrowse.getSplitKey());
     }
 
-    apSplitbrowse.close(doc);
+    doc.documentElement.autopagerPagingObj = null;
     }catch(e){}
 },
 handleCurrentDoc : function()
@@ -308,16 +308,7 @@ doContentLoad : function(event) {
   },
 handleDocLoad : function(doc,safe)
 {
-        autopagerMain.workingAllSites = UpdateSites.loadAll();
-        //doc.documentElement.autopagerContentHandled = true;
-        var tmpSites = autopagerMain.loadTempConfig();
-
-        tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
-            "","text/html; charset=utf-8",
-            "smart paging configurations",
-            "smartpaging.xml","//site",true,"autopager-xml",0);
-        autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
-        autopagerMain.onInitDoc(doc,safe);
+    autopagerUtils.handleDocLoad(doc,safe)
 },
 testDoc : function(doc,site)
 {
@@ -453,7 +444,7 @@ getCtrlKey : function()
 },
 setCtrlKey : function(value)
 {
-    return autopagerPref.saveBoolPref(".enablehotkeys.ctrlkey",value);
+    return autopagerPref.saveBoolPref("enablehotkeys.ctrlkey",value);
 },
 getAltKey : function()
 {
@@ -461,7 +452,7 @@ getAltKey : function()
 },
 setAltKey : function(value)
 {
-    return autopagerPref.saveBoolPref(".enablehotkeys.altkey",value);
+    return autopagerPref.saveBoolPref("enablehotkeys.altkey",value);
 },
 getShiftKey : function()
 {
@@ -469,7 +460,7 @@ getShiftKey : function()
 },
 setShiftKey:function(value)
 {
-    return autopagerPref.saveBoolPref(".enablehotkeys.shiftkey",value);
+    return autopagerPref.saveBoolPref("enablehotkeys.shiftkey",value);
 },
 promptNewVersion : function (version)
 {
@@ -633,8 +624,8 @@ onInitDoc : function(doc,safe)
                         {
                             de.setAttribute('autopagerAjax',sitepos.site.ajax);
                             doc.autopagerAjax = sitepos.site.ajax
-                            browser.addProgressListener(apBrowserProgressListener,
-                                Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
+//                            browser.addProgressListener(apBrowserProgressListener,
+//                                Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
                             browser.autopagerProgressListenerAttached = true;
                         }
                     }
@@ -677,6 +668,11 @@ onInitDoc : function(doc,safe)
                 var visible = false;
                 for(var l in urlNodes)
                 {
+                    if (!urlNodes[l] || urlNodes[l].constructor == String )
+                    {
+                        visible = true;
+                        break;
+                    }
                     var style = null;
                     if (doc.defaultView)
                     {
@@ -819,7 +815,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.12");
+                de.setAttribute('autopagerVersion',"0.6.1.18");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -1054,8 +1050,6 @@ clearLoadStatus : function (doc)
     obj.forceLoadPage=0
 
     doc.documentElement.setAttribute("autopagerVersion","")
-
-    apSplitbrowse.close(doc);
 
 }
 ,pauseLoadPages : function(doc)
@@ -1392,20 +1386,21 @@ getSelectorLoadFrame : function(doc) {
         if (this.autopagerDebug) {
             div = autopagerMain.createDiv(doc,divName,"");
         }
-        else {	
-            div = autopagerMain.createDiv(doc,divName,  "border: 0px; margin: 0px; padding: 0px; position: absolute; width: "
+        else {
+            var style = "border: 0px; margin: 0px; padding: 0px; position: absolute; width: "
                 + window.innerWidth + "px; display: block; z-index: -90; left: "
                 + (-100 - window.innerWidth) + "px; top: "
                 + (-100 - window.innerHeight) + "px; height: "
-                + window.innerHeight + "px;");
-//              div = autopagerMain.createDiv(doc,divName,  "");
+                + window.innerHeight + "px;";
+
+            div = autopagerMain.createDiv(doc,divName,  style);
+            //div = autopagerMain.createDiv(doc,divName,  "");
         }
         div.innerHTML=
             "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
         
         frame = doc.getElementById(frameName);
-
-        //frame.src = "about:";
+        frame.contentDocument.write("<html><head><base href='" + doc.baseURI + "'/></head><body>autopaging</body></html>");
         frame.autoPagerInited = false;
         //create a empty div in target
         autopagerMain.getLastDiv(doc);
@@ -1591,7 +1586,7 @@ topLocationMark : /top\.location(\.href)*[ ]*\=/,
 headStartMark:/<[Hh][Ee][Aa][Dd][ ]+/,
 headEndMark:/<[ ]*\/[ ]*[Hh][Ee][Aa][Dd]>/,
 htmlEndMark:/<[ ]*\/[ ]*[Hh][Tt][Mm][Ll]>/,
-getHtmlInnerHTML : function(html,enableJS,url,type) {
+getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
     var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
     if (!enableJS) {
         //<base href="http://bbs.chinaunix.net/forumdisplay.php?fid=46">
@@ -1632,6 +1627,10 @@ getHtmlInnerHTML : function(html,enableJS,url,type) {
     }
     //s = "Location:" + url + "\n\n" + s;
     //alert(s);
+    if (lazyLoad)
+    {
+        s = s.replace(/[ ]+[Ss][Rr][Rc]=(['\"])/g," ap-lazy-src=$1");
+    }
     return s;
 },
 getHtmlBody  : function(html,enableJS) {

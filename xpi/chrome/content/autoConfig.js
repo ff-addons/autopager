@@ -88,7 +88,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.1.12").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.1.18").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -467,15 +467,16 @@ var autopagerConfig =
                 var site = new SiteConfirm();
 
                 for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
+                    var v = autopagerConfig.getValue(childNode);
                     if (childNode.nodeName == "guid") {
-                        site.guid = autopagerConfig.getValue(childNode);
+                        site.guid = v;
                     }else  if (childNode.nodeName == "AllowedPageCount") {
-                        site.AllowedPageCount = autopagerConfig.getValue(childNode);
+                        site.AllowedPageCount = v;
                     }else  if (childNode.nodeName == "host") {
-                        site.host = autopagerConfig.getValue(childNode);
+                        site.host = v;
                     }
                     else if (childNode.nodeName == "UserAllowed") {
-                        site.UserAllowed	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
+                        site.UserAllowed	= (v == 'true' || v == '1');
                     }
                 }
                 sites.push(site);
@@ -1110,89 +1111,93 @@ var autopagerConfig =
                     childNode = childNode.nextSibling
                     continue;
                 }
-                else if (nodeName == "urlPattern") {
-                    site.urlPattern = autopagerConfig.getValue(childNode);
-                }
-                else  if (nodeName == "guid") {
-                    site.guid = autopagerConfig.getValue(childNode);
-                }else if (nodeName == "urlIsRegex") {
-                    isRegex	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "margin") {
-                    var val = autopagerConfig.getValue(childNode);
-                    if (autopagerConfig.isNumeric(val))
-                    {
-                        if (val>miniMargin)
-                            site.margin = val;
+                else
+                {
+                    var v = autopagerConfig.getValue(childNode);
+                    if (nodeName == "urlPattern") {
+                        site.urlPattern = v;
+                    }
+                    else  if (nodeName == "guid") {
+                        site.guid = v;
+                    }else if (nodeName == "urlIsRegex") {
+                        isRegex	= (v == 'true' || v == '1');
+                    }
+                    else if (nodeName == "margin") {
+                        if (autopagerConfig.isNumeric(v))
+                        {
+                            if (v>miniMargin)
+                                site.margin = v;
+                            else
+                                site.margin = miniMargin;
+                        }
+                    }
+                    else if (nodeName == "minipages") {
+                        if (autopagerConfig.isNumeric(v))
+                        {
+                            site.minipages = v;
+                        }
+                    }
+                    else if (nodeName == "delaymsecs") {
+                        if (autopagerConfig.isNumeric(v))
+                        {
+                            site.delaymsecs = v;
+                        }
+                    }
+                    else if (nodeName == "desc") {
+                        site.desc	= v;
+                    }
+                    else if (nodeName == "linkXPath") {
+                        site.linkXPath	= v;
+                    }
+                    else if (nodeName == "containerXPath") {
+                        site.containerXPath	= v;
+                    }
+                    else if (nodeName == "contentXPath") {
+                        site.contentXPath.push(v);
+                    }
+                    else if (nodeName == "testLink") {
+                        site.testLink.push(v);
+                    }
+                    else if (nodeName == "removeXPath") {
+                        site.removeXPath.push(v);
+                    }
+                    else if (nodeName == "enabled") {
+                        enabled	= (v == 'true' || v == '1');
+                    }
+                    else if (nodeName == "enableJS") {
+                        enableJS	= v;
+                        //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
+                    }
+                    else if (nodeName == "needMouseDown") {
+                        needMouseDown	= (v == 'true' || v == '1');
+                    }
+                    else if (nodeName == "ajax") {
+                        ajax	= (v == 'true' || v == '1');
+                    }
+                    else if (nodeName == "quickLoad") {
+                        if (autopagerConfig.isNumeric(v))
+                            quickLoad = v
                         else
-                            site.margin = miniMargin;
+                            quickLoad	= (v == 'true' || v == '1');
                     }
-                }
-                else if (nodeName == "minipages") {
-                    var minipages = autopagerConfig.getValue(childNode);
-                    if (autopagerConfig.isNumeric(val))
-                    {
-                        site.minipages = minipages;
+                    else if (nodeName == "fixOverflow") {
+                        fixOverflow	= (v == 'true' || v == '1');
+                        //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
                     }
-                }
-                else if (nodeName == "delaymsecs") {
-                    var delaymsecs = autopagerConfig.getValue(childNode);
-                    if (autopagerConfig.isNumeric(val))
-                    {
-                        site.delaymsecs = delaymsecs;
+                    else if (nodeName == "createdByYou") {
+                        createdByYou	= (v == 'true' || v == '1');
                     }
-                }
-                else if (nodeName == "desc") {
-                    site.desc	= autopagerConfig.getValue(childNode);
-                }
-                else if (nodeName == "linkXPath") {
-                    site.linkXPath	= autopagerConfig.getValue(childNode);
-                }
-                else if (nodeName == "containerXPath") {
-                    site.containerXPath	= autopagerConfig.getValue(childNode);
-                }
-                else if (nodeName == "contentXPath") {
-                    site.contentXPath.push(autopagerConfig.getValue(childNode));
-                }
-                else if (nodeName == "testLink") {
-                    site.testLink.push(autopagerConfig.getValue(childNode));
-                }
-                else if (nodeName == "removeXPath") {
-                    site.removeXPath.push(autopagerConfig.getValue(childNode));
-                }
-                else if (nodeName == "enabled") {
-                    enabled	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "enableJS") {
-                    enableJS	= autopagerConfig.getValue(childNode);
-                    //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
-                }
-                else if (nodeName == "needMouseDown") {
-                    needMouseDown	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "ajax") {
-                    ajax	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "quickLoad") {
-                    quickLoad	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "fixOverflow") {
-                    fixOverflow	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                    //alert(site.fixOverflow + " " + childNode.firstChild.nodeValue);
-                }
-                else if (nodeName == "createdByYou") {
-                    createdByYou	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "changedByYou") {
-                    changedByYou	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }else if (nodeName == "owner") {
-                    site.owner	= autopagerConfig.getValue(childNode) ;
-                }
-                else if (nodeName == "published") {
-                    published	= (autopagerConfig.getValue(childNode) == 'true' || autopagerConfig.getValue(childNode) == '1');
-                }
-                else if (nodeName == "monitorXPath") {
-                    site.monitorXPath	= autopagerConfig.getValue(childNode);
+                    else if (nodeName == "changedByYou") {
+                        changedByYou	= (v == 'true' || v == '1');
+                    }else if (nodeName == "owner") {
+                        site.owner	= v ;
+                    }
+                    else if (nodeName == "published") {
+                        published	= (v == 'true' || v == '1');
+                    }
+                    else if (nodeName == "monitorXPath") {
+                        site.monitorXPath	= v;
+                    }
                 }
                 childNode = childNode.nextSibling
             }
