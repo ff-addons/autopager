@@ -46,8 +46,8 @@
         windowtype="alert:alert"
         align="start"
         onload="autopagerAlert.onLoad()">
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-alert.js" />
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-alert.js"></script>
     <vbox id="alertBox" class="alertBox">
         <hbox>
             <vbox onclick="autopagerAlert.onAlertClick();">
@@ -73,5 +73,5 @@
     </vbox>
     <!-- This method is called inline because we want to make sure we establish the width
     and height of the alert before we fire the onload handler. -->
-    <script type="application/x-javascript">autopagerAlert.prefillAlertInfo();</script>
+    <script type="text/javascript">autopagerAlert.prefillAlertInfo();</script>
 </window>

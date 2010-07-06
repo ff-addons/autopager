@@ -13,13 +13,13 @@
     </stringbundleset>
     
     
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
 
     
     

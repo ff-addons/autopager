@@ -80,6 +80,8 @@ AutopagerCOMP.prototype = {
                         throw Components.results.NS_ERROR_NO_INTERFACE;
                 return this;
         }
+         // this must match whatever is in chrome.manifest!
+        ,classID: CLASS_ID
 };
 
 
@@ -147,3 +149,10 @@ function NSGetModule(aCompMgr, aFileSpec) {
         return AutopagerCOMPModule;
 }
 
+try{
+    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+    // The following line is what XPCOM uses to create components. Each component prototype
+    // must have a .classID which is used to create it.
+    const NSGetFactory = XPCOMUtils.generateNSGetFactory([AutopagerCOMP]);
+}catch(e)
+{}

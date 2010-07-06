@@ -656,6 +656,16 @@ onInitDoc : function(doc,safe)
                         }
                     }
                 }
+                var tmpNodes = urlNodes
+                urlNodes = []
+                for(var m in tmpNodes)
+                {
+                    if (tmpNodes[m] && autopagerUtils.isValidLink(tmpNodes[m]) )
+                    {
+                        urlNodes.push(tmpNodes[m])
+                        break;
+                    }
+                }
 
                 //autopagerMain.log("7 " + new Date().getTime())
                 if (urlNodes == null || urlNodes.length ==0)
@@ -815,7 +825,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.18");
+                de.setAttribute('autopagerVersion',"0.6.1.22");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -1400,7 +1410,7 @@ getSelectorLoadFrame : function(doc) {
             "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
         
         frame = doc.getElementById(frameName);
-        frame.contentDocument.write("<html><head><base href='" + doc.baseURI + "'/></head><body>autopaging</body></html>");
+        //frame.contentDocument.write("<html><head><base href='" + doc.baseURI + "'/></head><body>autopaging</body></html>");
         frame.autoPagerInited = false;
         //create a empty div in target
         autopagerMain.getLastDiv(doc);
@@ -1412,8 +1422,8 @@ getSelectorLoadFrame : function(doc) {
 //            frame.removeEventListener("DOMContentLoaded", autopagerMain.onFrameLoad, false);
 //            frame.removeEventListener("load", autopagerMain.onFrameLoad, false);
          frame.contentDocument.clear();
-        frame.normalize();
-        frame.contentDocument.documentElement.innerHTML = "<html><body>autopaging</body></html>";
+        //frame.normalize();
+        //frame.contentDocument.documentElement.innerHTML = "<html><body>autopaging</body></html>";
 //    }catch(e){}
 ////    if (doc.documentElement.autopagerUseSafeEvent)
 //        frame.addEventListener("load", autopagerMain.onFrameLoad, false);
@@ -1583,8 +1593,10 @@ hasTopLocationRefer : function (html)
     return autopagerMain.topLocationMark.test(html);
 },
 topLocationMark : /top\.location(\.href)*[ ]*\=/,
-headStartMark:/<[Hh][Ee][Aa][Dd][ ]+/,
+headStartMark:/<[Hh][Ee][Aa][Dd]([ ]|\>)/,
 headEndMark:/<[ ]*\/[ ]*[Hh][Ee][Aa][Dd]>/,
+bodyStartMark:/<[Bb][Oo][Dd][Yy]([ ]|\>)/,
+bodyEndMark:/<[ ]*\/[ ]*[Bb][Oo][Dd][Yy]>/,
 htmlEndMark:/<[ ]*\/[ ]*[Hh][Tt][Mm][Ll]>/,
 getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
     var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
@@ -1606,19 +1618,72 @@ getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
             }
         }
 
-        var headStart = s.search(autopagerMain.headStartMark);
         htmlEnd = s.search(autopagerMain.htmlEndMark);        
         //htmlEnd = s.length
         if (htmlEnd>0)
             s = s.substring(0,htmlEnd);
+        var bodyStart = s.search(autopagerMain.bodyStartMark);
+        if (bodyStart>0)
+            s = s.slice(bodyStart)
+        var bodyEnd = s.search(autopagerMain.bodyEndMark);
+        if (bodyEnd>0)
+            s = s.substring(0,bodyEnd);
         
-        var h = "<html><head><base href='" + url +
+        //s = s.replace(/<script/g,"<!-- script");
+        s = s.replace(/<[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]/g,"<" + "!-- script");
+        //s = s.replace(/ -- script/g,"-- script");
+
+        s = s.replace(/<[ ]*\/[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]>/g,"<\/script -->");
+    }
+    //s = "Location:" + url + "\n\n" + s;
+    //alert(s);
+    if (lazyLoad)
+    {
+        s = s.replace(/[ ]+[Ss][Rr][Rc]=(['\"])/g," ap-lazy-src=$1");
+    }
+    return s;
+},
+getHtmlHeadHTML : function(html,enableJS,url,type,lazyLoad) {
+    var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
+    if (!enableJS) {
+        //<base href="http://bbs.chinaunix.net/forumdisplay.php?fid=46">
+
+//        var headEnd = s.indexOf("</head>");
+//        if (headEnd == -1)
+
+        //remove the content before the first </html> if there are two of them
+        var htmlEnd = s.search(autopagerMain.htmlEndMark);
+        if (htmlEnd>0)
+        {
+            var s2 = s.substring(htmlEnd+7);
+            var htmlEnd2 = s2.search(autopagerMain.htmlEndMark);
+            if (htmlEnd2>0)
+            {
+                s =s2.slice(s2.search(/</))
+            }
+        }
+
+        htmlEnd = s.search(autopagerMain.htmlEndMark);
+        //htmlEnd = s.length
+        if (htmlEnd>0)
+            s = s.substring(0,htmlEnd);
+        var headStart = s.search(autopagerMain.headStartMark);
+
+        var h = "<base href='" + url +
             "'><meta http-equiv='Content-Type' content='" + type +"'/> ";
 
+        
         if (headStart >0)
-            s = h + s.slice(headStart);
+        {
+            var t= s.slice(headStart)
+            s = h + t.slice(t.indexOf(">")+1);
+        }
         else
             s = h+s;
+        var headEnd = s.search(autopagerMain.headEndMark);
+        if (headEnd >0)
+            s = s.substring(0,headEnd);
+
         //s = s.replace(/<script/g,"<!-- script");
         s = s.replace(/<[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]/g,"<" + "!-- script");
         //s = s.replace(/ -- script/g,"-- script");

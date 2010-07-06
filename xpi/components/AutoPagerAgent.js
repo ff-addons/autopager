@@ -1,5 +1,5 @@
 var headerName  = "X-AutoPager";
-var headerValue = "0.6.1.18";
+var headerValue = "0.6.1.22";
 
 
 
@@ -23,7 +23,7 @@ autopagerHTTPListener.prototype = {
           if (httpChannel.URI.host.match(/ap\.teesoft\.info/))
           {
             httpChannel.setRequestHeader("X-AutoPager-Rules", this.pref.getCharPref(".ids"), false);
-            httpChannel.setRequestHeader("X-AutoPager", "0.6.1.18", false);
+            httpChannel.setRequestHeader("X-AutoPager", "0.6.1.22", false);
 
           }
 
@@ -44,7 +44,7 @@ autopagerHTTPListener.prototype = {
           this.LOG("----------------------------> (" + subject + ") mod request");
 
           httpChannel.setRequestHeader(headerName, headerValue, false);
-          var agent = httpChannel.getRequestHeader("User-Agent") + " AutoPager/0.6.1.18";
+          var agent = httpChannel.getRequestHeader("User-Agent") + " AutoPager/0.6.1.22";
           httpChannel.setRequestHeader("User-Agent", agent, false);
           return;
       }
@@ -94,7 +94,7 @@ var autopagerAgentModule = {
     registerSelf: function (compMgr, fileSpec, location, type) {
 
         var compMgr = compMgr.QueryInterface(Components.interfaces.nsIComponentRegistrar);
-        compMgr.registerFactoryLocation(this.myCID,
+        compMgr.registerFactoryLocation(this.classID,
                                         this.myName,
                                         this.myProgID,
                                         fileSpec,
@@ -111,7 +111,7 @@ var autopagerAgentModule = {
         return this.myFactory;
     },
 
-    myCID: Components.ID("{9cf5f3df-2505-42dd-9094-c1631bd1be1c}"),
+    classID: Components.ID("{9cf5f3df-2505-42dd-9094-c1631bd1be1c}"),
 
     myProgID: "@autopager.teesoft.info/autopagerHTTPListener;1",
 
@@ -138,3 +138,12 @@ var autopagerAgentModule = {
 function NSGetModule(compMgr, fileSpec) {
     return autopagerAgentModule;
 }
+
+
+try{
+    Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+    // The following line is what XPCOM uses to create components. Each component prototype
+    // must have a .classID which is used to create it.
+    const NSGetFactory = XPCOMUtils.generateNSGetFactory([autopagerHTTPListener]);
+}catch(e)
+{}

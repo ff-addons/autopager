@@ -5,24 +5,24 @@
 <overlay id="autopagestatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-strings.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-xpath.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-lite.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-rules.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-troubleshoting.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-sitesetting.js" />
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-lite.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-sitesetting.js"></script>
 
 
     <window id="main-window">
@@ -43,7 +43,7 @@
         <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
     </stringbundleset>
 
-    <script type="application/x-javascript">
+    <script type="text/javascript">
         window.addEventListener("load", function(){
             autopagerMain.showStatus();
         }, false);
@@ -453,7 +453,7 @@
             oncommand="autopagerLite.openRulesSelector(content.document);"
             />
     </vbox>
-    <script type="application/x-javascript">
+    <script type="text/javascript">
         window.addEventListener("load", function() {
             var self = arguments.callee;
             window.removeEventListener("load",self,false);

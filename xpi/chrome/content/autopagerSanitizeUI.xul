@@ -3,10 +3,10 @@
 
 <overlay id="autopager-sanitize"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-strings.js"/>
-    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js"/>
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
-    <script type="application/x-javascript">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"/>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"/>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript">
         var autopagerSanitize = {
         label: "&autopager.sanitizer.entry;",
         accesskey: "&autopager.sanitizer.entry.accesskey;",

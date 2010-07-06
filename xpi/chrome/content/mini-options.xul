@@ -17,7 +17,7 @@
         oncommand="autopagerBwUtil.autopagerOpenIntab('chrome://autopager/content/options.xul');BrowserUI.hidePanel();"/>
   </setting>
   -->
-  <script type="application/x-javascript">
+  <script type="text/javascript">
       //if (!autopagerBwUtil.isFennec())
       {
           window.close();

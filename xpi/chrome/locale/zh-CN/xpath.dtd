@@ -58,7 +58,7 @@
 <!ENTITY xpath-exprestion.treecell.s_ancestor-or-self.label "返回当前节点及其上代节点。">
 <!ENTITY xpath-exprestion.treecell.s_ancestor.label "返回当前节点的上代节点。">
 <!ENTITY xpath-exprestion.treecell.s_attribute.label "返回当前节点的属性。">
-<!ENTITY xpath-exprestion.treecell.s_child.label "返回当前节点的字节点。">
+<!ENTITY xpath-exprestion.treecell.s_child.label "返回当前节点的子节点。">
 <!ENTITY xpath-exprestion.treecell.s_descendant-or-self.label "返回当前节点及其后代节点。">
 <!ENTITY xpath-exprestion.treecell.s_descendant.label "返回当前节点的后代节点。">
 <!ENTITY xpath-exprestion.treecell.s_following-sibling.label "返回当前节点的同层的后面的节点。">

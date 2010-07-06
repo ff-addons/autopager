@@ -36,3 +36,12 @@ locale        autopager        es                 jar:chrome/autopager.jar!/loca
 locale        autopager        fi-FI                       jar:chrome/autopager.jar!/locale/fi-FI/
 locale        autopager        sq-AL                       jar:chrome/autopager.jar!/locale/sq-AL/
 
+
+#xpcom component registration required after Firefox 4.0b2pre
+component {93AFF2EE-79AA-11DD-8660-026156D89593} components/AutopagerCOMP.js
+contract @www.teesoft.com/AutopagerCOMP;1 {93AFF2EE-79AA-11DD-8660-026156D89593}
+category profile-after-change "AutopagerCOMP Javascript XPCOM Component" @www.teesoft.com/AutopagerCOMP;1
+
+component {9cf5f3df-2505-42dd-9094-c1631bd1be1c} components/AutoPagerAgent.js
+contract @autopager.teesoft.info/autopagerHTTPListener;1 {9cf5f3df-2505-42dd-9094-c1631bd1be1c}
+category profile-after-change "AutoPager Agent Modify HTTP Listener" @autopager.teesoft.info/autopagerHTTPListener;1

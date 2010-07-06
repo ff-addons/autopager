@@ -8,7 +8,7 @@
       onload="init();"
       ondialogaccept="return handleOkButton()" title="&xpath-exprestion.dialog.xpath-expressions.title;"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://autopager/content/xpath-exprestion.js" />
+    <script type="text/javascript" src="chrome://autopager/content/xpath-exprestion.js"></script>
 
     <vbox flex="1">
         <hbox>

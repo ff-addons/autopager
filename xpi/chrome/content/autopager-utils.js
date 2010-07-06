@@ -850,4 +850,12 @@ delete * 24, for minutes, delete * 60 * 24
         autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
         return autopagerMain.onInitDoc(doc,safe);
     }
+    ,isValidLink : function (node)
+    {
+        if (autopagerBwUtil.isValidLink)
+        {
+            return autopagerBwUtil.isValidLink(node)
+        }
+        return typeof node!='undefined';
+    }
 }

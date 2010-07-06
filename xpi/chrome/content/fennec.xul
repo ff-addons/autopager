@@ -5,9 +5,9 @@
 <overlay id="autopageFennecStatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
          onload="autopagerFennecInit()">
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
-    <script type="application/x-javascript">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript">
         function autopagerFennecInit()
         {
             autopagerPref.saveBoolPref("noprompt",true);

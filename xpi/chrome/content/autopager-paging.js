@@ -703,14 +703,31 @@ AutoPagring.prototype.processNextDocUsingXMLHttpRequest = function(doc,url){
                             frame.addEventListener("DOMContentLoaded", lazyLoad, false);
 
                             frame.autoPagerInited = false;
-                            frame.contentDocument.clear();
+                            //frame.contentDocument.clear();
                             frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
                             //alert(xmlhttp.responseText);
-                            var html = autopagerMain.getHtmlInnerHTML(xmlhttp.responseText,paging.enableJS||paging.inSplitWindow,url,type,paging.isLazyLoadImage());
+                            var html = xmlhttp.responseText
+                            var body = autopagerMain.getHtmlInnerHTML(html,paging.enableJS||paging.inSplitWindow,url,type,paging.isLazyLoadImage());
                             //frame.contentDocument.write(autopagerMain.getHtmlInnerHTML(xmlhttp.responseText,this.enableJS||this.inSplitWindow,url));
                             try
                             {
-                                frame.contentDocument.documentElement.innerHTML = html
+                                var bodies = autopagerMain.findNodeInDoc(frame.contentDocument,"//body[1]",false);
+                                //var bodies = frame.contentDocument.getElementsByName("body")
+                                if (bodies && bodies.length>0)
+                                {
+//                                    var head = autopagerMain.getHtmlHeadHTML(html,paging.enableJS||paging.inSplitWindow,url,type,paging.isLazyLoadImage());
+//                                    body = "<head>" + head +"</head>" + body
+                                    bodies[0].innerHTML = body
+//                                    var heads = autopagerMain.findNodeInDoc(frame.contentDocument,"//head[1]",false);
+//                                    if (heads && heads.length>0)
+//                                    {
+//                                      heads[0].innerHTML=head
+//                                    }
+                                }
+                                else
+                                {
+                                    frame.contentDocument.documentElement.innerHTML = body
+                                }
                                 //frame.setAttribute('src', 'data:text/html,' + encodeURIComponent(html));
                                 //frame.setAttribute('src', url);
                                 //frame.contentDocument.open("about:blank");
@@ -826,7 +843,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                 }
             }
             var nextPageHref = nextUrl
-            if (nextUrl.href
+            if (nextUrl && nextUrl.href
                 && ((nextUrl.href.substr(0, 7)=='http://' ) || (nextUrl.href.substr(0, 8)=='https://' )))
             {
                 nextPageHref = nextUrl.href

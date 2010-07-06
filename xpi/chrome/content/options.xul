@@ -12,21 +12,21 @@
       buttonlabelextra1="&options.dialog.autopager-options.buttonlabelextra1;"
       ondialogextra1="return autopagerOptionUI.handleMoreOptionButton()"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-bw-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-strings.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-optionsUI.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-utils.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-pref.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/splitbrowse.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/apxmlhttp.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopagerize.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-updatesites.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autoConfig.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-rules.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-json.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-paging.js" />
-    <script type="application/x-javascript" src="chrome://autopager/content/autopager-toolbar.js" />
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-optionsUI.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
     <vbox flex="1">
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
@@ -62,7 +62,7 @@
             </menulist>
         </hbox>
     </vbox>
-      <script type="application/x-javascript">
+      <script type="text/javascript">
       if (autopagerBwUtil.isFennec())
       {
         document.getElementById("autopager-options").setAttribute('buttons','help,accept,cancel')
