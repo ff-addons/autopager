@@ -28,7 +28,7 @@ var autopagerLite =
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "discover/r?apv=0.6.1.22&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "discover/r?apv=0.6.1.24&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -159,10 +159,10 @@ var autopagerLite =
         {
             return;
         }
-        var message = autopagerConfig.autopagerGetString("lite-discovery");
+        var message = autopagerUtils.autopagerGetString("lite-discovery");
         var id = "autopager-lite-discovery";
         var buttons = [{
-            label: autopagerConfig.autopagerGetString("Yes"),
+            label: autopagerUtils.autopagerGetString("Yes"),
             accessKey: "Y",
             callback: function(){
                 autopagerPref.saveBoolPref("lite-discovery-prompted",true);
@@ -178,7 +178,7 @@ var autopagerLite =
                 }
             }
         },{
-            label: autopagerConfig.autopagerGetString("No"),
+            label: autopagerUtils.autopagerGetString("No"),
             accessKey: "N",
             callback: function(){
                 autopagerPref.saveBoolPref("lite-discovery-prompted",true)
@@ -186,7 +186,7 @@ var autopagerLite =
                 autopagerPref.saveBoolPref("with-lite-discovery-aways-display",true)
             }
         },{
-            label: autopagerConfig.autopagerGetString("Help"),
+            label: autopagerUtils.autopagerGetString("Help"),
             accessKey: "H",
             callback: function(){
                 autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/lite.html");

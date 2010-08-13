@@ -66,9 +66,10 @@
 <!ENTITY caption.results-caption.label "Résultats">
 <!ENTITY caption.results-caption2.label "Résultats">
 <!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommneded Rules">
+<!ENTITY checkbox.ir.label "Include Recommended Rules">
 <!ENTITY label.Usages.value "Utilisations">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "Filtre XPath (ignore les éléments des nouvelles pages) :">
 <!ENTITY setting.label.grpSmart "Pagination intelligente">
 <!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "Conteneur XPath :">
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager Core Options">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Ajouter un site">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Tout effacer">

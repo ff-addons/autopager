@@ -88,7 +88,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.1.22").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.1.24").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -382,7 +382,6 @@ function SiteConfirm()
 
 var autopagerConfig =
     {
-    autopagerStrbundle : new autopagerStrings("autopager"),
     autoSites : null,
     formatVersion: 1,
     autopagerDomParser : autopagerBwUtil.newDOMParser(),
@@ -627,6 +626,8 @@ var autopagerConfig =
         newSite.isTemp = site.isTemp
         newSite.tmpPaths = site.tmpPaths
         newSite.maxLinks = site.maxLinks
+        if (!autopagerUtils.isBlank(site.lazyImgSrc))
+            newSite.lazyImgSrc = site.lazyImgSrc
         return newSite;
     }
     ,
@@ -658,7 +659,9 @@ var autopagerConfig =
                 || oldSite.removeXPath.length != site.removeXPath.length
                 || oldSite.desc != site.desc
                 || oldSite.contentXPath.length != site.contentXPath.length
-                || oldSite.testLink.length != site.testLink.length)
+                || oldSite.testLink.length != site.testLink.length
+                || !autopagerUtils.equals(oldSite.lazyImgSrc , site.lazyImgSrc)
+            )
             {
                 return true;
             }
@@ -737,32 +740,6 @@ var autopagerConfig =
     autopagerUpdate : function()
     {
         UpdateSites.updateOnline(false);
-    }, autopagerGetString : function(name)
-    {
-        try{
-
-            if (autopagerConfig.autopagerStrbundle == null)
-                autopagerConfig.autopagerStrbundle = new autopagerStrings("autopager");
-            return autopagerConfig.autopagerStrbundle.getString(name);
-        }catch(e)
-        {
-            //alert(name + " " + e);
-            return name;
-        }
-    },
-    autopagerFormatString :function(name,parms)
-    {
-
-
-        try{
-            if (autopagerConfig.autopagerStrbundle == null)
-                autopagerConfig.autopagerStrbundle = new autopagerStrings("autopager");
-            return autopagerConfig.autopagerStrbundle.getFormattedString(name, parms);
-        }catch(e)
-        {
-            //alert(name + " " + e);
-            return name;
-        }
     },
     getConfigFileURI : function(fileName) {
         try{
@@ -890,7 +867,7 @@ var autopagerConfig =
     }
     ,importFromURL :function(func)
     {
-        var url = prompt(autopagerConfig.autopagerGetString("inputurl"),
+        var url = prompt(autopagerUtils.autopagerGetString("inputurl"),
         UpdateSites.defaultSite());
         if (url!=null && url.length >0)
         {
@@ -942,7 +919,7 @@ var autopagerConfig =
         try{
             var fileURI  = null;
             try{
-                var file = autopagerConfig.selectFile(autopagerConfig.autopagerGetString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
+                var file = autopagerConfig.selectFile(autopagerUtils.autopagerGetString("inputfile"),Components.interfaces.nsIFilePicker.modeOpen);
 
                 fileURI = Components.classes["@mozilla.org/network/io-service;1"]
                 .getService(Components.interfaces.nsIIOService)
@@ -960,7 +937,7 @@ var autopagerConfig =
     },
     exportSetting : function()
     {
-        var file = autopagerConfig.selectFile(autopagerConfig.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+        var file = autopagerConfig.selectFile(autopagerUtils.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
         if (file)
         {
             autopagerConfig.autoSites = autopagerConfig.loadConfig();
@@ -1046,7 +1023,7 @@ var autopagerConfig =
                     ignoreCount ++;
             }
         }
-        var msg = autopagerConfig.autopagerFormatString("importdone",[insertCount,updatedCount,ignoreCount]);
+        var msg = autopagerUtils.autopagerFormatString("importdone",[insertCount,updatedCount,ignoreCount]);
         if (!silient)
         {
             alert(msg);
@@ -1166,7 +1143,10 @@ var autopagerConfig =
                     }
                     else if (nodeName == "enableJS") {
                         enableJS	= v;
-                        //alert(site.enableJS + " " + childNode.firstChild.nodeValue);
+                        if (v=="true")
+                            enableJS = 1;
+                        else if (v=="false")
+                            enableJS = 0;
                     }
                     else if (nodeName == "needMouseDown") {
                         needMouseDown	= (v == 'true' || v == '1');
@@ -1197,6 +1177,10 @@ var autopagerConfig =
                     }
                     else if (nodeName == "monitorXPath") {
                         site.monitorXPath	= v;
+                    }
+                    else if (nodeName == "lazyImgSrc")
+                    {
+                        site.lazyImgSrc = v
                     }
                 }
                 childNode = childNode.nextSibling
@@ -1350,7 +1334,10 @@ var autopagerConfig =
                     if (!siteObj.enabled)
                         autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
 
-                    if (!siteObj.enableJS)
+                    if (!autopagerUtils.isBlank(siteObj.lazyImgSrc))
+                        autopagerConfig.createNode(siteNode,"lazyImgSrc",siteObj.lazyImgSrc);
+
+                    if (siteObj.enableJS!=1 && siteObj.enableJS!="true")
                         autopagerConfig.createNode(siteNode,"enableJS",siteObj.enableJS);
 
                     if (siteObj.quickLoad)

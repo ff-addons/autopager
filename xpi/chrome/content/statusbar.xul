@@ -23,6 +23,7 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-sitesetting.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
 
 
     <window id="main-window">
@@ -408,6 +409,7 @@
                           autocheck="false"
                           tooltiptext="&autopager.status.enabledTip;"
                           oncommand="autopagerMain.onEnable();"
+                          keyword="Enable AutoPager"
                 />
 
         </menupopup>

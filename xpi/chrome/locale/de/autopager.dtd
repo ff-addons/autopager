@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Empfohlene Regeln hinzufügen">
 <!ENTITY label.Usages.value "Befehle">
 <!ENTITY label.idsLabel.value "IDs der gewählte Regeln (getrennt durch ,)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "XPath anzeigen:">
 <!ENTITY label.value "Anzahl">
 <!ENTITY openautopagerSidebar.commandkey "Q">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "XPath filtern (Elemente von neuen Seiten ignorieren):">
 <!ENTITY setting.label.grpSmart "Intelligenter Modus">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "XPath des Inhalts:">
 <!ENTITY setting.label.lblDesc "Beschreibung:">
 <!ENTITY setting.label.lblLinkXPath "XPath des Links:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Fund-Icon immer anzeigen">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager-Haupteinstellungen">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Geladene Seiten entfernen wenn Elemente des folgenden XPaths geklickt/geändert werden">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Seite hinzufügen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Liste leeren">

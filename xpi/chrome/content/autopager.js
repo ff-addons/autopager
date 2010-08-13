@@ -325,7 +325,7 @@ testDoc : function(doc,site)
 },
 getNextUrlIncludeFrames : function(container,doc)
 {
-    var urlNodes = autopagerMain.findNodeInDoc(doc,
+    var urlNodes = autopagerMain.findLinkInDoc(doc,
             container.documentElement.getAttribute('linkXPath'),container.documentElement.getAttribute('enableJS') == 'true');
     //alert(urlNodes);
     var nextUrl = null;
@@ -359,7 +359,7 @@ loadTempConfig : function() {
             site.isTemp = true;
             site.tmpPaths =  autopagerMain.convertToXpath(smarttext);
             
-            site.fixOverflow = true;
+            site.fixOverflow = false;
             site.margin = autopagerPref.loadPref("smartMargin");
             site.guid="autopagertemp";
             sites.push(site);
@@ -464,20 +464,20 @@ setShiftKey:function(value)
 },
 promptNewVersion : function (version)
 {
-        var message = autopagerConfig.autopagerFormatString("unsupport-version",[version,autopagerConfig.formatVersion]);
+        var message = autopagerUtils.autopagerFormatString("unsupport-version",[version,autopagerConfig.formatVersion]);
         autopagerBwUtil.consoleLog(message);
         if (autopagerPref.loadBoolPref("ignore-format-version-check"))
         {
             return;
         }
         var buttons = [{
-            label: autopagerConfig.autopagerGetString("IgnoreVersionCheck"),
+            label: autopagerUtils.autopagerGetString("IgnoreVersionCheck"),
             accessKey: "I",
             callback: function(){
                 autopagerPref.saveBoolPref("ignore-format-version-check",true)
             }
         },{
-            label: autopagerConfig.autopagerGetString("CheckUpdate"),
+            label: autopagerUtils.autopagerGetString("CheckUpdate"),
             accessKey: "U",
             //            popup: "autopager-menu-popup",
             callback: function(){
@@ -504,24 +504,24 @@ promptNewRule : function (doc,force)
         {
             return false;
         }
-        var message = autopagerConfig.autopagerFormatString("enableonsite",[host,owner]);
+        var message = autopagerUtils.autopagerFormatString("enableonsite",[host,owner]);
         var buttons = [
         {
-            label: autopagerConfig.autopagerGetString("Yes"),
+            label: autopagerUtils.autopagerGetString("Yes"),
             accessKey: "Y",
             callback: function(){
                 autopagerMain.enabledThisSite(doc,true);
             }
         }
         ,{
-            label: autopagerConfig.autopagerGetString("No"),
+            label: autopagerUtils.autopagerGetString("No"),
             accessKey: "N",
             callback: function(){
                 autopagerMain.enabledThisSite(doc,false);
             }
         }
         ,{
-            label: autopagerConfig.autopagerGetString("Options"),
+            label: autopagerUtils.autopagerGetString("Options"),
             accessKey: "O",
             popup: "autopager-notification-popup",
             callback: function(){
@@ -640,13 +640,13 @@ onInitDoc : function(doc,safe)
                 var urlNodes = null;
 
                 if (!sitepos.site.isTemp)
-                    urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.linkXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
+                    urlNodes = autopagerMain.findLinkInDoc(doc,sitepos.site.linkXPath,sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
                 else{
                     sitepos.site.linkXPath = null;
                     for(var t=0;t<sitepos.site.tmpPaths.length; ++t) {
                         //autopagerMain.log("6.1 " + new Date().getTime())
                         autopagerMain.log(sitepos.site.tmpPaths[t])
-                        urlNodes = autopagerMain.findNodeInDoc(doc,sitepos.site.tmpPaths[t],sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
+                        urlNodes = autopagerMain.findLinkInDoc(doc,sitepos.site.tmpPaths[t],sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")));
                         //autopagerMain.log("6 " + new Date().getTime())
                         if ( urlNodes != null  && urlNodes.length >0
                             && urlNodes.length <= sitepos.site.maxLinks) {
@@ -656,16 +656,7 @@ onInitDoc : function(doc,safe)
                         }
                     }
                 }
-                var tmpNodes = urlNodes
-                urlNodes = []
-                for(var m in tmpNodes)
-                {
-                    if (tmpNodes[m] && autopagerUtils.isValidLink(tmpNodes[m]) )
-                    {
-                        urlNodes.push(tmpNodes[m])
-                        break;
-                    }
-                }
+                
 
                 //autopagerMain.log("7 " + new Date().getTime())
                 if (urlNodes == null || urlNodes.length ==0)
@@ -825,7 +816,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.22");
+                de.setAttribute('autopagerVersion',"0.6.1.24");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -849,11 +840,11 @@ onInitDoc : function(doc,safe)
                         }
                     }catch(e)
                     {}
-                    msg = autopagerConfig.autopagerFormatString("enableurl",[ url ]);
-                    info = autopagerConfig.autopagerFormatString("enableinfo",[url,sitepos.site.linkXPath,sitepos.site.contentXPath]);
+                    msg = autopagerUtils.autopagerFormatString("enableurl",[ url ]);
+                    info = autopagerUtils.autopagerFormatString("enableinfo",[url,sitepos.site.linkXPath,sitepos.site.contentXPath]);
                 }
                 else if (!autopagerMain.getGlobalEnabled()) {
-                    msg = autopagerConfig.autopagerFormatString("globaldisabled",[url]);
+                    msg = autopagerUtils.autopagerFormatString("globaldisabled",[url]);
                     info = msg;
                 }
 
@@ -1120,7 +1111,7 @@ showAllPagingOptions : function() {
 
          if (showedCount==0)
         {
-            alert(autopagerConfig.autopagerGetString("nomatchedconfig"));
+            alert(autopagerUtils.autopagerGetString("nomatchedconfig"));
         }
     }catch(e){
        autopagerMain.alertErr("Exception:" + e);
@@ -1256,7 +1247,7 @@ FillPopup : function(target,prefix) {
             document.getElementById(prefix + "-ap-setting").setAttribute("hidden",true);
             document.getElementById(prefix + "-ap-xpath").setAttribute("hidden",true);
         }
-    
+    new autopagerDescription("Menu:",target);
 },
 disableOnSite : function(target,doc) {
         try{
@@ -2040,24 +2031,24 @@ changeSessionUrl : function (container, url,pagenum)
         }
 },
 getNavImage : function(nav){
-    return "<img align='top' style='border: 0pt;height:18px;float:none;display:inline' src='" +autopagerPref.loadPref("images-prefix") + nav+ "_24.png' alt='" + autopagerConfig.autopagerGetString("nav" + nav) + "' />";
+    return "<img align='top' style='border: 0pt;height:18px;float:none;display:inline' src='" +autopagerPref.loadPref("images-prefix") + nav+ "_24.png' alt='" + autopagerUtils.autopagerGetString("nav" + nav) + "' />";
 },
 getNavLinks : function(pos)
 {
   var links = "<a id='autopager_" + (pos+0) + "' name='autopager_" + (pos+0) + "'/>";
   if (autopagerPref.loadBoolPref("show-nav-top"))
-    links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,0)' title='" + autopagerConfig.autopagerGetString("navtop") + "'>" + autopagerMain.getNavImage("top") + "</a>";
+    links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,0)' title='" + autopagerUtils.autopagerGetString("navtop") + "'>" + autopagerMain.getNavImage("top") + "</a>";
   if (autopagerPref.loadBoolPref("show-nav-up"))
   {
       if (pos>2)
-          links = links + "&nbsp;&nbsp;<a href='#autopager_" + (pos-1) +"' title='" + autopagerConfig.autopagerGetString("navup") + "'>" + autopagerMain.getNavImage("up") + "</a>";
+          links = links + "&nbsp;&nbsp;<a href='#autopager_" + (pos-1) +"' title='" + autopagerUtils.autopagerGetString("navup") + "'>" + autopagerMain.getNavImage("up") + "</a>";
       else //same as top if this is the first page break
-          links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,0)' title='" + autopagerConfig.autopagerGetString("navup") + "'>" + autopagerMain.getNavImage("up") + "</a>";
+          links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,0)' title='" + autopagerUtils.autopagerGetString("navup") + "'>" + autopagerMain.getNavImage("up") + "</a>";
   }
   if (autopagerPref.loadBoolPref("show-nav-down"))
-    links = links + "&nbsp;&nbsp;<a href='#autopager_" + (pos+1) +"' title='" + autopagerConfig.autopagerGetString("navdown") + "'>" + autopagerMain.getNavImage("down") + "</a>";
+    links = links + "&nbsp;&nbsp;<a href='#autopager_" + (pos+1) +"' title='" + autopagerUtils.autopagerGetString("navdown") + "'>" + autopagerMain.getNavImage("down") + "</a>";
   if (autopagerPref.loadBoolPref("show-nav-bottom"))
-    links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,document.body.scrollHeight)' title='" + autopagerConfig.autopagerGetString("navbottom") + "'>" + autopagerMain.getNavImage("bottom") + "</a>";
+    links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,document.body.scrollHeight)' title='" + autopagerUtils.autopagerGetString("navbottom") + "'>" + autopagerMain.getNavImage("bottom") + "</a>";
 return links;
 },
 getNextUrl : function(container,enableJS,node) {
@@ -2075,7 +2066,7 @@ getPagingWatcherDiv : function(doc,create)
 	var divName = "autoPagerBorderPaging";
     var div = doc.getElementById(divName);
     if (create && !div) {
-        var str = autopagerConfig.autopagerGetString("loading");
+        var str = autopagerUtils.autopagerGetString("loading");
     var style = autopagerMain.getLoadingStyle();
         div = autopagerMain.createDiv(doc,divName,style);
         div.innerHTML = str;//"<b>Loading ...</b>";
@@ -2227,6 +2218,34 @@ fixUrl : function(doc,url) {
     //alert(newStr);
     return  newStr;
 },
+findLinkInDoc : function(doc,path,enableJS) {
+        var tmpNodes = autopagerMain.findNodeInDoc(doc,path,enableJS)
+        var urlNodes = []
+        for(var m in tmpNodes)
+        {
+            if (tmpNodes[m] && autopagerUtils.isValidLink(tmpNodes[m]) )
+            {
+                urlNodes.push(tmpNodes[m])
+                break;
+            }
+        }
+        if (urlNodes == null || urlNodes.length ==0)
+        {
+            for(var m in tmpNodes)
+            {
+                if (tmpNodes[m] )
+                {
+                    var node = autopagerUtils.getValidLink(tmpNodes[m])
+                    if (node!=null)
+                    {
+                        urlNodes.push(node)
+                        break;
+                    }
+                }
+            }
+        }
+        return urlNodes;
+},
 findNodeInDoc : function(doc,path,enableJS) {
     autopagerMain.xpath = path;
     if (path==null)
@@ -2359,9 +2378,9 @@ setGlobalEnabled : function(enabled) {
     
     //autopagerMain.setGlobalImageByStatus(enabled);
     if (enabled)
-        autopagerMain.logInfo(autopagerConfig.autopagerGetString("autopageenabled"),autopagerConfig.autopagerGetString("autopageenabledTip"));
+        autopagerMain.logInfo(autopagerUtils.autopagerGetString("autopageenabled"),autopagerUtils.autopagerGetString("autopageenabledTip"));
     else
-        autopagerMain.logInfo(autopagerConfig.autopagerGetString("autopagedisabled"),autopagerConfig.autopagerGetString("autopagedisabledTip"));
+        autopagerMain.logInfo(autopagerUtils.autopagerGetString("autopagedisabled"),autopagerUtils.autopagerGetString("autopagedisabledTip"));
     var autopagerButton = document.getElementById("autopager-button");
     var autopagerButton2= document.getElementById("autopager-button-fennec");
     if (autopagerButton2){
@@ -2472,7 +2491,7 @@ openSettingForDoc : function(doc)
         "chrome,resizable,centerscreen,width=700,height=600");
     },
 changeMyName : function() {
-    var name = prompt(autopagerConfig.autopagerGetString("inputname"),autopagerMain.loadMyName());
+    var name = prompt(autopagerUtils.autopagerGetString("inputname"),autopagerMain.loadMyName());
     if (name!=null && name.length>0) {
         autopagerMain.saveMyName(name);
     }

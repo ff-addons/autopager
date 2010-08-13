@@ -979,7 +979,7 @@ var autopagerXPath = {
                 var result2 = xpe.evaluate(aExpr, node, nsResolver, XPathResult.ANY_TYPE, null);
                 found = this.dumpResult(result2,max);
             }catch(ex) {
-                autopagerUtils.log("unableevaluator");//TODO: autopagerConfig.autopagerFormatString("unableevaluator",[aExpr,e]));
+                autopagerUtils.log("unableevaluator");//TODO: autopagerUtils.autopagerFormatString("unableevaluator",[aExpr,e]));
             }
         }
         return found;

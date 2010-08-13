@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "包含推薦規則">
 <!ENTITY label.Usages.value "用法">
 <!ENTITY label.idsLabel.value "選取的規則編號 (以 , 分隔)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "計數">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "過濾 XPath (加入時將符合的項目自動刪除):">
 <!ENTITY setting.label.grpSmart "智慧翻頁">
 <!ENTITY setting.label.hotkeys "啟用／停用快捷鍵:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "永遠顯示自動辨識圖示">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager 核心設定">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "當下列 XPath 元素被點選或變更時清除載入的網頁">
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">

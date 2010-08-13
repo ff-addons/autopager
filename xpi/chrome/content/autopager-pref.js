@@ -115,7 +115,7 @@ loadMyName : function() {
     return "";
 },
  changeMyName : function() {
-    var name = prompt(autopagerConfig.autopagerGetString("inputname"),this.loadMyName());
+    var name = prompt(autopagerUtils.autopagerGetString("inputname"),this.loadMyName());
     if (name!=null && name.length>0) {
         this.saveMyName(name);
     }

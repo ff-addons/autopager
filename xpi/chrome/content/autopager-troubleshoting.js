@@ -67,7 +67,7 @@ var autopagerTroubleShoting =
     {
         var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
         .getService(Components.interfaces.nsIPromptService);
-        return prompts.confirm(window,autopagerConfig.autopagerGetString(titleKey),autopagerConfig.autopagerGetString(textKey));
+        return prompts.confirm(window,autopagerUtils.autopagerGetString(titleKey),autopagerUtils.autopagerGetString(textKey));
 
     }
 }

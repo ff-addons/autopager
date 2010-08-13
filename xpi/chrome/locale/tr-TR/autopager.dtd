@@ -66,9 +66,10 @@
 <!ENTITY caption.results-caption.label "Sonuçlar">
 <!ENTITY caption.results-caption2.label "Sonuçlar">
 <!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommneded Rules">
+<!ENTITY checkbox.ir.label "Include Recommended Rules">
 <!ENTITY label.Usages.value "Klavye kullanımları">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "K">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "XPath'i Kaldır (Sonraki sayfalarda yoksayılacaklar listesi):">
 <!ENTITY setting.label.grpSmart "Akıllı Sayfalama">
 <!ENTITY setting.label.hotkeys "AutoPager'ı etkinleştirme/devre dışı bırakma kısayolu:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "Barındırıcı XPath:">
 <!ENTITY setting.label.lblDesc "Açıklama:">
 <!ENTITY setting.label.lblLinkXPath "Link Xpath">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Always show discover icon">
 <!ENTITY statusbar.menuitem.tooltiptext "Autopager Temel Seçenekler">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Clean Loaded Pages when elements by following xpath clicked/changed">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Kural Olarak Ekle">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Tümünü Temizle">

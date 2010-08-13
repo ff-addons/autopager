@@ -63,9 +63,18 @@ var autopagerSidebar =
     },
     onLoad : function() {
         autopagerUtils.log("onLoad() called");
-
+                    
         var url = "http://www.teesoft.info/autopager/xpathes/"
+autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
 
+        if (autopagerPref.loadBoolPref("show-help"))
+        {
+            window.addEventListener("mouseover",autopagerSidebar.onMouseOver,false);
+            window.addEventListener("mouseout",autopagerSidebar.onMouseOut,false);
+        }
+        if (!autopagerPref.loadBoolPref("disable-tooltips"))
+            var de = new autopagerDescription("AutoPagerWorkshop:",document);
+        
         function callback(doc,obj)
             {
                 autopagerSidebar.xpathes =  autopagerBwUtil.decodeJSON(doc);
@@ -75,14 +84,7 @@ var autopagerSidebar =
                 //TODO:notify error
             }
             apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url),"application/json; charset=utf-8",callback,onerror,url);
-
-    autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
-
-        if (autopagerPref.loadBoolPref("show-help"))
-        {
-            window.addEventListener("mouseover",autopagerSidebar.onMouseOver,false);
-            window.addEventListener("mouseout",autopagerSidebar.onMouseOut,false);
-        }
+        
 		var sidebar = window.top.document.getElementById("sidebar");
         if (sidebar)
         {

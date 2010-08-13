@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "包含推荐规则">
 <!ENTITY label.Usages.value "使用方法">
 <!ENTITY label.idsLabel.value "已选择的规则ID(以 , 分隔)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "监视 XPath:">
 <!ENTITY label.value "数量">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "过滤XPath(追加时自动删除匹配项):">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "容器XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "次页:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "总是显示探索图标">
 <!ENTITY statusbar.menuitem.tooltiptext "自动翻页核心选项">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "单下列 XPath 内的元素点击或改变时清除已加载页面">
 <!ENTITY toolbarbutton.addSite.tooltiptext "添加站点配置">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "清除当前设置">

@@ -242,6 +242,9 @@ var autopagerJsonSetting= {
             if (typeof site.v != 'undefined')
                 newSite.formatVersion = site.v;
 
+            if (typeof site.lz != 'undefined')
+                newSite.lazyImgSrc  = site.lz;
+
             return newSite;
     },
     mergeOverrideToNormal : function(normalSite,site)
@@ -336,7 +339,8 @@ var autopagerJsonSetting= {
 
             if (typeof site.v != 'undefined')
                 normalSite.formatVersion = site.v;
-
+            if (typeof site.lz != 'undefined')
+                normalSite.lazyImgSrc  = site.lz;
     },
 
     arrayEqual : function (a1, a2)
@@ -415,6 +419,8 @@ var autopagerJsonSetting= {
                 else if (normal.removeXPath.length>1)
                     override.l = normal.removeXPath;
             }
+            if (normal.lazyImgSrc != oldSite.lazyImgSrc)
+                override.lz  = normal.lazyImgSrc;
 
             if (normal.ajax != oldSite.ajax)
                 override.a = normal.ajax;
@@ -505,6 +511,10 @@ var autopagerJsonSetting= {
                 site.v = normal.formatVersion;
             if (typeof normal.id != 'undefined')
                 site.k = normal.id;
+
+            if (typeof normal.lazyImgSrc != 'undefined')
+                site.lz = normal.lazyImgSrc;
+            
             return site;
     },
     supported : function (site,browserId)

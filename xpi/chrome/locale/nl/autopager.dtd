@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Aanbevolen regels opnemen">
 <!ENTITY label.Usages.value "Gebruik">
 <!ENTITY label.idsLabel.value "Geselecteerde regel-ID’s (gescheiden door komma’s)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "XPath volgen:">
 <!ENTITY label.value "Aantal">
 <!ENTITY openautopagerSidebar.commandkey "b">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "XPath filteren (onderdelen van de nieuwe pagina’s negeren):">
 <!ENTITY setting.label.grpSmart "Slim pagineren">
 <!ENTITY setting.label.hotkeys "Sneltoetsen in-/uitschakelen:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "Container-XPath:">
 <!ENTITY setting.label.lblDesc "Beschrijving:">
 <!ENTITY setting.label.lblLinkXPath "Koppelings-XPath:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Pictogram Ontdekken altijd weergeven">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager hoofdopties">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Geladen pagina’s opschonen wanneer elementen volgens dit xpath worden aangeklikt/gewijzigd">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Site toevoegen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Alles wissen">

@@ -20,9 +20,9 @@ var hashSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,showHelpTip;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,ignoresites;
     var selectedListItem = null;
-    var margin,minipages,delaymsecs,smartMargin;
+    var margin,minipages,delaymsecs,smartMargin,lazyImgSrc;
     var selectedSite;
     var contentXPath;
     var xpath="";
@@ -60,7 +60,9 @@ if (autopagerPref.loadBoolPref("show-help"))
 //        	        chooseSite(index);
             }else
                 chooseSite(0);
-            
+
+            if (!autopagerPref.loadBoolPref("disable-tooltips"))
+                var de = new autopagerDescription("AutoPagerSetting:",document);
             //alert(new Date().getTime() -t)
             },60);
             
@@ -194,7 +196,9 @@ if (autopagerPref.loadBoolPref("show-help"))
         autopagerPref.saveBoolPref("noprompt",!showPrompt.checked);
         autopagerPref.saveBoolPref("modalprompt",simpleModalPrompt.checked);
         autopagerPref.saveBoolPref("hide-status",!showStatusBar.checked);
-        autopagerPref.saveBoolPref("show-help",showHelpTip.checked);
+
+        var v = getListValues(ignoresites,"\n")
+        autopagerPref.savePref("ignoresites",v);
 
 		//autopagerPref.savePref("timeout",txtTimeout.value);
          autopagerMain.setCtrlKey(chkCtrl.checked);
@@ -248,7 +252,8 @@ if (autopagerPref.loadBoolPref("show-help"))
         btnReset = document.getElementById("btnReset");
         btnDelete = document.getElementById("btnDelete");
         btnPublic = document.getElementById("btnPublic");
-        
+
+        lazyImgSrc = document.getElementById("lazyImgSrc");
         btnAddPath = document.getElementById("btnAddPath");
         btnEditPath = document.getElementById("btnEditPath");
         btnUp = document.getElementById("btnUp");
@@ -328,8 +333,9 @@ if (autopagerPref.loadBoolPref("show-help"))
         showStatusBar = document.getElementById("showStatusBar");
         showStatusBar.checked = !autopagerPref.loadBoolPref("hide-status");
 
-        showHelpTip = document.getElementById("showHelpTip");
-        showHelpTip.checked = autopagerPref.loadBoolPref("show-help");
+        ignoresites = document.getElementById("ignoresites");
+        populateIgnoreSites(autopagerPref.loadPref("ignoresites"),ignoresites)
+//        ignoresites.value = autopagerPref.loadPref("ignoresites");
 
 
         smartenable = document.getElementById("smartenable");
@@ -549,7 +555,7 @@ if (autopagerPref.loadBoolPref("show-help"))
            if (selectedSite != null) {
            	if (!autopagerConfig.isNumeric( margin.value))
            	{
-           		alert(autopagerConfig.autopagerGetString("inputnumber"));
+           		alert(autopagerUtils.autopagerGetString("inputnumber"));
            		margin.focus();
            		return;
            	}
@@ -561,7 +567,7 @@ if (autopagerPref.loadBoolPref("show-help"))
            if (selectedSite != null) {
            	if (!autopagerConfig.isNumeric( minipages.value))
            	{
-           		alert(autopagerConfig.autopagerGetString("inputnumber"));
+           		alert(autopagerUtils.autopagerGetString("inputnumber"));
            		minipages.focus();
            		return;
            	}
@@ -569,11 +575,23 @@ if (autopagerPref.loadBoolPref("show-help"))
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
+
+        lazyImgSrc.addEventListener("change", function() {
+           if (selectedSite != null) {
+           	if (!( lazyImgSrc.value) || lazyImgSrc.value == "")
+           	{
+           		selectedSite.lazyImgSrc = null;
+           	}else
+                    selectedSite.lazyImgSrc = lazyImgSrc.value;
+             onSiteChange(selectedListItem,selectedSite);
+           }
+        }, false);
+
         delaymsecs.addEventListener("change", function() {
            if (selectedSite != null) {
            	if (!autopagerConfig.isNumeric( delaymsecs.value))
            	{
-           		alert(autopagerConfig.autopagerGetString("inputnumber"));
+           		alert(autopagerUtils.autopagerGetString("inputnumber"));
            		delaymsecs.focus();
            		return;
            	}
@@ -593,19 +611,19 @@ if (autopagerPref.loadBoolPref("show-help"))
         }, false);
 			
         btnAddPath.addEventListener("command", function() {
-           xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+           xpath = prompt(autopagerUtils.autopagerGetString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
            {
-           		addContentXPath(xpath,contentXPath);
+           		addListItem(xpath,contentXPath);
            		onPathChange();
            }
         }, false);
 
         btnAddRemovePath.addEventListener("command", function() {
-           xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+           xpath = prompt(autopagerUtils.autopagerGetString("inputxpath"),xpath);
            if (xpath!=null && xpath.length>0)
            {
-           		addContentXPath(xpath,lstRemoveXPath);
+           		addListItem(xpath,lstRemoveXPath);
            		onRemovePathChange();
            }
         }, false);
@@ -723,7 +741,7 @@ if (autopagerPref.loadBoolPref("show-help"))
 			if (contentXPath.selectedCount > 0) {
                             treeitem = contentXPath.getSelectedItem(0);
                             xpath = treeitem.label;
-                            xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+                            xpath = prompt(autopagerUtils.autopagerGetString("inputxpath"),xpath);
                             if (btnAddPath.disabled)
                                 return;
                             if (xpath!=null && xpath.length>0)
@@ -745,7 +763,7 @@ if (autopagerPref.loadBoolPref("show-help"))
 			if (lstRemoveXPath.selectedCount > 0) {
                             treeitem = lstRemoveXPath.getSelectedItem(0);
                             xpath = treeitem.label;
-                            xpath = prompt(autopagerConfig.autopagerGetString("inputxpath"),xpath);
+                            xpath = prompt(autopagerUtils.autopagerGetString("inputxpath"),xpath);
                             if (btnAddPath.disabled)
                                 return;
                             if (xpath!=null && xpath.length>0)
@@ -815,6 +833,7 @@ if (autopagerPref.loadBoolPref("show-help"))
             lblOwner.value = "";
             btnClone.hidden = true;
             btnReset.hidden = true;
+            lazyImgSrc.value = ""
     }
     function updateSourceDetail(updateSite,count)
     {
@@ -848,10 +867,36 @@ if (autopagerPref.loadBoolPref("show-help"))
         function setChangedClass(node,changed)
         {
             if (changed)
-                node.setAttribute("class","changed")
+                node.setAttribute("class",addString(node.getAttribute("class"),"changed"))
             else
-                node.setAttribute("class","")
+                node.setAttribute("class",removeString(node.getAttribute("class"),"changed"))
         }
+        
+        function addString(str1,str2)
+        {
+            if (!autopagerUtils.isBlank(str1))
+                return str2;
+            return str1 + "," + str2
+        }
+        function removeString(str1,str2)
+        {
+            if (autopagerUtils.isBlank(str1))
+                return "";
+            var strs = str1.split(",");
+            var newS = "";
+            for(var i=0;i<strs.length;i++)
+            {
+                var s = strs[i];
+                if (s!=str2)
+                {
+                    if (newS!="")
+                        newS += ",";
+                    newS += s;
+                }
+            }
+            return newS
+        }
+
         function doUdateDetails(event) {
             if(treeSites.filterIng)
 			return;
@@ -890,6 +935,10 @@ if (autopagerPref.loadBoolPref("show-help"))
                 isRegex.checked = selectedSite.isRegex;
                 margin.value = selectedSite.margin;
                 minipages.value = selectedSite.minipages;
+                if (selectedSite.lazyImgSrc)
+                    lazyImgSrc.value = selectedSite.lazyImgSrc
+                else
+                    lazyImgSrc.value = ""
                 delaymsecs.value = selectedSite.delaymsecs;
                 description.value = "";
                 if (selectedSite.desc && selectedSite.desc!="")
@@ -960,7 +1009,8 @@ if (autopagerPref.loadBoolPref("show-help"))
             setChangedClass(lstRemoveXPath, oldSite!=null && !autopagerJsonSetting.arrayEqual(selectedSite.removeXPath,oldSite.removeXPath))
             //setChangedClass(urlPattern, oldSite!=null && selectedSite.urlPattern != oldSite.urlPattern)
             setChangedClass(lblOwner, oldSite!=null && lblOwner.value != oldSite.owner)
-    }
+            setChangedClass(lazyImgSrc, oldSite!=null && !autopagerUtils.equals(lazyImgSrc.value, oldSite.lazyImgSrc))
+    }    
     function switchDeck(index)
     {
         settingDeck.selectedIndex = index;
@@ -1020,16 +1070,78 @@ if (autopagerPref.loadBoolPref("show-help"))
                     lst.removeChild(lst.childNodes[0]);
                 }
 		for (var i = 0, path = null; (path = paths[i]); i++) {
-                    addContentXPath( path,lst);
+                    addListItem( path,lst);
 		}
 	}
-	function addContentXPath(path,lst)
+	function addListItem(path,lst)
 	{
 	    var listitem = document.createElement("listitem");
 	    listitem.setAttribute("label", path);
 	    lst.appendChild(listitem);
 	}
 
+        function populateIgnoreSites(sites,lst)
+	{
+            var ss = sites.split("\n");
+		//clear
+		while (lst.hasChildNodes()) {
+                    lst.removeChild(lst.childNodes[0]);
+                }
+		for (var i = 0, path = null; (path = ss[i]); i++) {
+                    addListItem( path,lst);
+		}
+	}
+        function getListValues(lst,separater)
+        {
+            var str=""
+            for(var i =0;i<lst.childNodes.length;++i)
+            {
+                if (i==0)
+                {
+                    str = lst.childNodes[i].label
+                }
+                else
+                {
+                    if (separater)
+                        str += separater;
+                    str += lst.childNodes[i].label;
+                }
+            }
+            return str;
+        }
+        function addIgnoreSiteToList(lst)
+        {
+            var href=autopagerUtils.currentBrowser().currentDocument.location.href;
+            var v = prompt("",href);
+            if (v)
+                addListItem( v,lst);
+        }
+        function addValueToList(lst)
+        {
+            var v = prompt();
+            if (v)
+                addListItem( v,lst);
+        }
+        function deleteValueFromList(lst)
+        {
+            if (lst.selectedCount > 0) {
+                var s = lst.selectedIndex
+                lst.removeChild(lst.childNodes[lst.selectedIndex]);
+
+                lst.selectedIndex = s
+            }
+        }
+        function editValueFromList(lst)
+        {
+            if (lst.selectedCount > 0) {
+                var s = lst.selectedIndex
+
+                var item = lst.childNodes[lst.selectedIndex]
+                var v = prompt("",item.label);
+                if (v)
+                    item.label = v
+            }
+        }
 	function checkMyName()
 	{
 		var myname = mynameText.value;
@@ -1038,7 +1150,7 @@ if (autopagerPref.loadBoolPref("show-help"))
     		myname = autopagerMain.changeMyName();
     		if (myname==null || myname.length == 0)
     		{
-    			alert(autopagerConfig.autopagerGetString("mustinput"));
+    			alert(autopagerUtils.autopagerGetString("mustinput"));
     			return "";
     		}
     	}
@@ -1109,7 +1221,7 @@ if (autopagerPref.loadBoolPref("show-help"))
             if (exportSites.length > 0) {
                 var file = null;
                 if (!exportToClipboard)
-                    file = autopagerConfig.selectFile(autopagerConfig.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
+                    file = autopagerConfig.selectFile(autopagerUtils.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
                 else
                 {
                     file = Components.classes["@mozilla.org/file/directory_service;1"]
@@ -1161,7 +1273,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         var site = treeitem.site;
 		if (site.published ||  getMatchedByGuid( site.guid)!=null)
 		{
-			var msg  = autopagerConfig.autopagerFormatString("alreadpubliced",[ site.urlPattern ]);
+			var msg  = autopagerUtils.autopagerFormatString("alreadpubliced",[ site.urlPattern ]);
 			if (!confirm(msg))
 			{
 				return;
@@ -1174,7 +1286,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         //var browser = window.open("http://www.teesoft.info/aprules/submit");
         //var browser = window.open("http://local-ap.teesoft.info/aprules/new/");
         var url=autopagerPref.loadPref("repository-site");
-        url = url + "new?apv=0.6.1.22&id=&f=" + (new Date().getTime());
+        url = url + "new?apv=0.6.1.24&id=&f=" + (new Date().getTime());
         autopagerBwUtil.autopagerOpenIntab(url);
         
     }
@@ -1438,7 +1550,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                   window.focus();
                   if (links.length>0)
                   {
-                      addContentXPath(links[0].xpath,document.getElementById(id));
+                      addListItem(links[0].xpath,document.getElementById(id));
                       var newCmdEvent = document.createEvent('Events');
                       newCmdEvent.initEvent('change',true, true);
                       document.getElementById(id).dispatchEvent(newCmdEvent)

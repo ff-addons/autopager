@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Включать рекомендованные правила">
 <!ENTITY label.Usages.value "Использование">
 <!ENTITY label.idsLabel.value "ID выбранных правил (разделяются запятыми)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "XPath отслеживаемых элементов:">
 <!ENTITY label.value "Количество">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "XPath для фильтрации (пропуск элементов на новых страницах):">
 <!ENTITY setting.label.grpSmart "Умное листание">
 <!ENTITY setting.label.hotkeys "Сочетание клавиш для включения/отключения:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "XPath для контейнера:">
 <!ENTITY setting.label.lblDesc "Описание:">
 <!ENTITY setting.label.lblLinkXPath "XPath для ссылки:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Всегда показывать иконку обнаружения">
 <!ENTITY statusbar.menuitem.tooltiptext "Основные параметры AutoPager">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Очистка загруженных страниц при изменении или щелчке на элементах, соответствующих заданному XPath">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Добавить сайт">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Очистить всё">

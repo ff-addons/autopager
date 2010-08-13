@@ -35,9 +35,21 @@ AutoPagring.prototype.getEnabledAutopagingPage = function() {
 },
 
 AutoPagring.prototype.scrollWatcher = function(event) {
-    if (this.scrollWatching || (new Date().getTime() - this.lastScrollWatchExecuteTime) < 500)
+    if (this.scrollWatching || (new Date().getTime() - this.lastScrollWatchExecuteTime) < 200)
+    {
+        //autopagerBwUtil.consoleLog("scrollWatcher cancelled because of " + (this.scrollWatching?"performing":"too quick"))
+        if (!this.pendingScrollWatcher)
+        {
+            this.pendingScrollWatcher = true
+            var paging = this
+            window.setTimeout(function (){
+                paging.scrollWatcher(event);
+            },200);
+        }
         return;
-
+    }
+    this.pendingScrollWatcher = false
+    
     var doc = null;
     if (event == null)
         doc = content.docuement;
@@ -398,8 +410,29 @@ AutoPagring.prototype.onStopPaging = function(doc) {
     }
 }
 AutoPagring.prototype.isFullLink = function(url) {
+    var reg = /^https?\:\/\//;
+    return url.constructor == String && reg.test(url.toLowerCase());
+}
+AutoPagring.prototype.isRelativeLink = function(url) {
+    var fullPath = /^https?\:\/\//;
+    var jsPath = /^[ ]*javascript/;
+    return url.constructor == String && !fullPath.test(url.toLowerCase())&& !jsPath.test(url.toLowerCase());
+}
+AutoPagring.prototype.isJavascriptLink = function(url) {
     var reg = /^[ ]*javascript/;
-    return url.constructor == String && !reg.test(url.toLowerCase());
+    return url.constructor == String && reg.test(url.toLowerCase());
+}
+AutoPagring.prototype.completeUrl = function(url,doc) {
+    //private functions
+    function escapeHTML(s) {
+        return s.split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
+    }
+    function qualifyURL(url) {
+        var el= doc.createElement('div');
+        el.innerHTML= '<a href="'+escapeHTML(url)+'">x</a>';
+        return el.firstChild.href;
+    }
+    return qualifyURL(url);
 }
 AutoPagring.prototype.processNextDoc = function(doc,url) {
     if (!this.hasContentXPath)
@@ -419,6 +452,9 @@ AutoPagring.prototype.processNextDoc = function(doc,url) {
     else if (url!=null && this.isFullLink(url)){
         this.processNextDocUsingXMLHttpRequest(doc,url);
     }
+    else if (url!=null && this.isRelativeLink(url)){
+        this.processNextDocUsingXMLHttpRequest(doc,this.completeUrl(url,doc));
+    }
     else
         this.autopagerRunning = false;
         //autopagerMain.enabledInThisSession(doc,false);
@@ -437,7 +473,7 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
             {
                 var self = arguments.callee;
                 paging.autopagerNodeListener = self;
-                var urlNodes = autopagerMain.findNodeInDoc(doc,paging.site.linkXPath,paging.enableJS || paging.inSplitWindow);
+                var urlNodes = autopagerMain.findLinkInDoc(doc,paging.site.linkXPath,paging.enableJS || paging.inSplitWindow);
                 if (urlNodes != null && urlNodes.length >0)
                 {
                     paging.autopagernextUrl = urlNodes[0];
@@ -473,7 +509,7 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
                             sh = scrollDoc.body.scrollHeight;
                         }
                         paging.autopagerPageHeight.push(sh);
-                        var urlNodes = autopagerMain.findNodeInDoc(doc,paging.site.linkXPath,paging.enableJS || paging.inSplitWindow);
+                        var urlNodes = autopagerMain.findLinkInDoc(doc,paging.site.linkXPath,paging.enableJS || paging.inSplitWindow);
                         if (urlNodes != null && urlNodes.length >0)
                         {
                             paging.autopagernextUrl = urlNodes[0];
@@ -538,7 +574,7 @@ AutoPagring.prototype.processInSplitDoc = function(doc,splitDoc,b){
         var de = doc.documentElement
         var nextUrl=null;
         //alert(nodes.length);
-        var urlNodes = autopagerMain.findNodeInDoc(splitDoc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
+        var urlNodes = autopagerMain.findLinkInDoc(splitDoc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
         //alert(urlNodes);
         if (urlNodes != null && urlNodes.length >0) {
               nextUrl = autopagerMain.getNextUrl(doc,this.enableJS||this.inSplitWindow,urlNodes[0]);
@@ -836,7 +872,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
 
             if (typeof nextUrl=='undefined' || nextUrl==null)
             {
-                var urlNodes = autopagerMain.findNodeInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
+                var urlNodes = autopagerMain.findLinkInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
                 //alert(urlNodes);
                 if (urlNodes != null && urlNodes.length >0) {
                       nextUrl = autopagerMain.getNextUrl(container,this.enableJS||this.inSplitWindow,urlNodes[0]);
@@ -865,14 +901,14 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                 div.setAttribute("id","apBreakStart" + this.autopagerPage);
                 insertPoint.parentNode.insertBefore(div,insertPoint);                
             }
-            var innerHTML = "<a target='_blank' href='http://autopager.teesoft.info/help.html'>" + autopagerConfig.autopagerGetString("pagebreak2") + "</a>&nbsp;&nbsp;" +
-                            autopagerConfig.autopagerFormatString("pagelink",[nextPageHref,"&nbsp;&nbsp;&nbsp;" + (++this.autopagerPage) + "&nbsp;&nbsp;&nbsp;"])
+            var innerHTML = "<a target='_blank' href='http://autopager.teesoft.info/help.html'>" + autopagerUtils.autopagerGetString("pagebreak2") + "</a>&nbsp;&nbsp;" +
+                            autopagerUtils.autopagerFormatString("pagelink",[nextPageHref,"&nbsp;&nbsp;&nbsp;" + (++this.autopagerPage) + "&nbsp;&nbsp;&nbsp;"])
                             + autopagerMain.getNavLinks(this.autopagerPage,sh);
             try{
                 div.innerHTML = "<span>" +  innerHTML+ "</span>";
             }catch(e){
                 div.innerHTML="<a href='http://autopager.teesoft.info/help.html'>Page break by AutoPager.</a>"
-                    + autopagerConfig.autopagerFormatString("pagelink",[nextPageHref.replace(/\&/g,"&amp;"),"   " + (this.autopagerPage) + "   "])
+                    + autopagerUtils.autopagerFormatString("pagelink",[nextPageHref.replace(/\&/g,"&amp;"),"   " + (this.autopagerPage) + "   "])
                     ;
             }
 
@@ -931,7 +967,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             insertPoint.parentNode.insertBefore(div,insertPoint);
 
             //alert(nodes.length);
-            var urlNodes = autopagerMain.findNodeInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
+            var urlNodes = autopagerMain.findLinkInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
             //alert(urlNodes);
             if (urlNodes != null && urlNodes.length >0) {
                 nextUrl = autopagerMain.getNextUrl(container,this.enableJS||this.inSplitWindow,urlNodes[0]);
@@ -1060,7 +1096,7 @@ AutoPagring.prototype.scrollFunc = function(browser,doc){
 }
 AutoPagring.prototype.getNextUrlIncludeFrames = function(container,doc)
 {
-    var urlNodes = autopagerMain.findNodeInDoc(doc,
+    var urlNodes = autopagerMain.findLinkInDoc(doc,
             this.site.linkXPath,this.enableJS || this.inSplitWindow);
     //alert(urlNodes);
     var nextUrl = null;
@@ -1155,7 +1191,8 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
     }
     if (needMouseEvents)
         canceled = !node.dispatchEvent(mouseup);
-    if (focused && focused.focus && focused != document.commandDispatcher.focusedElement)
+    if (focused && focused.focus && focused != document.commandDispatcher.focusedElement
+        && focused.ownerDocument && focused.ownerDocument.getBoxObjectFor)
     {
         var box = focused.ownerDocument.getBoxObjectFor(focused);
         var de=focused.ownerDocument.documentElement;
@@ -1448,7 +1485,7 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
 //                paging.clearnedTime = null;
                 var n = evt.target;
                 var p = evt.relatedNode;//n.parentNode
-                var nodes = autopagerMain.findNodeInDoc(evt.target,paging.site.linkXPath,paging.enableJS);
+                var nodes = autopagerMain.findLinkInDoc(evt.target,paging.site.linkXPath,paging.enableJS);
                 var contained = true;
                 for(var i=0;i<nodes.length;i++)
                 {
@@ -1485,6 +1522,11 @@ AutoPagring.prototype.isLazyLoadImage = function()
     return (this.site.quickLoad & 2) ==2;
 }
 
+AutoPagring.prototype.getSiteLazyLoadAttr = function()
+{
+    return this.site.lazyImgSrc;
+}
+
 AutoPagring.prototype.postAfterInsert = function(node)
 {
     if (this.isLazyLoadImage())
@@ -1493,5 +1535,32 @@ AutoPagring.prototype.postAfterInsert = function(node)
             for(var k=0;k<nodes.length;++k) {
                 nodes[k].setAttribute("src", nodes[k].getAttribute("ap-lazy-src"));
             }
+    }
+    var lazyImgSrc = this.getSiteLazyLoadAttr();
+    
+    if (!autopagerUtils.isBlank(lazyImgSrc))
+    {
+        if (lazyImgSrc.indexOf("|")==-1)
+            this.loadLazyImages(node,lazyImgSrc);
+        else
+        {
+            var srcs = lazyImgSrc.split("|")
+            for(var s=0;s<srcs.length;s++)
+            {
+                this.loadLazyImages(node,srcs[s]);
+            }
+        }
+    }
+}
+AutoPagring.prototype.loadLazyImages = function(node,lazyImgSrc)
+{
+
+    if (autopagerUtils.isBlank(lazyImgSrc))
+        return;
+
+    var images = autopagerXPath.evaluate(node,".//*[@" + lazyImgSrc + "]",false);
+    for(var i=0;i<images.length;++i) {
+        images[i].setAttribute("src", images[i].getAttribute(lazyImgSrc));
+        images[i].setAttribute(lazyImgSrc, null);
     }
 }

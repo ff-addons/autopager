@@ -69,6 +69,7 @@
 <!ENTITY checkbox.ir.label "Include regulile recomandate">
 <!ENTITY label.Usages.value "Utilizări">
 <!ENTITY label.idsLabel.value "Identificatori reguli selectate (separaţi prin ,)">
+<!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "Numără">
 <!ENTITY openautopagerSidebar.commandkey "l">
@@ -125,6 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "Filtru XPath (ignoră elementele din paginile noi):">
 <!ENTITY setting.label.grpSmart "Paginare inteligentă">
 <!ENTITY setting.label.hotkeys "Activare/Dezactivare scurtături:">
+<!ENTITY setting.label.ignoresite "Ignore Sites">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "Descriere:">
 <!ENTITY setting.label.lblLinkXPath "Legătură XPath:">
@@ -207,6 +209,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Afişează întotdeauna pictograma pentru descoprire">
 <!ENTITY statusbar.menuitem.tooltiptext "Opţiuni principale AutoPager">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
 <!ENTITY textbox.monitorXPath.tooltiptext "Curăţă paginile încărcate când elementere urmte de XPath s-au modificat?">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Adaugă un sait">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Elimină tot">

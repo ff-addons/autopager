@@ -569,12 +569,19 @@ var apSplitbrowse = {
         //alert("done");
         if (doc.location.href=='about:blank')
             return true;
+        
+        try{
+            //scroll to page end to ensure some lazy load objects been loaded
+            doc.defaultView.scroll(0,doc.body.scrollHeight);
+        }catch(e){}
+
         window.setTimeout(function(){
             if (sl && sl.listener)
                 sl.listener.onSplitDocLoaded(doc,true);
             else
                 autopagerMain.onSplitDocLoaded(doc,true);
         },apSplitbrowse.getDelayMiliseconds(doc));
+        return false;
     },
     getDelayMiliseconds : function ( doc ){
         var browser = apSplitbrowse.getBrowserNode(doc);

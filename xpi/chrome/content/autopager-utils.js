@@ -792,6 +792,9 @@ delete * 24, for minutes, delete * 60 * 24
 // Converts a pattern in this programs simple notation to a regular expression.
 // thanks AdBlock! http://www.mozdev.org/source/browse/adblock/adblock/
 ,convert2RegExp : function( pattern ) {
+  return new RegExp(autopagerUtils.convert2RegExpStr(pattern), "i");
+},
+convert2RegExpStr : function( pattern ) {
   var s = new String(pattern);
   var res = new String("^");
 
@@ -830,7 +833,7 @@ delete * 24, for minutes, delete * 60 * 24
     }
   }
 
-  return new RegExp(res + '$', "i");
+  return res + '$';
 },
     handleDocLoad : function(doc,safe)
     {
@@ -857,5 +860,123 @@ delete * 24, for minutes, delete * 60 * 24
             return autopagerBwUtil.isValidLink(node)
         }
         return typeof node!='undefined';
+    }
+    ,getValidLink : function (node)
+    {
+        var link = autopagerUtils.getValidLinkFromChild(node)
+        if (link)
+            return link;
+        link = autopagerUtils.getValidLinkFromParent(node,3)
+        if (link)
+            return link;
+        return null;
+    }
+    ,getValidLinkFromChild : function (node)
+    {
+        for (var i=0;i<node.childNodes.length;i++)
+        {
+            var c = node.childNodes[i]
+            if (autopagerUtils.isValidLink(c))
+                return c;
+        }
+        for (i=0;i<node.childNodes.length;i++)
+        {
+            var link = autopagerUtils.getValidLinkFromChild(node.childNodes[i])
+            if (link)
+                return link;
+        }
+        return null;
+    }
+    ,getValidLinkFromParent : function (node,level)
+    {
+        while (level >0 && node !=null && (node.tagName!='BODY' && node.tagName!='HTML') && node.parentNode != node) {
+            node = node.parentNode
+            level --;
+            if (autopagerUtils.isValidLink(node))
+                return node;
+        }
+        return null;
+    }
+    ,toString: function(s)
+    {
+        if (typeof s=="undefined"|| s==null)
+            return ""
+        else
+            return s;
+    }
+    ,equals : function(v1,v2)
+    {
+        return this.toString(v1) == this.toString(v2);
+    }
+    ,isBlank : function(s)
+    {
+        return (typeof s == "undefined") || (s== null) || (s== "") ||  (s == "undefined")||  (s == "null");
+    }
+    , mergeString : function (split,str1,str2)
+    {
+        var newS = this.toString(str1)
+        if (newS!="" && !this.isBlank(str2))
+            newS += split + this.toString(str2)
+        else if(newS=="")
+            newS = this.toString(str2)
+        return newS;
+    }
+    ,
+    newRegExp : function(pattern)
+    {
+        if (!pattern)
+            return null;
+        var resRegExp = "";
+        var reg = null;
+        var ps = pattern.split("\n");
+        for(var i=0;i<ps.length;i++)
+        {
+            try{
+                //site.regex = new RegExp(autopagerUtils.correctRegExp(site.urlPattern));
+                new RegExp(ps[i]);
+                reg = ps[i]
+            }catch(re)
+            {
+                try{
+                    reg = autopagerUtils.correctRegExp(ps[i])
+                    new RegExp(reg);
+                }catch(e){
+                    //error create regexp, try to use it as pattern
+                    reg = autopagerUtils.convert2RegExpStr(ps[i]);
+                }
+            }
+            if (!(resRegExp===""))
+            {
+                resRegExp = resRegExp + "|";
+            }
+            resRegExp = resRegExp + reg
+        }
+        return new RegExp(resRegExp);
+    }
+    ,autopagerStrbundle : new autopagerStrings("autopager")
+    ,autopagerGetString : function(name)
+    {
+        try{
+
+            if (autopagerUtils.autopagerStrbundle == null)
+                autopagerUtils.autopagerStrbundle = new autopagerStrings("autopager");
+            return autopagerUtils.autopagerStrbundle.getString(name);
+        }catch(e)
+        {
+            //alert(name + " " + e);
+            return name;
+        }
+    },
+    autopagerFormatString :function(name,parms)
+    {
+        try{
+            if (autopagerUtils.autopagerStrbundle == null)
+                autopagerUtils.autopagerStrbundle = new autopagerUtils("autopager");
+            return autopagerUtils.autopagerStrbundle.getFormattedString(name, parms);
+        }catch(e)
+        {
+            //alert(name + " " + e);
+            return name;
+        }
     }
 }

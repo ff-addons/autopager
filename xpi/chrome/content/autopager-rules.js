@@ -1,6 +1,8 @@
 var autopagerRules =
 {
     AutopagerCOMP:null,
+    ignoresites : null,
+    ignoreRegex : null,
     getAutopagerCOMP : function ()
     {
         if (this.AutopagerCOMP == null)
@@ -13,6 +15,17 @@ var autopagerRules =
     },
     getNextMatchedSiteConfig: function(url,pos,matchCallBack)
     {
+        if (!autopagerUtils.equals(autopagerPref.loadPref("ignoresites"),this.ignoresites))
+        {
+            this.ignoresites = autopagerPref.loadPref("ignoresites");
+            this.ignoreRegex = autopagerUtils.newRegExp(this.ignoresites)
+        }
+        if (this.ignoreRegex && this.ignoreRegex.test(url))
+        {
+            matchCallBack(null);
+            return null;
+        }
+        
         if (url.length>256) //truncate the url
             url = url.substring(0,256);
 //        autopagerBwUtil.consoleLog("Process " + url)
