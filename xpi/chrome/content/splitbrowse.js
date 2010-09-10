@@ -395,6 +395,10 @@ var apSplitbrowse = {
                   doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
                   apSplitbrowse.onclose(splitBrowser,sl)
               },true);
+              doc.defaultView.addEventListener("AutoPagerClean",function(event){
+                  doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
+                  apSplitbrowse.onclose(splitBrowser,sl)
+              },true);
         }
 
         if (splitBrowser != null)

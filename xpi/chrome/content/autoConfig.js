@@ -88,7 +88,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.1.24").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.1.26").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";

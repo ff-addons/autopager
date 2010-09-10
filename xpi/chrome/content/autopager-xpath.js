@@ -219,7 +219,7 @@ var autopagerXPath = {
         var newlinks = [];
         for(var i=0;i<links.length;++i)
         {
-            if (links[i].authority > 0.5 && links[i].matchCount<20)
+            if (links[i].authority > 0.005 && links[i].matchCount<40)
                 newlinks.push(links[i])
         }
         links = this.sortItems(newlinks);
@@ -427,18 +427,46 @@ var autopagerXPath = {
             if(urlNodes[0].tagName != 'A')
                 item.authority = item.authority  / 3;
             items.push(item);
-            item = new autopagerXPathItem();
-            item.xpath = this.getXPathForObjectBySibling(urlNodes[0],3,level);
-            item.authority = (this.MAXLevel  / level) ;
-            if(urlNodes[0].tagName != 'A')
-                item.authority = item.authority  / 3;
-            items.push(item);
-            item = new autopagerXPathItem();
-            item.xpath = this.getXPathForObjectBySibling2(urlNodes[0],3,level);
-            item.authority = (this.MAXLevel  / level) + 0.2 ;
-            if(urlNodes[0].tagName != 'A')
-                item.authority = item.authority  / 3;
-            items.push(item);
+
+            var xpath= this.getXPathForObjectBySibling(urlNodes[0],3,level);
+            if (xpath)
+            {
+                item = new autopagerXPathItem();
+                item.xpath = xpath
+                item.authority = (this.MAXLevel  / level) ;
+                if(urlNodes[0].tagName != 'A')
+                    item.authority = item.authority  / 3;
+                items.push(item);
+
+                item = new autopagerXPathItem();
+                item.xpath = xpath
+                if (item.xpath.substr(-3) !="[1]")
+                    item.xpath = item.xpath + "[1]"
+                item.authority = (this.MAXLevel  / level) ;
+                if(urlNodes[0].tagName != 'A')
+                    item.authority = item.authority  / 3;
+                items.push(item);                
+            }
+
+            xpath = this.getXPathForObjectBySibling2(urlNodes[0],3,level);
+            if (xpath)
+            {
+                item = new autopagerXPathItem();
+                item.xpath = xpath
+                item.authority = (this.MAXLevel  / level) + 0.2 ;
+                if(urlNodes[0].tagName != 'A')
+                    item.authority = item.authority  / 3;
+                items.push(item);
+
+                item = new autopagerXPathItem();
+                item.xpath = xpath;
+                if (item.xpath.substr(-3) !="[1]")
+                    item.xpath = item.xpath + "[1]"
+                item.authority = (this.MAXLevel  / level) + 0.2 ;
+                if(urlNodes[0].tagName != 'A')
+                    item.authority = item.authority  / 3;
+                items.push(item);
+            }
             
             item = new autopagerXPathItem();
             item.xpath = this.getXPathForObjectByPosition(urlNodes[0],3,level);
@@ -713,11 +741,11 @@ var autopagerXPath = {
                 path = path + "/" + node.tagName.toLowerCase();
             else
                 path = path + "/following-sibling::" + node.tagName.toLowerCase();
+            
             if (xi.length >0)
                 path = path + "[" + xi + "]";
             else
-                path = path + "[1]";
-
+                path = path + "[" + this.getNodePosition(node) + "]";
         }
         return path;	
     },
@@ -1104,9 +1132,15 @@ var autopagerXPath = {
                 href = doc.location.href;
             }
             else {
-                href = doc.baseURI;
+                if (doc.documentElement.getAttribute("autopager-real-url"))
+                {
+                    href = doc.documentElement.getAttribute("autopager-real-url")
+                }else
+                {
+                    href = doc.baseURI;
+                }
                 host= href;
-            
+                
                 //remove prototol
                 host = host.substring(doc.location.protocol.length + 2);
                 port = doc.location.port + "";

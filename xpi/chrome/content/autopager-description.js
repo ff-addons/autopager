@@ -46,16 +46,16 @@ autopagerDescription.prototype= {
                     h.appendChild(q)
                     if (autopagerUtils.isBlank(node.getAttribute("flex")))
                         node.setAttribute("flex", "1");
-                    q.setAttribute("keyword", node.getAttribute("keyword"))
-                    node = q
                 }
                 else if(node.nextSibling)
                 {
                     node.parentNode.insertBefore(q,node.nextSibling)
-                    node= q
                 }
                 else
                     node.parentNode.appendChild(q)
+
+                q.setAttribute("keyword", node.getAttribute("keyword"))
+                node= q
             }
             var classname = "show-tip";
             if (!autopagerUtils.isBlank(node.getAttribute("class")))

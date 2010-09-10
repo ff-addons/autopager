@@ -773,7 +773,7 @@ AutoPagring.prototype.processNextDocUsingXMLHttpRequest = function(doc,url){
                                 autopagerBwUtil.consoleError(e)
                             }
                             //autopagerMain.loadChannelToFrame(frame,xmlhttp.channel,true);
-
+                            frame.contentDocument.documentElement.setAttribute("autopager-real-url",urlStr)
                             setTimeout(
                                 function(){frame.normalize();lazyLoad(frame);}
                             ,1000);
@@ -1257,8 +1257,19 @@ AutoPagring.prototype.onDocUnLoad = function(doc) {
         autopagerMain.cleanMonitorForCleanPages(doc,this);
         this.changeMonitor = null;
         this.domMonitor = null;
+        this.domRemovedMonitor = null;
         this.autopagernextUrl = null
         this.autopagerinsertPoint = null
+    this.autopagerPage = 0;
+    this.autopagerContentHandled = false;
+    this.autoPagerRunning=false;
+    this.autopagernextUrl=null
+//    doc.documentElement.setAttribute("autopagernextUrlObj",null)
+    this.autopagerinsertPoint=null
+    this.autopagerSplitCreated=false
+    this.autopagerSplitDocInited=false
+    this.autopagerPagingCount=0
+    this.forceLoadPage=0
 }
 AutoPagring.prototype.onPageUnLoad = function(event) {
     if (event && event.originalTarget && event.originalTarget instanceof HTMLDocument)
@@ -1515,6 +1526,22 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
         }
     }
     return paging.domMonitor;
+}
+AutoPagring.prototype.getDOMNodeRemovedMonitor = function()
+{
+    var paging = this;
+    if (!paging.domRemovedMonitor)
+    {
+        paging.domRemovedMonitor =  function _domRemovedMonitor(evt){
+            if (evt && evt.target && evt.target.ownerDocument)
+            {
+                window.setTimeout(function(){
+                        autopagerMain.doClearLoadedPages(evt.target.ownerDocument,true,paging);
+                        },1000);
+            }
+        }
+    }
+    return paging.domRemovedMonitor;
 }
 
 AutoPagring.prototype.isLazyLoadImage = function()

@@ -1286,7 +1286,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         //var browser = window.open("http://www.teesoft.info/aprules/submit");
         //var browser = window.open("http://local-ap.teesoft.info/aprules/new/");
         var url=autopagerPref.loadPref("repository-site");
-        url = url + "new?apv=0.6.1.24&id=&f=" + (new Date().getTime());
+        url = url + "new?apv=0.6.1.26&id=&f=" + (new Date().getTime());
         autopagerBwUtil.autopagerOpenIntab(url);
         
     }

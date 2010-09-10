@@ -134,7 +134,12 @@ onPageUnLoad : function(event) {
             {
                 return;
             }
-
+            autopagerMain.doOnPageUnLoad(doc);
+    }catch(e){}
+    },
+    doOnPageUnLoad : function(doc) {
+    try
+    {
         if (doc == null || doc.documentElement==null)
             return;
         if (typeof doc.documentElement.autopagerPagingObj == 'undefined' || doc.documentElement.autopagerPagingObj == null)
@@ -155,7 +160,7 @@ onPageUnLoad : function(event) {
         browser.removeProgressListener(apBrowserProgressListener,
                     Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
         browser.autopagerProgressListenerAttached = false;
-        browser.removeAttribute(apSplitbrowse.getSplitKey());
+        browser.removeAttribute(apSplitbrowse.getSplitKey());        
     }
 
     doc.documentElement.autopagerPagingObj = null;
@@ -816,7 +821,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.24");
+                de.setAttribute('autopagerVersion',"0.6.1.26");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -939,6 +944,7 @@ monitorForCleanPages : function (doc,paging)
     {
         var nodes = autopagerMain.findNodeInDoc(doc,paging.site.monitorXPath + " | //div[@class='autoPagerS' and contains(@id,'apBreakStart')]/span/a[2]",paging.enableJS || paging.inSplitWindow);
         var monitor = paging.getChangeMonitor();
+        var removeMonitor = paging.getDOMNodeRemovedMonitor();
         for(var i=0;i<nodes.length;i++)
         {
             nodes[i].removeEventListener("change", monitor, false);
@@ -946,19 +952,21 @@ monitorForCleanPages : function (doc,paging)
 
             nodes[i].addEventListener("change", monitor, false);
             nodes[i].addEventListener("click", monitor, false);
+
+            nodes[i].addEventListener("DOMNodeRemoved", removeMonitor, false);
         }
         monitor = paging.getDOMNodeMonitor();
         //var xpath = paging.site.contentXPath;
-        var xpath = "/*/*";
-        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
-        for(var i=0;i<nodes.length;i++)
-        {
+//        var xpath = "/*/*";
+//        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
+//        for(var i=0;i<nodes.length;i++)
+//        {
             //nodes[i].removeEventListener("DOMNodeRemoved", monitor, false);
-            nodes[i].removeEventListener("DOMNodeInserted", monitor, false);
+            doc.documentElement.removeEventListener("DOMNodeInserted", monitor, false);
 
             //nodes[i].addEventListener("DOMNodeRemoved", monitor, false);
-            nodes[i].addEventListener("DOMNodeInserted", monitor, false);
-        }
+            doc.documentElement.addEventListener("DOMNodeInserted", monitor, false);
+//        }
 
         //autopagerMain.removeUrlClickTrack(doc);
     }
@@ -969,20 +977,22 @@ cleanMonitorForCleanPages : function (doc,paging)
     {
         var nodes = autopagerMain.findNodeInDoc(doc,paging.site.monitorXPath + " | //div[@class='autoPagerS' and contains(@id,'apBreakStart')]/span/a[2]",paging.enableJS || paging.inSplitWindow);
         var monitor = paging.getChangeMonitor();
+        var removeMonitor = paging.getDOMNodeRemovedMonitor();
         for(var i=0;i<nodes.length;i++)
         {
             nodes[i].removeEventListener("change", monitor, false);
             nodes[i].removeEventListener("click", monitor, false);
+            nodes[i].removeEventListener("DOMNodeRemoved", removeMonitor, false);
         }
         monitor = paging.getDOMNodeMonitor();
         //var xpath = paging.site.contentXPath;
-        var xpath = "/*/*";
-        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
-        for(var i=0;i<nodes.length;i++)
-        {
+//        var xpath = "/*/*";
+//        nodes = autopagerMain.findNodeInDoc(doc,xpath,paging.enableJS || paging.inSplitWindow);
+//        for(var i=0;i<nodes.length;i++)
+//        {
             //nodes[i].removeEventListener("DOMNodeRemoved", monitor, false);
-            nodes[i].removeEventListener("DOMNodeInserted", monitor, false);
-        }
+            doc.documentElement.removeEventListener("DOMNodeInserted", monitor, false);
+//        }
 
         //autopagerMain.removeUrlClickTrack(doc);
     }
@@ -1039,17 +1049,18 @@ clearLoadStatus : function (doc)
 
     if (doc.documentElement.autopagerPagingObj)
         obj = doc.documentElement.autopagerPagingObj
-    obj.autopagerPage = 0;
-    obj.autopagerContentHandled = false;
-    obj.autoPagerRunning=false;
-    obj.autopagernextUrl=null
-//    doc.documentElement.setAttribute("autopagernextUrlObj",null)
-    obj.autopagerinsertPoint=null
-    obj.autopagerSplitCreated=false
-    obj.autopagerSplitDocInited=false
-    obj.autopagerPagingCount=0
-    obj.forceLoadPage=0
+    if (typeof obj.onDocUnLoad == "function")
+    {
+        obj.onDocUnLoad(doc)
+        var event = doc.createEvent("Events");
+        event.initEvent("AutoPagerClean", true, true);
+        try{
+            doc.dispatchEvent(event)
+        }catch(e)
+        {}
+    }
 
+    autopagerMain.doOnPageUnLoad(doc);
     doc.documentElement.setAttribute("autopagerVersion","")
 
 }
