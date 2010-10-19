@@ -682,8 +682,8 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
 //								target.onclick!=null && target.href.toLowerCase().indexOf("#") != -1)
 //                site.ajax = true;
 
-            //enable this by default for best compatibility
-            site.enableJS = true;
+            //disable this by default for best performance
+            site.enableJS = false;
             var personalRules = autopagerConfig.loadConfig();
             autopagerConfig.insertAt(personalRules,0,site);
             autopagerConfig.saveConfig(personalRules);

@@ -198,7 +198,6 @@
                     <menuitem type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
                     <menuitem type="checkbox"  id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
                     <menuitem type="checkbox"  id="disable-by-default" pref="disable-by-default" label="&setting.label.disable-by-default;" check="false" flex="1"/>
-                    <menuitem type="checkbox"  id="simpleModalPrompt" pref="modalprompt" label="&setting.label.simpleModalPrompt;" check="true"/>
                     <menuseparator class="autopager-sep-global"/>
                     <menuitem type="checkbox" id="tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
                     <menuitem type="checkbox"  id="ignoreFormatVersionCheck" pref="ignore-format-version-check" label="&options.checkbox.ignoreFormatVersionCheck.label;" check="false"/>
@@ -301,6 +300,9 @@
                     <menuitem id="autoPagerShoting" label="&statusbar.menuitem.autoPagerShoting.label;"
                     tooltiptext="&statusbar.menuitem.autoPagerShoting.tooltiptext;"
                           oncommand="autopagerTroubleShoting.shoting( content.document,false);"
+                />
+                    <menuitem id="autoPagerReset" label="&statusbar.menuitem.autoPagerReset.label;" tooltiptext="&statusbar.menuitem.autoPagerReset.tooltiptext;"
+                          oncommand="autopagerTroubleShoting.resetAll( content.document);"
                 />
                 </menupopup>
             </menu>

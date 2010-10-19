@@ -360,13 +360,14 @@ loadTempConfig : function() {
             var site = autopagerConfig.newSite("*","temp site for smart paging"
             ,"","//body/*",[]);
             site.maxLinks = smartlinks;
-            site.enableJS = true;
+            site.enableJS = false;
             site.isTemp = true;
             site.tmpPaths =  autopagerMain.convertToXpath(smarttext);
             
             site.fixOverflow = false;
             site.margin = autopagerPref.loadPref("smartMargin");
             site.guid="autopagertemp";
+            site.quickLoad = true;
             sites.push(site);
             //alert(linkXPath);
         }
@@ -821,7 +822,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.26");
+                de.setAttribute('autopagerVersion',"0.6.1.30");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -835,9 +836,9 @@ onInitDoc : function(doc,safe)
 
                     try{
                         var needLoadSplit =autopagerBwUtil.supportHiddenBrowser()
-                        &&  de.hasContentXPath
-                        && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
-                        && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
+                            &&  de.hasContentXPath
+                            && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                            && (!autopagerBwUtil.isFennec() || sitepos.site.enableJS==2);
                         if (needLoadSplit)
                         {
                             doc = doc.QueryInterface(Components.interfaces.nsIDOMDocument);
@@ -1016,7 +1017,7 @@ doClearLoadedPages : function (doc,lazyLoad,paging)
         var xpath="//div[contains(@id,'apBreakStart')]/preceding-sibling::*[1]/following-sibling::*[./following-sibling::div[contains(@id,'apBreakEnd')"
             + "]] | //div[contains(@id,'apBreakEnd')]";
         autopagerMain.removeElements(doc,[xpath],true,false);
-    autopagerMain.clearLoadStatus(doc);
+    autopagerMain.clearLoadStatus(doc,paging);
     if (doc.documentElement.autopagerPagingObj)
         doc.documentElement.autopagerPagingObj=null
     if (!lazyLoad)
@@ -1043,12 +1044,16 @@ doClearLoadedPages : function (doc,lazyLoad,paging)
         }
     }
 },
-clearLoadStatus : function (doc)
+clearLoadStatus : function (doc,paging)
 {
-    var obj = doc.documentElement
-
-    if (doc.documentElement.autopagerPagingObj)
-        obj = doc.documentElement.autopagerPagingObj
+    if (typeof paging=="undefined")
+    {
+        if (doc.documentElement.autopagerPagingObj)
+            paging = doc.documentElement.autopagerPagingObj
+    }
+    var obj = paging
+    if (!obj)
+        obj = doc.documentElement
     if (typeof obj.onDocUnLoad == "function")
     {
         obj.onDocUnLoad(doc)

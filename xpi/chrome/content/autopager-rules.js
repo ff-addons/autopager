@@ -107,4 +107,23 @@ var autopagerRules =
     {
         return true;
     }
+    ,
+    resetAll : function()
+    {
+        var allSiteSetting = this.getAutopagerCOMP().loadAll();
+        if (allSiteSetting != null)
+        {
+            for(var k in allSiteSetting)
+            {
+                var setting = allSiteSetting[k]
+                if (setting)
+                {
+                    var newSetting=[];
+                    newSetting.updateSite = setting.updateSite
+                    allSiteSetting[k] = newSetting
+                }
+            }
+            this.getAutopagerCOMP().setAll(allSiteSetting);
+        }
+    }
 }

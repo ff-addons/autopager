@@ -892,6 +892,11 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             this.autopagerPageUrl.push(nextPageHref);
 
             var insertPoint =	this.getAutopagerinsertPoint(container);
+            if (insertPoint==null)
+            {
+                autopagerMain.clearLoadStatus(doc,this)
+                return;
+            }
             var div = this.lastBreakStart
             if (!div && insertPoint)
             {

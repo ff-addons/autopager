@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "Rezolvă probleme">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Rezolvă automat">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Rezolvă automat probleme pentru saitul curent">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Rezolvă o problemă">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Rezolvă o problemă pentru saitul curent">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Elimină tot">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donaţie">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Afişează pagina de donaţii">

@@ -318,4 +318,12 @@ autopagerOpenIntab : function(url,obj)
             "chrome://autopager/skin/autopager32.gif",
             priority, buttons);
     }
+
+    ,deleteConfigFolder : function ()
+    {
+        var file = this.getConfigDir();
+        if (file.exists()) {
+            file.remove(true);
+        }
+    }
 }

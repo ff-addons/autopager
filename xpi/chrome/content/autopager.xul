@@ -395,7 +395,6 @@
                     </hbox>
                     <hbox align="center">
                         <checkbox id="showPrompt" label="&setting.label.showPrompt;" check="true" flex="1" keyword="Show Prompt"/>
-                        <checkbox id="simpleModalPrompt" label="&setting.label.simpleModalPrompt;" check="true" flex="1" keyword="Show Simpe Promt"/>
                     </hbox>
                     <hbox align="center">
                         <label control="gdelaymsecs" value="&setting.label.delaymsecs;" keyword="Global Delay Milliseconds"/>

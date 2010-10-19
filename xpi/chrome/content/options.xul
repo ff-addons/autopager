@@ -31,8 +31,7 @@
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
-        <checkbox type="checkbox"  id="simpleModalPrompt" pref="modalprompt" label="&setting.label.simpleModalPrompt;" check="true"/>
-
+        
         <checkbox id="tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
         <checkbox id="ignoreFormatVersionCheck" pref="ignore-format-version-check" label="&options.checkbox.ignoreFormatVersionCheck.label;" check="false"/>
         <hbox align="center">

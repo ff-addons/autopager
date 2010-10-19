@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "Fehler beheben">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Automatisch beheben">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Fehler automatisch beheben">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Fehlersuche">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Fehlersuche">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Alle leeren">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Spenden">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Spendenseite anzeigen">

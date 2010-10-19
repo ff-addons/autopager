@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "修復翻頁錯誤">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自動修復">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "自動修復翻頁錯誤">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "手動修復">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "手動修復">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "全部清除">
 <!ENTITY statusbar.menuitem.autopager-donation.label "贊助">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "顯示贊助頁面">

@@ -20,7 +20,7 @@ var hashSites = null;
 
     var selectedSource;
     
-    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,alwaysEnableJavaScript,showPrompt, simpleModalPrompt,showStatusBar,gdelaymsecs,ignoresites;
+    var mynameText,grpSmart,smarttext,smartlinks,discoverytext,smartenable,alwaysEnableJavaScript,showPrompt, showStatusBar,gdelaymsecs,ignoresites;
     var selectedListItem = null;
     var margin,minipages,delaymsecs,smartMargin,lazyImgSrc;
     var selectedSite;
@@ -194,7 +194,6 @@ if (autopagerPref.loadBoolPref("show-help"))
         autopagerPref.saveUTF8Pref("discoverytext",discoverytext.value);
         autopagerPref.saveBoolPref("alwaysEnableJavaScript",alwaysEnableJavaScript.checked);
         autopagerPref.saveBoolPref("noprompt",!showPrompt.checked);
-        autopagerPref.saveBoolPref("modalprompt",simpleModalPrompt.checked);
         autopagerPref.saveBoolPref("hide-status",!showStatusBar.checked);
 
         var v = getListValues(ignoresites,"\n")
@@ -326,9 +325,6 @@ if (autopagerPref.loadBoolPref("show-help"))
         
         showPrompt = document.getElementById("showPrompt");
         showPrompt.checked = !autopagerUtils.noprompt();
-
-        simpleModalPrompt = document.getElementById("simpleModalPrompt");
-        simpleModalPrompt.checked = autopagerPref.loadBoolPref("modalprompt");
 
         showStatusBar = document.getElementById("showStatusBar");
         showStatusBar.checked = !autopagerPref.loadBoolPref("hide-status");
@@ -1286,7 +1282,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         //var browser = window.open("http://www.teesoft.info/aprules/submit");
         //var browser = window.open("http://local-ap.teesoft.info/aprules/new/");
         var url=autopagerPref.loadPref("repository-site");
-        url = url + "new?apv=0.6.1.26&id=&f=" + (new Date().getTime());
+        url = url + "new?apv=0.6.1.30&id=&f=" + (new Date().getTime());
         autopagerBwUtil.autopagerOpenIntab(url);
         
     }

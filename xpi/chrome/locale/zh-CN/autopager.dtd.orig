@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "解决翻页问题">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自动修复">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "自动修复翻页问题">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "清除所有设置">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "清除所有设置">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "手动修复">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "手动修复">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "全部清除">
 <!ENTITY statusbar.menuitem.autopager-donation.label "捐款">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "显示捐款页">

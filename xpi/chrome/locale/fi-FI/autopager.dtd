@@ -180,6 +180,8 @@
 <!ENTITY statusbar.menu.fix.label "Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
+<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
+<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shooting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shooting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">

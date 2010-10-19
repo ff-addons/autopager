@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "Sửa Lỗi">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Tự động Sửa">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Tự động Sửa lỗi">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Gỡ rối">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Gỡ rối">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Ủng hộ">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Hiện trang Ủng hộ">

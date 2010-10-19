@@ -70,4 +70,14 @@ var autopagerTroubleShoting =
         return prompts.confirm(window,autopagerUtils.autopagerGetString(titleKey),autopagerUtils.autopagerGetString(textKey));
 
     }
+    ,resetAll  : function(doc)
+    {
+        //reset all config
+        autopagerPref.resetAll();
+        //reset all rules
+        autopagerRules.resetAll();
+        //delete autopager config folder
+        autopagerBwUtil.deleteConfigFolder();
+
+    }
 }

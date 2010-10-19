@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "Hataları Düzelt">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Otomatik Düzelt">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Hataları otomatik düzelt">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Arıza Tespiti">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Arıza Tespiti">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Tümünü Temizle">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Bağış yap">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Bağış sayfasına git">

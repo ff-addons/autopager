@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "問題を修正">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自動修正">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "問題を自動修正します。">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "トラブルシューティング">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "トラブルシューティングを行います。">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "全てクリア">
 <!ENTITY statusbar.menuitem.autopager-donation.label "寄付">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "寄付ページを表示します。">

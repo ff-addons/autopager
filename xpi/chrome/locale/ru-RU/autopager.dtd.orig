@@ -180,10 +180,10 @@
 <!ENTITY statusbar.menu.fix.label "Исправить проблемы">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Автоматическое исправление">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Автоматическое исправление проблем">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Поиск неполадок">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label0 "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Поиск неполадок">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext0 "Reset All AutoPager Setting">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Очистить">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Пожертвования">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Показать страницу пожертвований">

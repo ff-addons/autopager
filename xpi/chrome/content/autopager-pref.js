@@ -120,6 +120,18 @@ loadMyName : function() {
         this.saveMyName(name);
     }
     return name;
-}   
+},
+resetAll : function()
+{
+     var obj = [];
+    var children = this.getAutopagerPrefs().getChildList(".",obj)
+    for(var k=0;k<obj.value;k++)
+    {
+        try{
+            this.getAutopagerPrefs().clearUserPref(children[k]);
+        }catch(e){            
+        }
+    }
+}
 }
 autopagerPref.init();
