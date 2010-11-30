@@ -65,21 +65,21 @@
 <!ENTITY button.modifyLinkXPath.label "...">
 <!ENTITY caption.results-caption.label "Résultats">
 <!ENTITY caption.results-caption2.label "Résultats">
-<!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
-<!ENTITY checkbox.ir.label "Include Recommended Rules">
+<!ENTITY checkbox.chkForceJS.label "Activer le mode Javascript">
+<!ENTITY checkbox.ir.label "Inclure les règles recommandées">
 <!ENTITY label.Usages.value "Utilisations">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
 <!ENTITY label.lazyLoad "Lazy load image src attribute">
-<!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
+<!ENTITY label.monitorXPathLbl.value "Moniteur XPath">
 <!ENTITY label.value "Count">
 <!ENTITY openautopagerSidebar.commandkey "S">
 <!ENTITY openautopagerSidebar.modifiersKey "Alt">
 <!ENTITY options.checkbox.ignoreFormatVersionCheck.label "Ignorer la vérification du format">
 <!ENTITY options.checkbox.setAgent.label "Ajouter AutoPager à la signature « User Agent » du navigateur">
-<!ENTITY options.checkbox.tweakSession.label "Tweak Session, restore to the last visible page after restart">
+<!ENTITY options.checkbox.tweakSession.label "Session rapide (restaure la dernière page après redémarrage)">
 <!ENTITY options.dialog.autopager-options.buttonlabelextra1 "Plus…">
 <!ENTITY options.dialog.autopager-options.title "Options AutoPager">
-<!ENTITY options.label.speedLabel.value "Proload page count:">
+<!ENTITY options.label.speedLabel.value "Nombre de page(s) préchargée(s)">
 <!ENTITY options.menuitem.label0 "0">
 <!ENTITY options.menuitem.label1 "1">
 <!ENTITY options.menuitem.label2 "2">
@@ -175,36 +175,36 @@
 <!ENTITY setting.update.startup "À chaque démarrage">
 <!ENTITY setting.update.weekly "Chaque semaine">
 <!ENTITY statusbar.image.autopager-close-toolbar.tooltiptext "Close AutoPager Page Holder">
-<!ENTITY statusbar.label.value "Click to view the paging rules online">
+<!ENTITY statusbar.label.value "Cliquez pour voir les règles disponible en ligne">
 <!ENTITY statusbar.menu.autopager-about.label "Aide">
 <!ENTITY statusbar.menu.fix.label "Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Auto Fix">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Auto Fix Issues">
 <!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
 <!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
-<!ENTITY statusbar.menuitem.autoPagerShoting.label "Trouble Shooting">
-<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Trouble Shooting">
-<!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
-<!ENTITY statusbar.menuitem.autopager-donation.label "Donation">
-<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">
+<!ENTITY statusbar.menuitem.autoPagerShoting.label "Dépannage">
+<!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Dépannage">
+<!ENTITY statusbar.menuitem.autopager-clean.label "Effacer Tous">
+<!ENTITY statusbar.menuitem.autopager-donation.label "Don">
+<!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Afficher la page de don">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Aide">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Voir la page d'aide">
-<!ENTITY statusbar.menuitem.autopager-showrules.label "Rules">
-<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Show Rules in the Online Repository">
-<!ENTITY statusbar.menuitem.autopager-showtutorials.label "Tutorials">
-<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Show Tutorials Page">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Search rules online">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Search rules online">
+<!ENTITY statusbar.menuitem.autopager-showrules.label "Règles">
+<!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "Afficher les règles disponible en ligne">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.label "Tutoriels">
+<!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "Afficher la page des tutoriels">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "Rechercher des règles en ligne">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "Rechercher des règles en ligne">
 <!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "Switch To Lite Mode">
 <!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "Switch To AutoPager Lite Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Switch To Normal Mode">
-<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Switch To AutoPager Normal Mode">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.label "Basculer en mode normal">
+<!ENTITY statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext "Basculer en mode normal">
 <!ENTITY statusbar.menuitem.disable-on-default.label "Disable Paging By Default">
 <!ENTITY statusbar.menuitem.discover.label "Discover matched rules online">
-<!ENTITY statusbar.menuitem.highlightContents.label "Highlight Contents">
-<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Highlight Contents in the document">
-<!ENTITY statusbar.menuitem.highlightLinks.label "Highlight Next Links">
-<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "Highlight Next Links in the document">
+<!ENTITY statusbar.menuitem.highlightContents.label "Contenu en surbrillance">
+<!ENTITY statusbar.menuitem.highlightContents.tooltiptext "Contenu en surbrillance dans le document">
+<!ENTITY statusbar.menuitem.highlightLinks.label "liens suivant en surbrillance">
+<!ENTITY statusbar.menuitem.highlightLinks.tooltiptext "liens suivant en surbrillance dans le docuement">
 <!ENTITY statusbar.menuitem.label "Options">
 <!ENTITY statusbar.menuitem.liteModel.label "Works in lite model">
 <!ENTITY statusbar.menuitem.noPrompt.label "Show This On New Site">

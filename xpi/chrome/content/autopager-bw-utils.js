@@ -85,10 +85,10 @@ saveContentToFile: function(str,saveFile)
         configStream.writeString(str);
         configStream.close();
         fStream.close();
-	}catch(e)
-	{
+    }catch(e)
+    {
 		autopagerBwUtil.consoleError(e);
-	}
+    }
 },
 autopagerOpenIntab : function(url,obj)
     {

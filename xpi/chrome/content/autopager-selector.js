@@ -152,7 +152,7 @@ autopagerSelector.start = function(browser) {
 	this.browser = browser;
 
 	if (!this.labelElem)
-		this.makeElems();
+		this.makeElems(browser.contentDocument);
 
 	this.initHelpBox();
 
@@ -243,8 +243,8 @@ autopagerSelector.onMouseOver = function(event) {
 
 	if (elem == this.selectedElem)
 		return;
-	
-	this.showBoxAndLabel (elem, this.makeElementLabelString (elem));
+
+        this.showBoxAndLabel (elem, this.makeElementLabelString (elem));
 }
 
 autopagerSelector.onKeyPress = function(event) {
@@ -313,14 +313,14 @@ autopagerSelector.appendDescription = function(node, value, className) {
 
 //-------------------------------------------------
 // create the box and tag etc (done once and saved)
-autopagerSelector.makeElems = function ()
+autopagerSelector.makeElems = function (doc)
 {
 	this.borderElems = [];
 	var d, i;
 
 	for (i=0; i<4; i++)
 	{
-		d = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+		d = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
 		d.style.display = "none";
 		d.style.position = "absolute";
 		d.style.height = "0px";
@@ -334,7 +334,7 @@ autopagerSelector.makeElems = function ()
 		this.borderElems[i] = d;
 	}
 
-	d = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+	d = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
 	this.setElementStyleDefault (d, "#fff0cc");
 	d.style.borderTopWidth = "0";
 	d.style.MozBorderRadiusBottomleft = "6px";
@@ -367,13 +367,20 @@ autopagerSelector.showBoxAndLabel = function(elem, string) {
 	this.selectedElem = elem;
 
 	for (var i = 0; i < 4; i++) {
+                var n = this.borderElems[i]
 		try {
-			doc.adoptNode(this.borderElems[i]);
-		}
+			n = doc.adoptNode(this.borderElems[i]);
+                    }
 		catch (e) {
 			// Gecko 1.8 doesn't implement adoptNode, ignore
 		}
-		doc.body.appendChild(this.borderElems[i]);
+                try {
+			doc.documentElement.appendChild(n);
+                    }
+		catch (e) {
+                    //may already belong to this doc
+		}
+		
 	}
 
 	var pos = this.getPos(elem)
@@ -413,7 +420,7 @@ autopagerSelector.showBoxAndLabel = function(elem, string) {
 	catch(e) {
 		// Gecko 1.8 doesn't implement adoptNode, ignore
 	}
-	doc.body.appendChild(this.labelElem);
+	doc.documentElement.appendChild(this.labelElem);
 
 	this.labelElem.innerHTML = string;
 	this.labelElem.style.display = "";

@@ -34,7 +34,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-var autopagerMain = 
+var autopagerMain =
 {
     autopagerPrefs : null,
     autopagerDebug : false,
@@ -90,7 +90,7 @@ AutoPagerRefreshPage : function(evt){
         autopagerMain.handleCurrentDoc();
         return;
    }
-   
+
 },
 TabSelected : function(evt){
     autopagerMain.handleCurrentDoc();
@@ -124,7 +124,7 @@ testXPathTest : function(doc) {
     //document.autopagerXPathModel = "test";
     //autopagerMain.enableSelector(doc,true);
 },
-onPageUnLoad : function(event) {    
+onPageUnLoad : function(event) {
     try
     {
         autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
@@ -160,7 +160,7 @@ onPageUnLoad : function(event) {
         browser.removeProgressListener(apBrowserProgressListener,
                     Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
         browser.autopagerProgressListenerAttached = false;
-        browser.removeAttribute(apSplitbrowse.getSplitKey());        
+        browser.removeAttribute(apSplitbrowse.getSplitKey());
     }
 
     doc.documentElement.autopagerPagingObj = null;
@@ -209,7 +209,7 @@ isValidDoc : function (doc)
 onContentLoad : function(event) {
 
     if (autopagerMain.doContentLoad(event))
-    {    
+    {
 //        autopagerMain.scrollWatcher(event);
     }
 },
@@ -240,12 +240,12 @@ doContentLoad : function(event) {
 		return false;
     try{
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
-        document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);	
+        document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);
     }catch(e){}
 
     if (doc.documentElement.getAttribute("autopagerVersion"))
         return null;
-        
+
     if (apSplitbrowse)
     {
       var browser = apSplitbrowse.getBrowserNode(doc);
@@ -270,8 +270,8 @@ doContentLoad : function(event) {
               doc.documentElement.autopagerTweakingMonitorAdded = true;
               window.addEventListener("click", autopagerMain.tweakingSessionMonitor, false);
               window.addEventListener("scroll", autopagerMain.tweakingSessionMonitor, false);
-          }        
-      }    
+          }
+      }
   },
   tweakingSessionMonitor : function (e)
   {
@@ -295,7 +295,7 @@ doContentLoad : function(event) {
     for(var i=0;i<childs.length;++i)
     {
         doc.documentElement.appendChild(doc.importNode( childs[i].cloneNode(true),true));
-    }           
+    }
   },
   searchForMatchedFrame : function (doc, reg,enableJS)
   {
@@ -318,7 +318,7 @@ handleDocLoad : function(doc,safe)
 testDoc : function(doc,site)
 {
     autopagerMain.workingAllSites = UpdateSites.loadAll();
-            
+
     var tmpSites = [site];
     tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
@@ -346,14 +346,14 @@ getNextUrlIncludeFrames : function(container,doc)
                     return nextUrl;
             }
         }
-     }    
+     }
     return nextUrl;
 },
 loadTempConfig : function() {
     var sites = new Array();
     var smartenable = autopagerPref.loadBoolPref("smartenable");
     if (smartenable) {
-        
+
         var smarttext = autopagerPref.loadUTF8Pref("smarttext");
         if (smarttext.length>0) {
             var smartlinks = autopagerPref.loadPref("smartlinks");
@@ -363,7 +363,7 @@ loadTempConfig : function() {
             site.enableJS = false;
             site.isTemp = true;
             site.tmpPaths =  autopagerMain.convertToXpath(smarttext);
-            
+
             site.fixOverflow = false;
             site.margin = autopagerPref.loadPref("smartMargin");
             site.guid="autopagertemp";
@@ -391,13 +391,13 @@ xpathToLowerCase : function(str) {
 },
 convertStringToXPath : function(str,dir) {
     var xi="";
-    
+
     if (str.length>0) {
         xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("text()") + " ='" + str + "'");
         xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@id and " +    autopagerMain.xpathToLowerCase(dir +"@id") + "='" + str + "')");
         xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@name and " + autopagerMain.xpathToLowerCase(dir + "@name") + "='" + str + "')");
         xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@class and " + autopagerMain.xpathToLowerCase(dir + "@class") + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "img and (" +   autopagerMain.xpathToLowerCase(dir +"img/@src") + "='" + str + "' or " + 
+        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "img and (" +   autopagerMain.xpathToLowerCase(dir +"img/@src") + "='" + str + "' or " +
          autopagerMain.xpathToLowerCase("substring(" + dir + "img/@src,1, " + str.length + ")") + "='" + str + "'))");
     }
     return xi;
@@ -431,7 +431,7 @@ fixOverflow : function(doc) {
     if (nodes != null) {
         for(var i = 0;i<nodes.length;++i) {
             var node = nodes[i];
-            
+
             node.style.overflow = "visible";
         }
     }
@@ -440,7 +440,7 @@ fixOverflow : function(doc) {
         for(var i = 0;i<nodes.length;++i) {
             var node = nodes[i];
             if ( (node.style.position == "fixed" || node.style.position == "absolute" ) && node.className != "autoPagerS")
-                node.style.position = "relative"; 
+                node.style.position = "relative";
         }
     }
 },
@@ -497,7 +497,7 @@ promptNewRule : function (doc,force)
 {
         if (autopagerBwUtil.isInPrivateMode())
             return false;
-    
+
         if (typeof autopagerBwUtil.notification == "undefined")
         {
             autopagerMain.enabledThisSite(doc,true);
@@ -551,15 +551,15 @@ onInitDoc : function(doc,safe)
     doOnInitDoc : function(doc,safe) {
         if (doc.location == null)
             return -1;
-    
+
         if (doc.defaultView.innerWidth <autopagerPref.loadPref("mini-window-width") || doc.defaultView.innerHeight<autopagerPref.loadPref("mini-window-height"))
             return -1;
-    
+
 
         var url = doc.location.href;
         if (url == "about:blank")
             return -1;
-        
+
         autopagerRules.getNextMatchedSiteConfig(url,null,function(sitepos){
             return autopagerMain.matchCallBack(doc,sitepos,url,safe)
         });
@@ -662,7 +662,7 @@ onInitDoc : function(doc,safe)
                         }
                     }
                 }
-                
+
 
                 //autopagerMain.log("7 " + new Date().getTime())
                 if (urlNodes == null || urlNodes.length ==0)
@@ -822,7 +822,7 @@ onInitDoc : function(doc,safe)
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
-                de.setAttribute('autopagerVersion',"0.6.1.32");
+                de.setAttribute('autopagerVersion',"{appversion}");
                 de.setAttribute('autopagerGUID',sitepos.site.guid);
                 de.setAttribute('autopagerAjax',sitepos.site.ajax);
 
@@ -917,9 +917,9 @@ watchForNodeAttrChange : function (node)
 {
     try{
         //node.addEventListener("DOMAttrModified",autopagerMain.onAjaxAttrModified,false);
-    }catch(e){        
+    }catch(e){
     }
-    
+
 },
 onAjaxRemoveNode : function (e)
 {
@@ -1132,7 +1132,7 @@ showAllPagingOptions : function() {
     }catch(e){
        autopagerMain.alertErr("Exception:" + e);
    }
-    
+
 },
 isEnabledOnDoc : function(doc)
 {
@@ -1238,7 +1238,7 @@ FillPopup : function(target,prefix) {
             var match = autopagerMain.isMatchedOnDoc(doc)
             var allowed = match.enabled
             var matched = match.matched
-            
+
             document.getElementById(prefix + "-autopager-disable-on-site").setAttribute("checked", !allowed);
             document.getElementById(prefix + "-autopager-disable-on-site").setAttribute("hidden",!matched);
             document.getElementById(prefix + "-autopager-issue-on-site").setAttribute("hidden",!matched);
@@ -1349,7 +1349,7 @@ createDiv : function(doc,id,style) {
     div.className="autoPagerS";
     if (id.length>0)
         div.id = id;
-    
+
     if (style.length>0)
         div.style.cssText = style;
     return div;
@@ -1357,7 +1357,7 @@ createDiv : function(doc,id,style) {
 getSelectorDiv : function(doc,divName) {
     var div = doc.getElementById(divName);
     if (!div) {
-        var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;"; 
+        var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;";
         div = autopagerMain.createDiv(doc,divName,style);
     }
     return div;
@@ -1365,7 +1365,7 @@ getSelectorDiv : function(doc,divName) {
 getLabelDiv : function(doc,divName) {
     var div = doc.getElementById(divName);
     if (!div) {
-        var style =""; 
+        var style ="";
         div = autopagerMain.createDiv(doc,divName,style);
         var s = div.style;
 	s.display = "none";
@@ -1382,19 +1382,19 @@ getLabelDiv : function(doc,divName) {
 	s.paddingBottom = "2px";
 	s.paddingLeft = "5px";
 	s.paddingRight = "5px";
-        
+
 	s.borderTopWidth = "0";
 	s.MozBorderRadiusBottomleft = "6px";
 	s.MozBorderRadiusBottomright = "6px";
-        s.zIndex = "65535";        
-              
+        s.zIndex = "65535";
+
     }
     return div;
 },
 getSelectorLoadFrame : function(doc) {
     var divName = "autoPagerLoadDiv";
     var frameName = divName + "ifr";
-    
+
 //    var frame = doc.ownerDocument.autopagerFrame;
 //    if (frame == null || !frame)
         frame = doc.getElementById(frameName);
@@ -1415,7 +1415,7 @@ getSelectorLoadFrame : function(doc) {
         }
         div.innerHTML=
             "<iframe id='" + frameName + "' name='" + frameName + "' width='100%' height='100%' src=''></iframe>";
-        
+
         frame = doc.getElementById(frameName);
         //frame.contentDocument.write("<html><head><base href='" + doc.baseURI + "'/></head><body>autopaging</body></html>");
         frame.autoPagerInited = false;
@@ -1446,7 +1446,7 @@ getLastDiv: function(doc) {
         "border: 0px; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: -90; left: -100px; top: -100px; height: 0px;");
         div = doc.getElementById(divName);
     }
-    
+
     return div;
 },
 hiddenRegionDivs : function(doc,subfix) {
@@ -1487,7 +1487,7 @@ myGetWindowDimensions : function (doc)
 {
 	var out = {};
 
-	out.scrollX = doc.body.scrollLeft + doc.documentElement.scrollLeft; 
+	out.scrollX = doc.body.scrollLeft + doc.documentElement.scrollLeft;
 	out.scrollY = doc.body.scrollTop + doc.documentElement.scrollTop;
 
 	if (doc.compatMode == "BackCompat")
@@ -1510,35 +1510,35 @@ createRegionDivs : function(doc,target,subfix) {
     var bottomDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
     var left = autopagerMain.getOffsetLeft(target);
     var top = autopagerMain.getOffsetTop(target);
-    
+
     var height = target.offsetHeight;
     if (!height)
         height = target.parentNode.offsetHeight;
     var width = target.offsetWidth;
     if (!width)
         width = target.parentNode.offsetWidth;
-    
+
     leftDiv.style.left = (left - margin) + "px";
     leftDiv.style.top = (top - margin) + "px";
     leftDiv.style.height = (height + margin) + "px";
-    
+
     rightDiv.style.left = (left + width) + "px";
     rightDiv.style.top = (top - margin) + "px";
     rightDiv.style.height = (height + margin) + "px";
-    
+
     topDiv.style.left = left + "px";
     topDiv.style.top = (top - margin) + "px";
     topDiv.style.width = width + "px";
-    
+
     bottomDiv.style.left = left + "px";
     bottomDiv.style.top = (top + height) + "px";
     bottomDiv.style.width = width + "px";
-    
+
     autopagerMain.hiddenDiv(leftDiv,false);
     autopagerMain.hiddenDiv(rightDiv,false);
     autopagerMain.hiddenDiv(topDiv,false);
     autopagerMain.hiddenDiv(bottomDiv,false);
-    
+
 },
 getOffsetTop : function(target) {
     var node=target;
@@ -1561,13 +1561,13 @@ getOffsetLeft : function(target) {
 fireFrameDOMContentLoaded : function(frame)
 {
         var newCmdEvent = frame.contentDocument.createEvent('Events');
-        newCmdEvent.initEvent('DOMContentLoaded',true, true);         
+        newCmdEvent.initEvent('DOMContentLoaded',true, true);
         var newEvent = frame.contentDocument.createEvent('XULCommandEvents');
         newEvent.initCommandEvent('DOMContentLoaded', true, true,frame.defaultView, 0, false, false, false, false,  newCmdEvent);
         //newEvent.target = frame;
         //document.getElementById("appcontent").dispatchEvent(newEvent);
         frame.contentDocument.dispatchEvent(newEvent);
-    
+
 },
 onFrameLoad : function(event) {
     var target = null;
@@ -1581,17 +1581,17 @@ onFrameLoad : function(event) {
     var frame=target;
     if (!frame.autoPagerInited) {
         //alert("autopagerMain.onFrameLoad");
-        
+
         frame.autoPagerInited = true;
 
         //autopagerMain.fireFrameDOMContentLoaded(frame);
         var doc = frame.contentDocument;
         autopagerMain.scrollWindow(frame.ownerDocument,doc);
         autopagerMain.onStopPaging(frame.ownerDocument);
-        
-  
+
+
         //frame.contentDocument.close();
-        
+
     }
 },
 
@@ -1609,7 +1609,7 @@ getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
     var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
     if (!enableJS) {
         //<base href="http://bbs.chinaunix.net/forumdisplay.php?fid=46">
-        
+
 //        var headEnd = s.indexOf("</head>");
 //        if (headEnd == -1)
 
@@ -1625,7 +1625,7 @@ getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
             }
         }
 
-        htmlEnd = s.search(autopagerMain.htmlEndMark);        
+        htmlEnd = s.search(autopagerMain.htmlEndMark);
         //htmlEnd = s.length
         if (htmlEnd>0)
             s = s.substring(0,htmlEnd);
@@ -1635,7 +1635,7 @@ getHtmlInnerHTML : function(html,enableJS,url,type,lazyLoad) {
         var bodyEnd = s.search(autopagerMain.bodyEndMark);
         if (bodyEnd>0)
             s = s.substring(0,bodyEnd);
-        
+
         //s = s.replace(/<script/g,"<!-- script");
         s = s.replace(/<[ ]*[Ss][Cc][Rr][Ii][Pp][Tt]/g,"<" + "!-- script");
         //s = s.replace(/ -- script/g,"-- script");
@@ -1679,7 +1679,7 @@ getHtmlHeadHTML : function(html,enableJS,url,type,lazyLoad) {
         var h = "<base href='" + url +
             "'><meta http-equiv='Content-Type' content='" + type +"'/> ";
 
-        
+
         if (headStart >0)
         {
             var t= s.slice(headStart)
@@ -1708,7 +1708,7 @@ getHtmlHeadHTML : function(html,enableJS,url,type,lazyLoad) {
 getHtmlBody  : function(html,enableJS) {
     var s= html.replace(/top\.location(\.href)*[ ]*\=/g,"atoplocationhref=");
     if (!enableJS) {
-        
+
         var bodyStart = s.indexOf("<body");
         if (bodyStart == -1)
             bodyStart = s.toLowerCase().indexOf("<body");
@@ -1726,7 +1726,7 @@ getHtmlBody  : function(html,enableJS) {
 getContentType : function(doc) {
     //var nodes = doc.getElementsByTagName("meta");
     var nodes  = doc.evaluate("//head/meta[@http-equiv='Content-Type']", doc, null, 0, null);
-    
+
     for (var node = null; (node = nodes.iterateNext()); ) {
         if (node.content != "")
         {
@@ -1743,7 +1743,7 @@ getSplitBrowserForDoc : function(doc,clone,listener) {
     return autopagerMain.getSplitBrowserForDocWithUrl(doc,null,clone,listener);
 },
 getSplitBrowserForDocWithUrl : function(doc,url,clone,listener) {
-    
+
 	var doClone = clone;
 	if (clone && (doc.documentElement.autopagerSplitCloning==true))
 	{
@@ -1776,7 +1776,7 @@ getStack : function ()
        stack =  e.stack;
    }
    return stack;
-      
+
 },
 
 loadToFrame : function (frame,responseText,contentType,contentCharset,enableJS,url)
@@ -1808,26 +1808,26 @@ loadToFrame : function (frame,responseText,contentType,contentCharset,enableJS,u
 
 
     var docShell = frame.contentWindow;
-    
+
     var webNav = docShell.QueryInterface(Ci.nsIWebNavigation);
     webNav.stop(Ci.nsIWebNavigation.STOP_NETWORK);
-    
+
  //   frame.contentWindow.allowJavascript = false;
     docShell.allowAuth = false;
     docShell.allowPlugins = false;
     docShell.allowMetaRedirects = false;
     docShell.allowSubframes = false;
     docShell.allowImages = true;
-    
+
 
     docShell.allowJavascript = enableJS;
     var uriLoader = Cc["@mozilla.org/uriloader;1"].getService(Ci.nsIURILoader);
     uriLoader.openURI(channel, true, docShell);
-    
+
 },
 loadChannelToFrame : function (frame,channel,enableJS)
 {
-    
+
 //    var webNav = frame.contentWindow.QueryInterface(Ci.nsIWebNavigation);
 //    webNav.stop(Ci.nsIWebNavigation.STOP_NETWORK);
 
@@ -1840,13 +1840,13 @@ loadChannelToFrame : function (frame,channel,enableJS)
     frame.contentWindow.allowMetaRedirects = false;
     frame.contentWindow.allowSubframes = false;
     frame.contentWindow.allowImages = true;
-    
-    
+
+
     frame.contentWindow.allowJavascript = enableJS;
 
     var uriLoader = Cc["@mozilla.org/uriloader;1"].getService(Ci.nsIURILoader);
     uriLoader.openURI(channel, true, frame.contentDocument);
-    
+
 },
 getDocURL : function(doc,enableJS)
 {
@@ -1856,7 +1856,7 @@ getDocURL : function(doc,enableJS)
     }
     else {
         href = doc.baseURI;
-    }    
+    }
 //    if (href=="about:blank")
 //    {
 //        var nodes =doc.evaluate("//head/base", doc, null, 0, null);
@@ -1867,7 +1867,7 @@ getDocURL : function(doc,enableJS)
 //                break;
 //            }
 //        }
-//    }        
+//    }
     return href;
 },
 preparePath : function(doc,path,enableJS) {
@@ -1879,7 +1879,7 @@ preparePath : function(doc,path,enableJS) {
     //protocol
     //search
     //title
-    
+
     var newPath = autopagerBwUtil.processXPath(path);
     if (newPath.indexOf("%") == -1)
         return newPath;
@@ -1893,15 +1893,15 @@ preparePath : function(doc,path,enableJS) {
         else {
             href = doc.baseURI;
             host= href;
-            
+
             //remove prototol
             host = host.substring(doc.location.protocol.length + 2);
             var port = doc.location.port + "";
             host = host.substring(0,host.indexOf("/"));
-            
+
             if (port.length > 0)
                 host = host.substring(0,host.length - port.length -1);
-        }			
+        }
         newPath = newPath.replace(/\%href\%/g,"'" + href+ "'");
         newPath = newPath.replace(/\%host\%/g,"'" + host + "'");
         newPath = newPath.replace(/\%hostname\%/g,"'" + host+ "'");
@@ -1928,7 +1928,7 @@ removeElements : function (node,xpath,enableJS,useInnerXpath)
     var doc = (node.ownerDocument == null) ? node : node.ownerDocument;
     var xpe = new XPathEvaluator();
     var nsResolver = xpe.createNSResolver(node);
-    
+
 //    alert(node.innerHTML)
     var aExpr
     for(var i=0;i<xpath.length;i++)
@@ -1955,7 +1955,7 @@ removeElements : function (node,xpath,enableJS,useInnerXpath)
     }
 //   alert(node.innerHTML)
 //    var nodes = autopagerMain.findNodeInDoc(node,xpath,enableJS);
-  
+
 },
 removeElementByXPath : function (xpe,aExpr,nsResolver,node)
 {
@@ -2075,7 +2075,7 @@ getNextUrl : function(container,enableJS,node) {
     if (node.tagName == "INPUT")
         return node;
     return node;
-    
+
 },
 getPagingWatcherDiv : function(doc,create)
 {
@@ -2086,10 +2086,10 @@ getPagingWatcherDiv : function(doc,create)
     var style = autopagerMain.getLoadingStyle();
         div = autopagerMain.createDiv(doc,divName,style);
         div.innerHTML = str;//"<b>Loading ...</b>";
-        
+
     }
     return div;
-	
+
 },
 HighlightNextLinks : function(doc)
 {
@@ -2176,7 +2176,7 @@ enabledInNextPages : function(doc,enabled,count)
 hiddenOptionDiv : function(doc)
 {
     autopagerMain.hiddenDiv(doc.getElementById("autoPagerLabel"),true);
-    
+
     //alert(doc.documentElement.autopagerHighlightedNextLinkCount)
     for(var i=0;i<doc.documentElement.autopagerHighlightedNextLinkCount;i++)
     {
@@ -2228,7 +2228,7 @@ fixUrl : function(doc,url) {
         newStr += ":" + doc.location.port;
     //
     if(url.substring(0,1) != "/")
-        newStr += doc.location.pathname.substring(0, 
+        newStr += doc.location.pathname.substring(0,
         doc.location.pathname.lastIndexOf("/")+1);
     newStr += url;
     //alert(newStr);
@@ -2278,7 +2278,7 @@ findNodeInDoc : function(doc,path,enableJS) {
         }
         return result;
     }
-    
+
 },
 showAutoPagerMenu : function(menuid) {
     if (!menuid)
@@ -2289,9 +2289,9 @@ showAutoPagerMenu : function(menuid) {
         if(ev.currentTarget != ev.target) return;
         ev.target.removeEventListener("popuphidden", arguments.callee, false);
         ev.target.hidden=true;
-    }, false);    
+    }, false);
     popup.showPopup();
-    
+
 }
 ,
 onEnable : function() {
@@ -2344,7 +2344,7 @@ saveMyName : function(myname) {
     autopagerPref.saveUTF8Pref("myname", myname); // set a pref
 },
 loadMyName  : function() {
-    try{        
+    try{
         return autopagerPref.loadUTF8Pref("myname"); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -2354,7 +2354,7 @@ loadMyName  : function() {
 getLoadingStyle : function()
 {
  try{
-        
+
         return autopagerPref.loadUTF8Pref("loading"); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -2364,7 +2364,7 @@ getLoadingStyle : function()
 getOptionStyle : function()
 {
  try{
-        
+
         return autopagerPref.loadUTF8Pref("optionstyle"); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -2374,7 +2374,7 @@ getOptionStyle : function()
 setLoadingStyle : function(value)
 {
  try{
-        
+
         autopagerPref.saveUTF8Pref("loading",value); // get a pref
     }catch(e) {
         //autopagerMain.alertErr(e);
@@ -2391,7 +2391,7 @@ changeButtonStatus : function (autopagerButton,apStatus)
         }
 },
 setGlobalEnabled : function(enabled) {
-    
+
     //autopagerMain.setGlobalImageByStatus(enabled);
     if (enabled)
         autopagerMain.logInfo(autopagerUtils.autopagerGetString("autopageenabled"),autopagerUtils.autopagerGetString("autopageenabledTip"));
@@ -2438,14 +2438,14 @@ logInfo : function(status,tip) {
         if (this.autopagerDebug)
             window.content.status = status;
     var tooltip = document.getElementById("autopager_tip");
-    
+
     var tips = tip.split("\n");
     while(tooltip.childNodes.length < tips.length)
         tooltip.appendChild(tooltip.childNodes[0].cloneNode(true));
     for(var i=0;i< tooltip.childNodes.length;++i) {
         tooltip.childNodes[i].hidden=(i >= tips.length);
     }
-    
+
     for(var i=0;i<tips.length;i++)
         tooltip.childNodes[i].value = tips[i];
   }catch(e){}
@@ -2453,7 +2453,7 @@ logInfo : function(status,tip) {
 logInfoDebug : function(status,tip) {
     window.content.status = status;
     var tooltip = document.getElementById("autopager_tip");
-    
+
     var tips = tip.split("\n");
     var tipCount = tooltip.childNodes.length;
     for(var i=0;i<tips.length;++i)
@@ -2524,7 +2524,7 @@ alertErr : function(e) {
         {
         var consoleService = Components.classes['@mozilla.org/consoleservice;1']
                 .getService(Components.interfaces.nsIConsoleService);
-        consoleService.logStringMessage(message)            
+        consoleService.logStringMessage(message)
         }
       } : function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -2646,11 +2646,11 @@ alertErr : function(e) {
  showTutorials : function()
     {
         autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/tutorials.html");
-    },    
+    },
  showAbout: function ()
- {         
+ {
    try {
-       var thisAddon = Application.extensions.get("autopager@mozilla.org");
+       var thisAddon = Application.extensions.get("{appid}");
      var extensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
        .getService(Components.interfaces.nsIExtensionManager);
 var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
@@ -2664,10 +2664,10 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
    window.openDialog("chrome://mozapps/content/extensions/about.xul",
                      "autopagerAbout",
                      "chrome,centerscreen,modal",
-                     "urn:mozilla:item:autopager@mozilla.org",//thisAddon.id,
+                     "urn:mozilla:item:{appid}",//thisAddon.id,
                      extensionManager.datasource);
    } catch (ex) {
-     
+
    }
 
  },
@@ -2683,7 +2683,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
        case ".enabled":
          try{
             autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
-         }catch(e){}         
+         }catch(e){}
          break;
        case ".hide-status":
          try{
@@ -2764,7 +2764,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
 
             // sneaky google sometimes bypass the above, this will fix it
             if (doc.defaultView)
-                doc.defaultView.clk = function() { };        
+                doc.defaultView.clk = function() { };
             window.clk = function() { };
         }
         catch (e) {
@@ -2793,7 +2793,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
             doc.dispatchEvent(event)
         }catch(e)
         {}
-        
+
     }
 };
 
@@ -2814,7 +2814,7 @@ var apBrowserProgressListener = {
             (aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK))
         {
             window.setTimeout(function(){
-                if (!(!aWebProgress.isLoadingDocument 
+                if (!(!aWebProgress.isLoadingDocument
                         && aWebProgress.QueryInterface(Components.interfaces.nsIWebProgress)
                         && aWebProgress.DOMWindow
                         && aWebProgress.DOMWindow.document

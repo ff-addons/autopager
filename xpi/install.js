@@ -1,14 +1,14 @@
 const APP_DISPLAY_NAME = "autopager";
 const APP_NAME = "autopager";
 const APP_PACKAGE = "/informaction/autopager";
-const APP_VERSION = "0.6.1.30";
+const APP_VERSION = "0.6.1.32";
 
 const APP_PREFS_FILE="defaults/preferences/autopagerdef.js";
 const APP_XPCOM_SERVICE="components/AutopagerCOMP.js";
 const APP_JAR_FILE = "autopager.jar";
 const APP_CONTENT_FOLDER = "content/";
 const APP_LOCALES = [
-  "zh-CN", "zh-TW","nl","en-US","fr","de","it-IT","ja-JP","pt-BR","tr-TR","hu-HU","he-IL","vi","pl-PL","ro","es"
+  "zh-CN", "zh-TW","nl","en-US","fr","de","it-IT","ja-JP","pt-BR","tr-TR","hu-HU","he-IL","vi","pl-PL","ro","es","sv-SE"
   ];
   //"it-IT","ja-JP",
 

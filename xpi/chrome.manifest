@@ -35,6 +35,7 @@ locale        autopager        ro-RO                 jar:chrome/autopager.jar!/l
 locale        autopager        es                 jar:chrome/autopager.jar!/locale/es/
 locale        autopager        fi-FI                       jar:chrome/autopager.jar!/locale/fi-FI/
 locale        autopager        sq-AL                       jar:chrome/autopager.jar!/locale/sq-AL/
+locale        autopager        sv-SE                       jar:chrome/autopager.jar!/locale/sv-SE/
 
 
 #xpcom component registration required after Firefox 4.0b2pre

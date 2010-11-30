@@ -67,7 +67,7 @@ var UpdateSites=
         }
         //        autopagerBwUtil.consoleLog("needUpdate:" + needUpdate)
         if (needUpdate)
-        {
+        {            
             apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
             //alert("update " + updatesite.filename)
         }
@@ -88,7 +88,7 @@ var UpdateSites=
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
 
-        url = url.replace(/\{version\}/,"0.6.1.30").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
+        url = url.replace(/\{version\}/,"0.6.1.32").replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
         if (!autopagerPref.loadBoolPref("with-lite-recommended-rules"))
             ids = ids + "&ir=false";
@@ -169,7 +169,7 @@ var UpdateSites=
                 if ( (force || site.enabled) && site.url.length >0)
                 {
                     site.triedTime = 0;
-                    site.triedBackup = 0;
+                    site.triedBackup = 0;                    
                     this.updateSiteOnline(site,force,0);
                 }
             }

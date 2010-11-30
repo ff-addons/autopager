@@ -4,7 +4,7 @@ var autopagerJsonSetting= {
         return autopagerJsonSetting.loadCompactFromString(doc);
     },
     loadCompactFromString : function (str)
-    {
+    {        
         var info = autopagerBwUtil.decodeJSON(str);
         var sites = new Array();
         if (info)

@@ -165,16 +165,19 @@ _handleParse: function (event) {
             if(xmlhttp.readyState == 4)
             {
                     if(xmlhttp.status == 200)
-                    {
+                    {                        
                         var contentType =""
                         if (xmlhttp.channel && xmlhttp.channel.contentType)
                             contentType = xmlhttp.channel.contentType;
                         else if(xmlhttp.getAllResponseHeader)
                             contentType = xmlhttp.getAllResponseHeader("Content-Type");
+
                         if ((contentType != "" && contentType != null  && (contentType.indexOf("text\/plain")>-1
                                     || contentType.indexOf("application\/json")>-1))
                                     || xmlhttp.responseText.substring(0,2)=='[{')
-                            loadCallBack(xmlhttp.responseText,obj)
+                        {
+                            loadCallBack(xmlhttp.responseText,obj);
+                        }
                         else
                         {
                             doc=xmlhttp.responseXML;
