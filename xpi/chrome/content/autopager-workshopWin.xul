@@ -16,5 +16,16 @@
         ondialogaccept="return autopagerSidebar.doAddSite(true);"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <vbox id="autopager-workshop" flex="1">
-</vbox>
+    </vbox>
+    <script type="text/javascript">
+        if (typeof window.opener.autopagerSelectUrl != 'undefined')
+        {
+        window.addEventListener("load",function(event) {
+                window.setTimeout(function(){
+                    var discoverPath = document.getElementById("discoverPath");
+                    discoverPath.doCommand();
+                },400);
+            },false);
+        }
+    </script>
 </dialog>

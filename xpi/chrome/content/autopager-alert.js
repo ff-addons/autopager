@@ -105,9 +105,6 @@ var autopagerAlert=
     },
     _animateAlert : function()
     {
-        var prefService = Components.classes["@mozilla.org/preferences-service;1"].getService();
-        prefService = prefService.QueryInterface(Components.interfaces.nsIPrefService);
-        var prefBranch = prefService.getBranch("extensions.updatescan.notifications.");
         var me = autopagerAlert;
         if (window.outerHeight < me.gFinalHeight) {
             window.screenY -= me.gSlideIncrement;

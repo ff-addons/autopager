@@ -156,16 +156,7 @@ autopagerSelector.start = function(browser) {
 
 	this.initHelpBox();
 
-        var notshowMenu = false;
-	if (typeof Components != "undefined")
-        {
-            var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                                                                                                                            .getService(Components.interfaces.nsIPrefService);
-            var branch = prefService.getBranch("autopager.");
-            try {
-                    notshowMenu = branch.getBoolPref("selector.notshowhelp");
-            } catch(e) {}
-        }
+        var notshowMenu = autopagerPref.loadBoolPref("selector.notshowhelp");
 	if (notshowMenu)
 		this.showMenu();
 }

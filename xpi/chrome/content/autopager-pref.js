@@ -10,7 +10,7 @@ var autopagerPref =
 getAutopagerPrefs : function () {
     if (this.autopagerPrefs == null && (typeof Components == 'object')) {
         this.autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
-        getService(Components.interfaces.nsIPrefService).getBranch("autopager")
+        getService(Components.interfaces.nsIPrefService).getBranch("extensions.autopager")
         .QueryInterface(Components.interfaces.nsIPrefBranch2);
     }
     return this.autopagerPrefs;
@@ -39,6 +39,37 @@ saveUTF8Pref : function(name,value) {
 },
 loadPref : function(name) {
     try{
+            if (name=="last_version")
+            {
+                //migration preference from autopager.x to extensions.autopager.x
+                if ((typeof Components == 'object')) {
+                    var prefs = Components.classes["@mozilla.org/preferences-service;1"].
+                        getService(Components.interfaces.nsIPrefService).getBranch("autopager.")
+                        .QueryInterface(Components.interfaces.nsIPrefBranch2);
+
+                    var obj={}
+                    var keys = prefs.getChildList("",obj);
+                    for(var i=0;i<keys.length;i++)
+                    {
+                        var k = keys[i];
+                        try{
+                            if (this.getAutopagerPrefs().prefHasUserValue("." +k))
+                                this.getAutopagerPrefs().clearUserPref("." +k);
+                            if (prefs.getPrefType(k)==128)//PREF_BOOL
+                            {
+                                if (this.getAutopagerPrefs().getBoolPref("." +  k)!=prefs.getBoolPref(k))
+                                    this.getAutopagerPrefs().setBoolPref("." +  k,prefs.getBoolPref(k))
+                            }else
+                            {
+                                this.getAutopagerPrefs().setCharPref("." +  k,prefs.getCharPref(k))
+                            }
+                            prefs.clearUserPref(k)
+                        }catch(e){
+                        }
+                    }
+                    
+                }
+            }
         //if (this.getAutopagerPrefs().prefHasUserValue("." +  name))
         return this.getAutopagerPrefs().getCharPref("." +  name); // get a pref
     }catch(e) {

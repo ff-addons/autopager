@@ -1,7 +1,4 @@
 var autopagerOptionUI = {
-    pref : Components.classes["@mozilla.org/preferences-service;1"].
-        getService(Components.interfaces.nsIPrefService).getBranch("autopager")
-        .QueryInterface(Components.interfaces.nsIPrefBranch2),
     init : function()
     {
         var checks = document.getElementsByTagName("checkbox")
@@ -9,10 +6,10 @@ var autopagerOptionUI = {
         {
             if (checks[i].getAttribute("pref"))
             {
-                checks[i].setAttribute("checked",this.pref.getBoolPref("." + checks[i].getAttribute("pref")));
+                checks[i].setAttribute("checked",autopagerPref.loadBoolPref(checks[i].getAttribute("pref")));
             }else if (checks[i].getAttribute("prefV"))
             {
-                checks[i].setAttribute("checked",!this.pref.getBoolPref("." + checks[i].getAttribute("prefV")));
+                checks[i].setAttribute("checked",!autopagerPref.loadBoolPref(checks[i].getAttribute("prefV")));
             }
         }
         var menus = document.getElementsByTagName("menulist")
@@ -20,7 +17,7 @@ var autopagerOptionUI = {
         {
             if (menus[i].getAttribute("pref"))
             {
-                menus[i].value=this.pref.getCharPref("." + menus[i].getAttribute("pref"));
+                menus[i].value=autopagerPref.loadPref(menus[i].getAttribute("pref"));
             }
         }
     },
@@ -29,21 +26,11 @@ var autopagerOptionUI = {
     },
     setBoolPref : function (key, v)
     {
-        if (this.pref.prefHasUserValue("." + key))
-            this.pref.clearUserPref("." + key);
-        if (this.pref.getBoolPref("." + key)!=v)
-        {
-            this.pref.setBoolPref("."+key,v);
-        }
+        autopagerPref.saveBoolPref(key,v);
     },
     setCharPref : function (key, v)
     {
-        if (this.pref.prefHasUserValue("." + key))
-            this.pref.clearUserPref("." + key);
-        if (this.pref.getCharPref("." + key)!=v)
-        {
-            this.pref.setCharPref("."+key,v);
-        }
+        autopagerPref.savePref(key,v);
     },
     handleOkButton : function()
     {

@@ -1,4 +1,5 @@
 var autopagerUtils = {
+    version:"0.6.2.0",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -135,6 +136,16 @@ var autopagerUtils = {
     {
         var l = navigator.language;
         return (l == 'zh-CN' || l == 'zh-TW');
+    },
+    baseUrl : function (sourceUri)
+    {
+        var uri = sourceUri
+        if (uri.lastIndexOf("/"))
+        {
+            uri = uri.substring(0,uri.lastIndexOf("/")+1);
+        }
+        
+        return uri;
     },
     clearUrl : function (sourceUri)
     {
@@ -401,7 +412,7 @@ var autopagerUtils = {
     ,
     output : function(arr) {
         //Optput however you want
-        alert(arr.join("\n"));
+        autopagerBwUtil.consoleError(arr.join("\n"));
     }
     ,
     outputStack : function(ex) {
@@ -977,6 +988,66 @@ convert2RegExpStr : function( pattern ) {
         {
             //alert(name + " " + e);
             return name;
+        }
+    },
+    importNode : function(container,node,depth)
+    {
+        var newNode = null;
+        try{
+            newNode = container.importNode (node,true);
+        }catch(e)
+        {
+            //manually import node, importNode may failed with "INVALID_CHARACTER_ERR: DOM Exception 5"
+            //for some case
+            try{
+                newNode = container.importNode (node,false);
+            }catch(ex){
+                try{
+                    newNode = container.createElement(node.tagName);
+                }catch(ex2){
+                    newNode = container.createElement("div");
+                }
+            }
+                if (depth && newNode!=null)
+                {
+                    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++)
+                    {
+                        var c = autopagerUtils.importNode(container,childNode,depth)
+                        if (c!=null)
+                        {
+                            newNode.appendChild(c);
+                        }
+                        else
+                        {
+                            autopagerMain.alertErr("Unable to clone :" + childNode);
+                        }
+                    }
+                }
+            
+        }
+        return newNode;
+    }
+    ,
+    getAutoPagerObject : function (de)
+    {
+        if (de)
+        {
+            if (de.wrappedJSObject)
+                return de.wrappedJSObject.autopagerPagingObj;
+            else
+                return de.autopagerPagingObj;
+        }
+        return null;
+    }
+    ,
+    setAutoPagerObject : function (de,obj)
+    {
+        if (de)
+        {
+            if (de.wrappedJSObject)
+                de.wrappedJSObject.autopagerPagingObj=obj;
+            else
+                de.autopagerPagingObj=obj;
         }
     }
 }

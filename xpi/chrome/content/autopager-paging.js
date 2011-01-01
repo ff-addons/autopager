@@ -902,7 +902,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             {
                 //alert(nodes);
                 var divStyle = autopagerPref.loadUTF8Pref("pagebreak");// "clear:both; line-height:20px; background:#E6E6E6; text-align:center;";
-                var div= autopagerMain.createDiv(container,"",divStyle);
+                div= autopagerMain.createDiv(container,"",divStyle);
                 div.setAttribute("id","apBreakStart" + this.autopagerPage);
                 insertPoint.parentNode.insertBefore(div,insertPoint);                
             }
@@ -948,7 +948,15 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                     {}
                     //autopagerMain.changeIds(newNode,container,insertPoint.parentNode);
 
-                    newNode = container.importNode (newNode,true);
+                    try{
+                        newNode = container.importNode (newNode,true);
+                    }catch(e)
+                    {
+                        //manually import node, importNode may failed with "INVALID_CHARACTER_ERR: DOM Exception 5"
+                        //for some case
+                        newNode = autopagerUtils.importNode(container,newNode,true);
+                    }
+                    
                     autopagerMain.removeElements(newNode,this.site.removeXPath,this.enableJS||this.inSplitWindow,true)
 
 

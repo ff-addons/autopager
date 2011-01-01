@@ -174,8 +174,11 @@ autopagerOpenIntab : function(url,obj)
         .getService(Components.interfaces.nsIConsoleService);
         consoleService.logStringMessage(message)
     },
-    consoleError: function(message) {
-        Components.utils.reportError(message)
+    consoleError: function(e) {
+        if (e && e.stack)
+            Components.utils.reportError(e + "@" + e.stack)
+        else
+            Components.utils.reportError(e)
     }
     ,newDOMParser : function ()
     {

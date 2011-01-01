@@ -34,9 +34,9 @@ var autopagerTroubleShoting =
     {
         var de = doc.documentElement;
         var matched = false;
-        if (doc.location && de.autopagerPagingObj != null)
+        if (doc.location && autopagerUtils.getAutoPagerObject(de) != null)
         {
-            var obj = de.autopagerPagingObj
+            var obj = autopagerUtils.getAutoPagerObject(de)
             var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),
                 obj.site.guid,doc.location.host);
             if (siteConfirm!=null && !siteConfirm.UserAllowed)

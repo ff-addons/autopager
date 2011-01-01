@@ -89,9 +89,9 @@ var autopagerToolbar =
         //    var autopagerHome = "http://www.teesoft.info";
         var lv = autopagerPref.loadPref("last_version");
         if (typeof lv=="undefined" || lv==null || lv=="") {  // new user        
-            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "installed?i=0.6.1.32" + subfix,null))
+            if (autopagerBwUtil.autopagerOpenIntab(autopagerHome + "installed?i=" + autopagerUtils.version + subfix,null))
             {
-                autopagerPref.savePref("last_version", "0.6.1.32");
+                autopagerPref.savePref("last_version", autopagerUtils.version);
                 autopagerToolbar.addAutopagerButton();
                 if (autopagerBwUtil.isFennec())
                 {
@@ -101,22 +101,22 @@ var autopagerToolbar =
             }
             autopagerConfig.autopagerUpdate();
         } else { // check for upgrade
-            var lastVersion = autopagerPref.loadPref("last_version");
-            var currentVersion = "0.6.1.32";
-            if (lastVersion != "0.6.1.32")
+            var lastVersion = lv;
+            var currentVersion = autopagerUtils.version;
+            if (lastVersion != autopagerUtils.version)
 {
                 var vers = currentVersion.split('.');
 
                 //a dev update if the last number is an odd number
                 if (vers[vers.length-1]%2==1)
                 {
-                    autopagerPref.savePref("last_version", "0.6.1.32");
+                    autopagerPref.savePref("last_version", autopagerUtils.version);
                     autopagerConfig.autopagerUpdate();
                 }else //a major update if the last number is an even number
                 {
-                    if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "updated?u=" + lastVersion + "&i=0.6.1.32" + subfix,null))
+                    if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "updated?u=" + lastVersion + "&i=" + autopagerUtils.version + subfix,null))
                     {
-                        autopagerPref.savePref("last_version", "0.6.1.32");
+                        autopagerPref.savePref("last_version", autopagerUtils.version);
                     //autopagerToolbar.addAutopagerButton();
                     //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
                     }
