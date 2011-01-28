@@ -15,7 +15,7 @@ var autopagerTroubleShoting =
 
         //check whether AutoPager enabled on the site
         var matched = autopagerTroubleShoting.reEnableOnDoc(autopagerUtils.getTopDoc(doc),autofix);
-        UpdateSites.updateOnline(true);
+        AutoPagerNS.UpdateSites.updateOnline(true);
         //check whether there is rules for this site
         if (!matched)
         {

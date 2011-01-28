@@ -1,4 +1,4 @@
-var apSplitbrowse = {
+AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {
         lookupMethod: Components.utils ? Components.utils.lookupMethod : Components.lookupMethod,
@@ -142,7 +142,7 @@ var apSplitbrowse = {
     init : function()
     {
         //document.splitBrowserCount = 0;
-        window.removeEventListener("load",apSplitbrowse.init,false);
+        window.removeEventListener("load",AutoPagerNS.apSplitbrowse.init,false);
         if (typeof document != "undefined")
             document.splitBrowserCount = 0;
 
@@ -269,7 +269,7 @@ var apSplitbrowse = {
             autopagerUtils.deSerializeUserInput(targetB.contentWindow, d);
         }, false);
 
-        //        if (apSplitbrowse.cloneWithSessionStore(targetB, originalB))
+        //        if (AutoPagerNS.apSplitbrowse.cloneWithSessionStore(targetB, originalB))
         //            return;
         var webNav = targetB.webNavigation;
         var newHistory = webNav.sessionHistory;
@@ -377,7 +377,7 @@ var apSplitbrowse = {
             vbox.appendChild(splitBrowser);
             //var f =  document.commandDispatcher.focusedElement
             splitBrowser.setAttribute(this.getSplitKey(),true);
-            var sl = new splitpanelProgressListener(listener)
+            var sl = new AutoPagerNS.splitpanelProgressListener(listener)
             splitBrowser.addProgressListener(sl,
                 Components.interfaces.nsIWebProgress.NOTIFY_ALL);
             splitBrowser.autopagerSplitWinFirstDocSubmited = false;
@@ -389,15 +389,15 @@ var apSplitbrowse = {
                    
 //            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){
 //                event.target.removeEventListener("DOMNodeRemoved", arguments.callee, false);
-//                apSplitbrowse.onclose(event,sl)
+//                AutoPagerNS.apSplitbrowse.onclose(event,sl)
 //            },false);
               doc.defaultView.addEventListener("beforeunload",function(event){
                   doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
-                  apSplitbrowse.onclose(splitBrowser,sl)
+                  AutoPagerNS.apSplitbrowse.onclose(splitBrowser,sl)
               },true);
               doc.defaultView.addEventListener("AutoPagerClean",function(event){
                   doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
-                  apSplitbrowse.onclose(splitBrowser,sl)
+                  AutoPagerNS.apSplitbrowse.onclose(splitBrowser,sl)
               },true);
         }
 
@@ -418,7 +418,7 @@ var apSplitbrowse = {
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.autopagerSplitWinFirstDocSubmited = true;
             //alert(doc.documentElement.autopagerUseSafeEvent)
-            apSplitbrowse.switchToCollapsed(false);
+            AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
             if (listener)
                 splitBrowser.listener = listener
             window.setTimeout(function(){
@@ -438,9 +438,9 @@ var apSplitbrowse = {
                     if (!doc.documentElement.autopagerUseSafeEvent )
                     {
                         //autopagerBwUtil.consoleError("load in hidden browser");
-                        apSplitbrowse.cloneBrowser(splitBrowser,browser);
+                        AutoPagerNS.apSplitbrowse.cloneBrowser(splitBrowser,browser);
                     //                        var newTab = gBrowser.addTab();
-                    //                        apSplitbrowse.cloneBrowser(newTab.ownerDocument.defaultView.gBrowser.getBrowserForTab(newTab),browser);
+                    //                        AutoPagerNS.apSplitbrowse.cloneBrowser(newTab.ownerDocument.defaultView.gBrowser.getBrowserForTab(newTab),browser);
                     }
                     else
                     {
@@ -483,7 +483,7 @@ var apSplitbrowse = {
             return;
         var splitBox =document.getElementById("autopager-split-box");
         var splitSplitter = document.getElementById("autopager-split-splitter");
-        apSplitbrowse.switchToCollapsed(hidden);
+        AutoPagerNS.apSplitbrowse.switchToCollapsed(hidden);
         //      splitBrowser.parentNode.collapsed=hidden;
         //      splitBrowser.collapsed=hidden;
         //splitSplitter.setAttribute("hidden",hidden);
@@ -535,7 +535,7 @@ var apSplitbrowse = {
     {
         if (splitBrowser != null)
         {
-            apSplitbrowse.doClose(splitBrowser,listener.listener);
+            AutoPagerNS.apSplitbrowse.doClose(splitBrowser,listener.listener);
             var parent = splitBrowser.parentNode;
             if (parent == null)
                 return;
@@ -549,7 +549,7 @@ var apSplitbrowse = {
             return target;
         for (var i=0;i<target.childNodes.length;i++)
         {
-            var b = apSplitbrowse.getBrowserFromTarget(target.childNodes[i]);
+            var b = AutoPagerNS.apSplitbrowse.getBrowserFromTarget(target.childNodes[i]);
             if (b!= null)
                 return b;
         }
@@ -576,7 +576,8 @@ var apSplitbrowse = {
         
         try{
             //scroll to page end to ensure some lazy load objects been loaded
-            doc.defaultView.scroll(0,doc.body.scrollHeight);
+            //fix http://member.teesoft.info/phpbb/viewtopic.php?f=3&t=3498
+            doc.defaultView.scroll(0,Math.max(doc.body.scrollHeight,4000));
         }catch(e){}
 
         window.setTimeout(function(){
@@ -584,12 +585,12 @@ var apSplitbrowse = {
                 sl.listener.onSplitDocLoaded(doc,true);
             else
                 autopagerMain.onSplitDocLoaded(doc,true);
-        },apSplitbrowse.getDelayMiliseconds(doc));
+        },AutoPagerNS.apSplitbrowse.getDelayMiliseconds(doc));
         return false;
     },
     getDelayMiliseconds : function ( doc ){
-        var browser = apSplitbrowse.getBrowserNode(doc);
-        if (browser && browser.getAttribute(apSplitbrowse.getSplitKey())) {
+        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
+        if (browser && browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey())) {
             if (browser.auotpagerContentDoc)
             {
                 if (browser.auotpagerContentDoc.documentElement.delaymsecs && browser.auotpagerContentDoc.documentElement.delaymsecs>0)
@@ -599,26 +600,26 @@ var apSplitbrowse = {
         return autopagerMain.getDelayMiliseconds();
     }
 };
-var splitpanelProgressListener  = function (listener)
+AutoPagerNS.splitpanelProgressListener  = function (listener)
 {
     this.listener = listener;
     if (listener)
         listener.progressListener = this
 };
 
-splitpanelProgressListener.prototype = {
+AutoPagerNS.splitpanelProgressListener.prototype = {
     onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
     {
         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
         const nsIChannel = Components.interfaces.nsIChannel;
         if (aStateFlags & nsIWebProgressListener.STATE_START &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-            apSplitbrowse.start(this);
+            AutoPagerNS.apSplitbrowse.start(this);
             return;
         } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK && aStatus==0) {
             //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
-            apSplitbrowse.done( aWebProgress.DOMWindow.document,this);
+            AutoPagerNS.apSplitbrowse.done( aWebProgress.DOMWindow.document,this);
 
             return;
         }
@@ -629,7 +630,7 @@ splitpanelProgressListener.prototype = {
     },
     onLocationChange : function(webProgress, request, location)
     {
-        apSplitbrowse.start(this);
+        AutoPagerNS.apSplitbrowse.start(this);
         return;
     },
     onProgressChange : function(webProgress, request,

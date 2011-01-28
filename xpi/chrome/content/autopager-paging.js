@@ -1028,8 +1028,8 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
   AutoPagring.prototype.onSplitDocLoaded = function(doc,safe) {
     var furtherscrollWatcher = true;
     var paging = this
-        var browser = apSplitbrowse.getBrowserNode(doc);
-        if (browser && browser.getAttribute(apSplitbrowse.getSplitKey())) {
+        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
+        if (browser && browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey())) {
             //if (browser.auotpagerContentDoc)
             {
                 var container = browser.auotpagerContentDoc;
@@ -1065,7 +1065,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                                 browser.autopagerSplitWinFirstDocloaded = true;
                                 paging.autopagerSplitDocInited = true;
                                 paging.autopagerEnabledSite = true;
-                            },apSplitbrowse.getDelayMiliseconds(doc));
+                            },AutoPagerNS.apSplitbrowse.getDelayMiliseconds(doc));
                         }else
                         {
                             this.autopagernextUrl = nextUrl;
@@ -1104,7 +1104,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
 AutoPagring.prototype.scrollFunc = function(browser,doc){
     var furtherscrollWatcher =this.scrollWindow(browser.auotpagerContentDoc,doc);
     this.onStopPaging(browser.auotpagerContentDoc);
-    apSplitbrowse.switchToCollapsed(true);
+    AutoPagerNS.apSplitbrowse.switchToCollapsed(true);
     return furtherscrollWatcher;
 }
 AutoPagring.prototype.getNextUrlIncludeFrames = function(container,doc)
@@ -1179,15 +1179,20 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
         //observe http conections
         listener = this.observeConnection(node.ownerDocument);
     }
-    apSplitbrowse.switchToCollapsed(false);
+    AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
     var focused = (document && document.commandDispatcher)?
             document.commandDispatcher.focusedElement : null;
+
+
+    AutoPagerNS.apSplitbrowse.switchToCollapsed(true);
 
     var canceled = false;
     var needMouseEvents =  autopagerPref.loadBoolPref("simulateMouseDown") || this.site.ajax || this.site.needMouseDown;
     if (needMouseEvents)
     {
+        AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
         canceled = !node.dispatchEvent(mousedown);
+        AutoPagerNS.apSplitbrowse.switchToCollapsed(true);
     }
     canceled = !node.dispatchEvent(click);
     //if the mouse is currently down then the click event may be canceled,
@@ -1231,6 +1236,8 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
             setTimeout(function(){listener.removeObserveConnection()},10000 + delaymsecs);
         }
     }
+
+    AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
 
     if(canceled) {
         // A handler called preventDefault
@@ -1427,13 +1434,13 @@ AutoPagring.prototype.onSplitDocLoadedWithDelay = function(doc,timeout)
 {
     var paging = this
     setTimeout(function () {
-    var browser = apSplitbrowse.getBrowserNode(doc);
+    var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
     //browser.autopagerSplitWinFirstDocloaded=true;
     doc.documentElement.setAttribute("autopageCurrentPageLoaded",false);
     try{
         paging.scrollWindow(browser.auotpagerContentDoc,doc);
         paging.onStopPaging(browser.auotpagerContentDoc);
-        apSplitbrowse.switchToCollapsed(true);
+        AutoPagerNS.apSplitbrowse.switchToCollapsed(true);
     }catch(e)
     {
         //var de = doc.documentElement

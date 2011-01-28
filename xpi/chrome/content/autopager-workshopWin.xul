@@ -17,6 +17,7 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <vbox id="autopager-workshop" flex="1">
     </vbox>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript">
         if (typeof window.opener.autopagerSelectUrl != 'undefined')
         {

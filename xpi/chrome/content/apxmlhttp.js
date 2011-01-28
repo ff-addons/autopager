@@ -1,5 +1,5 @@
 
-var apxmlhttprequest=
+AutoPagerNS.apxmlhttprequest=
 {
     loadCallBack:null,
     errorCallBack:null,
@@ -110,7 +110,7 @@ _handleParse: function (event) {
 
     var html = str.replace(/<!DOCTYPE.*>/, '').replace(/<html.*>/, '').replace(/<\/html>.*/, '');
         var htmlDoc  = doc.implementation.createDocument(null, 'html', null);
-        var fragment = apxmlhttprequest.createDocumentFragmentByString(doc,html);
+        var fragment = AutoPagerNS.apxmlhttprequest.createDocumentFragmentByString(doc,html);
         if(fragment == null)
             return this.createHTMLDocumentByString2(str);
         try{
@@ -193,7 +193,7 @@ _handleParse: function (event) {
                                 }
                             }
                             if (doc == null)
-                                doc = apxmlhttprequest.createHTMLDocumentByString(xmlhttp.responseText);
+                                doc = AutoPagerNS.apxmlhttprequest.createHTMLDocumentByString(xmlhttp.responseText);
                             loadCallBack(doc,obj);
 
                         }

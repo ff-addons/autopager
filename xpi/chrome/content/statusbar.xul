@@ -4,7 +4,8 @@
 
 <overlay id="autopagestatus"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
+             
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
@@ -33,7 +34,7 @@
             <spring flex="1"/>
             <image id="autopager-close-toolbar"
                 tooltiptext="&statusbar.image.autopager-close-toolbar.tooltiptext;"
-                class="tabs-closebutton url" onclick="apSplitbrowse.open(content.document,true);"
+                class="tabs-closebutton url" onclick="AutoPagerNS.apSplitbrowse.open(content.document,true);"
                 />
         </splitter>
         <vbox id="autopager-split-box" collapsed="false" persist="height" style="min-height: 0px !important;">
@@ -68,9 +69,9 @@
             <menupopup id="autopager-popup" hidden="true"  onpopupshowing="autopagerMain.FillPopup(event.target,'st')">
             </menupopup>
             <menupopup id="autopagerlite-popup" hidden="true" onpopupshowing="autopagerMain.onPrepareCoreOption(event.target)"  oncommand="autopagerMain.onHandlingCoreOption(event);">
-                <menuitem type="checkbox"  id="discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
-                <menuitem type="checkbox"  id="showDiscoverPanel" pref="with-lite-discovery-aways-display" label="&statusbar.menuitem.showDiscoverPanel.label;" checked="true"/>
-                <menuitem type="checkbox"  id="liteModel" pref="work-in-lite-mode" label="&statusbar.menuitem.liteModel.label;" checked="true"/>
+                <menuitem type="checkbox"  id="autopager-discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
+                <menuitem type="checkbox"  id="autopager-showDiscoverPanel" pref="with-lite-discovery-aways-display" label="&statusbar.menuitem.showDiscoverPanel.label;" checked="true"/>
+                <menuitem type="checkbox"  id="autopager-liteModel" pref="work-in-lite-mode" label="&statusbar.menuitem.liteModel.label;" checked="true"/>
                 <menuseparator class="autopager-sep-global"/>
                 <menuitem id="autopagerlite-discover"
                             label="&statusbar.menuitem.autopagerlite-discover.label;"
@@ -103,35 +104,35 @@
     </menupopup>
 
     <menupopup id="viewSidebarMenu">
-        <menuitem observes="viewautopagerSidebar"/>
+        <menuitem observes="autopagerSiteWizardSidebar"/>
     </menupopup>
 
     <keyset id="mainKeyset">
-        <key id="key_load3pages" oncommand="autopagerMain.loadPages(content.document,3);"
+        <key id="autopager_key_load3pages" oncommand="autopagerMain.loadPages(content.document,3);"
 			key="&autopager.menuitem.autopager-load-3.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
-        <key id="key_load5pages" oncommand="autopagerMain.loadPages(content.document,5);"
+        <key id="autopager_key_load5pages" oncommand="autopagerMain.loadPages(content.document,5);"
 			key="&autopager.menuitem.autopager-load-5.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
-        <key id="key_load10pages" oncommand="autopagerMain.loadPages(content.document,10);"
+        <key id="autopager_key_load10pages" oncommand="autopagerMain.loadPages(content.document,10);"
 			key="&autopager.menuitem.autopager-load-10.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
-        <key id="key_loadALLpages" oncommand="autopagerMain.loadPages(content.document,10000);"
+        <key id="autopager_key_loadALLpages" oncommand="autopagerMain.loadPages(content.document,10000);"
 			key="&autopager.menuitem.autopager-load-all.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
-        <key id="key_pause" oncommand="autopagerMain.pauseLoadPages(content.document);"
+        <key id="autopager_key_pause" oncommand="autopagerMain.pauseLoadPages(content.document);"
 			key="&autopager.menuitem.autopager-pause-load.key;"
 			modifiers="&autopager.menuitem.autopager-load.modifiers;"/>
     </keyset>
 
     <broadcasterset id="mainBroadcasterSet">
-        <broadcaster id="viewautopagerSidebar"
+        <broadcaster id="autopagerSiteWizardSidebar"
 			autoCheck="false"
 			label="&autopager.toolbarLabel;"
 			type="checkbox" group="sidebar"
 			sidebarurl="chrome://autopager/content/autopagerSidebar.xul"
 			sidebartitle="&autopager.sidebarTitle;"
-			oncommand="toggleSidebar('viewautopagerSidebar');"/>
+			oncommand="toggleSidebar('autopagerSiteWizardSidebar');"/>
     </broadcasterset>
 
     <popupset id="autopager-popupset">
@@ -139,21 +140,21 @@
             <menuitem id="autopager-showoption"
                               label="&autopager.status.showoption;"
                               tooltiptext="&autopager.status.showoptionTip;"
-                              oncommand="UpdateSites.updateOnline(true);autopagerMain.showAllPagingOptions()"
+                              oncommand="AutoPagerNS.UpdateSites.updateOnline(true);autopagerMain.showAllPagingOptions()"
                     />
         </popup>
         <menupopup id="autopager-notification-popup" oncommand="autopagerMain.onHandlingCoreOption(event);" onpopupshowing="autopagerMain.onPrepareCoreOption(event.target)">
             <menuitem
-                    id="highlightContents" label="&statusbar.menuitem.highlightContents.label;" tooltiptext="&statusbar.menuitem.highlightContents.tooltiptext;"
+                    id="autopager-highlightContents" label="&statusbar.menuitem.highlightContents.label;" tooltiptext="&statusbar.menuitem.highlightContents.tooltiptext;"
                     oncommand="autopagerMain.HighlightAutoPagerContents( content.document);"
                 />
             <menuitem
-                    id="highlightLinks" label="&statusbar.menuitem.highlightLinks.label;" tooltiptext="&statusbar.menuitem.highlightLinks.tooltiptext;"
+                    id="autopager-highlightLinks" label="&statusbar.menuitem.highlightLinks.label;" tooltiptext="&statusbar.menuitem.highlightLinks.tooltiptext;"
                     oncommand="autopagerMain.HighlightNextLinks( content.document);"
                 />
             <menuseparator class="autopager-sep-global"/>
-            <menuitem type="checkbox"  id="noPrompt" prefV="noprompt" label="&statusbar.menuitem.noPrompt.label;" check="true" flex="1"/>
-            <menuitem type="checkbox"  id="disable-on-default" pref="disable-by-default" label="&statusbar.menuitem.disable-on-default.label;" check="false" flex="1"/>
+            <menuitem type="checkbox"  id="autopager-noPrompt" prefV="noprompt" label="&statusbar.menuitem.noPrompt.label;" check="true" flex="1"/>
+            <menuitem type="checkbox"  id="autopager-disable-on-default" pref="disable-by-default" label="&statusbar.menuitem.disable-on-default.label;" check="false" flex="1"/>
             <menuseparator class="autopager-sep-global"/>
             <menuitem
                     label="&autopager.status.setting;"
@@ -173,13 +174,13 @@
         </menupopup>
         <menupopup id="autopager-menu-popup">
             <menuitem
-                    id="ap-sitewizard"
+                    id="autopager-sitewizard"
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
                     oncommand="autopagerMain.sitewizard( content.document);"
                 />
             <menuitem
-                    id="ap-setting"
+                    id="autopager-setting"
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
                     oncommand="autopagerMain.openSettingForDoc(content.document);"
@@ -187,21 +188,21 @@
             <menuitem
                     label="&autopager.status.update;"
                     tooltiptext="&autopager.status.updateTip;"
-                    oncommand="UpdateSites.updateOnline(true);"
+                    oncommand="AutoPagerNS.UpdateSites.updateOnline(true);"
                 />
             <menuseparator class="autopager-sep-global"/>
             <menu label="&statusbar.menuitem.label;" tooltiptext="&statusbar.menuitem.tooltiptext;"
                     oncommand="autopagerMain.onHandlingCoreOption(event);"
                 >
-                <menupopup id="core-options"  onpopupshowing="autopagerMain.onPrepareCoreOption(event.target)">
-                    <menuitem type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
-                    <menuitem type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
-                    <menuitem type="checkbox"  id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
-                    <menuitem type="checkbox"  id="disable-by-default" pref="disable-by-default" label="&setting.label.disable-by-default;" check="false" flex="1"/>
+                <menupopup id="autopager-core-options"  onpopupshowing="autopagerMain.onPrepareCoreOption(event.target)">
+                    <menuitem type="checkbox"  id="autopager-showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
+                    <menuitem type="checkbox"  id="autopager-showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+                    <menuitem type="checkbox"  id="autopager-showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
+                    <menuitem type="checkbox"  id="autopager-disable-by-default" pref="disable-by-default" label="&setting.label.disable-by-default;" check="false" flex="1"/>
                     <menuseparator class="autopager-sep-global"/>
-                    <menuitem type="checkbox" id="tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
-                    <menuitem type="checkbox"  id="ignoreFormatVersionCheck" pref="ignore-format-version-check" label="&options.checkbox.ignoreFormatVersionCheck.label;" check="false"/>
-                    <menu id="speedLabel" label="&options.label.speedLabel.value;" pref="minipages">
+                    <menuitem type="checkbox" id="autopager-tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
+                    <menuitem type="checkbox"  id="autopager-ignoreFormatVersionCheck" pref="ignore-format-version-check" label="&options.checkbox.ignoreFormatVersionCheck.label;" check="false"/>
+                    <menu id="autopager-speedLabel" label="&options.label.speedLabel.value;" pref="minipages">
                         <menupopup>
                             <menuitem type="radio" name="speed" label="&options.menuitem.label0;" value="0"/>
                             <menuitem type="radio" name="speed" label="&options.menuitem.label1;" value="1"/>
@@ -209,7 +210,7 @@
                             <menuitem type="radio" name="speed" label="&options.menuitem.label3;" value="3"/>
                         </menupopup>
                     </menu>
-                    <menu id="updatePeriod" label="&setting.label.lblUpdate;" pref="update">
+                    <menu id="autopager-updatePeriod" label="&setting.label.lblUpdate;" pref="update">
                         <menupopup>
                             <menuitem type="radio" name="update" label="&setting.update.startup;" value="-1" selected="true"/>
                                     <!-- the value is the hours after last update -->
@@ -220,11 +221,11 @@
                             <menuitem type="radio" name="update" label="&setting.update.once;" value="0"/>
                         </menupopup>
                     </menu>
-                    <menuitem type="checkbox"  id="setAgent" pref="set-x-autopager-httphead" label="&options.checkbox.setAgent.label;" checked="true"/>
+                    <menuitem type="checkbox"  id="autopager-setAgent" pref="set-x-autopager-httphead" label="&options.checkbox.setAgent.label;" checked="true"/>
                     <menuseparator class="autopager-sep-global"/>
-                    <menuitem type="checkbox"  id="discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
-                    <menuitem type="checkbox"  id="showDiscoverPanel" pref="with-lite-discovery-aways-display" label="&statusbar.menuitem.showDiscoverPanel.label;" checked="true"/>
-                    <menuitem type="checkbox"  id="liteModel" pref="work-in-lite-mode" label="&statusbar.menuitem.liteModel.label;" checked="true"/>
+                    <menuitem type="checkbox"  id="autopager-discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
+                    <menuitem type="checkbox"  id="autopager-showDiscoverPanel" pref="with-lite-discovery-aways-display" label="&statusbar.menuitem.showDiscoverPanel.label;" checked="true"/>
+                    <menuitem type="checkbox"  id="autopager-liteModel" pref="work-in-lite-mode" label="&statusbar.menuitem.liteModel.label;" checked="true"/>
 
                 </menupopup>
             </menu>
@@ -276,7 +277,7 @@
                     oncommand="autopagerMain.requestHelp(event.target,content.document);"
                 />
             <menuseparator class="autopager-sep-global"/>
-            <menu id="ap-xpath" label="&autopager.status.xpathUtils;">
+            <menu id="autopager-xpath" label="&autopager.status.xpathUtils;">
                 <menupopup id="autopager-xpath-menupopup">
                     <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
@@ -291,7 +292,7 @@
                 </menupopup>
             </menu>
             <menuseparator class="autopager-sep-global"/>
-            <menu id="fix" label="&statusbar.menu.fix.label;">
+            <menu id="autopager-fix" label="&statusbar.menu.fix.label;">
                 <menupopup id="autopager-fixissue-menupopup">
                     <menuitem id="autoPagerAutoFix" label="&statusbar.menuitem.autoPagerAutoFix.label;"
                     tooltiptext="&statusbar.menuitem.autoPagerAutoFix.tooltiptext;"
@@ -312,10 +313,10 @@
                       hidden='true'>
                 <menupopup id="autopager-menupopup" >
                     <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
-                                  oncommand="apSplitbrowse.open(content.document,false);"
+                                  oncommand="AutoPagerNS.apSplitbrowse.open(content.document,false);"
                         />
                     <menuitem id="autopager-hidden" label="&autopager.menuitem.autopager-hidden.label;"
-                                  oncommand="apSplitbrowse.open(content.document,true);"
+                                  oncommand="AutoPagerNS.apSplitbrowse.open(content.document,true);"
                         />
                 </menupopup>
             </menu>
@@ -462,7 +463,7 @@
             var self = arguments.callee;
             window.removeEventListener("load",self,false);
             setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-            apSplitbrowse.init();
+            AutoPagerNS.apSplitbrowse.init();
             autopagerMain.autopagerOnLoad();
             autopagerLite.apRuleSiteOnInit();
             window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);

@@ -12,7 +12,7 @@
         <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
     </stringbundleset>
     
-    
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>

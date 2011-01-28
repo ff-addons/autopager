@@ -46,6 +46,7 @@
         windowtype="alert:alert"
         align="start"
         onload="autopagerAlert.onLoad()">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-alert.js"></script>
     <vbox id="alertBox" class="alertBox">

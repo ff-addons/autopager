@@ -63,7 +63,7 @@ var autopagerXPath = {
         //get others
         //
         
-        var existingSites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),url,10);
+        var existingSites = AutoPagerNS.UpdateSites.getMatchedSiteConfig(AutoPagerNS.UpdateSites.loadAll(),url,10);
         for (var i in existingSites)
         {
             var site = existingSites[i];
@@ -889,7 +889,7 @@ var autopagerXPath = {
         var links = [];//this.evaluate(doc,"//a[@href]");
         var item = null;
 
-        var existingSites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),url,10);
+        var existingSites = AutoPagerNS.UpdateSites.getMatchedSiteConfig(AutoPagerNS.UpdateSites.loadAll(),url,10);
         for (var i in existingSites)
         {
             var site = existingSites[i];

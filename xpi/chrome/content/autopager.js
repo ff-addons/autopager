@@ -98,7 +98,7 @@ TabSelected : function(evt){
 sitewizard : function(doc) {
     if (autopagerPref.loadBoolPref("show-workshop-in-sidebar"))
     {
-        toggleSidebar('viewautopagerSidebar',true);
+        toggleSidebar('autopagerSiteWizardSidebar',true);
         window.setTimeout(function(){
             var sidebar = document.getElementById("sidebar");
             var discoverPath = sidebar.contentDocument.getElementById("discoverPath");
@@ -111,7 +111,7 @@ sitewizard : function(doc) {
     }
 },
 createXpath : function(doc) {
-    toggleSidebar('viewautopagerSidebar',true);
+    toggleSidebar('autopagerSiteWizardSidebar',true);
     window.setTimeout(function(){
         var sidebar = document.getElementById("sidebar");
         var pickupContentPath = sidebar.contentDocument.getElementById("pickupContentPath");
@@ -121,7 +121,7 @@ createXpath : function(doc) {
     //autopagerMain.enableSelector(doc,true);
 },
 testXPathTest : function(doc) {
-    toggleSidebar('viewautopagerSidebar',true);
+    toggleSidebar('autopagerSiteWizardSidebar',true);
     window.setTimeout(function(){
         var sidebar = document.getElementById("sidebar");
         var contentXPath = sidebar.contentDocument.getElementById("contentXPath");
@@ -160,13 +160,13 @@ onPageUnLoad : function(event) {
         }catch(e){}
 
 
-        var browser = apSplitbrowse.getBrowserNode(doc);
+        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
     if (browser && browser.autopagerProgressListenerAttached)
     {
-        browser.removeProgressListener(apBrowserProgressListener,
+        browser.removeProgressListener(AutoPagerNS.BrowserProgressListener,
                     Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
         browser.autopagerProgressListenerAttached = false;
-        browser.removeAttribute(apSplitbrowse.getSplitKey());        
+        browser.removeAttribute(AutoPagerNS.apSplitbrowse.getSplitKey());        
     }
 
     autopagerUtils.setAutoPagerObject(doc.documentElement,null);
@@ -252,10 +252,10 @@ doContentLoad : function(event) {
     if (doc.documentElement.getAttribute("autopagerVersion"))
         return null;
         
-    if (apSplitbrowse)
+    if (AutoPagerNS.apSplitbrowse)
     {
-      var browser = apSplitbrowse.getBrowserNode(doc);
-     if ((browser&& !browser.getAttribute(apSplitbrowse.getSplitKey())) || !autopagerBwUtil.supportHiddenBrowser()) {
+      var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
+     if ((browser&& !browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey())) || !autopagerBwUtil.supportHiddenBrowser()) {
           autopagerMain.handleDocLoad(doc,false);
           return true;
       }
@@ -323,10 +323,10 @@ handleDocLoad : function(doc,safe)
 },
 testDoc : function(doc,site)
 {
-    autopagerMain.workingAllSites = UpdateSites.loadAll();
+    autopagerMain.workingAllSites = AutoPagerNS.UpdateSites.loadAll();
             
     var tmpSites = [site];
-    tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
+    tmpSites.updateSite = new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
                         "test paging configurations",
                         "testing.xml","//site",true,"autopager-xml",0);
@@ -629,14 +629,14 @@ onInitDoc : function(doc,safe)
 
                 if (sitepos.site.ajax)
                 {
-                    var browser = apSplitbrowse.getBrowserNode(doc);
-                    if (browser && !browser.getAttribute(apSplitbrowse.getSplitKey()))
+                    var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
+                    if (browser && !browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey()))
                     {
                         if (!browser.autopagerProgressListenerAttached)
                         {
                             de.setAttribute('autopagerAjax',sitepos.site.ajax);
                             doc.autopagerAjax = sitepos.site.ajax
-//                            browser.addProgressListener(apBrowserProgressListener,
+//                            browser.addProgressListener(AutoPagerNS.BrowserProgressListener,
 //                                Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
                             browser.autopagerProgressListenerAttached = true;
                         }
@@ -1265,9 +1265,9 @@ FillPopup : function(target,prefix) {
         }
         if (autopagerBwUtil.isFennec())
         {
-            document.getElementById(prefix + "-ap-sitewizard").setAttribute("hidden",true);
-            document.getElementById(prefix + "-ap-setting").setAttribute("hidden",true);
-            document.getElementById(prefix + "-ap-xpath").setAttribute("hidden",true);
+            document.getElementById(prefix + "-autopager-sitewizard").setAttribute("hidden",true);
+            document.getElementById(prefix + "-autopager-setting").setAttribute("hidden",true);
+            document.getElementById(prefix + "-autopager-xpath").setAttribute("hidden",true);
         }
     new autopagerDescription("Menu:",target);
 },
@@ -1774,9 +1774,9 @@ getSplitBrowserForDocWithUrl : function(doc,url,clone,listener) {
 	{
 		doc.documentElement.autopagerSplitCloning = clone;
     }
-    var browse = apSplitbrowse.getSplitBrowser(doc,url,true,doClone,listener);
+    var browse = AutoPagerNS.apSplitbrowse.getSplitBrowser(doc,url,true,doClone,listener);
     doc.documentElement.autopagerSplitCloning = false;
-    //apSplitbrowse.setVisible(browse,autopagerPref.loadBoolPref("debug"));
+    //AutoPagerNS.apSplitbrowse.setVisible(browse,autopagerPref.loadBoolPref("debug"));
     if (clone && browse)
         browse.auotpagerContentDoc = doc;
     return browse;
@@ -2026,7 +2026,7 @@ changeSessionUrlByScrollHeight : function (container,pos)
 },
 changeSessionUrl : function (container, url,pagenum)
 {
-        var browser = apSplitbrowse.getBrowserNode(container);
+        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(container);
         var webNav = browser.webNavigation;
         var newHistory = webNav.sessionHistory;
 
@@ -2043,7 +2043,7 @@ changeSessionUrl : function (container, url,pagenum)
              !newHistory.getEntryAtIndex(newHistory.index-1,false)
             .QueryInterface(Components.interfaces.nsISHEntry).URI.spec == container.location.href))
         {
-            var newEntry = apSplitbrowse.cloneHistoryEntry(entry);
+            var newEntry = AutoPagerNS.apSplitbrowse.cloneHistoryEntry(entry);
             if (newEntry)
             {
                 var uri = autopagerConfig.getRemoteURI(url);
@@ -2647,7 +2647,7 @@ alertErr : function(e) {
   showWorkshop : function()
   {
     if (autopagerPref.loadBoolPref("show-workshop-in-sidebar"))
-        toggleSidebar('viewautopagerSidebar');
+        toggleSidebar('autopagerSiteWizardSidebar');
     else
         autopagerMain.openWorkshopInDialog();
   },
@@ -2722,10 +2722,10 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
            autopagerMain.tweakingSession= autopagerPref.loadBoolPref("tweaking-session");
            break;
        case ".with-lite-recommended-rules":
-           UpdateSites.updateRepositoryOnline("autopagerLite.xml",true);
+           AutoPagerNS.UpdateSites.updateRepositoryOnline("autopagerLite.xml",true);
            break;
        case ".ids":
-           UpdateSites.updateRepositoryOnline("autopagerLite.xml",true);
+           AutoPagerNS.UpdateSites.updateRepositoryOnline("autopagerLite.xml",true);
            var callback = function()
            {
                var doc = null;
@@ -2765,8 +2765,8 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
    },
     isAutoPagerHiddenWindow : function (doc)
     {
-        var browser = apSplitbrowse.getBrowserNode(doc);
-        return (browser && browser.getAttribute(apSplitbrowse.getSplitKey()))
+        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
+        return (browser && browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey()))
     },
     removeUrlClickTrack : function (doc)
     {
@@ -2821,7 +2821,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
 };
 
 
-var apBrowserProgressListener = {
+AutoPagerNS.BrowserProgressListener = {
     onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
     {
         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;

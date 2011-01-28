@@ -181,7 +181,7 @@ if (autopagerPref.loadBoolPref("show-help"))
             allConfigs[allSites[key].updateSite.filename] = allSites[key]
         }
         allConfigs["autopager.xml"] = sites;
-        UpdateSites.AutopagerCOMP.setAll(allConfigs);
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allConfigs);
         //autopagerConfig.autoSites = autopagerConfig.loadConfig();
         
 	autopagerMain.saveMyName(mynameText.value);
@@ -212,8 +212,8 @@ if (autopagerPref.loadBoolPref("show-help"))
             autopagerPref.savePref("ids",newIds);
          autopagerPref.saveBoolPref("with-lite-recommended-rules",ir.checked);
 
-         AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
-         //AutoPagerUpdateTypes.saveAllSettingSiteConfig();
+         AutoPagerNS.AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
+         //AutoPagerNS.AutoPagerUpdateTypes.saveAllSettingSiteConfig();
 	     return true;
     }
     function onSiteChange(treeitem,site)
@@ -405,7 +405,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         
         settingtype.addEventListener("command", function() {
            if (selectedSource != null) {
-             selectedSource.updateType = AutoPagerUpdateTypes.getType( settingtype.value);
+             selectedSource.updateType = AutoPagerNS.AutoPagerUpdateTypes.getType( settingtype.value);
              onSourceChange(selectedListItem,selectedSource);
            }
         }, false);
@@ -1107,7 +1107,15 @@ if (autopagerPref.loadBoolPref("show-help"))
         }
         function addIgnoreSiteToList(lst)
         {
-            var href=autopagerUtils.currentBrowser().currentDocument.location.href;
+            //fix http://member.teesoft.info/phpbb/viewtopic.php?t=3445
+            var url = window.opener.autopagerSelectUrl;
+            if (typeof window.opener.autopagerSelectUrl == 'undefined')
+            try{
+                url = autopagerUtils.currentDocument().location.href;
+            }catch(e)
+            {}
+
+            var href=url
             var v = prompt("",href);
             if (v)
                 addListItem( v,lst);
@@ -1385,7 +1393,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         var userSites = null;
         if(reload)
         {
-            hashSites = UpdateSites.loadAll();
+            hashSites = AutoPagerNS.UpdateSites.loadAll();
             allSites = [];
             for(var key in hashSites)
             {
@@ -1499,7 +1507,7 @@ if (autopagerPref.loadBoolPref("show-help"))
 	}
         function pickupLink ()
         {
-            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            //autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',true);
             autopagerSelector.clearFunctions();
             autopagerSelector.registorSelectFunction(function (elem){
 
@@ -1532,7 +1540,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         }
         function pickupContentForList(id)
         {
-            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            //autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',true);
             autopagerSelector.clearFunctions();
             autopagerSelector.registorSelectFunction(function (elem){
 
@@ -1565,7 +1573,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         }
         function pickupContent (id)
         {
-            //autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+            //autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',true);
             autopagerSelector.clearFunctions();
             autopagerSelector.registorSelectFunction(function (elem){
 

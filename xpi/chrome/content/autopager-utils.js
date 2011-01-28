@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.6.2.0",
+    version:"0.6.2.4",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -853,11 +853,11 @@ convert2RegExpStr : function( pattern ) {
             return autopagerBwUtil.handleDocLoad(doc,safe)
         }
 
-        autopagerMain.workingAllSites = UpdateSites.loadAll();
+        autopagerMain.workingAllSites = AutoPagerNS.UpdateSites.loadAll();
         //doc.documentElement.autopagerContentHandled = true;
         var tmpSites = autopagerMain.loadTempConfig();
 
-        tmpSites.updateSite = new AutoPagerUpdateSite("Wind Li","all",
+        tmpSites.updateSite = new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
             "","text/html; charset=utf-8",
             "smart paging configurations",
             "smartpaging.xml","//site",true,"autopager-xml",0);

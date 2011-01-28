@@ -1,4 +1,4 @@
-var UpdateSites=
+AutoPagerNS.UpdateSites=
     {
     updateSites: null,
     submitCount:0,
@@ -29,7 +29,7 @@ var UpdateSites=
         if (sites==null || sites.length==0)
         {
 
-            sites = AutoPagerUpdateTypes.getUpdateSites();
+            sites = AutoPagerNS.AutoPagerUpdateTypes.getUpdateSites();
             this.getAutopagerCOMP().setUpdateSites(sites);
         }
         return sites;
@@ -38,7 +38,7 @@ var UpdateSites=
     {
         if (!autopagerRules.isAllowUpdate())
             return;
-        UpdateSites.submitCount ++;
+        AutoPagerNS.UpdateSites.submitCount ++;
         var needUpdate = force;
         if (!force)
         {
@@ -50,7 +50,7 @@ var UpdateSites=
                 needUpdate = true;
             else if (0 == updateperiod)
             {
-                var allSettings = UpdateSites.loadAll();
+                var allSettings = AutoPagerNS.UpdateSites.loadAll();
                 needUpdate = allSettings[updatesite.filename].length<=0;
             }
             else
@@ -73,14 +73,14 @@ var UpdateSites=
         //        autopagerBwUtil.consoleLog("needUpdate:" + needUpdate)
         if (needUpdate)
         {            
-            apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
             //alert("update " + updatesite.filename)
         }
     },
     updateSiteOnlineBackup :function (updatesite,error)
     {
         if (updatesite.backupUrls!=null &&  updatesite.triedBackup < updatesite.backupUrls.length)
-            apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup],true,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup],true,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
     },
     getUrl : function (url,force,error)
     {
@@ -138,23 +138,23 @@ var UpdateSites=
             var url = "http://rep.teesoft.info/autopager/patterns/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}";
             if (autopagerLite.isInLiteMode())
                 url = "http://rep.teesoft.info/autopager/patterns/?version={version}&lastupdate={timestamp}&all={all}";
-            apxmlhttprequest.xmlhttprequest( this.getUrl(url,force,0)
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(url,force,0)
             ,"application/json; charset=utf-8"
             ,function(str,options){
-                UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
+                AutoPagerNS.UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
                 autopagerBwUtil.saveContentToConfigFile(str,"autopager-patterns.json");
                 autopagerPref.savePref("pattern-update-date",today.getTime());
             }
             ,function(){
                 var str = autopagerBwUtil.getConfigFileContents("autopager-patterns.json","utf-8");
-                UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
+                AutoPagerNS.UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
             },{});
             //alert("update " + updatesite.filename)
         }
         else
         {
             var str = autopagerBwUtil.getConfigFileContents("autopager-patterns.json","utf-8");
-            UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
+            AutoPagerNS.UpdateSites.getAutopagerCOMP().setPatterns(autopagerBwUtil.decodeJSON(str));
         }
 
     },
@@ -162,11 +162,11 @@ var UpdateSites=
     {
         if (!autopagerRules.isAllowUpdate())
             return;
-        if (force || UpdateSites.updatedCount<=0)
+        if (force || AutoPagerNS.UpdateSites.updatedCount<=0)
         {
-            UpdateSites.updatedCount=0;
+            AutoPagerNS.UpdateSites.updatedCount=0;
             this.init();
-            UpdateSites.submitCount=0;
+            AutoPagerNS.UpdateSites.submitCount=0;
 
             for(var i=0;i<this.updateSites.length;i++)
             {
@@ -183,11 +183,11 @@ var UpdateSites=
     },
     updateRepositoryOnline :function (repositoryName,force)
     {
-        if (force || UpdateSites.updatedCount<=0)
+        if (force || AutoPagerNS.UpdateSites.updatedCount<=0)
         {
-            UpdateSites.updatedCount=0;
+            AutoPagerNS.UpdateSites.updatedCount=0;
             this.init();
-            UpdateSites.submitCount=0;
+            AutoPagerNS.UpdateSites.submitCount=0;
             for(var i=0;i<this.updateSites.length;i++)
             {
                 var site= this.updateSites[i];
@@ -206,8 +206,8 @@ var UpdateSites=
     onerror:function(doc,obj)
     {
         //TODO:notification the update failed
-        UpdateSites.submitCount--;
-        if (UpdateSites.submitCount<=0)
+        AutoPagerNS.UpdateSites.submitCount--;
+        if (AutoPagerNS.UpdateSites.submitCount<=0)
             autopagerPref.savePref("lastupdate",(new Date()).getTime());
 
         if (obj.triedTime < 2)
@@ -215,7 +215,7 @@ var UpdateSites=
             obj.triedTime ++;
             //try 2 times
             window.setTimeout(function(){
-                UpdateSites.updateSiteOnline(obj,true,obj.triedTime)
+                AutoPagerNS.UpdateSites.updateSiteOnline(obj,true,obj.triedTime)
             },10);
 
         }
@@ -224,7 +224,7 @@ var UpdateSites=
         {
             window.setTimeout(function(){
                 obj.triedBackup ++;
-                UpdateSites.updateSiteOnlineBackup(obj,obj.triedBackup * -1)
+                AutoPagerNS.UpdateSites.updateSiteOnlineBackup(obj,obj.triedBackup * -1)
             },10);
         }
     },
@@ -256,24 +256,24 @@ var UpdateSites=
                 autopagerBwUtil.consoleError(e);
             }
         }
-        UpdateSites.submitCount--;
-        //if (UpdateSites.submitCount<=0)
+        AutoPagerNS.UpdateSites.submitCount--;
+        //if (AutoPagerNS.UpdateSites.submitCount<=0)
         autopagerPref.savePref("lastupdate",(new Date()).getTime());
         updatesite.lastupdate = (new Date()).getTime();
-        var allSites = UpdateSites.loadAll();
+        var allSites = AutoPagerNS.UpdateSites.loadAll();
         allSites[updatesite.filename] = sites;
-        UpdateSites.AutopagerCOMP.setAll(allSites);//notify update
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allSites);//notify update
         //        alert("start save " + updatesite.filename);
-        var settings = UpdateSites.getUpdateSites();
-        AutoPagerUpdateTypes.saveSettingSiteConfig(settings);
+        var settings = AutoPagerNS.UpdateSites.getUpdateSites();
+        AutoPagerNS.AutoPagerUpdateTypes.saveSettingSiteConfig(settings);
         //        alert("saved " + updatesite.filename);
-        UpdateSites.updateSites = UpdateSites.getUpdateSites();
+        AutoPagerNS.UpdateSites.updateSites = AutoPagerNS.UpdateSites.getUpdateSites();
         //autopagerMain.handleCurrentDoc();
-        UpdateSites.updatedCount++;
+        AutoPagerNS.UpdateSites.updatedCount++;
     },
     defaultSite : function()
     {
-        return UpdateSites.updateSites[UpdateSites.updateSites.length-3].url;
+        return AutoPagerNS.UpdateSites.updateSites[AutoPagerNS.UpdateSites.updateSites.length-3].url;
     },
     loadAll:function()
     {
@@ -342,7 +342,7 @@ var UpdateSites=
     }
 };
 
-function Site()
+AutoPagerNS.Site = function()
 {
     this.urlPattern  = null;
     this.regex = null;
@@ -376,7 +376,7 @@ function Site()
     this.delaymsecs = -1;
 }
 
-function SiteConfirm()
+AutoPagerNS.SiteConfirm=function()
 {
     this.guid = "";
     this.host = "";
@@ -468,7 +468,7 @@ var autopagerConfig =
             var doc = this.autopagerDomParser.parseFromString(configContents, "text/xml");
             var nodes = doc.evaluate("/autopager/site-confirm", doc, null, 0, null);
             for (var node = null; (node = nodes.iterateNext()); ) {
-                var site = new SiteConfirm();
+                var site = new AutoPagerNS.SiteConfirm();
 
                 for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++) {
                     var v = autopagerConfig.getValue(childNode);
@@ -493,7 +493,7 @@ var autopagerConfig =
     }
     ,
     getConfirm : function() {
-        var confirms = UpdateSites.AutopagerCOMP.getSiteConfirms();
+        var confirms = AutoPagerNS.UpdateSites.AutopagerCOMP.getSiteConfirms();
         if (confirms == null || confirms.length==0)
         {
             var confirmContents="";
@@ -504,7 +504,7 @@ var autopagerConfig =
                 autopagerBwUtil.consoleLog(e);
             }
             confirms = this.loadConfirmFromStr(confirmContents);
-            UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
+            AutoPagerNS.UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
         }
         return confirms;
     }
@@ -534,13 +534,13 @@ var autopagerConfig =
                 return;
             }
         }
-        var site = new SiteConfirm();
+        var site = new AutoPagerNS.SiteConfirm();
         site.guid = guid;
         site.host = host;
         site.AllowedPageCount = countNumber;
         site.UserAllowed = enabled;
         confirmSites.push(site);
-        UpdateSites.AutopagerCOMP.setSiteConfirms(confirmSites);
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setSiteConfirms(confirmSites);
     },
     isNumeric : function (strNumber)
     {
@@ -574,7 +574,7 @@ var autopagerConfig =
     }
     , cloneSite : function(site)
     {
-        var newSite = new Site();
+        var newSite = new AutoPagerNS.Site();
         return autopagerConfig.doCloneSite(newSite,site);
     },
     doCloneSite : function(newSite,site)
@@ -744,7 +744,7 @@ var autopagerConfig =
     },
     autopagerUpdate : function()
     {
-        UpdateSites.updateOnline(false);
+        AutoPagerNS.UpdateSites.updateOnline(false);
     },
     getConfigFileURI : function(fileName) {
         try{
@@ -804,7 +804,7 @@ var autopagerConfig =
         }
     },
     loadConfig :function() {
-        var allConfigs = UpdateSites.loadAll();
+        var allConfigs = AutoPagerNS.UpdateSites.loadAll();
         return allConfigs["autopager.xml"];
     },
     reLoadConfig :function(allSiteSetting,updateSite) {
@@ -873,7 +873,7 @@ var autopagerConfig =
     ,importFromURL :function(func)
     {
         var url = prompt(autopagerUtils.autopagerGetString("inputurl"),
-        UpdateSites.defaultSite());
+        AutoPagerNS.UpdateSites.defaultSite());
         if (url!=null && url.length >0)
         {
             function callback(doc,obj)
@@ -889,7 +889,7 @@ var autopagerConfig =
             {
                 //TODO:notify error
             }
-            apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url,false,0),"text/xml; charset=utf-8",callback,onerror,url);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest(AutoPagerNS.UpdateSites.getUrl(url,false,0),"text/xml; charset=utf-8",callback,onerror,url);
 
         }
     },
@@ -1073,7 +1073,7 @@ var autopagerConfig =
             return sites;
         var hasQuickLoad = false;
         for (var node = null; (node = nodes.iterateNext()); ) {
-            var site = new Site();
+            var site = new AutoPagerNS.Site();
             var ajax = false;
             var needMouseDown = false;
             var published =false;
@@ -1219,14 +1219,14 @@ var autopagerConfig =
         }
         if (remote && sites.length ==0 )
         {
-            //sites = autopagerConfig.loadConfigFromUrl(UpdateSites.defaultSite());
+            //sites = autopagerConfig.loadConfigFromUrl(AutoPagerNS.UpdateSites.defaultSite());
             //autopagerConfig.saveConfig(sites);
         }
         return sites;
     },
     newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
     {
-        var site = new Site();
+        var site = new AutoPagerNS.Site();
         site.urlPattern = urlPattern;
         site.desc =desc;
         site.linkXPath = linkXPath;
@@ -1276,17 +1276,17 @@ var autopagerConfig =
 
     saveConfigXML : function(sites) {
         autopagerConfig.saveConfigToFile(sites,autopagerBwUtil.getConfigFile("autopager.xml"),true);
-        var allConfigs = UpdateSites.loadAll();
+        var allConfigs = AutoPagerNS.UpdateSites.loadAll();
         //sites.updateSite = allConfigs["autopager.xml"].updateSite;
         allConfigs["autopager.xml"] = sites;
-        UpdateSites.AutopagerCOMP.setAll(allConfigs);
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allConfigs);
     },
     saveConfigJSON : function(sites) {
         autopagerConfig.saveConfigToJsonFile(sites,autopagerBwUtil.getConfigFile("autopager.json"),true);
-        var allConfigs = UpdateSites.loadAll();
+        var allConfigs = AutoPagerNS.UpdateSites.loadAll();
         //sites.updateSite = allConfigs["autopager.xml"].updateSite;
         allConfigs["autopager.xml"] = sites;
-        UpdateSites.AutopagerCOMP.setAll(allConfigs);
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allConfigs);
     },
     saveConfigToJsonFile: function(sites,saveFile,includeChangeInfo)
     {
@@ -1297,7 +1297,7 @@ var autopagerConfig =
         {
             autopagerBwUtil.consoleError(e);
         }
-        //UpdateSites.allSiteSetting= UpdateSites.loadAll();
+        //AutoPagerNS.UpdateSites.allSiteSetting= AutoPagerNS.UpdateSites.loadAll();
         autopagerPref.setDatePrefs("settingupdatedate", new Date());
     },
     saveConfig : function(sites) {
@@ -1402,7 +1402,7 @@ var autopagerConfig =
         {
             autopagerBwUtil.consoleError(e);
         }
-        //UpdateSites.allSiteSetting= UpdateSites.loadAll();
+        //AutoPagerNS.UpdateSites.allSiteSetting= AutoPagerNS.UpdateSites.loadAll();
 
         autopagerPref.setDatePrefs("settingupdatedate", new Date());
     },
@@ -1423,7 +1423,7 @@ var autopagerConfig =
     }
 
 };
-UpdateSites.init();
+AutoPagerNS.UpdateSites.init();
 
 /*
   sanitize privte data by clear the file site-confirm.xml
@@ -1531,7 +1531,7 @@ var autopagerSanitizer = {
 
     sanitize: function AP_SN_sanitize()
     {
-        UpdateSites.AutopagerCOMP.setSiteConfirms(new Array());
+        AutoPagerNS.UpdateSites.AutopagerCOMP.setSiteConfirms(new Array());
         autopagerConfig.saveConfirm(new Array());
         //autopagerPref.resetPref("noprompt")
     },

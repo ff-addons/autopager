@@ -150,7 +150,7 @@ var autopagerJsonSetting= {
     },
     compactToNormal : function(site)
     {
-            var newSite = new Site();
+            var newSite = new AutoPagerNS.Site();
             newSite.urlPattern  = site.u;
             if (typeof site.k != 'undefined')
             {

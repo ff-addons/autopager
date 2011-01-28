@@ -14,6 +14,7 @@
         onload="autopagerSidebar.onLoad();"
         onclose="autopagerSelector.quit();"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <vbox id="autopager-workshop" flex="1">
 </vbox>
 </page>

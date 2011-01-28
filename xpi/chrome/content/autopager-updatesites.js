@@ -1,5 +1,4 @@
-
-function AutoPagerUpdateType(type,defaultLocales,defaultUrl,contentType,filenamePrefix,callback,xpath,desc)
+AutoPagerNS.AutoPagerUpdateType=function (type,defaultLocales,defaultUrl,contentType,filenamePrefix,callback,xpath,desc)
 {
     this.type=type;
     this.defaultLocales = defaultLocales;
@@ -11,7 +10,7 @@ function AutoPagerUpdateType(type,defaultLocales,defaultUrl,contentType,filename
     this.desc=desc;
 }
 
-function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,enabled,typeName,updateperiod,backupUrls)
+AutoPagerNS.AutoPagerUpdateSite=function (owner,locales,url,contenttype,desc,filename,xpath,enabled,typeName,updateperiod,backupUrls)
 {
     if (owner!=null)
     {
@@ -23,7 +22,7 @@ function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,e
         this.enabled = enabled;
         this.xpath = xpath;
         this.desc=desc;
-        this.updateType = AutoPagerUpdateTypes.getType(typeName);
+        this.updateType = AutoPagerNS.AutoPagerUpdateTypes.getType(typeName);
         this.callback = this.updateType.callback;
         this.updateperiod = updateperiod;//use global setting
 
@@ -35,7 +34,7 @@ function AutoPagerUpdateSite(owner,locales,url,contenttype,desc,filename,xpath,e
     this.lastupdate =null;
 }
 
-var AutoPagerUpdateTypes = 
+AutoPagerNS.AutoPagerUpdateTypes =
 {
     types : null,
     updateSites: null,
@@ -46,28 +45,28 @@ var AutoPagerUpdateTypes =
         {
             this.types =  new Array();
 
-            this.types.push(new AutoPagerUpdateType("autopager-xml","all",
+            this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopager-xml","all",
             "http://rep.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
             "application/json; charset=utf-8",
             "ap-",this.autopagerConfigCallback,"//site",
             "default configurations on teesoft.info"));
             
-            this.types.push(new AutoPagerUpdateType("autopager-lite","all",
+            this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopager-lite","all",
             autopagerPref.loadPref("repository-site") + "discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
             "application/json; charset=utf-8",
             "ap-",this.autopagerConfigCallback,"//site",
             "Lite configurations on teesoft.info"));
 
-            this.types.push(new AutoPagerUpdateType("autopager-freetext","all",
+            this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopager-freetext","all",
             "http://examplehost/examplepage",
             "text/html; charset=utf-8",
             "af-",this.blogConfigCallback,"//div[@class='autopager-setting']","configurations in web pages"));
 
-            this.types.push(new AutoPagerUpdateType("autopagerize","all",
+            this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopagerize","all",
             "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
             "az-",AutoPagerize.onload,'//*[@class="autopagerize_data"]',"autopagerize configurations"));
 
-            this.types.push(new AutoPagerUpdateType("autopagerize-json","all",
+            this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopagerize-json","all",
             "http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
             "az-",AutoPagerize.onJsonLoad,'//*[@class="autopagerize_data"]',"autopagerize configurations"));
 
@@ -86,7 +85,7 @@ var AutoPagerUpdateTypes =
     },
     getUpdateSites : function()
     {
-        var sites = AutoPagerUpdateTypes.loadAllSites();
+        var sites = AutoPagerNS.AutoPagerUpdateTypes.loadAllSites();
         if (sites == null|| sites.length==0)
         {
             sites = this.getDefaultSites();
@@ -104,7 +103,7 @@ var AutoPagerUpdateTypes =
     {
             var sites = new Array();
         
-//            sites.push(new AutoPagerUpdateSite("pagerization","all",
+//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("pagerization","all",
 //                        "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
 //                        "pagerization configurations",
 //                        "pagerization.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
@@ -115,33 +114,33 @@ var AutoPagerUpdateTypes =
             {
             if (!autopagerBwUtil.isFennec())
             {
-//            sites.push(new AutoPagerUpdateSite("autopagerize","all",
+//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("autopagerize","all",
 //                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
 //                        "autopagerize configurations",
 //                        "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
-            sites.push(new AutoPagerUpdateSite("autopagerize","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("autopagerize","all",
                         "http://rep.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
                         "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
                         "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
-//            sites.push(new AutoPagerUpdateSite("chinalist","all",
+//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("chinalist","all",
 //                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
 //                        "pagerization chinalist configurations",
 //                        "chinalist.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",168,[]));
             
-//            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
 //                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
 //                        "configurations added to blog",
 //                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",false,"autopager-freetext",0,[]));
 //
 //
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
                         "default configurations on autopager.mozdev.org",
                         "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
             }
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "Experimental configurations @ teesoft.info, please don't enable this.",
                         "autopagerBeta.xml","//site",false,"autopager-xml",-2,[
@@ -149,7 +148,7 @@ var AutoPagerUpdateTypes =
                             "http://stone.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}",
                             "http://s2.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}"]));
 
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "default configurations @ teesoft.info",
                         "autopagerTee.xml","//site",true,"autopager-xml",-2,
@@ -166,7 +165,7 @@ var AutoPagerUpdateTypes =
             }
             if(withlite || lite)
             {
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         autopagerPref.loadPref("repository-site") +"discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "AutoPager Lite Configurations @ teesoft.info",
                         "autopagerLite.xml","//site",true,"autopager-lite",-2,
@@ -176,7 +175,7 @@ var AutoPagerUpdateTypes =
                                 "http://member-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
                                 "http://es4-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}"]));
             }
-            sites.push(new AutoPagerUpdateSite("Wind Li","all",
+            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
                         "user created configurations",
                         "autopager.xml","//site",true,"autopager-xml",-2,[]));
@@ -309,7 +308,7 @@ var AutoPagerUpdateTypes =
         if (nodes == null)
             return sites;
         for (var node = null; (node = nodes.iterateNext()); ) {
-            var site = new AutoPagerUpdateSite();
+            var site = new AutoPagerNS.AutoPagerUpdateSite();
 
             var childNodes = node.childNodes;
             //childNode = childNodes[i]
@@ -332,7 +331,7 @@ var AutoPagerUpdateTypes =
                     site.filename	= autopagerConfig.getValue(childNode);
                 }
                 else if (nodeName == "updateType") {
-                    site.updateType	= AutoPagerUpdateTypes.getType(autopagerConfig.getValue(childNode));
+                    site.updateType	= AutoPagerNS.AutoPagerUpdateTypes.getType(autopagerConfig.getValue(childNode));
                     site.callback = site.updateType.callback;
                     if (site.contenttype==null || site.contenttype=="")
                         site.contenttype = site.updateType.contentType;
@@ -366,7 +365,7 @@ var AutoPagerUpdateTypes =
         
     },
     saveAllSettingSiteConfig : function() {
-        this.saveSettingSiteConfig(UpdateSites.getUpdateSites());
+        this.saveSettingSiteConfig(AutoPagerNS.UpdateSites.getUpdateSites());
     },
     saveSettingSiteConfig : function(sites) {
         var file = "all-sites.xml";
@@ -435,4 +434,4 @@ var AutoPagerUpdateTypes =
         }
     }
 }
-AutoPagerUpdateTypes.init();
+AutoPagerNS.AutoPagerUpdateTypes.init();

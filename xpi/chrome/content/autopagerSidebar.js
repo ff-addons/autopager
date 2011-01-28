@@ -83,7 +83,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
             {
                 //TODO:notify error
             }
-            apxmlhttprequest.xmlhttprequest(UpdateSites.getUrl(url),"application/json; charset=utf-8",callback,onerror,url);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest(AutoPagerNS.UpdateSites.getUrl(url),"application/json; charset=utf-8",callback,onerror,url);
         
 		var sidebar = window.top.document.getElementById("sidebar");
         if (sidebar)
@@ -292,7 +292,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
             b=autopagerSidebar.addNode(div,"b");
             autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
         }
-		var sites = UpdateSites.getMatchedSiteConfig(UpdateSites.loadAll(),this.currUrl,10);
+		var sites = AutoPagerNS.UpdateSites.getMatchedSiteConfig(AutoPagerNS.UpdateSites.loadAll(),this.currUrl,10);
 
 		autopagerSidebar.showSettingList(document.getElementById("settingsTreeBody"),sites);
 
@@ -701,11 +701,11 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
     openInOwnWin : function()
     {
         autopagerMain.openWorkshopInDialog();
-        autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',false);
+        autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',false);
     },
     openInSidebar : function()
     {
-        autopagerUtils.currentWindow().toggleSidebar('viewautopagerSidebar',true);
+        autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',true);
         window.close();
     },
     testSite : function()
@@ -884,7 +884,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
         }
 		autopagerSelector.quit();
 		autopagerHightlight.HideAll(autopagerSidebar.currentDoc);
-		var workingAllSites = UpdateSites.loadAll();
+		var workingAllSites = AutoPagerNS.UpdateSites.loadAll();
 		workingAllSites["testing.xml"]=null
 
 //		var oldSmart = workingAllSites["smartpaging.xml"]

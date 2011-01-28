@@ -92,7 +92,7 @@ var autopagerLite =
             else
             {
                 var href = doc.location.href;
-                var text = UpdateSites.AutopagerCOMP.discoverdUrls[href]
+                var text = AutoPagerNS.UpdateSites.AutopagerCOMP.discoverdUrls[href]
                 if (text)
                 {
                     if (text == " ")
@@ -107,7 +107,7 @@ var autopagerLite =
                             text = pattern.k;
                         else
                             text = "0";
-                        UpdateSites.AutopagerCOMP.discoverdUrls[href] = text
+                        AutoPagerNS.UpdateSites.AutopagerCOMP.discoverdUrls[href] = text
                         autopagerLite.processDiscoverResult(doc,text);
                     });
                 }
@@ -126,7 +126,7 @@ var autopagerLite =
             {
                 var href = doc.location.href;
                 var clearedHref = autopagerUtils.clearUrl(href);
-                var text = UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref]
+                var text = AutoPagerNS.UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref]
                 if (text)
                 {
                     if (text == " ")
@@ -140,9 +140,9 @@ var autopagerLite =
                         if (xmlhttp)
                         {
                             if (xmlhttp.responseText)
-                                UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = xmlhttp.responseText
+                                AutoPagerNS.UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = xmlhttp.responseText
                             else
-                                UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = " "
+                                AutoPagerNS.UpdateSites.AutopagerCOMP.discoverdUrls[clearedHref] = " "
                             autopagerLite.processDiscoverResult(doc,xmlhttp.responseText);
                         }
                     })
@@ -398,12 +398,12 @@ var autopagerLite =
         }
         //       else
         //           autopagerPref.saveBoolPref("with-lite-rules",true);
-        UpdateSites.getAutopagerCOMP().setUpdateSites(null);
-        UpdateSites.updateSites=null;
-        UpdateSites.init();
-        UpdateSites.getAutopagerCOMP().setAll(null);
-        UpdateSites.loadAll();
-        UpdateSites.updatePatternOnline(true);
+        AutoPagerNS.UpdateSites.getAutopagerCOMP().setUpdateSites(null);
+        AutoPagerNS.UpdateSites.updateSites=null;
+        AutoPagerNS.UpdateSites.init();
+        AutoPagerNS.UpdateSites.getAutopagerCOMP().setAll(null);
+        AutoPagerNS.UpdateSites.loadAll();
+        AutoPagerNS.UpdateSites.updatePatternOnline(true);
     },
     isInLiteMode : function ()
     {

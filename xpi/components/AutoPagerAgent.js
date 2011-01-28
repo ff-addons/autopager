@@ -1,5 +1,5 @@
 var headerName  = "X-AutoPager";
-var autopagerVersionValue = "0.6.2.0";
+var autopagerVersionValue = "0.6.2.4";
 
 
 

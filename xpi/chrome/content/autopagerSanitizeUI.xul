@@ -3,6 +3,7 @@
 
 <overlay id="autopager-sanitize"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"/>
     <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"/>
     <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
