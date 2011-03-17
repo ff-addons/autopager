@@ -398,7 +398,7 @@ AutoPagerNS.apSplitbrowse = {
               doc.defaultView.addEventListener("AutoPagerClean",function(event){
                   doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
                   AutoPagerNS.apSplitbrowse.onclose(splitBrowser,sl)
-              },true);
+              },true);        
         }
 
         if (splitBrowser != null)

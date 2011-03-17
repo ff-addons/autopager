@@ -1163,7 +1163,7 @@ var autopagerXPath = {
             newPath = newPath.replace(/\%search\%/g,"'" + doc.location.search+ "'");
             newPath = newPath.replace(/\%title\%/g,"'" + doc.title+ "'");
         //newPath = newPath.replace(/\%referrer\%/g,"'" + doc.referrer+ "'");
-        //newPath = newPath.replace(/\%baseURI\%/g,"'" + doc.baseURI+ "'");
+            newPath = newPath.replace(/\%baseuri\%/g,"'" + href.substring(0, href.lastIndexOf("/")+1)+ "'");
         }catch(e) {
             autopagerMain.alertErr(e);
         }

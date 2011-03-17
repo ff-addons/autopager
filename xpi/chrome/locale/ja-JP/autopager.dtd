@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "未満になったらページングする">
 <!ENTITY setting.label.minipages "前もって読み込んでおく最小のページ数">
 <!ENTITY setting.label.pagebreak "改ページのスタイル:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "それぞれの設定にアイコンを表示し、クリックするとコントロールの説明が見れるようにする。">
 <!ENTITY setting.label.showPrompt "新しいサイトに訪れた時にダイアログを表示">
 <!ENTITY setting.label.showStatusBar "ステータスバーに autopager アイコンを表示">

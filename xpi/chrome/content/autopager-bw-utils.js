@@ -256,7 +256,7 @@ autopagerOpenIntab : function(url,obj)
     ,createHTMLDocumentFromStr : function(str,urlStr) {
       return null;
     }
-    ,openAlert : function(title,message,link,callback)
+    ,openAlert : function(title,message,link,callback,openTimeout)
     {
         if (autopagerBwUtil.isFennec())
         {
@@ -276,7 +276,7 @@ autopagerOpenIntab : function(url,obj)
             window.openDialog("chrome://autopager/content/alert.xul",
                 "alert:alert",
                 "chrome,dialog=yes,titlebar=no,popup=yes",
-                title,message,link,callback);
+                title,message,link,callback,openTimeout);
         }
     }
     ,processXPath : function (xpath)

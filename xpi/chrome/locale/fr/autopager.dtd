@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "hauteur(s) de fenêtre(s).">
 <!ENTITY setting.label.minipages "Nombre minimum de pages préchargées">
 <!ENTITY setting.label.pagebreak "Style de saut de page :">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Afficher une image d'aide pour chacun des contrôles, y cliquer pour voir sa description">
 <!ENTITY setting.label.showPrompt "Afficher une demande lors d'un nouveau site individuel">
 <!ENTITY setting.label.showStatusBar "Afficher l'icône d'AutoPager dans la barre d'état">

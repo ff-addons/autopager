@@ -43,7 +43,7 @@ var autopagerAlert=
     gFinalHeight : 50,
     gSlideIncrement : 4,
     gSlideTime : 100,
-    gOpenTime : 1500,
+    gOpenTime : 5000,
     gOpenTimeAfterLinkClick : 3000, // Close 3 second after clicking on the link
     gPermanent : false, // should the window stay open permanently (until manually closed)
 
@@ -54,7 +54,8 @@ var autopagerAlert=
     onLoad : function()
     {
         var me = autopagerAlert;
-        sizeToContent();
+        if(typeof sizeToContent == "function")
+            sizeToContent();
         me.gFinalHeight = window.outerHeight;  //134  5 lines - 152 6 lines
         if ( me.gFinalHeight > me.g_MAX_HEIGHT ) {
             me.gFinalHeight = me.g_MAX_HEIGHT;
@@ -69,15 +70,27 @@ var autopagerAlert=
     prefillAlertInfo : function()
     {
         var me = autopagerAlert;
-        me.title = window.arguments[0];
-        me.message = window.arguments[1];
-        me.link = window.arguments[2];
-        me.callback = window.arguments[3];
+        var args
+        if (typeof window.arguments != "undefined")
+        {
+            args = window.arguments
+        }else
+        {
+            args = opener.arguments
+        }
+        me.title = args[0];
+        me.message = args[1];
+        me.link = args[2];
+        me.callback = args[3];
+        if (typeof args[4] != "undefined")
+            me.gOpenTime = args[4];
 
         var msgLabel = document.getElementById("message");
         msgLabel.value=me.message;
+        msgLabel.textContent = me.message;
         var titleLabel = document.getElementById("title");
         titleLabel.value=me.title;
+        titleLabel.textContent = me.title;
     },
     onAlertClick : function()
     {

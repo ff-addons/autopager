@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "fönsterhöjd(er)">
 <!ENTITY setting.label.minipages "Minsta antal förinlästa sidor">
 <!ENTITY setting.label.pagebreak "Sidbrytningsstil:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Visa en hjälptipsbild för varje kontroll, klicka för att se beskrivningen för en viss kontroll">
 <!ENTITY setting.label.showPrompt "Visa frågeruta för enskild ny webbplats">
 <!ENTITY setting.label.showStatusBar "Visa AutoPagers ikon i statusfältet">

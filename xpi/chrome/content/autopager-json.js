@@ -1,4 +1,5 @@
 var autopagerJsonSetting= {
+    apOtherConfig:"http://ap.teesoft.info/autopager/default",
     onJsonLoad :function(doc,updatesite)
     {
         return autopagerJsonSetting.loadCompactFromString(doc);
@@ -12,6 +13,11 @@ var autopagerJsonSetting= {
             var browserId = autopagerBwUtil.apBrowserId();
             for(var i=0;i<info.length;i++){
                 var site = info[i]
+                if (site.u == autopagerJsonSetting.apOtherConfig)
+                {
+                    autopagerJsonSetting.saveApConfig(site);
+                    continue;
+                }
                 if (autopagerJsonSetting.supported(site,browserId))
                 {
                     var newSite = autopagerJsonSetting.compactToNormal(site);
@@ -112,7 +118,7 @@ var autopagerJsonSetting= {
                     }
                 }
 
-                xmlhttp.open("GET", autopagerPref.loadPref("repository-site") + "discover/guid2id?gids=" +guids.join(","), true);
+                xmlhttp.open("GET", autopagerPref.loadPref("repository-site") + "d/guid2id?gids=" +guids.join(","), true);
                 //window.content.status = "loading ... " + url;
                 xmlhttp.send(null);
 
@@ -244,6 +250,10 @@ var autopagerJsonSetting= {
 
             if (typeof site.lz != 'undefined')
                 newSite.lazyImgSrc  = site.lz;
+            if (typeof site.kx != 'undefined')
+                newSite.keywordXPath  = site.kx;
+            if (typeof site.ah != 'undefined')
+                newSite.alertsHash  = site.ah;
 
             return newSite;
     },
@@ -514,7 +524,14 @@ var autopagerJsonSetting= {
 
             if (typeof normal.lazyImgSrc != 'undefined')
                 site.lz = normal.lazyImgSrc;
-            
+
+            if (typeof normal.keywordXPath != 'undefined')
+                site.kx = normal.keywordXPath;
+
+            if (typeof normal.alertsHash != 'undefined')
+                site.ah = normal.alertsHash;
+
+
             return site;
     },
     supported : function (site,browserId)
@@ -525,5 +542,33 @@ var autopagerJsonSetting= {
             return site.bf & (1<<browserId);
         }
         return true;
+    },
+    saveApConfig : function (site)
+    {
+        if (typeof site.n != 'undefined')
+        {
+           autopagerPref.savePref("messageId",site.n);
+           var latestMessageId = autopagerPref.loadPref("latestMessageId");
+           if (!latestMessageId)
+               latestMessageId=0;
+           if (site.n > latestMessageId)
+           {
+               var url =autopagerPref.loadPref("repository-site") + "msgs?from=" + latestMessageId
+               var callback = function()
+               {
+                   autopagerPref.savePref("latestMessageId",site.n);
+                   autopagerBwUtil.autopagerOpenIntab(url);
+               }
+               autopagerBwUtil.openAlert("There's alerts",'need your attation.',url,callback)
+           }
+           
+
+        }
+        else
+            autopagerPref.savePref("messageId",0);
+        if (typeof site.kx != 'undefined')
+         autopagerPref.savePref("keywordXPath",site.kx);
+        else
+            autopagerPref.savePref("keywordXPath","");
     }
 }

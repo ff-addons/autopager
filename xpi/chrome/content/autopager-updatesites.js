@@ -52,7 +52,7 @@ AutoPagerNS.AutoPagerUpdateTypes =
             "default configurations on teesoft.info"));
             
             this.types.push(new AutoPagerNS.AutoPagerUpdateType("autopager-lite","all",
-            autopagerPref.loadPref("repository-site") + "discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+            autopagerPref.loadPref("repository-site") + "d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
             "application/json; charset=utf-8",
             "ap-",this.autopagerConfigCallback,"//site",
             "Lite configurations on teesoft.info"));
@@ -166,14 +166,14 @@ AutoPagerNS.AutoPagerUpdateTypes =
             if(withlite || lite)
             {
             sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
-                        autopagerPref.loadPref("repository-site") +"discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
+                        autopagerPref.loadPref("repository-site") +"d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "AutoPager Lite Configurations @ teesoft.info",
                         "autopagerLite.xml","//site",true,"autopager-lite",-2,
                                 ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
-                                "http://stone-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
-                                "http://s1-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
-                                "http://member-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
-                                "http://es4-ap.teesoft.info/discover/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}"]));
+                                "http://stone-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+                                "http://s1-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+                                "http://member-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+                                "http://es4-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}"]));
             }
             sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",

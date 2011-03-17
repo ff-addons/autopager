@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "Fensterhöhe(n) entspricht.">
 <!ENTITY setting.label.minipages "Minimum an vorgeladenen Seiten">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Einen Hilfetext für jede Funktion anzeigen, klicken für eine Beschreibung">
 <!ENTITY setting.label.showPrompt "Hinweis für die individuelle neue Seite anzeigen">
 <!ENTITY setting.label.showStatusBar "Symbol von AutoPager in der Statusleiste anzeigen">

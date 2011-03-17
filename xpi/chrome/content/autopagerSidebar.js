@@ -667,7 +667,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
 			var chkIsRegex = document.getElementById("chkIsRegex");
 			var urlPattern = document.getElementById("urlPattern");
 
-            var site = autopagerConfig.newSite(urlPattern.value,url
+            var site = autopagerConfig.newSite(urlPattern.value,"AutoPager rule for " + this.currentDoc.location.host
                 ,linkXPath,contentXPath,[url]);
             site.createdByYou = true;
 			site.isRegex = chkIsRegex.checked;

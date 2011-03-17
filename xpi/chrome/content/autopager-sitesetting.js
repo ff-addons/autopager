@@ -73,6 +73,7 @@ loadfromclip : function(doc)
         autopagerSiteSetting.autopagerSetCheck(doc,site,"ajax");
         autopagerSiteSetting.autopagerSetCheck(doc,site,"needMouseDown");
         autopagerSiteSetting.autopagerSetField(doc,site,"lazyImgSrc");
+        autopagerSiteSetting.autopagerSetField(doc,site,"keywordXPath");
         //window.opener.autopagerPublicSite = null;
         autopagerRules.setPublishingSite(null);
         autopagerSiteSetting.autopagerSetFieldArray(doc,site,"removeXPath");

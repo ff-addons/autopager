@@ -957,7 +957,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                             }
                         }
 
-                        xmlhttp.open("GET", autopagerPref.loadPref("repository-site") +"discover/desc?id=" +selectedSite.id, true);
+                        xmlhttp.open("GET", autopagerPref.loadPref("repository-site") +"d/desc?id=" +selectedSite.id, true);
                         //window.content.status = "loading ... " + url;
                         xmlhttp.send(null);
 
@@ -1316,7 +1316,7 @@ if (autopagerPref.loadBoolPref("show-help"))
        for(var i=items.length-1;i>=0;i--)
        {
            var item = items[i].site;
-           autopagerConfig.removeFromArray(sites,item);
+           autopagerUtils.removeFromArray(sites,item);
        }
        onSiteFilter(siteSearch.value,false,true);
        treeSites.view.selection.select(nodeIndex);

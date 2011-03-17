@@ -28,7 +28,7 @@ var autopagerLite =
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "discover/r?apv=" + autopagerUtils.version + "&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "d/r?apv=" + autopagerUtils.version + "&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         autopagerBwUtil.autopagerOpenIntab(url);
     },
     asyncRequest : function(url,contentType, handler)
@@ -135,7 +135,7 @@ var autopagerLite =
                         autopagerLite.processDiscoverResult(doc,text);
                 }else
                 {
-                    var url=autopagerPref.loadPref("repository-site") + "discover/discover?ir=false&url=" + encodeURIComponent(doc.location.href);
+                    var url=autopagerPref.loadPref("repository-site") + "d/discover?ir=false&url=" + encodeURIComponent(doc.location.href);
                     autopagerLite.asyncRequest(url,"text/plan",function(xmlhttp){
                         if (xmlhttp)
                         {
@@ -283,14 +283,18 @@ var autopagerLite =
         for(var i=0;i<sheets.length;i++)
         {
             var sheet = sheets.item(i);
-            if (!sheet || !sheet.href)
+            if (!sheet)
                 continue;
-            if (sheet.href.match(autopagerLite.siteReg))
+            if (sheet.href ==null || sheet.href.match(autopagerLite.siteReg))
             {
-                if (sheet.cssRules)
+                if (typeof sheet.cssRules != "undefined")
                     for(var r=0;r<sheet.cssRules.length;r++)
                     {
                         if (sheet.cssRules[r].selectorText=='.editor')
+                        {
+                            sheet.cssRules[r].style.display="inline";
+                        }
+                        else if (sheet.cssRules[r].selectorText=='.install')
                         {
                             sheet.cssRules[r].style.display="inline";
                         }
@@ -325,6 +329,35 @@ var autopagerLite =
             //idsEle.addEventListener("DOMAttrModified",autopagerLite.idsChanged,false);
             idsEle.addEventListener("AutoPagerSetIds",autopagerLite.idsChanged,false);
         }
+        doc.addEventListener("AutoPagerAddIds", function(e){autopagerLite.onModifyIds(e.target,true)},false);
+        doc.addEventListener("AutoPagerDeleteIds",function(e){autopagerLite.onModifyIds(e.target,false)},false);
+        doc.addEventListener("DOMNodeInserted",function(e){autopagerLite.onAddNodes(e)},false);
+
+
+    },
+    onAddNodes : function (e)
+    {
+        var node = e.target
+        if (node.nodeType == 3)
+            return;
+        if (node.getAttribute("id")=="ap:AutoPagerAddIds")
+        {
+            autopagerLite.onModifyIds(node,true)
+        }else if (node.getAttribute("id")=="ap:AutoPagerDeleteIds")
+        {
+            autopagerLite.onModifyIds(node,false)
+        }
+    },
+    onModifyIds : function (node,add)
+    {
+        //var ids = node.getAttribute("name");
+        var ids = node.textContent;
+        if (add)
+            autopagerPref.savePref("ids",autopagerLite.processIds(autopagerPref.loadPref("ids") + "," + ids));
+        else
+            autopagerPref.savePref("ids",autopagerLite.removeIds(autopagerPref.loadPref("ids") ,"," + ids + ","));
+
+        autopagerUtils.Set_Cookie(node.ownerDocument, "ids", autopagerPref.loadPref("ids"), 365, 'ap.teesoft.info'/*, path, secure */)
     },
     idsChanged : function (e)
     {

@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "pencere yüksekliğinden daha az ise başla">
 <!ENTITY setting.label.minipages "Önceden yüklenecek minimum sayfa sayısı:">
 <!ENTITY setting.label.pagebreak "&quot;AutoPager ile sayfa sonu&quot; satırının biçemi:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Denetimleri kullanırken ipucu simgesi göster">
 <!ENTITY setting.label.showPrompt "Desteklenen yeni sitelerde onay penceresini göster">
 <!ENTITY setting.label.showStatusBar "Durum çubuğunda AutoPager simgesini göster">

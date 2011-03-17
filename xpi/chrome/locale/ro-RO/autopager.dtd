@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "înălţimi fereastră">
 <!ENTITY setting.label.minipages "Număr minim de pagini preîncărcate:">
 <!ENTITY setting.label.pagebreak "Stil separator pagină:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Afişează o pictogramă de ajutor la survolarea fiecărui control; cu clic se afişează o descriere">
 <!ENTITY setting.label.showPrompt "Afişează un chestionar pentru fiecare sait nou">
 <!ENTITY setting.label.showStatusBar "Afişează pictograma AutoPager în bara de stare">

@@ -1,5 +1,5 @@
 //In GPL license
-var AutoPagring = function (site)
+var AutoPagring = function (site,doc)
 {
     this.site = site;    
     this.count=0;
@@ -17,6 +17,43 @@ var AutoPagring = function (site)
     this.autopagernextUrl=null
     this.inSplitWindow = false;
     this.changeMonitor = null;
+    this.shouldMonitorAutoScroll = false;
+    
+    var Me = this
+    //http://member.teesoft.info/phpbb/viewtopic.php?p=10930#10930
+    this.autoScrollingMonitor = function (aEvent){
+        if (Me.shouldMonitorAutoScroll)
+        {
+            if (aEvent) {
+                Me.autoScrolling = true                
+            }
+        }
+    }
+    this.wheelClickMonitor = function (e){
+        //remember the latest wheel event
+        if (e.button==1)
+            Me.wheelEvent = e;
+    }
+
+    window.addEventListener("mousedown", this.wheelClickMonitor, true)
+    window.addEventListener("popuphidden", this.autoScrollingMonitor, true)
+
+    if (this.site.alertsHash)
+    {
+        var host = doc.location.host
+        var visited = autopagerPref.loadPref("site.alertsHash." + host);
+        if (typeof visited == 'undefined' ||   visited !=this.site.alertsHash)
+        {
+            var alertsHash = this.site.alertsHash
+            var url =autopagerPref.loadPref("repository-site") + "view?id=" + this.site.id
+               var callback = function()
+               {
+                   autopagerPref.savePref("site.alertsHash." + host,alertsHash);
+                   autopagerBwUtil.autopagerOpenIntab(url);
+               }
+               autopagerBwUtil.openAlert("There's alerts for this rule",'need your attation.',url,callback)
+        }
+    }
 }
 
 AutoPagring.prototype.getAllowCheckpagingAutopagingPage = function() {
@@ -916,7 +953,11 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                     + autopagerUtils.autopagerFormatString("pagelink",[nextPageHref.replace(/\&/g,"&amp;"),"   " + (this.autopagerPage) + "   "])
                     ;
             }
-
+            
+            var Me = this
+            div.addEventListener("click",function(e) {
+                Me.onBreakClick(e);
+            },false);
             //load preload xpaths, like //style for make WOT works
             var preXPath=autopagerMain.getPreloadXPaths();
             if (preXPath.length>0)
@@ -1145,6 +1186,9 @@ AutoPagring.prototype.autopagerSimulateClick = function(win,doc,node) {
     }
 }
 AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
+    this.shouldMonitorAutoScroll = true;
+    this.autoScrolling = false;
+    
     //autopagerBwUtil.consoleLog("autopagerSimulateClick")
     var xPower= 0.5;
     var yPower= 0.5;
@@ -1246,6 +1290,12 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
         // None of the handlers called preventDefault
         //alert("not canceled");
     }
+    this.shouldMonitorAutoScroll = false;
+    if (this.autoScrolling)
+    {
+        if (this.wheelEvent && this.wheelEvent.originalTarget)
+            this.wheelEvent.originalTarget.dispatchEvent(this.wheelEvent);
+    }
 }
 
 AutoPagring.prototype.onDocUnLoad = function(doc) {
@@ -1262,7 +1312,15 @@ AutoPagring.prototype.onDocUnLoad = function(doc) {
                 doc.defaultView.removeEventListener("beforeunload",this.tmpPageUnLoad,true);
             this.tmpPageUnLoad = null;
         }
-
+        if (this.autoScrollingMonitor)
+        {
+            window.removeEventListener("popuphidden", this.autoScrollingMonitor, true);
+        }
+        if (this.wheelClickMonitor)
+        {
+            window.removeEventListener("mousedown", this.wheelClickMonitor, true);
+            this.wheelEvent = null;
+        }
 //        if (this.tmpMouseUp)
 //            window.removeEventListener("mousedown",this.tmpMouseDown,false);
         if (this.tmpRenderStateChanged)
@@ -1357,7 +1415,7 @@ AutoPagring.prototype.getListener = function (doc,paging)
                             {
                                 //if (this.requests.indexOf(httpChannel)!=-1)
                                 {
-                                    //autopagerConfig.removeFromArray( this.requests,httpChannel)
+                                    //autopagerUtils.removeFromArray( this.requests,httpChannel)
                                     listener.connectionCount --;
                                     if (listener.connectionCount<=0)
                                     {
@@ -1609,5 +1667,35 @@ AutoPagring.prototype.loadLazyImages = function(node,lazyImgSrc)
     for(var i=0;i<images.length;++i) {
         images[i].setAttribute("src", images[i].getAttribute(lazyImgSrc));
         images[i].setAttribute(lazyImgSrc, null);
+        //http://member.teesoft.info/phpbb/viewtopic.php?p=10797#10797
+        images[i].style.visibility = 'visible';
     }
+}
+AutoPagring.prototype.onBreakClick = function(e)
+{
+    var node = e.target
+    if (node && node.name == "xxAutoPagerimmedialate-load")
+    {
+        //http://member.teesoft.info/phpbb/viewtopic.php?f=5&t=3596
+        var pages = 3
+        var nodes = autopagerXPath.evaluate(node,"./following-sibling::input[@type='inputbox' and @name='xxAutoPagerimmedialate-load-count']",false);
+        if (nodes && nodes.length>0)
+        {
+            pages = nodes[0].value
+        }
+        if (autopagerPref.loadPref("immedialate-load-count")!=pages)
+            autopagerPref.savePref("immedialate-load-count",pages)
+        this.loadPages(node.ownerDocument,pages)
+    }
+}
+AutoPagring.prototype.loadPages = function (doc,pages)
+{
+    this.forceLoadPage = parseInt(pages);
+	if (this.autopagerPage!=null && this.autopagerPage!=0)
+		this.forceLoadPage += this.autopagerPage;
+
+        autopagerMain.onContentLoad(doc);
+	//doc.documentElement.setAttribute("autopagerEnabledSite", true);
+    if (typeof this.scrollWatcher != "undefined")
+	this.scrollWatcher(doc);
 }

@@ -606,7 +606,7 @@ onInitDoc : function(doc,safe)
             //if (sitepos.site.quickLoad == safe)
             if (safe)
                 return 0;
-            var paging = new AutoPagring(sitepos.site)
+            var paging = new AutoPagring(sitepos.site,doc)
             if (sitepos.site.monitorXPath)
             {
                 autopagerMain.monitorForCleanPages(doc,paging)
@@ -1097,7 +1097,7 @@ clearLoadStatus : function (doc,paging)
         obj = autopagerUtils.getAutoPagerObject(doc.documentElement)
     }
     
-	obj.forceLoadPage = pages;
+	obj.forceLoadPage = parseInt(pages);
 	if (obj.autopagerPage!=null && obj.autopagerPage!=0)
 		obj.forceLoadPage += obj.autopagerPage;
 
@@ -1223,6 +1223,24 @@ onPrepareCoreOption : function (target)
     }
     }
     ,10);
+},
+onImmedialateLoadClick : function() {
+    autopagerMain.loadPages(content.document,autopagerPref.loadPref("immedialate-load-count"));
+},
+FillImmedialateLoadPopup : function (target,prefix)
+{
+    var menupopup = target;
+    if (menupopup.childNodes.length < 2)
+    {
+        var menuTemplate = document.getElementById("autopager-immedialate-load-menupopup")
+        for(var i=0;i<menuTemplate.childNodes.length;i++)
+        {
+            var child = menuTemplate.childNodes[i].cloneNode(true);
+            if (child.getAttribute("id"))
+                child.setAttribute("id",prefix + "-" + child.getAttribute("id"));
+            menupopup.appendChild(child);
+        }
+    }
 },
 FillPopup : function(target,prefix) {
 
@@ -1892,56 +1910,6 @@ getDocURL : function(doc,enableJS)
 //    }        
     return href;
 },
-preparePath : function(doc,path,enableJS) {
-    //host
-    //href
-    //hostname
-    //pathname
-    //port
-    //protocol
-    //search
-    //title
-    
-    var newPath = autopagerBwUtil.processXPath(path);
-    if (newPath.indexOf("%") == -1)
-        return newPath;
-    try{
-        var href = "";
-        var host= "";
-        if (enableJS) {
-            host = doc.location.host;
-            href = doc.location.href;
-        }
-        else {
-            href = doc.baseURI;
-            host= href;
-            
-            //remove prototol
-            host = host.substring(doc.location.protocol.length + 2);
-            var port = doc.location.port + "";
-            host = host.substring(0,host.indexOf("/"));
-            
-            if (port.length > 0)
-                host = host.substring(0,host.length - port.length -1);
-        }			
-        newPath = newPath.replace(/\%href\%/g,"'" + href+ "'");
-        newPath = newPath.replace(/\%host\%/g,"'" + host + "'");
-        newPath = newPath.replace(/\%hostname\%/g,"'" + host+ "'");
-        newPath = newPath.replace(/\%pathname\%/g,"'" + doc.location.pathname+ "'");
-        var port = "";
-        if (!doc.location.port)
-            port = doc.location.port;
-        newPath = newPath.replace(/\%port\%/g,			port);
-        newPath = newPath.replace(/\%protocol\%/g,"'" + doc.location.protocol+ "'");
-        newPath = newPath.replace(/\%search\%/g,"'" + doc.location.search+ "'");
-        newPath = newPath.replace(/\%title\%/g,"'" + doc.title+ "'");
-        //newPath = newPath.replace(/\%referrer\%/g,"'" + doc.referrer+ "'");
-        //newPath = newPath.replace(/\%baseURI\%/g,"'" + doc.baseURI+ "'");
-    }catch(e) {
-        autopagerMain.alertErr(e);
-    }
-    return newPath;
-},
 removeElements : function (node,xpath,enableJS,useInnerXpath)
 {
     //autopagerBwUtil.consoleLog(xpath);
@@ -1956,7 +1924,7 @@ removeElements : function (node,xpath,enableJS,useInnerXpath)
     for(var i=0;i<xpath.length;i++)
     {
        try{
-			var orgPath = autopagerMain.preparePath(doc,xpath[i],enableJS);
+			var orgPath = autopagerXPath.preparePath(doc,xpath[i],enableJS);
 			aExpr = orgPath;
                         if (useInnerXpath)
                         {
@@ -2087,13 +2055,20 @@ getNavLinks : function(pos)
     links = links + "&nbsp;&nbsp;<a href='#autopager_" + (pos+1) +"' title='" + autopagerUtils.autopagerGetString("navdown") + "'>" + autopagerMain.getNavImage("down") + "</a>";
   if (autopagerPref.loadBoolPref("show-nav-bottom"))
     links = links + "&nbsp;&nbsp;<a href='javascript:window.scroll(0,document.body.scrollHeight)' title='" + autopagerUtils.autopagerGetString("navbottom") + "'>" + autopagerMain.getNavImage("bottom") + "</a>";
+  if (autopagerPref.loadBoolPref("show-nav-immedialate-load"))
+  {
+    //http://member.teesoft.info/phpbb/viewtopic.php?f=5&t=3596
+    links = links + "&nbsp;&nbsp;<a name='xxAutoPagerimmedialate-load' href='javascript:void(0)' title='" + autopagerUtils.autopagerGetString("immediately-load") + "'>"
+        + autopagerUtils.autopagerGetString("Load") + "</a><input name='xxAutoPagerimmedialate-load-count' type='inputbox' size='1' value='" + autopagerPref.loadPref("immedialate-load-count") + "'></input>"
+        + autopagerUtils.autopagerGetString("Pages") + "";
+  }
 return links;
 },
 getNextUrl : function(container,enableJS,node) {
     if(node == null)
         return null;
     if (!enableJS && (node.tagName == "A" || node.tagName == "a"))
-        return autopagerMain.fixUrl(container,node.href);
+        return autopagerMain.fixUrl(container,node.href,node.getAttribute("href"));
     if (node.tagName == "INPUT")
         return node;
     return node;
@@ -2241,9 +2216,18 @@ enabledInThisSession : function(doc,enabled)
      if (typeof obj.scrollWatcher != "undefined")
         obj.scrollWatcher(doc);
 },
-fixUrl : function(doc,url) {
+fixUrl : function(doc,url,realUrl) {
     if(url.indexOf(doc.location.protocol) == 0)
-        return url
+    {
+         if ("?"!=realUrl.substr(0,1))
+             return url;
+         else{
+             var newS = doc.location.href
+             if (newS.indexOf("?")>0)
+                 newS = newS.substr(0,newS.indexOf("?"))
+             return newS + realUrl;
+         }                     
+    }
         //alert(doc.location);
         var newStr=doc.location.protocol +"//"+ doc.location.host;
     if ( doc.location.port.length >0)

@@ -60,3 +60,5 @@ pref("extensions.autopager.with-lite-discovery-aways-display", false);
 pref("extensions.autopager.lite-discovery-prompted", false);
 pref("extensions.autopager.images-prefix", "chrome://autopagerimg/content/");
 pref("extensions.autopager.repository-site","http://ap.teesoft.info/");
+pref("extensions.autopager.immedialate-load-count","3");
+pref("extensions.autopager.show-nav-immedialate-load",true);

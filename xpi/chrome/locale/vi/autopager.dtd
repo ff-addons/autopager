@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "chiều cao cửa sổ">
 <!ENTITY setting.label.minipages "Lượt đếm trang tải sẵn tối thiểu">
 <!ENTITY setting.label.pagebreak "style ngắt trang:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Hiện một hình ảnh trợ giúp cho mỗi điều khiển, nhấn để xem mô tả cho điều khiển đó">
 <!ENTITY setting.label.showPrompt "Hiện hộp thoại hỏi cho từng trang mới">
 <!ENTITY setting.label.showStatusBar "Hiện biểu tượng autopager trong thanh trạng thái">

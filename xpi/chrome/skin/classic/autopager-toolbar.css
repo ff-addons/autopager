@@ -53,3 +53,7 @@ toolbar[iconsize="small"] #autopager-button-fennec.ap-site-disabled {
   background-color: #eee;
   -moz-user-focus: ignore;
 }
+
+#autopager-immedialate-load-button {
+  list-style-image: url("chrome://autopager/skin/play.ico") !important;
+}

@@ -15,10 +15,10 @@
     <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-lite.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
@@ -197,6 +197,7 @@
                 <menupopup id="autopager-core-options"  onpopupshowing="autopagerMain.onPrepareCoreOption(event.target)">
                     <menuitem type="checkbox"  id="autopager-showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
                     <menuitem type="checkbox"  id="autopager-showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+                    <menuitem type="checkbox"  id="autopager-showContextMenu" prefV="hide-context-menu" label="&setting.label.showContextMenu;" check="true" flex="1"/>
                     <menuitem type="checkbox"  id="autopager-showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
                     <menuitem type="checkbox"  id="autopager-disable-by-default" pref="disable-by-default" label="&setting.label.disable-by-default;" check="false" flex="1"/>
                     <menuseparator class="autopager-sep-global"/>
@@ -311,7 +312,7 @@
             <menu id="autopager-hidden-panel-menu" class="autopager-menu-class"
                       onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-hidden-panel-menu.label;"
                       hidden='true'>
-                <menupopup id="autopager-menupopup" >
+                <menupopup id="autopager-hidden-panel-menupopup" >
                     <menuitem id="autopager-show" label="&autopager.menuitem.autopager-show.label;"
                                   oncommand="AutoPagerNS.apSplitbrowse.open(content.document,false);"
                         />
@@ -325,7 +326,7 @@
                       onpopupshowing="/*javascript:void();*/" label="&autopager.menu.autopager-immedialate-load.label;"
                       accesskey="&autopager.menu.autopager-immedialate-load.key;"
                       >
-                <menupopup id="autopager-menupopup" >
+                <menupopup id="autopager-immedialate-load-menupopup" >
                     <menuitem id="autopager-load-3" label="&autopager.menuitem.autopager-load-3.label;"
                                   oncommand="autopagerMain.loadPages(content.document,3);"
                                   accesskey="&autopager.menuitem.autopager-load-3.key;"
@@ -429,6 +430,16 @@
             context="autopager-toolbar-popup"
             oncommand="if (event.target == this) autopagerMain.onToolbarClick();">
             <menupopup id="autopager-toolbar-popup"  onpopupshowing="autopagerMain.FillPopup(event.target,'tb')">
+            </menupopup>
+        </toolbarbutton>
+        <toolbarbutton id="autopager-immedialate-load-button" type="menu-button"
+            class="chromeclass-toolbar-additional"
+            label="&autopager.menu.autopager-immedialate-load.label;"
+            tooltiptext="&autopager.menu.autopager-immedialate-load.label;"
+            oncontextmenu="event.target.open = true;event.preventDefault();"
+            context="autopager-toolbar-popup"
+            oncommand="if (event.target == this) autopagerMain.onImmedialateLoadClick();">
+            <menupopup id="autopager-toolbar-immedialate-load-popup"  onpopupshowing="autopagerMain.FillImmedialateLoadPopup(event.target,'tbim')">
             </menupopup>
         </toolbarbutton>
     </toolbarpalette>

@@ -633,6 +633,10 @@ var autopagerConfig =
         newSite.maxLinks = site.maxLinks
         if (!autopagerUtils.isBlank(site.lazyImgSrc))
             newSite.lazyImgSrc = site.lazyImgSrc
+        if (!autopagerUtils.isBlank(site.keywordXPath))
+            newSite.keywordXPath = site.keywordXPath
+        if (!autopagerUtils.isBlank(site.alertsHash))
+            newSite.alertsHash = site.alertsHash
         return newSite;
     }
     ,
@@ -666,6 +670,8 @@ var autopagerConfig =
                 || oldSite.contentXPath.length != site.contentXPath.length
                 || oldSite.testLink.length != site.testLink.length
                 || !autopagerUtils.equals(oldSite.lazyImgSrc , site.lazyImgSrc)
+                || !autopagerUtils.equals(oldSite.keywordXPath , site.keywordXPath)
+                || !autopagerUtils.equals(oldSite.alertsHash , site.alertsHash)
             )
             {
                 return true;
@@ -702,29 +708,8 @@ var autopagerConfig =
         return newSites;
     }
 
-    ,removeFromArrayByIndex : function (array,index) {
-        if (index < array.length)
-        {
-            for(var i = index;i<array.length -1;++i)
-            {
-                array[i] = array[i+1];
-            }
-            array[array.length-1]=null;
-            array.pop();
-        }
-    },
-    removeFromArray : function(array,item) {
-        var index = -1;
-        for(index=0;index<array.length
-            && array[index]!=item;index++)
-        {
-        }
-        if (index>=0 && index <array.length)
-        {
-            autopagerConfig.removeFromArrayByIndex(array,index);
-        }
-    }
-    , getUpdateFrame : function(doc)
+    ,
+     getUpdateFrame : function(doc)
     {
         var divName = "autoPagerUpdateDiv";
         var frameName = divName + "ifr";
@@ -1341,6 +1326,12 @@ var autopagerConfig =
 
                     if (!autopagerUtils.isBlank(siteObj.lazyImgSrc))
                         autopagerConfig.createNode(siteNode,"lazyImgSrc",siteObj.lazyImgSrc);
+
+                    if (!autopagerUtils.isBlank(siteObj.keywordXPath))
+                        autopagerConfig.createNode(siteNode,"keywordXPath",siteObj.keywordXPath);
+
+                    if (!autopagerUtils.isBlank(siteObj.alertsHash))
+                        autopagerConfig.createNode(siteNode,"alertsHash",siteObj.alertsHash);
 
                     if (siteObj.enableJS!=1 && siteObj.enableJS!="true")
                         autopagerConfig.createNode(siteNode,"enableJS",siteObj.enableJS);

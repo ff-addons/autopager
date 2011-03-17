@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.6.2.4",
+    version:"0.6.2.6",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -793,59 +793,61 @@ delete * 24, for minutes, delete * 60 * 24
             return null;
         }
     }
-    ,notification : function (id,message,buttons)
+    ,
+    notification : function (id,message,buttons)
     {
         if (typeof autopagerBwUtil.notification != "undefined")
         {
             autopagerBwUtil.notification(id,message,buttons)
         }
     }
-// Converts a pattern in this programs simple notation to a regular expression.
-// thanks AdBlock! http://www.mozdev.org/source/browse/adblock/adblock/
-,convert2RegExp : function( pattern ) {
-  return new RegExp(autopagerUtils.convert2RegExpStr(pattern), "i");
-},
-convert2RegExpStr : function( pattern ) {
-  var s = new String(pattern);
-  var res = new String("^");
+    // Converts a pattern in this programs simple notation to a regular expression.
+    // thanks AdBlock! http://www.mozdev.org/source/browse/adblock/adblock/
+    ,
+    convert2RegExp : function( pattern ) {
+        return new RegExp(autopagerUtils.convert2RegExpStr(pattern), "i");
+    },
+    convert2RegExpStr : function( pattern ) {
+        var s = new String(pattern);
+        var res = new String("^");
 
-  for (var i = 0 ; i < s.length ; i++) {
-    switch(s[i]) {
-      case '*' :
-        res += ".*";
-        break;
+        for (var i = 0 ; i < s.length ; i++) {
+            switch(s[i]) {
+                case '*' :
+                    res += ".*";
+                    break;
 
-      case '.' :
-      case '?' :
-      case '^' :
-      case '$' :
-      case '+' :
-      case '{' :
-      case '[' :
-      case '|' :
-      case '(' :
-      case ')' :
-      case ']' :
-      case '/' :
-        res += "\\" + s[i];
-        break;
+                case '.' :
+                case '?' :
+                case '^' :
+                case '$' :
+                case '+' :
+                case '{' :
+                case '[' :
+                case '|' :
+                case '(' :
+                case ')' :
+                case ']' :
+                case '/' :
+                    res += "\\" + s[i];
+                    break;
 
-      case '\\' :
-        res += "\\\\";
-        break;
+                case '\\' :
+                    res += "\\\\";
+                    break;
 
-      case ' ' :
-        // Remove spaces from URLs.
-        break;
+                case ' ' :
+                    // Remove spaces from URLs.
+                    break;
 
-      default :
-        res += s[i];
-        break;
-    }
-  }
+                default :
+                    res += s[i];
+                    break;
+            }
+        }
 
-  return res + '$';
-},
+        return res + '$';
+    },
     handleDocLoad : function(doc,safe)
     {
         if (autopagerBwUtil.handleDocLoad)
@@ -864,7 +866,8 @@ convert2RegExpStr : function( pattern ) {
         autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
         return autopagerMain.onInitDoc(doc,safe);
     }
-    ,isValidLink : function (node)
+    ,
+    isValidLink : function (node)
     {
         if (autopagerBwUtil.isValidLink)
         {
@@ -872,7 +875,8 @@ convert2RegExpStr : function( pattern ) {
         }
         return typeof node!='undefined';
     }
-    ,getValidLink : function (node)
+    ,
+    getValidLink : function (node)
     {
         var link = autopagerUtils.getValidLinkFromChild(node)
         if (link)
@@ -882,7 +886,8 @@ convert2RegExpStr : function( pattern ) {
             return link;
         return null;
     }
-    ,getValidLinkFromChild : function (node)
+    ,
+    getValidLinkFromChild : function (node)
     {
         for (var i=0;i<node.childNodes.length;i++)
         {
@@ -898,7 +903,8 @@ convert2RegExpStr : function( pattern ) {
         }
         return null;
     }
-    ,getValidLinkFromParent : function (node,level)
+    ,
+    getValidLinkFromParent : function (node,level)
     {
         while (level >0 && node !=null && (node.tagName!='BODY' && node.tagName!='HTML') && node.parentNode != node) {
             node = node.parentNode
@@ -908,22 +914,26 @@ convert2RegExpStr : function( pattern ) {
         }
         return null;
     }
-    ,toString: function(s)
+    ,
+    toString: function(s)
     {
         if (typeof s=="undefined"|| s==null)
             return ""
         else
             return s;
     }
-    ,equals : function(v1,v2)
+    ,
+    equals : function(v1,v2)
     {
         return this.toString(v1) == this.toString(v2);
     }
-    ,isBlank : function(s)
+    ,
+    isBlank : function(s)
     {
         return (typeof s == "undefined") || (s== null) || (s== "") ||  (s == "undefined")||  (s == "null");
     }
-    , mergeString : function (split,str1,str2)
+    ,
+    mergeString : function (split,str1,str2)
     {
         var newS = this.toString(str1)
         if (newS!="" && !this.isBlank(str2))
@@ -964,8 +974,10 @@ convert2RegExpStr : function( pattern ) {
         }
         return new RegExp(resRegExp);
     }
-    ,autopagerStrbundle : new autopagerStrings("autopager")
-    ,autopagerGetString : function(name)
+    ,
+    autopagerStrbundle : new autopagerStrings("autopager")
+    ,
+    autopagerGetString : function(name)
     {
         try{
 
@@ -1008,21 +1020,21 @@ convert2RegExpStr : function( pattern ) {
                     newNode = container.createElement("div");
                 }
             }
-                if (depth && newNode!=null)
+            if (depth && newNode!=null)
+            {
+                for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++)
                 {
-                    for (var i = 0, childNode = null; (childNode = node.childNodes[i]); i++)
+                    var c = autopagerUtils.importNode(container,childNode,depth)
+                    if (c!=null)
                     {
-                        var c = autopagerUtils.importNode(container,childNode,depth)
-                        if (c!=null)
-                        {
-                            newNode.appendChild(c);
-                        }
-                        else
-                        {
-                            autopagerMain.alertErr("Unable to clone :" + childNode);
-                        }
+                        newNode.appendChild(c);
+                    }
+                    else
+                    {
+                        autopagerMain.alertErr("Unable to clone :" + childNode);
                     }
                 }
+            }
             
         }
         return newNode;
@@ -1048,6 +1060,29 @@ convert2RegExpStr : function( pattern ) {
                 de.wrappedJSObject.autopagerPagingObj=obj;
             else
                 de.autopagerPagingObj=obj;
+        }
+    },
+    removeFromArray : function(array,item) {
+        var index = -1;
+        for(index=0;index<array.length
+            && array[index]!=item;index++)
+            {
+        }
+        if (index>=0 && index <array.length)
+        {
+            autopagerUtils.removeFromArrayByIndex(array,index);
+        }
+    }
+    ,
+    removeFromArrayByIndex : function (array,index) {
+        if (index < array.length)
+        {
+            for(var i = index;i<array.length -1;++i)
+            {
+                array[i] = array[i+1];
+            }
+            array[array.length-1]=null;
+            array.pop();
         }
     }
 }

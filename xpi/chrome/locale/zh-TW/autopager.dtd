@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
 <!ENTITY setting.label.minipages "預讀最小頁面數">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "顯示每個選項的說明圖片，按一下可瀏覽該選項描述">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">

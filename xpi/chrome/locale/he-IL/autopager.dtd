@@ -145,6 +145,7 @@
 <!ENTITY setting.label.marginEnd "window heights">
 <!ENTITY setting.label.minipages "Minimum preloaded page count">
 <!ENTITY setting.label.pagebreak "page break style:">
+<!ENTITY setting.label.showContextMenu "Show autopager context menu">
 <!ENTITY setting.label.showHelpTips "Show a help tip image for each controls, click to see the description for that control">
 <!ENTITY setting.label.showPrompt "Show prompt for individual new site">
 <!ENTITY setting.label.showStatusBar "Show autopager icon in status bar">

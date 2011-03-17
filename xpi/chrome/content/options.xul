@@ -31,6 +31,7 @@
     <vbox flex="1">
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
+        <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-context-menu" label="&setting.label.showContextMenu;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showPrompt" prefV="noprompt" label="&setting.label.showPrompt;" check="true" flex="1"/>
         
         <checkbox id="tweakSession" pref="tweaking-session" label="&options.checkbox.tweakSession.label;" checked="true"/>
