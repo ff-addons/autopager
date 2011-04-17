@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Очистить">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Пожертвования">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Показать страницу пожертвований">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Помощь">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Показать страницу помощи">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Правила">

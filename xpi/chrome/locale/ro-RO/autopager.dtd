@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Elimină tot">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donaţie">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Afişează pagina de donaţii">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Ajutor">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Afişează pagina de ajutor">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Reguli">

@@ -62,3 +62,6 @@ pref("extensions.autopager.images-prefix", "chrome://autopagerimg/content/");
 pref("extensions.autopager.repository-site","http://ap.teesoft.info/");
 pref("extensions.autopager.immedialate-load-count","3");
 pref("extensions.autopager.show-nav-immedialate-load",true);
+pref("extensions.autopager.related-search-discover-url","http://api.search.live.net/json.aspx?Appid=41CC52599D6F30EE0E2C7D7F1C4DDCB97F98992B&query={query}&Sources=RelatedSearch");
+pref("extensions.autopager.related-search-prompted",false);
+pref("extensions.autopager.related-search-enabled",false);

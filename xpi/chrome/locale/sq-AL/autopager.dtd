@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Pastro të Gjitha">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Dhurim">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Show Donation Page">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Ndihmë">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Show Help Page">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Rregullat">

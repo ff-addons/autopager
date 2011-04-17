@@ -573,8 +573,9 @@ AutoPagerNS.apSplitbrowse = {
         //alert("done");
         if (doc.location.href=='about:blank')
             return true;
-        
+
         try{
+            doc.defaultView.AutoPagerHiddenBrowser={};
             //scroll to page end to ensure some lazy load objects been loaded
             //fix http://member.teesoft.info/phpbb/viewtopic.php?f=3&t=3498
             doc.defaultView.scroll(0,Math.max(doc.body.scrollHeight,4000));
@@ -622,6 +623,14 @@ AutoPagerNS.splitpanelProgressListener.prototype = {
             AutoPagerNS.apSplitbrowse.done( aWebProgress.DOMWindow.document,this);
 
             return;
+        } else if (aStateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT)
+        {
+            if (typeof aWebProgress.DOMWindow.AutoPagerHiddenBrowser == "undefined")
+            {
+                //Allow the "content-policy" in AutopagerCOMP to check if the doc is load in a AutoPagerHiddenBrowser
+                aWebProgress.DOMWindow.AutoPagerHiddenBrowser = {}
+            }
+            
         }
     },
     onStatusChange : function(webProgress, request, status, message)

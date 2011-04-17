@@ -25,6 +25,7 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-sitesetting.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-related.js"></script>
 
 
     <window id="main-window">
@@ -44,12 +45,6 @@
     <stringbundleset id="stringbundleset">
         <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
     </stringbundleset>
-
-    <script type="text/javascript">
-        window.addEventListener("load", function(){
-            autopagerMain.showStatus();
-        }, false);
-    </script>
 
     <statusbar id="status-bar">
         <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
@@ -227,7 +222,8 @@
                     <menuitem type="checkbox"  id="autopager-discover" pref="with-lite-discovery" label="&statusbar.menuitem.discover.label;" checked="true"/>
                     <menuitem type="checkbox"  id="autopager-showDiscoverPanel" pref="with-lite-discovery-aways-display" label="&statusbar.menuitem.showDiscoverPanel.label;" checked="true"/>
                     <menuitem type="checkbox"  id="autopager-liteModel" pref="work-in-lite-mode" label="&statusbar.menuitem.liteModel.label;" checked="true"/>
-
+                    <menuitem type="checkbox"  id="autopager-related-search" pref="related-search-enabled" label="&statusbar.menuitem.autopager-related-search.label;" checked="true"
+                        onclick="autopagerPref.resetPref('site.related-search-enabled.' + content.document.location.host);"/>
                 </menupopup>
             </menu>
             <menuseparator class="autopager-sep-global"/>
@@ -457,27 +453,19 @@
             />
     </toolbar>
     -->
-    <vbox id="browser-controls">
-          <toolbarspring insertafter="tool-star"/>
-        <toolbarbutton id="autopager-button-fennec"
-            class="browser-control-button button-image autopager-fennec-big"
-            label="&autopager.toolbarLabel;"
-            tooltiptext="&autopager.tooltip;"
-            buttonstyle="pictures"
-            insertafter="tool-star"
-            popupdisabled="autopager-toolbar-popup"
-            oncommand="autopagerLite.openRulesSelector(content.document);"
-            />
-    </vbox>
     <script type="text/javascript">
         window.addEventListener("load", function() {
             var self = arguments.callee;
             window.removeEventListener("load",self,false);
-            setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-            AutoPagerNS.apSplitbrowse.init();
-            autopagerMain.autopagerOnLoad();
-            autopagerLite.apRuleSiteOnInit();
-            window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);
+            setTimeout(function(){
+                AutoPagerNS.apSplitbrowse.init();
+                setTimeout(autopagerToolbar.autopagerToobarInit, 250);
+                AutoPagerNS.apSplitbrowse.init();
+                autopagerMain.autopagerOnLoad();
+                autopagerLite.apRuleSiteOnInit();
+                window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);
+                autopagerMain.showStatus();
+            },10)
         }, false);
     </script>
 </overlay>

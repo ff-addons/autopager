@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Effacer Tous">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Don">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Afficher la page de don">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Aide">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Voir la page d'aide">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Règles">

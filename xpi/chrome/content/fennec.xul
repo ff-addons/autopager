@@ -16,5 +16,18 @@
         }
         autopagerFennecInit();
     </script>
-<window id="main-window"></window>
+<window id="main-window">
+    <vbox id="browser-controls">
+          <toolbarspring insertafter="tool-star"/>
+        <toolbarbutton id="autopager-button-fennec"
+            class="browser-control-button button-image autopager-fennec-big"
+            label="&autopager.toolbarLabel;"
+            tooltiptext="&autopager.tooltip;"
+            buttonstyle="pictures"
+            insertafter="tool-star"
+            popupdisabled="autopager-toolbar-popup"
+            oncommand="autopagerLite.openRulesSelector(content.document);"
+            />
+    </vbox>
+</window>
 </overlay>

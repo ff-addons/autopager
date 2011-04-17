@@ -567,8 +567,11 @@ var autopagerJsonSetting= {
         else
             autopagerPref.savePref("messageId",0);
         if (typeof site.kx != 'undefined')
-         autopagerPref.savePref("keywordXPath",site.kx);
+            autopagerPref.savePref("keywordXPath",site.kx);
         else
             autopagerPref.savePref("keywordXPath","");
+
+        if (typeof site.ss != 'undefined')
+            autopagerPref.savePref("searches",site.sn);
     }
 }

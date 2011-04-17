@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Alles opruimen">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donatie">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Donatiepagina weergeven">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Help">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Helppagina weergeven">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Regels">

@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Clean All">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Ủng hộ">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Hiện trang Ủng hộ">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Trợ giúp">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Hiện trang Trợ giúp">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Quy tắc">

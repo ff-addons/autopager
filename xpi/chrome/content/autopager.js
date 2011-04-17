@@ -229,6 +229,10 @@ doContentLoad : function(event) {
                 doc = event.originalTarget;
             else if (autopagerMain.isValidDoc(event.target))
                 doc = event.target;
+            else if (event.explicitOrigitnalTarget instanceof HTMLDocument)
+            {
+                doc = autopagerUtils.getTopDoc(event.explicitOriginalTarget)
+            }
     }
     if (!(autopagerMain.isValidDoc(doc)))
         return false;

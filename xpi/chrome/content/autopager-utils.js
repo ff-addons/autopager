@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.6.2.6",
+    version:"0.6.2.8",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -687,7 +687,7 @@ var autopagerUtils = {
         return autopagerPref.loadBoolPref("noprompt") || autopagerBwUtil.isInPrivateMode()
         || autopagerBwUtil.isFennec();
     },
-    contains : function(parent, descendant) {
+    containsNode : function(parent, descendant) {
         // We use browser specific methods for this if available since it is faster
         // that way.
 

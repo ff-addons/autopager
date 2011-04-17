@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "全部清除">
 <!ENTITY statusbar.menuitem.autopager-donation.label "贊助">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "顯示贊助頁面">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "說明">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "顯示說明頁面">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "規則">

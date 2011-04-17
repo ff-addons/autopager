@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "全てクリア">
 <!ENTITY statusbar.menuitem.autopager-donation.label "寄付">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "寄付ページを表示します。">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "ヘルプ">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "ヘルプページを表示します。">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "ページ定義">

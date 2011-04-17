@@ -3,9 +3,7 @@
 
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
-  <setting pref="autopager.enabled" type="bool" title="&autopager.status.enabled;">
-    &autopager.status.enabledTip;
-  </setting>
+  <setting pref="autopager.enabled" type="bool" title="&autopager.status.enabled;"></setting>
   <setting pref="autopager.work-in-lite-mode" type="bool" title="&statusbar.menuitem.liteModel.label;"/>
   <setting type="button">
     <button label="&statusbar.menuitem.autopagerlite-discover.label;"

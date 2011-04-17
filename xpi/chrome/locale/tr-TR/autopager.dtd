@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Tümünü Temizle">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Bağış yap">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Bağış sayfasına git">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Yardım">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Çevrimiçi yardım sayfasına git">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Kurallar">

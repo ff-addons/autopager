@@ -188,6 +188,7 @@
 <!ENTITY statusbar.menuitem.autopager-clean.label "Rensa alla">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donera">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Visa donationssidan">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Hjälp">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Visa hjälpsidan">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Regler">

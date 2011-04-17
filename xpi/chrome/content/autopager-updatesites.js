@@ -169,9 +169,7 @@ AutoPagerNS.AutoPagerUpdateTypes =
                         autopagerPref.loadPref("repository-site") +"d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "AutoPager Lite Configurations @ teesoft.info",
                         "autopagerLite.xml","//site",true,"autopager-lite",-2,
-                                ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
-                                "http://stone-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
-                                "http://s1-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
+                                ["http://s1-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
                                 "http://member-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
                                 "http://es4-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}"]));
             }

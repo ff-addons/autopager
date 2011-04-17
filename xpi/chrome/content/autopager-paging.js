@@ -846,9 +846,336 @@ AutoPagring.prototype.insertLoadingBreak = function(doc) {
         var insertPoint =	this.autopagerinsertPoint;
         div.setAttribute("id","apBreakStart" + this.autopagerPage);
         insertPoint.parentNode.insertBefore(div,insertPoint);
+        var index = this.autopagerPage;
+        if (typeof this.relatedSearchOptions!="undefined" && this.relatedSearchOptions!=null)
+        {
+            this.performRelatedSearch(this.relatedSearchOptions,doc,index,div);
+        }
+        else
+        {
+            this.asyncRelatedSearch(doc,index,div);
+        }
         this.lastBreakStart = div;
     }
 }
+AutoPagring.prototype.asyncRelatedSearch = function(doc,index,div) {
+    var Me = this
+    var oldDiv = doc.getElementById("ap_related_" + index);
+    if (oldDiv)
+        oldDiv.parentNode.removeChild(oldDiv)
+    autopagerRelated.getRelelatedSearchOptions(doc.location.host,function(options){
+        Me.performRelatedSearch(options,doc,index,div);
+    })
+}
+AutoPagring.prototype.performRelatedSearch = function(options,doc,index,div) {
+    this.relatedSearchOptions = options;
+    var ut = this.getUrlTemplate(options)
+
+    if (ut == null)
+        return;
+    var Me = this;
+    if (!options.prompted)
+    {
+        //TODO: show prompted
+        options.searchEngine=null;
+        var prompt = Me.createRelatedSearchPrompt(doc,options,index,div);
+        div.parentNode.insertBefore(prompt,div);
+    }else if(options.enabled)
+    {
+        var searchQuery = this.getQueryText(options,doc);
+        if (typeof searchQuery != "undefined" && searchQuery!= "" && searchQuery!= null
+         && (typeof options.relatedTexts == "undefined" || searchQuery != options.searchQuery))
+        {
+            options.searchQuery = searchQuery;
+            autopagerRelated.getRelelatedSearchText(options,ut,function(relatedTexts){
+                options.relatedTexts = relatedTexts
+                var table = Me.createRelatedTable(doc,options,div,searchQuery,relatedTexts,index,ut.u);
+                div.parentNode.insertBefore(table,div);
+            })
+        }else if(typeof options.relatedTexts != "undefined")
+        {
+                var table = Me.createRelatedTable(doc,options,div,options.searchQuery,options.relatedTexts,index,ut.u);
+                div.parentNode.insertBefore(table,div);
+        }
+    }    
+}
+AutoPagring.prototype.getUrlTemplate = function(options) {
+    if (typeof this.urlTemplate != "undefined" && this.urlTemplate!="" && this.urlTemplate!=null)
+    {
+        return this.urlTemplate;
+    }
+    var sts = options.searchs;
+    if (sts!=null)
+    {
+        var engine = options.searchEngine
+        if (typeof engine != "undefined" && engine!=""&& engine!=null)
+        {
+            this.urlTemplate = sts[engine];
+            if (typeof this.urlTemplate != "undefined" && this.urlTemplate!=""&& this.urlTemplate!=null)
+            {
+                return this.urlTemplate;
+            }
+        }
+        for(var k in sts)
+        {
+            this.urlTemplate = sts[k];
+            return this.urlTemplate ;
+        }
+    }
+    return null;
+}
+AutoPagring.prototype.getQueryText = function(options,doc) {
+    var xpaths = []
+    this.addXPath(xpaths,this.site.keywordXPath);
+    this.addXPath(xpaths,options.keywordXPath);
+    var searchQuery="";
+    for(var i=0;i<xpaths.length;i++)
+    {
+        var xpath = xpaths[i]
+        var nodes = autopagerXPath.evaluate(doc,xpath,true);
+        if (nodes.length>0)
+        {
+            searchQuery = nodes[0]
+            if ((typeof searchQuery != "undefined") && (typeof searchQuery.textContent != "undefined"))
+            {
+                searchQuery = searchQuery.textContent
+            }
+            if (typeof searchQuery != "undefined" && searchQuery!= "")
+                return searchQuery;
+            break;
+        }
+    }
+    return null;
+}
+AutoPagring.prototype.addXPath = function(xpaths,xpath) {
+    if (typeof xpath=="undefined")
+        return;
+    var xs = xpath.split("|||")
+    for(var i=0;i<xs.length;i++)
+    {
+        if (xpaths.indexOf(xs[i])==-1)
+        {
+            xpaths.push(xs[i])
+        }
+    }
+}
+AutoPagring.prototype.createRelatedSearchOptions= function (doc,options,index,div,display)
+{
+    var Me = this
+    var s = doc.createElement("select");
+    function createOption(value,label,image,s,selected)
+    {
+        var o = doc.createElement("option");
+        o.setAttribute("value",value);
+        o.textContent = label;
+        if (typeof image != "undefined")
+        {
+            o.setAttribute("style", "background-image:url(" + image +");padding: 2px 0 2px 20px;background-repeat: no-repeat;background-position: 1px 2px;vertical-align: middle;");
+        }
+        if (selected)
+        {
+            o.setAttribute("selected",true);
+            s.setAttribute("style", "background-image:url(" + image +");padding: 2px 0 2px 20px;background-repeat: no-repeat;background-position: 1px 2px;vertical-align: middle;");
+        }
+        return o;
+    }
+    function getByValue(s,v)
+    {
+        var myNodeList = s.childNodes
+        for (var i = 0; i < myNodeList.length; ++i) {
+          var item = myNodeList[i];
+          if (v == item.value)
+          {
+              return item;
+          }
+        }
+        return null;
+    }
+
+    s.appendChild(createOption("_ignore1",autopagerUtils.autopagerGetString("selectsearchengine")));
+    var hasMore = false;
+    for(var k in options.searchs)
+    {
+        var se = options.searchs[k]
+        if (!se.r && k!=options.searchEngine)
+        {
+            hasMore = true;
+            continue;
+        }
+        var o = createOption(k,se.l,se.i,s,k==options.searchEngine)
+        s.appendChild(o);
+    }
+    if (hasMore)
+    {
+        s.appendChild(createOption("more",autopagerUtils.autopagerGetString("more")));
+    }
+    s.appendChild(createOption("_ignore2","------"));
+    var host = doc.location.host;
+    s.appendChild(createOption("disable-site",autopagerUtils.autopagerFormatString("disableon",[host])));
+    s.appendChild(createOption("disable",autopagerUtils.autopagerGetString("disableeverywhere")));
+    
+    s.addEventListener("change",function(){
+        var v= s.value;
+        if (v.indexOf("_ignore")==0)
+        {
+            //ignore
+            return;
+        }
+        if (v == "more")
+        {
+            var more = getByValue(s,"more");
+            if (more)
+            {
+                for(var k in options.searchs)
+                {
+                    var se = options.searchs[k]
+                    if (!se.r && k!=options.searchEngine)
+                    {
+                        var o = createOption(k,se.l,se.i,s,k==options.searchEngine)
+                        more.parentNode.insertBefore(o,more);
+                    }
+                }
+                more.parentNode.removeChild(more)
+            }
+            return;
+        }
+        autopagerPref.saveBoolPref("related-search-prompted",true)
+        if(v == "disable")
+        {
+            autopagerPref.saveBoolPref("related-search-enabled",false)
+            Me.removeRelatedTable(doc);
+        }else if(v == "disable-site")
+        {
+            autopagerPref.saveBoolPref("site.related-search-enabled." + host,false)
+            Me.removeRelatedTable(doc);
+        }else{
+            autopagerPref.saveBoolPref("related-search-enabled",true);
+            autopagerPref.resetPref("site.related-search-enabled." + host)
+            autopagerPref.savePref("related-search-engine",v);
+            Me.urlTemplate=null
+            Me.asyncRelatedSearch(doc,index,div);
+        }
+    },false);
+    s.setAttribute("id","ap_search_option_" + index)
+    if (typeof display != "undefined")
+    {
+        s.setAttribute("style","display:" + display)
+    }
+    return s;
+}
+AutoPagring.prototype.createRelatedSearchTable= function (doc,options,index,div,display)
+{
+    var old = doc.getElementById("ap_search_option_" + index)
+    if (old)
+    {
+        old.parentNode.removeChild(old)
+    }
+    var h2 = doc.createElement("h2");
+    h2.textContent = "related searches:";
+
+    var tr = doc.createElement("tr");
+    var td = doc.createElement("td");
+    tr.appendChild(td);
+    td.appendChild(h2);
+    td = doc.createElement("td");
+    tr.appendChild(td);
+    var s= this.createRelatedSearchOptions(doc,options,index,div,display)
+    td.appendChild(s);
+    var table = doc.createElement("table");
+    table.appendChild(tr);
+    if (typeof display != "undefined")
+    {
+        table.setAttribute("style","display:" + display)
+    }
+    return table;
+}
+AutoPagring.prototype.createRelatedSearchPrompt= function (doc,options,index,div)
+{
+    var container = doc.createElement("div");
+    container.setAttribute("class","AutoPager_Related");
+    container.setAttribute("id","ap_related_" + index);
+    var sops = this.createRelatedSearchTable (doc,options,index,div)
+
+    container.appendChild(sops);
+    return container;
+}
+AutoPagring.prototype.removeRelatedTable = function (doc)
+{
+     this.relatedSearchOptions = null
+     var nodes = autopagerXPath.evaluate(doc,"//div[@class='AutoPager_Related']",true);
+     for(var i=0;i<nodes.length;i++)
+     {
+         var n = nodes[i];
+         n.parentNode.removeChild(n)
+     }
+}
+AutoPagring.prototype.createRelatedTable = function (doc,options,div,search,related,index,urlTemplate)
+{
+    var container = doc.createElement("div");
+    
+    container.setAttribute("class","AutoPager_Related");
+    container.setAttribute("id","ap_related_" + index);
+    if (!related || related.length==0)
+        return container;
+
+    var Me = this
+    var h2 = doc.createElement("h2");
+    h2.textContent = search + " related searches:";
+    
+    var tr1 = doc.createElement("tr");
+    var td1 = doc.createElement("td");
+    tr1.appendChild(td1);
+    td1.appendChild(h2);
+    td1 = doc.createElement("td");
+    tr1.appendChild(td1);
+    container.appendChild(tr1);
+    container.addEventListener("mouseover",function(e){
+        var op = doc.getElementById("ap_search_option_" + index)
+        if (op)
+            op.style.setProperty("display", "block", null);
+        else{
+            var s = Me.createRelatedSearchOptions(doc,options,index,div)
+            td1.appendChild(s)
+        }
+
+    },false)
+    container.addEventListener("mouseout",function(e){
+        if (e.target.tagName == "SELECT")
+            return;
+        var op = doc.getElementById("ap_search_option_" + index)
+        if (op)
+            op.style.setProperty("display", "none", null)
+    },false);
+
+    var cols = 4;//this.getCols (related);
+    var rows = Math.ceil(related.length/cols)
+    
+    var t = doc.createElement("table");
+    for(var r=0;r<rows;r++)
+    {
+        var tr = doc.createElement("tr");
+        for(var c=0;c<cols;c++)
+        {
+            var td =doc.createElement("td");
+            td.style.setProperty("padding-right","18px",null);
+            var pos = r*cols + c
+            if (pos<related.length)
+            {
+                var v = related[r*cols + c];
+                var a = doc.createElement("a");
+                a.innerHTML = v.replace(search, "<b>" + search + "</b>");
+                a.setAttribute("href",urlTemplate.replace("{num}",pos).replace("{query}",encodeURIComponent(v)));
+                a.setAttribute("target","_blank");
+                td.appendChild(a);
+            }
+            tr.appendChild(td);
+        }
+        t.appendChild(tr)
+    }
+    container.appendChild(t);
+    return container;
+}
+
 AutoPagring.prototype.scrollWindow = function(container,doc) {
     if (typeof doc == "undefined" || doc == null ||
         typeof doc.documentElement == "undefined" ||
@@ -1578,7 +1905,7 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
                 var contained = true;
                 for(var i=0;i<nodes.length;i++)
                 {
-                    if (!autopagerUtils.contains(n,nodes[i]))
+                    if (!autopagerUtils.containsNode(n,nodes[i]))
                     {
                         contained = false;
                         break;
@@ -1595,7 +1922,7 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
 //                        paging.clearnedTime = new Date().getTime()
                     }
                 }
-                //autopagerUtils.contains(n,a)
+                //autopagerUtils.containsNode(n,a)
 //                autopagerBwUtil.consoleLog(evt.type + ":" +  p.tagName + ":" + p.id  + ":" + p.getAttribute('class')
 //                    + " -- " + n.tagName + ":" + n.id + ":" + n.getAttribute('class') + "::" + nodes.length + ": " + cleared)
             }
