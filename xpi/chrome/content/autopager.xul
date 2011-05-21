@@ -15,10 +15,6 @@
         ondialogextra1="return handleApplyButton()"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     
-    <stringbundleset id="autopagerStringbundleset">
-        <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
-    </stringbundleset>
-    
     <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
@@ -273,6 +269,7 @@
                                         </menupopup>
                                     </menulist>
                                 </hbox>
+                                <vbox id="settingUpdateContainer">
                                 <label control="settingUpdatePeriod" value="&setting.label.lblUpdate;" keyword="Update Interval"/>
                                 <menulist id="settingUpdatePeriod" >
                                     <menupopup>
@@ -286,6 +283,7 @@
                                         <menuitem label="&setting.update.never;" value="0"/>
                                     </menupopup>
                                 </menulist>
+                                </vbox>
                                 <hbox align="center">
                                     <label control="settingxpath" value="&setting.label.lblSettingXPath;" keyword="Rule XPath"/>
                                     <textbox id="settingxpath" flex="1"/>

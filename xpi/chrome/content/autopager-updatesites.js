@@ -25,8 +25,7 @@ AutoPagerNS.AutoPagerUpdateSite=function (owner,locales,url,contenttype,desc,fil
         this.updateType = AutoPagerNS.AutoPagerUpdateTypes.getType(typeName);
         this.callback = this.updateType.callback;
         this.updateperiod = updateperiod;//use global setting
-
-		this.backupUrls = backupUrls;
+        this.backupUrls = backupUrls;
     }
     this.triedTime=0;
 	this.triedBackup = 0;
@@ -124,17 +123,6 @@ AutoPagerNS.AutoPagerUpdateTypes =
                         "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
                         "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
-//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("chinalist","all",
-//                        "http://www.quchao.com/projects/chinalist/","text/html; charset=utf-8",
-//                        "pagerization chinalist configurations",
-//                        "chinalist.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",168,[]));
-            
-//            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
-//                        "http://blogs.sun.com/wind/entry/autopager_site_config#comments","text/html; charset=utf-8",
-//                        "configurations added to blog",
-//                        "blogcomments.xml","//div[@class='comment even' or @class='comment odd']",false,"autopager-freetext",0,[]));
-//
-//
             sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
                         "default configurations on autopager.mozdev.org",

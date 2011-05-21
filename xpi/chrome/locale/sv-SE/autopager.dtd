@@ -1,4 +1,4 @@
-<!ENTITY autopager-workshop.button.modifyXPath.label "...">
+<!ENTITY autopager-workshop.button.modifyXPath.label "…">
 <!ENTITY autopager-workshop.label.value "Ramar">
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Sidhållare">
@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "Testa XPath">
 <!ENTITY autopager.status.testXPathTip "Testa XPath och XPath på webbsidan.">
 <!ENTITY autopager.status.update "Uppdatera inställningar online">
-<!ENTITY autopager.status.updateTip "Uppdatera AutoPagers inställningar från http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updateTip "Uppdatera AutoPagers inställningar från Rules Repositories.">
 <!ENTITY autopager.status.xpathUtils "XPath-verktyg">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPagers verkstad för webbplatsinställningar">
@@ -69,7 +69,7 @@
 <!ENTITY checkbox.ir.label "Inkludera rekommenderade regler">
 <!ENTITY label.Usages.value "Användning">
 <!ENTITY label.idsLabel.value "Valda regel-ID:n (separera med kommatecken &apos;,&apos;)">
-<!ENTITY label.lazyLoad "Lazy load image src attribute">
+<!ENTITY label.lazyLoad "Uppskjuten inläsning av bildkällattribut">
 <!ENTITY label.monitorXPathLbl.value "Övervaka XPath:">
 <!ENTITY label.value "Antal">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -126,7 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "Filter-XPath (ignorera objekt på de nya sidorna):">
 <!ENTITY setting.label.grpSmart "Smart sidväxling">
 <!ENTITY setting.label.hotkeys "Aktivera/Inaktivera kortkommandon:">
-<!ENTITY setting.label.ignoresite "Ignore Sites">
+<!ENTITY setting.label.ignoresite "Ignorera webbplatser">
 <!ENTITY setting.label.lblContainerXPath "Behållare-XPath:">
 <!ENTITY setting.label.lblDesc "Beskrivning:">
 <!ENTITY setting.label.lblLinkXPath "Länk-XPath:">
@@ -145,7 +145,7 @@
 <!ENTITY setting.label.marginEnd "fönsterhöjd(er)">
 <!ENTITY setting.label.minipages "Minsta antal förinlästa sidor">
 <!ENTITY setting.label.pagebreak "Sidbrytningsstil:">
-<!ENTITY setting.label.showContextMenu "Show autopager context menu">
+<!ENTITY setting.label.showContextMenu "Visa AutoPagers snabbmeny">
 <!ENTITY setting.label.showHelpTips "Visa en hjälptipsbild för varje kontroll, klicka för att se beskrivningen för en viss kontroll">
 <!ENTITY setting.label.showPrompt "Visa frågeruta för enskild ny webbplats">
 <!ENTITY setting.label.showStatusBar "Visa AutoPagers ikon i statusfältet">
@@ -181,14 +181,14 @@
 <!ENTITY statusbar.menu.fix.label "Korrigera problem">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Autokorrigera">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Korrigera problem automatiskt">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
+<!ENTITY statusbar.menuitem.autoPagerReset.label "Återställ alla inställningar">
+<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Återställ alla AutoPagers inställningar">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Felsökning">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Felsökning">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Rensa alla">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Donera">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Visa donationssidan">
-<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Visa relaterad sökning">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Hjälp">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Visa hjälpsidan">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Regler">
@@ -213,7 +213,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Visa alltid Utforska-ikonen">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPagers kärninställningar">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Attribut för uppskjuten inläsning av bild">
 <!ENTITY textbox.monitorXPath.tooltiptext "Rensa inlästa sidor när element kopplade till följande XPath klickas eller ändras">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Lägg till webbplats">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Rensa alla">

@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "測試 XPath">
 <!ENTITY autopager.status.testXPathTip "在此網頁測試 XPath">
 <!ENTITY autopager.status.update "線上更新">
-<!ENTITY autopager.status.updateTip "從 http://blogs.sun.com/wind/entry/autopager_site_config 線上更新網站設定值">
+<!ENTITY autopager.status.updateTip "從 Rules Repositories 線上更新網站設定值">
 <!ENTITY autopager.status.xpathUtils "XPath 工具">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager 網站設定工作室">

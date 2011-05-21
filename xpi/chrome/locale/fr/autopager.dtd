@@ -1,5 +1,5 @@
-<!ENTITY autopager-workshop.button.modifyXPath.label "...">
-<!ENTITY autopager-workshop.label.value "Frames">
+<!ENTITY autopager-workshop.button.modifyXPath.label "…">
+<!ENTITY autopager-workshop.label.value "Cadres">
 <!ENTITY autopager.label.value "AutoPager">
 <!ENTITY autopager.menu.autopager-hidden-panel-menu.label "Détenteur de la page">
 <!ENTITY autopager.menu.autopager-immedialate-load.key "i">
@@ -22,26 +22,26 @@
 <!ENTITY autopager.sanitizer.entry.confirm "Voulez-vous effacer la confirmation de site AutoPager ?">
 <!ENTITY autopager.sidebarTitle "Atelier de paramétrage en ligne d'AutoPager">
 <!ENTITY autopager.status.createXPath "Créer une expression XPath">
-<!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page.">
+<!ENTITY autopager.status.createXPathTip "Créer une expression XPath en sélectionnant un nœude sur la page">
 <!ENTITY autopager.status.disableOnSite "Désactiver pour le site">
 <!ENTITY autopager.status.disableOnSiteTip "Désactiver pour le site">
 <!ENTITY autopager.status.enabled "Activé">
-<!ENTITY autopager.status.enabledTip "État d'activation d'AutoPager.">
+<!ENTITY autopager.status.enabledTip "État d'activation d'AutoPager">
 <!ENTITY autopager.status.export "Exporter les paramètres">
-<!ENTITY autopager.status.exportTip "Exporter les paramètres d'Auto Pager.">
+<!ENTITY autopager.status.exportTip "Exporter les paramètres d'Auto Pager">
 <!ENTITY autopager.status.exportclip "Exporter vers le presse-papiers">
 <!ENTITY autopager.status.exportclipTip "Exporter les paramètres d'Auto Pager vers le presse-papiers">
 <!ENTITY autopager.status.exportfile "Exporter vers un fichier">
-<!ENTITY autopager.status.exportfileTip "Exporter les paramètres d'Auto Pager vers un fichier.">
+<!ENTITY autopager.status.exportfileTip "Exporter les paramètres d'Auto Pager vers un fichier">
 <!ENTITY autopager.status.importclip "Importer depuis le presse-papiers">
 <!ENTITY autopager.status.importclipTip "Importer les paramètres d'AutoPager depuis le contenu du presse-papiers">
 <!ENTITY autopager.status.importexport "Importer / exporter">
 <!ENTITY autopager.status.importfile "Importer depuis un fichier">
-<!ENTITY autopager.status.importfileTip "Importer les paramètres d'AutoPager depuis un fichier.">
+<!ENTITY autopager.status.importfileTip "Importer les paramètres d'AutoPager depuis un fichier">
 <!ENTITY autopager.status.importurl "Importer depuis une URL">
-<!ENTITY autopager.status.importurlTip "Importer les paramètres d'AutoPager depuis une URL.">
+<!ENTITY autopager.status.importurlTip "Importer les paramètres d'AutoPager depuis une URL">
 <!ENTITY autopager.status.myname "Mon nom :">
-<!ENTITY autopager.status.mynameTip "Votre nom. Il sera lié à ce que vous avez créé durant le paramétrage.">
+<!ENTITY autopager.status.mynameTip "Votre nom, qui sera lié à ce que vous avez créé durant le paramétrage">
 <!ENTITY autopager.status.reportSite "Rapporter un problème sur le site">
 <!ENTITY autopager.status.reportSiteTip "Rapporter un problème sur le site">
 <!ENTITY autopager.status.requestHelp "Demander de l'aide sur le site">
@@ -49,20 +49,20 @@
 <!ENTITY autopager.status.setting "Configuration…">
 <!ENTITY autopager.status.settingTip "Paramètres d'AutoPager">
 <!ENTITY autopager.status.showabout "À propos">
-<!ENTITY autopager.status.showaboutTip "À propos d'AutoPager.">
+<!ENTITY autopager.status.showaboutTip "À propos d'AutoPager">
 <!ENTITY autopager.status.showoption "Options de la page">
-<!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page.">
+<!ENTITY autopager.status.showoptionTip "Voir les options concernant cette page">
 <!ENTITY autopager.status.sitewizard "Assistant pour le site">
 <!ENTITY autopager.status.sitewizardTip "Créer des paramètres pour ce site grâce à l'assistant">
 <!ENTITY autopager.status.testXPath "Test du XPath">
-<!ENTITY autopager.status.testXPathTip "Faire le test d'une expression XPath étant sur la page.">
+<!ENTITY autopager.status.testXPathTip "Faire le test d'une expression XPath étant sur la page">
 <!ENTITY autopager.status.update "Mise à jour des paramètres">
-<!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d'AutoPager depuis http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updateTip "Mettre à jour les paramètres d'AutoPager depuis Rules Repositories">
 <!ENTITY autopager.status.xpathUtils "Utilitaires XPath">
 <!ENTITY autopager.toolbarLabel "Atelier de paramétrage en ligne d'AutoPager">
 <!ENTITY autopager.tooltip "Atelier de paramétrage en ligne d'AutoPager">
-<!ENTITY button.modifyContainerXPath.label "...">
-<!ENTITY button.modifyLinkXPath.label "...">
+<!ENTITY button.modifyContainerXPath.label "…">
+<!ENTITY button.modifyLinkXPath.label "…">
 <!ENTITY caption.results-caption.label "Résultats">
 <!ENTITY caption.results-caption2.label "Résultats">
 <!ENTITY checkbox.chkForceJS.label "Activer le mode Javascript">
@@ -126,7 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "Filtre XPath (ignore les éléments des nouvelles pages) :">
 <!ENTITY setting.label.grpSmart "Pagination intelligente">
 <!ENTITY setting.label.hotkeys "Activer / désactiver les raccourcis-clavier :">
-<!ENTITY setting.label.ignoresite "Ignore Sites">
+<!ENTITY setting.label.ignoresite "Ignorer les sites">
 <!ENTITY setting.label.lblContainerXPath "Conteneur XPath :">
 <!ENTITY setting.label.lblDesc "Description :">
 <!ENTITY setting.label.lblLinkXPath "Lien XPath :">

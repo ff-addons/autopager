@@ -1,87 +1,28 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * Version: MPL 1.1/GPL 2.0/LGPL 2.1
- *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
- *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
- *
- * The Original Code is AutoPager code.
- *
- * The Initial Developer of the AutoPager is
- * Wind Li
- * Portions created by the Initial Developer are Copyright (C) 2007
- * the Initial Developer. All Rights Reserved.
- *
- * Contributor(s):
- *
- * Alternatively, the contents of this file may be used under the terms of
- * either of the GNU General Public License Version 2 or later (the "GPL"),
- * or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
- * in which case the provisions of the GPL or the LGPL are applicable instead
- * of those above. If you wish to allow use of your version of this file only
- * under the terms of either the GPL or the LGPL, and not to allow others to
- * use your version of this file under the terms of the MPL, indicate your
- * decision by deleting the provisions above and replace them with the notice
- * and other provisions required by the GPL or the LGPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL, the GPL or the LGPL.
- *
- * ***** END LICENSE BLOCK ***** */
-
 var autopagerMain = 
 {
     autopagerPrefs : null,
     autopagerDebug : false,
     workingAllSites:null,
-    addonsList : null,
-    flashIconNotify: false,
-    lastScrollWatchExecuteTime: 0,
-    tweakingSession: false,
 autopagerOnLoad : function() {
-    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+    autopagerUtils.updateStatusIcons();
     autopagerMain.getAutopagerPrefs();
-    autopagerMain.tweakingSession = autopagerPref.loadBoolPref("tweaking-session");
     window.addEventListener("DOMContentLoaded", autopagerMain.onContentLoad, false);
     window.addEventListener("load", autopagerMain.onContentLoad, false);
     window.addEventListener("beforeunload", autopagerMain.onPageUnLoad, true);
-    try{
-        if (getBrowser && getBrowser() && getBrowser().mTabContainer)
-        {
-            getBrowser().mTabContainer.addEventListener("TabSelect", autopagerMain.TabSelected, false);
-        }
-    }catch(e){}
-    window.addEventListener("unload", function(){
-        window.removeEventListener("unload", arguments.callee, false);
-        if (getBrowser && getBrowser() && getBrowser().mTabContainer)
-        {
-            getBrowser().mTabContainer.removeEventListener("TabSelect", autopagerMain.TabSelected, false);
-        }
-    }, false);
-
-    //window.onscroll = autopagerMain.scrollWatcher;
-	//window.addEventListener("scroll",autopagerMain.scrollWatcher,false);
+    autopagerUtils.addTabSelectListener(autopagerMain.TabSelected,false)
     window.addEventListener('AutoPagerRefreshPage', this.AutoPagerRefreshPage, true, true);
 
-    //autopagerMain.log("dbclick " + new Date().getTime())
-        window.addEventListener(
+    window.addEventListener(
         'dblclick',function(event){
             if (event.clientX + 20 < window.innerWidth &&
-            event.clientY + 20 < window.innerHeight &&
-            event.clientX > 20 &&
-            event.clientY > 20) {
+                event.clientY + 20 < window.innerHeight &&
+                event.clientX > 20 &&
+                event.clientY > 20) {
                 if (event.ctrlKey == autopagerMain.getCtrlKey() && event.altKey == autopagerMain.getAltKey() && event.shiftKey == autopagerMain.getShiftKey())
                     autopagerMain.saveEnableStat(!autopagerMain.getGlobalEnabled());
             }
         },true
         );
-    //autopagerMain.log("dbclick enabled" + new Date().getTime())
-
 },
 AutoPagerRefreshPage : function(evt){
    switch (evt.type)
@@ -95,45 +36,10 @@ AutoPagerRefreshPage : function(evt){
 TabSelected : function(evt){
     autopagerMain.handleCurrentDoc();
 },
-sitewizard : function(doc) {
-    if (autopagerPref.loadBoolPref("show-workshop-in-sidebar"))
-    {
-        toggleSidebar('autopagerSiteWizardSidebar',true);
-        window.setTimeout(function(){
-            var sidebar = document.getElementById("sidebar");
-            var discoverPath = sidebar.contentDocument.getElementById("discoverPath");
-            discoverPath.doCommand();
-
-        },400);
-    }else
-    {
-        var win=autopagerMain.openWorkshopInDialog(doc.location.href);
-    }
-},
-createXpath : function(doc) {
-    toggleSidebar('autopagerSiteWizardSidebar',true);
-    window.setTimeout(function(){
-        var sidebar = document.getElementById("sidebar");
-        var pickupContentPath = sidebar.contentDocument.getElementById("pickupContentPath");
-        pickupContentPath.doCommand();
-    },200);
-    //document.autopagerXPathModel = "test";
-    //autopagerMain.enableSelector(doc,true);
-},
-testXPathTest : function(doc) {
-    toggleSidebar('autopagerSiteWizardSidebar',true);
-    window.setTimeout(function(){
-        var sidebar = document.getElementById("sidebar");
-        var contentXPath = sidebar.contentDocument.getElementById("contentXPath");
-        contentXPath.focus();
-    },200);
-    //document.autopagerXPathModel = "test";
-    //autopagerMain.enableSelector(doc,true);
-},
 onPageUnLoad : function(event) {    
     try
     {
-        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+        autopagerUtils.updateStatusIcons();
 
         var doc = event.originalTarget;
         if (!(doc instanceof HTMLDocument))
@@ -159,15 +65,6 @@ onPageUnLoad : function(event) {
             document.getElementById("autoPagerCreateXPath").setAttribute("checked", false);
         }catch(e){}
 
-
-        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
-    if (browser && browser.autopagerProgressListenerAttached)
-    {
-        browser.removeProgressListener(AutoPagerNS.BrowserProgressListener,
-                    Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
-        browser.autopagerProgressListenerAttached = false;
-        browser.removeAttribute(AutoPagerNS.apSplitbrowse.getSplitKey());        
-    }
 
     autopagerUtils.setAutoPagerObject(doc.documentElement,null);
     }catch(e){}
@@ -243,9 +140,8 @@ doContentLoad : function(event) {
         return false;
 
     autopagerMain.sendEnableEvent(doc);
-    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+    autopagerUtils.updateStatusIcons();
 //    autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
-    autopagerMain.flashIconNotify = autopagerPref.loadBoolPref("flashIconNotify");
 	if (!autopagerMain.loadEnableStat() && doc.documentElement.forceLoadPage==0)
 		return false;
     try{
@@ -265,31 +161,6 @@ doContentLoad : function(event) {
       }
     }
     return false;
-  },
-  prepareSessionTweaking : function (doc)
-  {
-      if (!autopagerBwUtil.supportHiddenBrowser() || autopagerBwUtil.isFennec())
-      {
-        return;
-      }
-
-      if (autopagerMain.tweakingSession && doc.defaultView.top == doc.defaultView)
-      {
-          if (!doc.documentElement.autopagerTweakingMonitorAdded)
-          {
-              doc.documentElement.autopagerTweakingMonitorAdded = true;
-              window.addEventListener("click", autopagerMain.tweakingSessionMonitor, false);
-              window.addEventListener("scroll", autopagerMain.tweakingSessionMonitor, false);
-          }        
-      }    
-  },
-  tweakingSessionMonitor : function (e)
-  {
-      var doc = content.document
-      var pos = 0;
-      if (e.screenY)
-          pos = e.clientY;
-      autopagerMain.changeSessionUrlByScrollHeight(doc,pos);
   },
   Copy : function (container,doc)
   {
@@ -372,7 +243,7 @@ loadTempConfig : function() {
             site.maxLinks = smartlinks;
             site.enableJS = false;
             site.isTemp = true;
-            site.tmpPaths =  autopagerMain.convertToXpath(smarttext);
+            site.tmpPaths =  autopagerXPath.convertToXpath(smarttext);
             
             site.fixOverflow = false;
             site.margin = autopagerPref.loadPref("smartMargin");
@@ -383,47 +254,6 @@ loadTempConfig : function() {
         }
     }
     return sites;
-},
-convertToXpath : function(str) {
-    var xpaths = new Array();
-    var strs = str.split("|");
-    for(var i=0;i<strs.length;++i)
-        strs[i] = strs[i].toLowerCase();
-    for(var i=0;i<strs.length;++i) {
-        var strCon =  autopagerMain.convertStringToXPath(strs[i],"");
-        if (strCon.length >0)
-            xpaths.push( "//a[" + strCon + "] | //input[" + strCon + "]");
-    }
-    return xpaths;
-},
-xpathToLowerCase : function(str) {
-    return "translate(" + str +", 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')";
-},
-convertStringToXPath : function(str,dir) {
-    var xi="";
-    
-    if (str.length>0) {
-        xi = autopagerMain.appendOrCondition(xi,  dir + autopagerMain.xpathToLowerCase("text()") + " ='" + str + "'");
-        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@id and " +    autopagerMain.xpathToLowerCase(dir +"@id") + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@name and " + autopagerMain.xpathToLowerCase(dir + "@name") + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "@class and " + autopagerMain.xpathToLowerCase(dir + "@class") + "='" + str + "')");
-        xi = autopagerMain.appendOrCondition(xi,  "(" +  dir + "img and (" +   autopagerMain.xpathToLowerCase(dir +"img/@src") + "='" + str + "' or " + 
-         autopagerMain.xpathToLowerCase("substring(" + dir + "img/@src,1, " + str.length + ")") + "='" + str + "'))");
-    }
-    return xi;
-},
-getCapString : function(str)
-{
-    return str.substring(0,1).toUpperCase() + str.substring(1);
-},
-appendOrCondition : function(base,newStr) {
-    if (base.length > 0) {
-        if (newStr.length > 0)
-            return base + " or " + newStr;
-        else
-            return base;
-    }
-    return newStr;
 },
 getAutopagerPrefs : function () {
     if (this.autopagerPrefs == null && (typeof Components == 'object')) {
@@ -440,8 +270,7 @@ fixOverflow : function(doc) {
     var nodes = autopagerMain.findNodeInDoc(doc,"//*[contains(@style,'overflow')][not(@className = 'clsCleekiComponent')]",false);
     if (nodes != null) {
         for(var i = 0;i<nodes.length;++i) {
-            var node = nodes[i];
-            
+            var node = nodes[i];            
             node.style.overflow = "visible";
         }
     }
@@ -629,24 +458,8 @@ onInitDoc : function(doc,safe)
 
             var de = doc.documentElement;
             if (typeof de.autoPagerRunning == "undefined" || !de.autoPagerRunning) {
-                autopagerMain.prepareSessionTweaking(doc);
-
-                if (sitepos.site.ajax)
-                {
-                    var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
-                    if (browser && !browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey()))
-                    {
-                        if (!browser.autopagerProgressListenerAttached)
-                        {
-                            de.setAttribute('autopagerAjax',sitepos.site.ajax);
-                            doc.autopagerAjax = sitepos.site.ajax
-//                            browser.addProgressListener(AutoPagerNS.BrowserProgressListener,
-//                                Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
-                            browser.autopagerProgressListenerAttached = true;
-                        }
-                    }
-                }
-
+                paging.prepareSessionTweaking(doc);
+                
                 de.patternRegExp = pattern;
                 de.autopagerHasMatchedURL=true;
                 var insertPoint = null;
@@ -749,9 +562,9 @@ onInitDoc : function(doc,safe)
                     var sh = (doc && doc.scrollHeight)
                     ? doc.scrollHeight : doc.body.scrollHeight;
                     h = sh - maxH;
-                    de.contentBottomMargin = h>0?h:0;
+                    paging.contentBottomMargin = h>0?h:0;
                 }else
-                    de.hasContentXPath = false;
+                    paging.hasContentXPath = false;
 
                 autopagerUtils.setAutoPagerObject(de,paging)
                 //if (sitepos.site.enabled)
@@ -802,7 +615,7 @@ onInitDoc : function(doc,safe)
                 if (urlNodes != null && urlNodes.length >0)
                 {
                     nextUrl = autopagerMain.getNextUrl(doc,
-                        autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.enableJS || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
+                        autopagerBwUtil.supportHiddenBrowser() && (sitepos.site.enableJS || !sitepos.site.contentXPath || sitepos.site.contentXPath.length==0 || (!sitepos.site.fixOverflow &&  autopagerPref.loadBoolPref("alwaysEnableJavaScript")))
                         ,urlNodes[0]);
                     paging.enableJS = autopagerBwUtil.supportHiddenBrowser() && (paging.enableJS  || nextUrl.constructor != String);
                     autopagerMain.watchForNodeChange(nextUrl.parentNode);
@@ -830,6 +643,7 @@ onInitDoc : function(doc,safe)
                 paging.autopagerUseSafeEvent = (doc.defaultView.top != doc.defaultView) || (!sitepos.site.quickLoad);
                 de.setAttribute('fixOverflow',sitepos.site.fixOverflow);
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
+                de.setAttribute('linkXPath',sitepos.site.linkXPath);
                 de.setAttribute('containerXPath',sitepos.site.containerXPath);
                 de.setAttribute('autopagerSettingOwner',sitepos.site.owner);
                 de.setAttribute('autopagerVersion',autopagerUtils.version);
@@ -894,6 +708,19 @@ onInitDoc : function(doc,safe)
                 //paging.intervalId = window.setInterval(paging.tmpInterval, 200);
                 //doc.removeEventListener("scroll",function(event){paging.scrollWatcher(event)},false);
                 doc.addEventListener("scroll",paging.tmpScrollWatcher,false);
+                if (paging.site.containerXPath)
+                {
+                    var autopagerContainer = autopagerMain.findNodeInDoc(de,paging.site.containerXPath,false);
+                    if (autopagerContainer!=null)
+                    {
+                        for(var c =0;c<autopagerContainer.length;c++)
+                        {
+                            var scrollContainer = autopagerContainer[0];
+                            scrollContainer.addEventListener("scroll",paging.tmpScrollWatcher,false);
+                        }
+                    }
+                }
+
                 if (!autopagerBwUtil.supportHiddenBrowser())
                     window.addEventListener("beforeunload",paging.tmpPageUnLoad,true);
                 else if(doc.defaultView)
@@ -979,7 +806,6 @@ monitorForCleanPages : function (doc,paging)
             doc.documentElement.addEventListener("DOMNodeInserted", monitor, false);
 //        }
 
-        //autopagerMain.removeUrlClickTrack(doc);
     }
 },
 cleanMonitorForCleanPages : function (doc,paging)
@@ -1005,7 +831,6 @@ cleanMonitorForCleanPages : function (doc,paging)
             doc.documentElement.removeEventListener("DOMNodeInserted", monitor, false);
 //        }
 
-        //autopagerMain.removeUrlClickTrack(doc);
     }
 },
 onClearLoadMonitor : function (evt)
@@ -1333,7 +1158,7 @@ disableOnSite : function(target,doc) {
         }catch(e){
             autopagerMain.alertErr("Exception:" + e);
         }
-        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+        autopagerUtils.updateStatusIcons();
 },
 requestHelp : function(target,d) {
     autopagerMain.reportSite(target,d);
@@ -1382,10 +1207,12 @@ createDiv : function(doc,id,style) {
         div.style.cssText = style;
     return div;
 },
-getSelectorDiv : function(doc,divName) {
+getSelectorDiv : function(doc,divName,color) {
     var div = doc.getElementById(divName);
+    if (typeof color == "undefined")
+        color = "orange";
     if (!div) {
-        var style ="border: 2px solid orange; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;"; 
+        var style ="border: 2px solid " + color + "; margin: 0px; padding: 0px; position: absolute; width: 0px; display: block; z-index: 65534; left: -100px; top: -100px; height: 0px;";
         div = autopagerMain.createDiv(doc,divName,style);
     }
     return div;
@@ -1540,12 +1367,12 @@ myGetWindowDimensions : function (doc)
 	}
 	return out;
 },
-createRegionDivs : function(doc,target,subfix) {
+createRegionDivs : function(doc,target,subfix,color) {
     var margin = 3;
-    var leftDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix);
-    var rightDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderRight" + subfix);
-    var topDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderTop" + subfix);
-    var bottomDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderBottom" + subfix);
+    var leftDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderLeft" + subfix,color);
+    var rightDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderRight" + subfix,color);
+    var topDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderTop" + subfix,color);
+    var bottomDiv =autopagerMain.getSelectorDiv(doc,"autoPagerBorderBottom" + subfix,color);
     var left = autopagerMain.getOffsetLeft(target);
     var top = autopagerMain.getOffsetTop(target);
     
@@ -1972,74 +1799,6 @@ removeElementByXPath : function (xpe,aExpr,nsResolver,node)
 
 },
 xpath :"//table[tbody/tr/td/@class='f']",
-changeSessionUrlByScrollHeight : function (container,pos)
-{
-    if (autopagerMain.tweakingSession && container.defaultView.top == container.defaultView)
-    {
-        var de = container.documentElement;
-        if (!autopagerUtils.getAutoPagerObject(de))
-            return;
-        var a = autopagerUtils.getAutoPagerObject(de).autopagerPageHeight
-        if (!a)
-            return;
-        var st = (container && container.documentElement &&  container.documentElement.scrollTop)
-					? container.documentElement.scrollTop : container.body.scrollTop;
-        for(var i=a.length-1;i>=0;i--)
-        {
-            if ((st + pos)>a[i] - container.documentElement.contentBottomMargin)
-            {
-                var url = autopagerUtils.getAutoPagerObject(de).autopagerPageUrl[i];
-                autopagerMain.changeSessionUrl(container, url,i);
-                return;
-            }
-        }
-        autopagerMain.changeSessionUrl(container, container.location.href,1);
-    }
-},
-changeSessionUrl : function (container, url,pagenum)
-{
-        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(container);
-        var webNav = browser.webNavigation;
-        var newHistory = webNav.sessionHistory;
-
-        newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
-        var entry = newHistory.getEntryAtIndex(newHistory.index,false).QueryInterface(Components.interfaces.nsISHEntry);
-        //autopagerBwUtil.consoleLog(url)
-        if (entry==null || entry.URI==null || entry.URI.spec==url)
-        {
-            return;
-        }
-        if (newHistory.index==0 ||
-            (newHistory.getEntryAtIndex(newHistory.index-1,false)
-            .QueryInterface(Components.interfaces.nsISHEntry) &&
-             !newHistory.getEntryAtIndex(newHistory.index-1,false)
-            .QueryInterface(Components.interfaces.nsISHEntry).URI.spec == container.location.href))
-        {
-            var newEntry = AutoPagerNS.apSplitbrowse.cloneHistoryEntry(entry);
-            if (newEntry)
-            {
-                var uri = autopagerConfig.getRemoteURI(url);
-                newEntry.setURI (uri);
-                var histories = [];
-                //copy all forward enties
-                for(var i =newHistory.index+1 ;i<newHistory.count;i++)
-                {
-                    histories.push(newHistory.getEntryAtIndex(i,false).QueryInterface(Components.interfaces.nsISHEntry));
-                }
-                for(var i=0;i<histories.length;i++)
-                {
-                    newHistory.addEntry(histories[i], true);
-                }
-                newHistory.addEntry(newEntry, true);
-                newEntry.saveLayoutStateFlag= false;
-            }
-        }
-        else{
-            var uri = autopagerConfig.getRemoteURI(url);
-            entry.setURI (uri);
-            entry.saveLayoutStateFlag= false;
-        }
-},
 getNavImage : function(nav){
     return "<img align='top' style='border: 0pt;height:18px;float:none;display:inline' src='" +autopagerPref.loadPref("images-prefix") + nav+ "_24.png' alt='" + autopagerUtils.autopagerGetString("nav" + nav) + "' />";
 },
@@ -2071,7 +1830,7 @@ return links;
 getNextUrl : function(container,enableJS,node) {
     if(node == null)
         return null;
-    if (!enableJS && (node.tagName == "A" || node.tagName == "a"))
+    if (!enableJS && ((node.tagName == "A" || node.tagName == "a")) && node.href && (node.href.indexOf("javasript:")!=0))
         return autopagerMain.fixUrl(container,node.href,node.getAttribute("href"));
     if (node.tagName == "INPUT")
         return node;
@@ -2080,17 +1839,15 @@ getNextUrl : function(container,enableJS,node) {
 },
 getPagingWatcherDiv : function(doc,create)
 {
-	var divName = "autoPagerBorderPaging";
+    var divName = "autoPagerBorderPaging";
     var div = doc.getElementById(divName);
     if (create && !div) {
         var str = autopagerUtils.autopagerGetString("loading");
-    var style = autopagerMain.getLoadingStyle();
+        var style = autopagerMain.getLoadingStyle();
         div = autopagerMain.createDiv(doc,divName,style);
         div.innerHTML = str;//"<b>Loading ...</b>";
-        
     }
     return div;
-	
 },
 HighlightNextLinks : function(doc)
 {
@@ -2101,7 +1858,7 @@ HighlightNextLinks : function(doc)
     if (urlNodes == null || urlNodes.length == 0)
         return;
     for(var i=0;i<urlNodes.length;i++)
-        autopagerMain.createRegionDivs(doc,urlNodes[i],i);
+        autopagerMain.createRegionDivs(doc,urlNodes[i],i,"blue");
     if (doc.documentElement.autopagerHighlightedNextLinkCount==null)
         doc.documentElement.autopagerHighlightedNextLinkCount = 0;
     if (doc.documentElement.autopagerHighlightedNextLinkCount<urlNodes.length)
@@ -2151,7 +1908,7 @@ enabledInNextPagesAlways : function(doc,always)
         var guid = doc.documentElement.getAttribute("autopagerGUID");
         autopagerConfig.addConfirm(autopagerConfig.getConfirm(),guid,countNumber,host,true);
         autopagerConfig.saveConfirm(autopagerConfig.getConfirm());
-        autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+        autopagerUtils.updateStatusIcons();
     }
 },
 enabledInThisTime : function(doc,enabled)
@@ -2200,7 +1957,7 @@ enabledThisSite : function(doc,enabled)
     if (typeof autopagerUtils.getAutoPagerObject(doc.documentElement) != "undefined" &&
         typeof autopagerUtils.getAutoPagerObject(doc.documentElement).scrollWatcher != "undefined")
         autopagerUtils.getAutoPagerObject(doc.documentElement).scrollWatcher(doc);
-    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+    autopagerUtils.updateStatusIcons();
 },
 enabledInThisSession : function(doc,enabled)
 {
@@ -2390,52 +2147,7 @@ setLoadingStyle : function(value)
         //autopagerMain.alertErr(e);
     }
 },
-changeButtonStatus : function (autopagerButton,apStatus)
-{
-        if (autopagerButton)
-        {
-            if (autopagerButton.className.indexOf(" ap-")==-1)
-                autopagerButton.className= autopagerButton.className + " " + apStatus;
-            else
-                autopagerButton.className= autopagerButton.className.substr(0,autopagerButton.className.indexOf(" ap-")) + " " + apStatus;
-        }
-},
-setGlobalEnabled : function(enabled) {
-    
-    //autopagerMain.setGlobalImageByStatus(enabled);
-    if (enabled)
-        autopagerMain.logInfo(autopagerUtils.autopagerGetString("autopageenabled"),autopagerUtils.autopagerGetString("autopageenabledTip"));
-    else
-        autopagerMain.logInfo(autopagerUtils.autopagerGetString("autopagedisabled"),autopagerUtils.autopagerGetString("autopagedisabledTip"));
-    var autopagerButton = document.getElementById("autopager-button");
-    var autopagerButton2= document.getElementById("autopager-button-fennec");
-    if (autopagerButton2){
-        autopagerButton2.setAttribute("hidden", !autopagerLite.isInLiteMode());
-    }
-    var image = document.getElementById("autopager_status");
-    if (autopagerButton!=null || image!=null || autopagerButton2!=null)
-    {
-        var apStatus ="ap-disabled";
-        if (enabled)
-        {
-            if (content && !this.isEnabledOnDoc(content.document))
-                apStatus = "ap-site-disabled";
-            else
-                apStatus = "ap-enabled";
-        }
-        autopagerMain.changeButtonStatus(autopagerButton,apStatus);
-        autopagerMain.changeButtonStatus(autopagerButton2,apStatus);
-         if (image)
-         {
-            if (apStatus =="ap-disabled")
-                image.setAttribute("src", "chrome://autopager/skin/autopager-small.off.gif");
-            else if (apStatus =="ap-enabled")
-                image.setAttribute("src", "chrome://autopager/skin/autopager-small.on.gif");
-            else if (apStatus =="ap-site-disabled")
-                image.setAttribute("src", "chrome://autopager/skin/autopager-small-site.off.gif");
-         }
-    }
-},
+
 logInfo : function(status,tip) {
 //    autopagerBwUtil.consoleLog(status);
 //    autopagerBwUtil.consoleLog(tip);
@@ -2510,13 +2222,6 @@ openSettingForDoc : function(doc)
      }catch(e){}
      autopagerConfig.openSetting(url);
 },
-    openWorkshopInDialog : function(url,obj) {
-        window.autopagerSelectUrl=url;
-        window.autopagerOpenerObj = obj;
-        var win= window.open("chrome://autopager/content/autopager-workshopWin.xul", "autopager-workshopWin",
-                "chrome,resizable,centerscreen,width=700,height=600");
-        return win;
-    },
 changeMyName : function() {
     var name = prompt(autopagerUtils.autopagerGetString("inputname"),autopagerMain.loadMyName());
     if (name!=null && name.length>0) {
@@ -2569,43 +2274,13 @@ alertErr : function(e) {
         else
             autopagerToolbar.removeAutopagerButton();
     },
-    getAddonsList: function _getAddonsList() {
-    if (!autopagerBwUtil.supportHiddenBrowser())
-    {
-        return [];
-    }
-
-    if (this.addonsList==null)
-    {
-  	var extensionDir = Components.classes["@mozilla.org/file/directory_service;1"]
-                          .getService(Components.interfaces.nsIProperties)
-                          .get("ProfD", Components.interfaces.nsIFile);
-    extensionDir.append("extensions");
-  	var entries = extensionDir.directoryEntries;
-
-  	var list = [];
-
-    while (entries.hasMoreElements()) {
-  		var entry = entries.getNext();
-  		entry.QueryInterface(Components.interfaces.nsIFile);
-  		if (!entry.isDirectory())
-        continue;
-  		var guid = entry.leafName;
-  		list.push(guid);
-  	}
-    this.addonsList = list;
-    }
-  	return this.addonsList;
-  },
   getPreloadXPaths : function ()
   {
     var xPathlists = [];
     var extensionsXPath = {
       "{a0d7ccb3-214d-498b-b4aa-0e8fda9a7bf7}": "//style" //WOT
     }
-
-    var list = this.getAddonsList();
-
+    var list = autopagerUtils.getAddonsList();
     var len = list.length;
 
     for (var j = 0; j < len; j++) {
@@ -2637,7 +2312,7 @@ alertErr : function(e) {
     if (autopagerPref.loadBoolPref("show-workshop-in-sidebar"))
         toggleSidebar('autopagerSiteWizardSidebar');
     else
-        autopagerMain.openWorkshopInDialog();
+        autopagerBwUtil.openWorkshopInDialog();
   },
   showHelp : function()
     {
@@ -2657,31 +2332,7 @@ alertErr : function(e) {
  showTutorials : function()
     {
         autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/tutorials.html");
-    },    
- showAbout: function ()
- {         
-   try {
-       var thisAddon = Application.extensions.get("autopager@mozilla.org");
-     var extensionManager = Components.classes["@mozilla.org/extensions/manager;1"]
-       .getService(Components.interfaces.nsIExtensionManager);
-var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRDFRemoteDataSource);
-  if (rds)
-    rds.Flush();
-     var database =
-       Components.classes["@mozilla.org/rdf/datasource;1?name=composite-datasource"]
-       .getService(Components.interfaces.nsIRDFCompositeDataSource);
-
-     database.AddDataSource(extensionManager.datasource);
-   window.openDialog("chrome://mozapps/content/extensions/about.xul",
-                     "autopagerAbout",
-                     "chrome,centerscreen,modal",
-                     "urn:mozilla:item:autopager@mozilla.org",//thisAddon.id,
-                     extensionManager.datasource);
-   } catch (ex) {
-     
-   }
-
- },
+    },
    observe: function(subject, topic, data)
    {
      if (topic != "nsPref:changed")
@@ -2693,7 +2344,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
      {
        case ".enabled":
          try{
-            autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
+            autopagerUtils.updateStatusIcons();
          }catch(e){}         
          break;
        case ".hide-status":
@@ -2706,9 +2357,6 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
             autopagerMain.showToolbarIcon();
          }catch(e){}
          break;
-       case ".tweaking-session":
-           autopagerMain.tweakingSession= autopagerPref.loadBoolPref("tweaking-session");
-           break;
        case ".with-lite-recommended-rules":
            AutoPagerNS.UpdateSites.updateRepositoryOnline("autopagerLite.xml",true);
            break;
@@ -2745,54 +2393,7 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
            break;
 
      }
-   },
-   openCoreOptions : function()
-   {
-       window.open("chrome://autopager/content/options.xul", "autopager-option",
-                "chrome,resizable,centerscreen");
-   },
-    isAutoPagerHiddenWindow : function (doc)
-    {
-        var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
-        return (browser && browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey()))
-    },
-    removeUrlClickTrack : function (doc)
-    {
-        var links = autopagerMain.findNodeInDoc(doc,"//div[@id='navcnt']//a[@href]",false);
-        try {
-            for (var i=0;i<links.length;i++) {
-                var thisLink = links[i];
-                thisLink.addEventListener("mousedown",function(event) {
-                    event.preventDefault();
-                    return true;
-                },true);
-                thisLink.addEventListener("click",function(event) {
-                    event.preventDefault();
-                    event.target.ownerDocument.location.href = event.target.href;
-                    return true;
-                },true);
-            }
-
-            // sneaky google sometimes bypass the above, this will fix it
-            if (doc.defaultView)
-                doc.defaultView.clk = function() { };        
-            window.clk = function() { };
-        }
-        catch (e) {
-            autopagerMain.alertErr(e)
-        }
-    }
-    ,changeIds : function(node,doc,container)
-    {
-        if (node.id)
-        {
-            var id = node.id
-            while(doc.getElementById(id))
-            {
-                id = node.id + Math.random();
-            }
-        }
-    }
+   }
     ,sendEnableEvent:function(doc)
     {
         var event = doc.createEvent("Events");
@@ -2805,73 +2406,5 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
         }catch(e)
         {}
         
-    }
-};
-
-
-AutoPagerNS.BrowserProgressListener = {
-    onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
-    {
-        const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
-        const nsIChannel = Components.interfaces.nsIChannel;
-
-//        autopagerBwUtil.consoleLog("onStateChange:" + aStateFlags + ":" + aStatus +":"
-//        + (aStateFlags & nsIWebProgressListener.STATE_START &&
-//            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) + ":"
-//        + (aStateFlags & nsIWebProgressListener.STATE_STOP &&
-//            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK));
-
-        if (!aWebProgress.isLoadingDocument  && (aStateFlags & nsIWebProgressListener.STATE_STOP) &&
-            (aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK))
-        {
-            window.setTimeout(function(){
-                if (!(!aWebProgress.isLoadingDocument 
-                        && aWebProgress.QueryInterface(Components.interfaces.nsIWebProgress)
-                        && aWebProgress.DOMWindow
-                        && aWebProgress.DOMWindow.document
-                        && aWebProgress.DOMWindow.document.location
-                        && aWebProgress.DOMWindow.document.location.href))
-                    return;
-                //autopagerBwUtil.consoleLog(aWebProgress.DOMWindow.document.location.href)
-                autopagerMain.onContentLoad(aWebProgress.DOMWindow.document);
-        },1000);
-
-        }
-
-    },
-    onStatusChange : function(webProgress, request, status, message)
-    {
-//        return;
-    },
-    onLocationChange : function(webProgress, request, location)
-    {
-        //autopagerBwUtil.consoleLog(location.spec)
-        if (!webProgress.isLoadingDocument
-            && webProgress.DOMWindow
-            && webProgress.DOMWindow.document
-            && webProgress.DOMWindow.document.autopagerAjax)
-        {
-            window.setTimeout(function(){
-                autopagerMain.clearLoadedPages(webProgress.DOMWindow.document);
-        },1000);
-        }
-//        return;
-    },
-    onProgressChange : function(webProgress, request,
-        curSelfProgress, maxSelfProgress,
-        curTotalProgress, maxTotalProgress) {
-//        return;
-    },
-    onSecurityChange : function(webProgress, request, state)
-    {
-//        return;
-    },
-    QueryInterface : function(aIID)
-    {
-        if (aIID.equals(Components.interfaces.nsIWebProgressListener) ||
-            aIID.equals(Components.interfaces.nsISupportsWeakReference) ||
-            aIID.equals(Components.interfaces.nsISupports))
-            return this;
-        throw Components.results.NS_NOINTERFACE;
     }
 };

@@ -357,7 +357,7 @@ function SiteItem(parent, site) {
 }
 SiteItem.prototype = new autopagerTreeView();
 
-function getLevels(allSites,firstItem,filter)
+function getLevels(allSites,firstItem,filter,select)
 {
 
     var levels = [new autopagerTreeView()];
@@ -380,13 +380,21 @@ function getLevels(allSites,firstItem,filter)
         k++;
         for (var i = 0; i < sites.length; i++) {
             var site = sites[i];
-            if (filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
-                ||  (site.desc != null && site.desc.toLowerCase().indexOf(filter) != -1)))
+            if (!filter || filter == "" ||( site.urlPattern.toLowerCase().indexOf(filter) != -1
+                    ||  (site.desc != null && site.desc.toLowerCase().indexOf(filter) != -1)
+                    ||  ( autopagerUtils.getRegExp(site).test(filter))               
+                    ))
             {
                 levels[k] = new SiteItem(siteIndex, site)
-                if (!matched){
-                    matched = true;
-                    levels.selected = levels[k];
+                if (!select || select == "" ||( site.urlPattern.toLowerCase().indexOf(select) != -1
+                    ||  (site.desc != null && site.desc.toLowerCase().indexOf(select) != -1)
+                    ||  ( autopagerUtils.getRegExp(site).test(select))               
+                    ))
+                {
+                    if (!matched){
+                        matched = true;
+                        levels.selected = levels[k];
+                    }                    
                 }
                 k++;
             }

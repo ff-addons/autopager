@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "XPath testen">
 <!ENTITY autopager.status.testXPathTip "XPath-Ausdruck für einen Test auf diese Seite anwenden">
 <!ENTITY autopager.status.update "Einstellungen aus dem Internet aktualisieren">
-<!ENTITY autopager.status.updateTip "Die AutoPager-Einstellungen von http://blogs.sun.com/wind/entry/autopager_site_config herunterladen">
+<!ENTITY autopager.status.updateTip "Die AutoPager-Einstellungen von Rules Repositories herunterladen">
 <!ENTITY autopager.status.xpathUtils "XPath-Werkzeuge">
 <!ENTITY autopager.toolbarLabel "AutoPager-Sidebar ein-/ausblenden">
 <!ENTITY autopager.tooltip "Sidebar zum Erstellen der Regeln für das Anfügen der nächsten Seite">

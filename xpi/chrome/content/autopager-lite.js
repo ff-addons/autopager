@@ -209,15 +209,13 @@ var autopagerLite =
     //            gBrowser.selectedTab.linkedBrowser.setAttribute("autopagerMatchedRules",values.length);
     //        }
     },
-    TabSelected : function(event)
+    TabSelected : function(doc)
     {
-        if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
+        if (doc)
         {
-            var doc = gBrowser.selectedTab.linkedBrowser.contentDocument
             var length = doc.documentElement.getAttribute("autopagerMatchedRules");
             autopagerLite.setStatus(doc,length,(length==null || length.length==0) && autopagerPref.loadBoolPref("hide-lite-discovery-on-no-rules"));
         }
-
     },
     apRuleSiteOnInit : function ()
     {
@@ -226,19 +224,7 @@ var autopagerLite =
         window.addEventListener("load", autopagerLite.onContentLoad, false);
         if (autopagerBwUtil.supportHiddenBrowser())
         {
-            var container = null;
-            if (typeof gBrowser != 'undefined' && gBrowser.tabContainer)
-                container = gBrowser.tabContainer;
-            else if (typeof getBrowser != 'undefined' && getBrowser() && getBrowser().mTabContainer)
-                container = getBrowser().mTabContainer;
-            if (container)
-            {
-                container.addEventListener("TabSelect", autopagerLite.TabSelected, true);
-                window.addEventListener("unload", function(){
-                    window.removeEventListener("unload", arguments.callee, false);
-                    container.removeEventListener("TabSelect", autopagerLite.TabSelected, true);
-                },false);
-            }
+            autopagerUtils.addTabSelectListener(autopagerLite.TabSelected, true)
         }
         if (autopagerPref.loadBoolPref("with-lite-discovery-aways-display"))
             autopagerLite.hiddenStatus(false);

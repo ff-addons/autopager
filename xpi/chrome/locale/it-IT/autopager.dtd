@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "Test di XPath">
 <!ENTITY autopager.status.testXPathTip "Esegue un test su un XPath della pagina.">
 <!ENTITY autopager.status.update "Aggiorna le impostazioni dal web">
-<!ENTITY autopager.status.updateTip "Aggiornamento delle impostazioni da http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updateTip "Aggiornamento delle impostazioni da Rules Repositories.">
 <!ENTITY autopager.status.xpathUtils "XPath Utils">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager Site Setting Workshop">

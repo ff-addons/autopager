@@ -2,9 +2,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://autopager/locale/autopager.dtd">
 <?xml-stylesheet href="chrome://autopager/skin/autopager-split.css" type="text/css"?>
 
-<overlay id="autopagestatus"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-             
+<overlay id="autopagestatus" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
@@ -27,7 +25,6 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-related.js"></script>
 
-
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
             <spring flex="1"/>
@@ -42,9 +39,6 @@
         </vbox>
         <popupset id="autopager-popupset"/>
     </window>
-    <stringbundleset id="stringbundleset">
-        <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
-    </stringbundleset>
 
     <statusbar id="status-bar">
         <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
@@ -84,6 +78,7 @@
         <!-- <progressmeter id="apLoading" mode="undetermined"/> -->
     </statusbar>
 
+    <!-- Firefox page context menu -->
     <popup id="contentAreaContextMenu">
         <menuseparator id="autopager-context-separator1"/>
         <menu id="autopager-context-menu" label="&setting.appname;" accesskey="&setting.key;">
@@ -91,12 +86,21 @@
             </menupopup>
         </menu>
     </popup>
+    <!-- Firefox Tools menu -->
     <menupopup id="menu_ToolsPopup">
         <menu id="autopager-menu" label="&setting.appname;" insertafter="devToolsSeparator" accesskey="&setting.key;">
             <menupopup id="autopager-popup-tool" onpopupshowing="autopagerMain.FillPopup(event.target,'tx')">
             </menupopup>
         </menu>
     </menupopup>
+    
+    <!-- Firefox 4 appmenu -->
+    <vbox id="appmenuPrimaryPane">
+        <splitmenu id="autopager-appmenu" label="&setting.appname;" insertafter="appmenu_webDeveloper" accesskey="&setting.key;" oncommand="if (event.target == this) autopagerMain.onToolbarClick();">
+            <menupopup id="autopager-popup-top" onpopupshowing="autopagerMain.FillPopup(event.target,'ft')">
+            </menupopup>
+        </splitmenu>
+    </vbox>
 
     <menupopup id="viewSidebarMenu">
         <menuitem observes="autopagerSiteWizardSidebar"/>
@@ -159,7 +163,7 @@
             <menuitem
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
-                    oncommand="autopagerMain.sitewizard( content.document);"
+                    oncommand="autopagerBwUtil.sitewizard( content.document);"
                 />
             <menuseparator class="autopager-sep-global"/>
             <menu id="autopager-context-menu" label="&setting.appname;" accesskey="&setting.key;">
@@ -172,7 +176,7 @@
                     id="autopager-sitewizard"
                     label="&autopager.status.sitewizard;"
                     tooltiptext="&autopager.status.sitewizardTip;"
-                    oncommand="autopagerMain.sitewizard( content.document);"
+                    oncommand="autopagerBwUtil.sitewizard( content.document);"
                 />
             <menuitem
                     id="autopager-setting"
@@ -279,12 +283,12 @@
                     <menuitem id="autoPagerCreateXPath"
                           label="&autopager.status.createXPath;"
                           tooltiptext="&autopager.status.createXPathTip;"
-                          oncommand="autopagerMain.createXpath( content.document);"
+                          oncommand="autopagerBwUtil.createXpath( content.document);"
                 />
                     <menuitem
                     label="&autopager.status.testXPath;"
                     tooltiptext="&autopager.status.createXPathTip;"
-                    oncommand="autopagerMain.testXPathTest( content.document);"
+                    oncommand="autopagerBwUtil.testXPathTest( content.document);"
                 />
                 </menupopup>
             </menu>
@@ -386,7 +390,7 @@
                     <menuitem id="autopager-showabout"
                                   label="&autopager.status.showabout;"
                                   tooltiptext="&autopager.status.showaboutTip;"
-                                  oncommand="autopagerMain.showAbout()"
+                                  oncommand="autopagerBwUtil.showAbout()"
                         />
                 </menupopup>
             </menu>

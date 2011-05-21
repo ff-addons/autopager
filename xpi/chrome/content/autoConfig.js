@@ -396,8 +396,9 @@ var autopagerConfig =
         {
             window.autopagerSelectUrl=url;
             window.autopagerOpenerObj = obj;
-            window.open(settingUrl, "autopager",
+            var win = window.open(settingUrl, "autopager",
             "chrome,resizable,centerscreen");
+            win.focus();
         }else
         {
             content.location.href=settingUrl;

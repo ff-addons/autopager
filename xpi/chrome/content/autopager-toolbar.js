@@ -111,7 +111,6 @@ var autopagerToolbar =
                 if (vers[vers.length-1]%2==1)
                 {
                     autopagerPref.savePref("last_version", autopagerUtils.version);
-                    autopagerConfig.autopagerUpdate();
                 }else //a major update if the last number is an even number
                 {
                     if (autopagerBwUtil.autopagerOpenIntab(autopagerHome+ "updated?u=" + lastVersion + "&i=" + autopagerUtils.version + subfix,null))
@@ -120,7 +119,6 @@ var autopagerToolbar =
                     //autopagerToolbar.addAutopagerButton();
                     //autopagerBwUtil.autopagerOpenIntab("chrome://autopager/content/options.xul");
                     }
-                    autopagerConfig.autopagerUpdate();
                 }
             }
         }

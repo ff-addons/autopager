@@ -3,7 +3,6 @@ pref("extensions.autopager.debug", false);
 pref("extensions.autopager.showpagehold", false);
 pref("extensions.autopager.myname", "");
 pref("extensions.autopager.smartenable", false);
-pref("extensions.autopager.flashIconNotify", false);
 pref("extensions.autopager.smarttext", "next|>|下一页|次を表示");
 //refer to http://www.teesoft.info/phpbb/viewtopic.php?t=330 fro "NEXT" in Different Languages
 pref("extensions.autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页|Volgende|Volg|Verder|Напред|Следва|Næste|Nächste|Naechste|Weiter|Vorwärts|Vorwaerts|Volgende|Continue|Onward|Venonta|Seuraava|Suivant|Prochaine|Επόμενη|Næst|Successive|Successiva|Successivo|Prossima|Prossime|Prossimo|Altra|Altro|次へ|다음|Neste|Dalej|Następna|Następne|Następny|Więcej|Próximo|Înainte|Înaintare|Următor|Următoare|След|Следующая|Siguiente|Próxima|Próximos|Nästa|Sonraki|Devam|İlerle");
@@ -15,7 +14,7 @@ pref("extensions.autopager.enablehotkeys.ctrlkey", true);
 pref("extensions.autopager.enablehotkeys.altkey", true);
 pref("extensions.autopager.enablehotkeys.shiftkey", false);
 pref("extensions.autopager.disable-hidden-browser", false);
-pref("extensions.autopager.loading", "position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; max-width:160px;max-height:20px;right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;");
+pref("extensions.autopager.loading", "position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; max-width:200px;max-height:20px;right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;");
 pref("extensions.autopager.optionstyle", "line-height:normal;width:200px;position: fixed; z-index: 2147483647; font-size: 12px; bottom: 1px; right: 20px;padding: 1px; background: green none repeat scroll 0%; display:none;text-align:left !important;");
 
 pref("extensions.autopager.pagebreak", "clear:both; line-height:20px; background:#E6E6E6; text-align:center;margin-top:20px;margin-bottom:20px;");

@@ -48,23 +48,26 @@ if (autopagerPref.loadBoolPref("show-help"))
     	{
             setTimeout(function (){
             //var t = new Date().getTime();
-            populateChooser("",true,true);
             var url = window.opener.autopagerSelectUrl;
             if (typeof window.opener.autopagerSelectUrl == 'undefined')
                 url = autopagerUtils.currentDocument().location.href;
+            if (url.indexOf('about:')==0)
+                url = ''
             //window.autopagerSelectUrl = url;
             if (url != null )
             {
-                chooseInView(treeSites.view.wrappedJSObject,url);
-//                    var index = getMatchedIndex(url);
-//        	        chooseSite(index);
-            }else
-                chooseSite(0);
-
+                siteSearch.setAttribute("value",url)
+            }
+            
+            onSiteFilter(url,true,true);
+            
             if (!autopagerPref.loadBoolPref("disable-tooltips"))
                 var de = new autopagerDescription("AutoPagerSetting:",document);
             //alert(new Date().getTime() -t)
-            },60);
+                setTimeout(function(){
+                    updateSearchStatus(url);
+                },1000);
+            },200);
             
 //	        
 //	        if (url != null )
@@ -510,7 +513,7 @@ if (autopagerPref.loadBoolPref("show-help"))
              onSiteChange(selectedListItem,selectedSite);
            }
         }, false);
-        siteSearch.addEventListener("change", function() {
+        siteSearch.addEventListener("command", function() {
            onSiteFilter(siteSearch.value,false,true);
         }, false);
         siteSearch.addEventListener("keyup", function() {
@@ -638,7 +641,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                    allSites[updateIndex] = allSites[updateIndex-1];
                    allSites[updateIndex-1] = curr;
 
-                    onSiteFilter(siteSearch.value,false,false);
+                   onSiteFilter(siteSearch.value,false,false);
                    treeSites.view.selection.select(index-1);
                    return;
                }
@@ -839,6 +842,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         settingurl.value = updateSite.url;
         settingtype.value = updateSite.updateType.type;
         settingUpdatePeriod.value = updateSite.updateperiod;
+        document.getElementById("settingUpdateContainer").hidden = (!updateSite.url)
         settingxpath.value = updateSite.xpath;
         settingdesc.value =  updateSite.desc;
         rulecount.value =  count;
@@ -1347,6 +1351,7 @@ if (autopagerPref.loadBoolPref("show-help"))
     }
     function onSiteFilter(filter,reload,select)
     {
+        updateSearchStatus(filter);
     	treeSites.filterIng = true;
     	var url = urlPattern.value;
     	while(treebox.childNodes.length>0)
@@ -1354,8 +1359,28 @@ if (autopagerPref.loadBoolPref("show-help"))
     		//remove from end
     		treebox.removeChild(treebox.childNodes[treebox.childNodes.length-1]);
     	}
-        populateChooser(filter,reload,select);
-    	treeSites.filterIng = false;
+        var selectFilter = ""
+        if (select)
+        {
+            if (!filter || filter=="")
+                selectFilter = treebox.oldFilter
+            else
+            {
+                selectFilter = filter
+                treebox.oldFilter = filter
+            }
+        }
+            
+        populateChooser(filter,reload,selectFilter);
+    	treeSites.filterIng = false;  
+    }
+    function updateSearchStatus(filter)
+    {
+        try
+        {
+            siteSearch._searchIcons.selectedIndex = (!filter || filter=="")?0:1;
+        } catch(e){
+        }         
     }
 
     function addTreeParent(treebox,updateSite)
@@ -1416,7 +1441,7 @@ if (autopagerPref.loadBoolPref("show-help"))
             userSites = hashSites["autopager.xml"] ;
 
         //allSites["autopager.xml"]  = sites
-        var levels = getLevels(allSites,sites,filter);
+        var levels = getLevels(allSites,sites,filter,select);
         treeSites.view = levels[0].wrappedJSObject;
         if (select && levels.selected)
             treeSites.view.wrappedJSObject.selectItem(levels.selected)

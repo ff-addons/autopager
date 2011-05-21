@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "测试XPath">
 <!ENTITY autopager.status.testXPathTip "在当前页面上测试XPath.">
 <!ENTITY autopager.status.update "在线更新">
-<!ENTITY autopager.status.updateTip "从 http://blogs.sun.com/wind/entry/autopager_site_config 在线更新自动翻页选项">
+<!ENTITY autopager.status.updateTip "从 Rules Repositories 在线更新自动翻页选项">
 <!ENTITY autopager.status.xpathUtils "XPath工具">
 <!ENTITY autopager.toolbarLabel "自动翻页设置工作室">
 <!ENTITY autopager.tooltip "自动翻页设置工作室">
@@ -126,7 +126,7 @@
 <!ENTITY setting.label.grpRemoveXPath "过滤XPath(追加时自动删除匹配项):">
 <!ENTITY setting.label.grpSmart "智能翻页">
 <!ENTITY setting.label.hotkeys "启用/禁用 快捷键:">
-<!ENTITY setting.label.ignoresite "Ignore Sites">
+<!ENTITY setting.label.ignoresite "在以下网站上禁用">
 <!ENTITY setting.label.lblContainerXPath "容器XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "次页:">

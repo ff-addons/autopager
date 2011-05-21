@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "XPath'i Test Et">
 <!ENTITY autopager.status.testXPathTip "Belirttiğiniz Xpath'i sayfada test eder.">
 <!ENTITY autopager.status.update "Kuralları Çevrimiçi Güncelle">
-<!ENTITY autopager.status.updateTip "Otomatik sayfalama kurallarını çevrimiçi olarak http://blogs.sun.com/wind/entry/autopager_site_config adresinden günceller.">
+<!ENTITY autopager.status.updateTip "Otomatik sayfalama kurallarını çevrimiçi olarak Rules Repositories adresinden günceller.">
 <!ENTITY autopager.status.xpathUtils "XPath Araçları">
 <!ENTITY autopager.toolbarLabel "AutoPager Sayfalama Kuralı Oluşturma Aracı">
 <!ENTITY autopager.tooltip "Otomatik sayfalama için kural oluşturma aracını göster.">

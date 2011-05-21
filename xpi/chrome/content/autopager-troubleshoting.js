@@ -21,7 +21,7 @@ var autopagerTroubleShoting =
         {
             if (autopagerTroubleShoting.prompt("AutoFix","CreateANewRule"))
             {
-                autopagerMain.sitewizard(doc);
+                autopagerBwUtil.sitewizard(doc);
             }
             else if (autofix || autopagerTroubleShoting.prompt("AutoFix","RequestHelpOnSite"))
             {

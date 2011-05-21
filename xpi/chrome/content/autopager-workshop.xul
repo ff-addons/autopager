@@ -10,9 +10,6 @@
 <overlay id="autopagerworkshopOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <vbox id="autopager-workshop" flex="1">
-        <stringbundleset id="autopagerStringbundleset">
-            <stringbundle id="autopager-Strings" src="chrome://autopager/locale/autopager.properties"/>
-        </stringbundleset>
 
         <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
@@ -69,7 +66,7 @@
                         <menuitem id="autopager-showabout"
                                   label="&autopager.status.showabout;"
                                   tooltiptext="&autopager.status.showaboutTip;"
-                                  oncommand="autopagerMain.showAbout()"
+                                  oncommand="autopagerBwUtil.showAbout()"
                                   />
                     </menupopup>
                 </toolbarbutton>

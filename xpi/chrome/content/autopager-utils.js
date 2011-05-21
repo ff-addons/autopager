@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.6.2.8",
+    version:"0.6.2.10",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -935,9 +935,12 @@ delete * 24, for minutes, delete * 60 * 24
     ,
     mergeString : function (split,str1,str2)
     {
-        var newS = this.toString(str1)
+	 var newS = this.toString(str1)
         if (newS!="" && !this.isBlank(str2))
-            newS += split + this.toString(str2)
+         {
+		if (newS.indexOf(this.toString(str2))==-1)
+			newS += split + this.toString(str2)
+	 }
         else if(newS=="")
             newS = this.toString(str2)
         return newS;
@@ -1085,4 +1088,20 @@ delete * 24, for minutes, delete * 60 * 24
             array.pop();
         }
     }
+    ,getAddonsList: function _getAddonsList() {
+        if (typeof autopagerBwUtil.getAddonsList == "function")
+            return autopagerBwUtil.getAddonsList();
+        return [];
+    }
+    ,updateStatusIcons : function()
+    {
+        if (typeof autopagerBwUtil.updateStatusIcons == "function")
+            autopagerBwUtil.updateStatusIcons();
+    }
+    ,addTabSelectListener : function (callback,useCapture)
+    {
+        if (typeof autopagerBwUtil.addTabSelectListener == "function")
+            autopagerBwUtil.addTabSelectListener(callback,useCapture);
+    }
+
 }

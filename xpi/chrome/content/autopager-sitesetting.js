@@ -10,13 +10,6 @@ var autopagerSiteSetting =
         // During initialisation
         //window.addEventListener("load", autopagerSiteSetting.onContentLoad, false);
         window.addEventListener("DOMContentLoaded", autopagerSiteSetting.onContentLoad, false);
-
-//        try{
-//            if (getBrowser && getBrowser() && getBrowser().mTabContainer)
-//                {
-//                    getBrowser().mTabContainer.addEventListener("TabSelect", autopagerSiteSetting.TabSelected, false);
-//                }
-//        }catch(e){}
     },
     TabSelected : function(event)
     {

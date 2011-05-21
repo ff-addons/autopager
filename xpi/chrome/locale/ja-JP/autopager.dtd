@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "XPath をテスト">
 <!ENTITY autopager.status.testXPathTip "ページで XPath をテストします。">
 <!ENTITY autopager.status.update "オンラインで設定を更新">
-<!ENTITY autopager.status.updateTip "Auto Pager の設定を http://blogs.sun.com/wind/entry/autopager_site_config から更新します。">
+<!ENTITY autopager.status.updateTip "Auto Pager の設定を Rules Repositories から更新します。">
 <!ENTITY autopager.status.xpathUtils "XPath ユーティリティ">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "AutoPager のサイト設定">

@@ -700,7 +700,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
     },
     openInOwnWin : function()
     {
-        autopagerMain.openWorkshopInDialog();
+        autopagerBwUtil.openWorkshopInDialog();
         autopagerUtils.currentWindow().toggleSidebar('autopagerSiteWizardSidebar',false);
     },
     openInSidebar : function()

@@ -167,6 +167,19 @@ AutoPagerNS.apSplitbrowse = {
             splitBox.setAttribute("hidden","false");
             splitSplitter.setAttribute("hidden","true");
         }
+        var receive_ap_request=function(event) {
+            try {
+                var node = event.target;
+                if ('AutoPagerRequest' != node.getAttribute('requestType')) return;
+                if ('isInAutoPagerHiddenbrowser' == node.getAttribute('requestName'))
+                    node.setAttribute('response', typeof node.ownerDocument.defaultView.top.AutoPagerHiddenBrowser!='undefined');
+                
+            } catch (e) {
+            // No-op.
+            }
+        }
+        document.addEventListener('AutoPagerRequest', receive_ap_request, false,true);
+                    
     },
     getSplitKey :function ()
     {
@@ -383,6 +396,10 @@ AutoPagerNS.apSplitbrowse = {
             splitBrowser.autopagerSplitWinFirstDocSubmited = false;
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.loadURI("about:blank",null,null);
+                        
+//            if (typeof GM_BrowserUI != "undefined" && typeof GM_BrowserUI.contentLoad == "function")
+//                splitBrowser.addEventListener("DOMContentLoaded", GM_BrowserUI.contentLoad, true);
+
             //    	if (!browser.getAttribute("flex"))
             //	    		browser.setAttribute("flex", "1");
             //this.setVisible(splitBrowser,!this.hidden);

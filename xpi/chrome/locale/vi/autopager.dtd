@@ -57,7 +57,7 @@
 <!ENTITY autopager.status.testXPath "Thử nghiệm XPath">
 <!ENTITY autopager.status.testXPathTip "Thử nghiệm XPath trên trang.">
 <!ENTITY autopager.status.update "Cập nhật Thiết lập Trực tuyến">
-<!ENTITY autopager.status.updateTip "Cập nhật Thiết lập AutoPager từ http://blogs.sun.com/wind/entry/autopager_site_config.">
+<!ENTITY autopager.status.updateTip "Cập nhật Thiết lập AutoPager từ Rules Repositories.">
 <!ENTITY autopager.status.xpathUtils "Tiện ích XPath">
 <!ENTITY autopager.toolbarLabel "AutoPager">
 <!ENTITY autopager.tooltip "Phân xưởng Thiết lập Trang của AutoPager">

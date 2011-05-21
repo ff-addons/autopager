@@ -6,6 +6,11 @@ var AutoPagring = function (site,doc)
     this.scrollWatching= false;
     this.lastScrollWatchExecuteTime = 0;
     this.forceLoadPage=0;
+    this.tweakingSession = autopagerPref.loadBoolPref("tweaking-session");
+
+    var minipages = this.getMinipages();
+    if (minipages>1)
+        this.forceLoadPage=minipages;
     this.autopagerPage=1;
     this.autopagerPageHeight = [];
     this.hasContentXPath = (site.contentXPath!=null && site.contentXPath.length>0);
@@ -54,6 +59,7 @@ var AutoPagring = function (site,doc)
                autopagerBwUtil.openAlert("There's alerts for this rule",'need your attation.',url,callback)
         }
     }
+    this.pageOldHeight = this.getContainerHeight(doc)
 }
 
 AutoPagring.prototype.getAllowCheckpagingAutopagingPage = function() {
@@ -252,9 +258,7 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
                         //needLoad = remain < wh;
                         var currHeight = scrollTop + offsetTop;// + wh
                         var targetHeight = 0;
-                        var minipages = this.site.minipages;
-                        if (minipages==-1)
-                            minipages = autopagerPref.loadPref("minipages");
+                        var minipages = this.getMinipages();
                         if (minipages>0)
                         {
                             //notice doc.documentElement is different to de here!!!!!
@@ -331,11 +335,13 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
                                 var nextUrl = this.autopagernextUrl;
                                 if (nextUrl==null || nextUrl.ownerDocument!=doc)
                                 {
+                                    this.scrollWatching = false;
                                     return;
                                 }
                                 var p = autopagerMain.myGetPos(nextUrl);
                                 if (p.x<=0 || nextUrl.scrollWidth<=0 || p.y<=0 || nextUrl.scrollHeight<=0)
                                 {
+                                    this.scrollWatching = false;
                                     return;
                                 }
                             }
@@ -351,11 +357,11 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
                                 {
                                     try{
                                         this.autopagerSplitCreated = true;
-                                        var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true,this);
+                                        autopagerMain.getSplitBrowserForDoc(doc,true,this);
                                     }catch(e)
                                     {
                                         this.autopagerSplitCreated = true;
-                                        var splitbrowser = autopagerMain.getSplitBrowserForDoc(doc,true,this);
+                                        autopagerMain.getSplitBrowserForDoc(doc,true,this);
                                         autopagerBwUtil.consoleError(e)
                                     }
 
@@ -429,12 +435,7 @@ AutoPagring.prototype.onStopPaging = function(doc) {
     var loadgingImg = doc.getElementById("autopagerLoadingImg");
     if (loadgingImg)
         loadgingImg.parentNode.removeChild(loadgingImg);
-    if (this.autopagerPagingCount <= 0)
-    {
 
-                if (autopagerMain.flashIconNotify)
-                    autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
-    }
     this.autopagerEnabledSite = true
 
     if (this.autopagernextUrl != null && this.forceLoadPage>this.autopagerPage)
@@ -506,7 +507,7 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
             this.autopagerNodeListener = null;
         }
         var paging = this;
-        doc.addEventListener("DOMNodeInserted",function()
+        doc.addEventListener("DOMNodeInserted",function(e)
             {
                 var self = arguments.callee;
                 paging.autopagerNodeListener = self;
@@ -517,6 +518,14 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
                 }
                 if (!loaded)
                 {
+                    var oldHeight = paging.pageOldHeight;
+                    if (paging.autopagerPageHeight.length>0)
+                        oldHeight = paging.autopagerPageHeight[paging.autopagerPageHeight.length-1];
+                    var newHeight = paging.getContainerHeight(doc);
+                    
+                    //ignore this event if page height changes not to much
+                    if (newHeight-oldHeight<200)
+                        return;
                     loaded = true;
                     window.setTimeout(function (){
                         paging.onStopPaging(doc);
@@ -555,43 +564,51 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
                 }
 
             },false);
+        this.autopagerPage++;
         this.autopagerSimulateClick(doc.defaultView, doc,url);
 
 }
-
+AutoPagring.prototype.getContainerHeight = function(doc) {
+    var scrollContainer = null
+    if (this.site.containerXPath)
+    {
+        var de = doc.documentElement;
+        var autopagerContainer = autopagerMain.findNodeInDoc(
+            de,this.site.containerXPath,false);
+        if (autopagerContainer!=null)
+        {
+            scrollContainer = autopagerContainer[0];
+        }
+    }
+    var scrollDoc =doc;
+    if (scrollContainer==null)
+        scrollContainer = de;
+    var sh = (scrollContainer && scrollContainer.scrollHeight)
+    ? scrollContainer.scrollHeight : scrollDoc.body.scrollHeight;
+    if (scrollDoc.body != null && scrollDoc.body.scrollHeight > sh)
+    {
+        sh = scrollDoc.body.scrollHeight;
+    }
+    return sh
+}
 AutoPagring.prototype.pagingWatcher = function(doc) {
     if (!(doc instanceof HTMLDocument) && doc.ownerDocument)
-            doc = doc.ownerDocument;
-    //doc =  autopagerUtils.getTopDoc(doc);
+        doc = doc.ownerDocument;
     try{
         if((autopagerMain.getGlobalEnabled() ||  this.forceLoadPage>this.autopagerPage)) {
             var loading = true;
             if (loading)
-                {
-                    autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,true),false);
-                    this.insertLoadingBreak(doc);
-                    if (autopagerMain.flashIconNotify)
-                    {
-                    this.autoPagerImageShowStatus = !this.autoPagerImageShowStatus;
-                    autopagerMain.setGlobalImageByStatus(this.autoPagerImageShowStatus);
-                    var self = arguments.callee;
-                    setTimeout(self, 300);//10 +Math.random()*200);
-                    }
-                }
-
+            {
+                autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,true),false);
+                this.insertLoadingBreak(doc);
+            }
         }
         else {
             autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
-            if (autopagerMain.flashIconNotify)
-                autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
-            //autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
         }
     }catch(e) {
         autopagerBwUtil.consoleError(e)
         autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
-        if (autopagerMain.flashIconNotify)
-            autopagerMain.setGlobalEnabled(autopagerMain.loadEnableStat());
-        //autopagerMain.setGlobalImageByStatus(autopagerMain.getGlobalEnabled());
     }
 
 }
@@ -608,7 +625,6 @@ AutoPagring.prototype.processInSplitWin = function(doc)
 }
 AutoPagring.prototype.processInSplitDoc = function(doc,splitDoc,b){
     try{
-        var de = doc.documentElement
         var nextUrl=null;
         //alert(nodes.length);
         var urlNodes = autopagerMain.findLinkInDoc(splitDoc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
@@ -644,7 +660,6 @@ AutoPagring.prototype.processInSplitDoc = function(doc,splitDoc,b){
         return false;
     }
     return true;
-
 }
 AutoPagring.prototype.processInSplitWinByUrl  = function(doc,url){
     try{
@@ -847,13 +862,16 @@ AutoPagring.prototype.insertLoadingBreak = function(doc) {
         div.setAttribute("id","apBreakStart" + this.autopagerPage);
         insertPoint.parentNode.insertBefore(div,insertPoint);
         var index = this.autopagerPage;
-        if (typeof this.relatedSearchOptions!="undefined" && this.relatedSearchOptions!=null)
+        if (this.hasContentXPath || this.autopagerPage==1)
         {
-            this.performRelatedSearch(this.relatedSearchOptions,doc,index,div);
-        }
-        else
-        {
-            this.asyncRelatedSearch(doc,index,div);
+            if (typeof this.relatedSearchOptions!="undefined" && this.relatedSearchOptions!=null)
+            {
+                this.performRelatedSearch(this.relatedSearchOptions,doc,index,div);
+            }
+            else
+            {
+                this.asyncRelatedSearch(doc,index,div);
+            }
         }
         this.lastBreakStart = div;
     }
@@ -961,7 +979,10 @@ AutoPagring.prototype.addXPath = function(xpaths,xpath) {
 }
 AutoPagring.prototype.createRelatedSearchOptions= function (doc,options,index,div,display)
 {
-    var Me = this
+    var Me = this    
+    var d = doc.createElement("div");
+    d.setAttribute("id","ap_search_option_" + index)
+    
     var s = doc.createElement("select");
     function createOption(value,label,image,s,selected)
     {
@@ -1014,6 +1035,15 @@ AutoPagring.prototype.createRelatedSearchOptions= function (doc,options,index,di
     s.appendChild(createOption("disable-site",autopagerUtils.autopagerFormatString("disableon",[host])));
     s.appendChild(createOption("disable",autopagerUtils.autopagerGetString("disableeverywhere")));
     
+    var a = doc.createElement("a");
+    a.setAttribute("href","javascript:void(0)");
+    a.setAttribute("id","ap_search_option_e_" + index)
+    a.textContent =  autopagerUtils.autopagerGetString("Edit")
+    a.addEventListener("click",function(){
+        s.setAttribute("style","display:block")
+        a.setAttribute("style","display:none")
+    },false);
+
     s.addEventListener("change",function(){
         var v= s.value;
         if (v.indexOf("_ignore")==0)
@@ -1055,13 +1085,26 @@ AutoPagring.prototype.createRelatedSearchOptions= function (doc,options,index,di
             Me.urlTemplate=null
             Me.asyncRelatedSearch(doc,index,div);
         }
+        a.setAttribute("style","display:block")
     },false);
-    s.setAttribute("id","ap_search_option_" + index)
+    s.setAttribute("id","ap_search_option_s_" + index)
+    
+    d.appendChild(s);
+    d.appendChild(a);
+     
     if (typeof display != "undefined")
     {
-        s.setAttribute("style","display:" + display)
+        d.setAttribute("style","display:" + display)
     }
-    return s;
+    if (typeof options.searchEngine != "undefined" && options.searchEngine!="" && options.searchEngine!=null)
+    {
+        s.setAttribute("style","display:none")
+    }
+    else
+    {
+        a.setAttribute("style","display:none")
+    }
+    return d;
 }
 AutoPagring.prototype.createRelatedSearchTable= function (doc,options,index,div,display)
 {
@@ -1071,7 +1114,7 @@ AutoPagring.prototype.createRelatedSearchTable= function (doc,options,index,div,
         old.parentNode.removeChild(old)
     }
     var h2 = doc.createElement("h2");
-    h2.textContent = "related searches:";
+    h2.textContent =  autopagerUtils.autopagerGetString("RelatedSearches");//"related searches:";
 
     var tr = doc.createElement("tr");
     var td = doc.createElement("td");
@@ -1259,7 +1302,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             if (insertPoint==null)
             {
                 autopagerMain.clearLoadStatus(doc,this)
-                return;
+                return true;
             }
             var div = this.lastBreakStart
             if (!div && insertPoint)
@@ -1314,7 +1357,6 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
                         newNode.dispatchEvent(event)
                     }catch(e)
                     {}
-                    //autopagerMain.changeIds(newNode,container,insertPoint.parentNode);
 
                     try{
                         newNode = container.importNode (newNode,true);
@@ -1370,7 +1412,7 @@ AutoPagring.prototype.scrollWindow = function(container,doc) {
             this.autopagernextUrl = nextUrl;
 //            de.setAttribute("autopagernextUrlObj",nextUrl)
  
-               if (autopagerMain.tweakingSession && container.defaultView && container.defaultView.top == container.defaultView)
+               if (this.tweakingSession && container.defaultView && container.defaultView.top == container.defaultView)
                {
     //               if (this.autopagerPreviousURL && this.autopagerPreviousURL != autopagerUtils.getUrl(doc))
     //                {
@@ -1505,7 +1547,7 @@ AutoPagring.prototype.autopagerSimulateClick = function(win,doc,node) {
         var Me = this;
         window.setTimeout(function(){
             Me.doAutopagerSimulateClick(win,doc,node);
-        }, delaymsecs)
+        }, delaymsecs);
     }
     else
     {
@@ -1630,6 +1672,12 @@ AutoPagring.prototype.onDocUnLoad = function(doc) {
         {
             doc.removeEventListener("scroll",this.tmpScrollWatcher,false);
             this.tmpScrollWatcher = null;
+        }
+        if (this.tmpTweakingSessionMonitor)
+        {
+            doc.removeEventListener("scroll",this.tmpTweakingSessionMonitor,false);
+            doc.removeEventListener("click",this.tmpTweakingSessionMonitor,false);
+            this.tmpTweakingSessionMonitor = null;
         }
         if (this.tmpPageUnLoad)
         {
@@ -2025,4 +2073,70 @@ AutoPagring.prototype.loadPages = function (doc,pages)
 	//doc.documentElement.setAttribute("autopagerEnabledSite", true);
     if (typeof this.scrollWatcher != "undefined")
 	this.scrollWatcher(doc);
+}
+
+AutoPagring.prototype.getMinipages = function ()
+{
+    var minipages = this.site.minipages;
+    if (minipages==-1)
+        minipages = autopagerPref.loadPref("minipages");
+    return minipages;
+}
+
+AutoPagring.prototype.prepareSessionTweaking = function (doc)
+{
+    var Me = this
+    if (this.tweakingSession && doc.defaultView.top == doc.defaultView)
+    {
+        if (typeof this.tmpTweakingSessionMonitor == "undefined")
+        {
+            this.tmpTweakingSessionMonitor = function(e)
+            {
+                return Me.tweakingSessionMonitor(e)
+            }
+            doc.addEventListener("click", this.tmpTweakingSessionMonitor, false);
+            doc.addEventListener("scroll", this.tmpTweakingSessionMonitor, false);
+        }
+    }
+}
+AutoPagring.prototype.tweakingSessionMonitor = function (e)
+{
+    var doc = e.target
+    if (!(doc instanceof HTMLDocument))
+    {
+        doc =  e.target.ownerDocument;
+    }
+    doc = doc.defaultView.top.document
+    var pos = 0;
+    if (e.clientY)
+    {
+        pos = e.clientY;
+        this.changeSessionUrlByScrollHeight(doc,pos);
+    }
+}
+AutoPagring.prototype.changeSessionUrlByScrollHeight = function (container,pos)
+{
+    if (this.tweakingSession && container.defaultView.top == container.defaultView)
+    {
+        var a = this.autopagerPageHeight
+        if (!a)
+            return;
+        var st = (container && container.documentElement &&  container.documentElement.scrollTop)
+            ? container.documentElement.scrollTop : container.body.scrollTop;
+        for(var i=a.length-1;i>=0;i--)
+        {
+            if ((st + pos)> (a[i] - this.contentBottomMargin))
+            {
+                var url = this.autopagerPageUrl[i];
+                this.changeSessionUrl(container, url,i);
+                return;
+            }
+        }
+        this.changeSessionUrl(container, container.location.href,1);
+    }
+}
+AutoPagring.prototype.changeSessionUrl = function (container, url,pagenum)
+{
+    if (autopagerBwUtil.changeSessionUrl)
+        autopagerBwUtil.changeSessionUrl(container, url,pagenum)
 }
