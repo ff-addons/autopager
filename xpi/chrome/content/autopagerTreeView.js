@@ -341,6 +341,7 @@ autopagerTreeView.prototype = {
 
 function SitesItem(parent, sites) {
   this.updateSite = sites.updateSite;
+  this.sites = sites
   this.urlPatternCol = sites.updateSite.filename;
   this.descCol = sites.updateSite.desc;
   this._subtreeItems = new Array();

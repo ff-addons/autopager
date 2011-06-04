@@ -68,6 +68,8 @@
 <!ENTITY checkbox.chkForceJS.label "Tvinga JavaScript-läge">
 <!ENTITY checkbox.ir.label "Inkludera rekommenderade regler">
 <!ENTITY label.Usages.value "Användning">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "Valda regel-ID:n (separera med kommatecken &apos;,&apos;)">
 <!ENTITY label.lazyLoad "Uppskjuten inläsning av bildkällattribut">
 <!ENTITY label.monitorXPathLbl.value "Övervaka XPath:">

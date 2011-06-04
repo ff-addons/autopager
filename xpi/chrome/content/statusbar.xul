@@ -443,7 +443,7 @@
             </menupopup>
         </toolbarbutton>
     </toolbarpalette>
-
+    
     <!--
     <toolbar id="toolbar-main">
         <toolbarbutton id="autopager-button-fennec"

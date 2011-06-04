@@ -68,6 +68,8 @@
 <!ENTITY checkbox.chkForceJS.label "Force JavaScript Mode">
 <!ENTITY checkbox.ir.label "Include Recommended Rules">
 <!ENTITY label.Usages.value "Përdorimi">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
 <!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">

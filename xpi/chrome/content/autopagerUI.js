@@ -219,7 +219,7 @@ if (autopagerPref.loadBoolPref("show-help"))
          //AutoPagerNS.AutoPagerUpdateTypes.saveAllSettingSiteConfig();
 	     return true;
     }
-    function onSiteChange(treeitem,site)
+    function onSiteChange(treeitem,site,invalidateRow)
     {
     	site.changedByYou = autopagerConfig.isChanged(site);
         btnReset.hidden = !site.changedByYou;
@@ -229,7 +229,8 @@ if (autopagerPref.loadBoolPref("show-help"))
 //        treecell.setAttribute("properties","status" + getColor(site));
 //        treecell = treerow.childNodes[1];
 //        treecell.setAttribute("properties","status" + getColor(site));
-        treeSites.view.wrappedJSObject.invalidateRow();
+        if (typeof invalidateRow == "undefined" || invalidateRow)
+            treeSites.view.wrappedJSObject.invalidateRow();
 
     }
     function onSourceChange(treeitem,site)
@@ -947,6 +948,7 @@ if (autopagerPref.loadBoolPref("show-help"))
                 {
                     description.value = "loading"
                     try{
+                        var xmlhttp
                         try{
                             xmlhttp = new XMLHttpRequest();
                         }catch(e){
@@ -1023,8 +1025,8 @@ if (autopagerPref.loadBoolPref("show-help"))
         btnPublic.disabled =disabled;
         btnSiteUp.disabled =disabled;
         btnSiteDown.disabled =disabled;
-        btnDelete.disabled =disabled;
         return;
+        btnDelete.disabled =disabled;
         urlPattern.readOnly =disabled;
         isRegex.disabled =disabled;
         margin.readOnly =disabled;
@@ -1317,11 +1319,36 @@ if (autopagerPref.loadBoolPref("show-help"))
             return;
        var nodeIndex = minIndex-1;
        
+       var alertDisable = false;
        for(var i=items.length-1;i>=0;i--)
        {
-           var item = items[i].site;
-           autopagerUtils.removeFromArray(sites,item);
+            var selectedListItem = items[i];
+            var siteItem = selectedListItem.site;
+            var itemParent = items[i].parentItem();
+            var updateSite = itemParent.updateSite;
+            if (updateSite.filename == "autopager.xml")
+                autopagerUtils.removeFromArray(sites,siteItem);
+            else
+            {
+                if (updateSite.filename == "autopagerLite.xml")
+                {
+                    autopagerUtils.removeFromArray(itemParent.sites,siteItem);
+                    autopagerLite.removeId(siteItem.guid);
+                }
+                else
+                {
+                    if (siteItem.oldSite == null)
+                        siteItem.oldSite = autopagerConfig.cloneSite(siteItem);
+                    siteItem.enabled = false;
+                    onSiteChange(selectedListItem,siteItem,false);
+                    alertDisable = true;
+                }
+            }            
        }
+       if (alertDisable)
+        {
+            alert(autopagerUtils.autopagerGetString("Disableinsteadofremove"));        
+        }
        onSiteFilter(siteSearch.value,false,true);
        treeSites.view.selection.select(nodeIndex);
         //chooseTreeItem(node);

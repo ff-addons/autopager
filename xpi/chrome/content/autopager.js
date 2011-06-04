@@ -111,10 +111,9 @@ isValidDoc : function (doc)
 },
 onContentLoad : function(event) {
 
-    if (autopagerMain.doContentLoad(event))
-    {    
-//        autopagerMain.scrollWatcher(event);
-    }
+    window.setTimeout(function(){
+        autopagerMain.doContentLoad(event);
+    },10);
 },
 doContentLoad : function(event) {
     var doc = event;
@@ -353,21 +352,21 @@ promptNewRule : function (doc,force)
         var buttons = [
         {
             label: autopagerUtils.autopagerGetString("Yes"),
-            accessKey: "Y",
+            accessKey: autopagerUtils.autopagerGetString("yesAccessKey"),
             callback: function(){
                 autopagerMain.enabledThisSite(doc,true);
             }
         }
         ,{
             label: autopagerUtils.autopagerGetString("No"),
-            accessKey: "N",
+            accessKey: autopagerUtils.autopagerGetString("noAccessKey"),
             callback: function(){
                 autopagerMain.enabledThisSite(doc,false);
             }
         }
         ,{
             label: autopagerUtils.autopagerGetString("Options"),
-            accessKey: "O",
+            accessKey: autopagerUtils.autopagerGetString("optionAccessKey"),
             popup: "autopager-notification-popup",
             callback: function(){
                 autopagerPref.saveBoolPref("noprompt",true)
@@ -407,14 +406,25 @@ onInitDoc : function(doc,safe)
     },
     matchCallBack : function  (doc,sitepos,url,safe)
     {
+        //return 0 to try next rule, return 1 to stop
         if (sitepos!=null)
         {
+            //some rules use bad xpath, need a lot of time to evaluate , ignore them.
+            //TODO: add page an to manage the ignored rules
+            var disabledRules = autopagerPref.loadPref("disabled-rules")
+            if (disabledRules && (',' + disabledRules + ',').indexOf(',' + sitepos.site.guid + ','))
+                return 0;
+            var start = new Date().getTime();
             var ret = autopagerMain.checkSiteRule(doc,sitepos,url,safe);
             if (ret!=1 && sitepos.site.delaymsecs>0)
             {
                 window.setTimeout(function(){
                     autopagerMain.checkSiteRule(doc,sitepos,url,safe);
                 },sitepos.site.delaymsecs);
+            }
+            if (new Date().getTime()-start>1000) //disable the rule if xpath finished in more then 1 seconds
+            {
+                autopagerMain.disableRule(sitepos.site.guid)
             }
             return ret;
         }
@@ -2406,5 +2416,16 @@ alertErr : function(e) {
         }catch(e)
         {}
         
+    }
+    ,disableRule : function (id)
+    {
+        var disabledRules = autopagerPref.loadPref("disabled-rules")
+        if (disabledRules && (',' + disabledRules + ',').indexOf(',' + id + ','))
+            return;
+        if (disabledRules)
+            disabledRules = disabledRules + ',' + id
+        else
+            disabledRules = sitepos.site.guid
+        autopagerPref.savePref("disabled-rules",disabledRules)
     }
 };

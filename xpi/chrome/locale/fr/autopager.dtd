@@ -68,6 +68,8 @@
 <!ENTITY checkbox.chkForceJS.label "Activer le mode Javascript">
 <!ENTITY checkbox.ir.label "Inclure les règles recommandées">
 <!ENTITY label.Usages.value "Utilisations">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "Selected Rule IDs(Seperate by ,)">
 <!ENTITY label.lazyLoad "Lazy load image src attribute">
 <!ENTITY label.monitorXPathLbl.value "Moniteur XPath">

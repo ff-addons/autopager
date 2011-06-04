@@ -68,6 +68,8 @@
 <!ENTITY checkbox.chkForceJS.label "强制 Javascript 模式">
 <!ENTITY checkbox.ir.label "包含推荐规则">
 <!ENTITY label.Usages.value "使用方法">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "已选择的规则ID(以 , 分隔)">
 <!ENTITY label.lazyLoad "延期加载图片真实地址属性">
 <!ENTITY label.monitorXPathLbl.value "监视 XPath:">

@@ -57,3 +57,7 @@ toolbar[iconsize="small"] #autopager-button-fennec.ap-site-disabled {
 #autopager-immedialate-load-button {
   list-style-image: url("chrome://autopager/skin/play.ico") !important;
 }
+
+.popup-notification-icon[popupid="autopager-popup"] {
+  list-style-image: url("chrome://autopager/skin/autopager32.gif");
+}

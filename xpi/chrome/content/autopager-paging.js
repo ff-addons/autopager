@@ -9,7 +9,7 @@ var AutoPagring = function (site,doc)
     this.tweakingSession = autopagerPref.loadBoolPref("tweaking-session");
 
     var minipages = this.getMinipages();
-    if (minipages>1)
+    if (minipages>1 && autopagerMain.isEnabledOnDoc(doc))
         this.forceLoadPage=minipages;
     this.autopagerPage=1;
     this.autopagerPageHeight = [];
@@ -59,7 +59,7 @@ var AutoPagring = function (site,doc)
                autopagerBwUtil.openAlert("There's alerts for this rule",'need your attation.',url,callback)
         }
     }
-    this.pageOldHeight = this.getContainerHeight(doc)
+    this.pageOldHeight = this.getContainerHeight(doc);
 }
 
 AutoPagring.prototype.getAllowCheckpagingAutopagingPage = function() {

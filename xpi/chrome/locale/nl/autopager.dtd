@@ -68,6 +68,8 @@
 <!ENTITY checkbox.chkForceJS.label "JavaScriptmodus forceren">
 <!ENTITY checkbox.ir.label "Aanbevolen regels opnemen">
 <!ENTITY label.Usages.value "Gebruik">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "Geselecteerde regel-ID’s (gescheiden door komma’s)">
 <!ENTITY label.lazyLoad "Lui afbeeldingsbroneigenschap laden">
 <!ENTITY label.monitorXPathLbl.value "XPath volgen:">

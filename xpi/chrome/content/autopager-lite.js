@@ -430,4 +430,8 @@ var autopagerLite =
         return autopagerPref.loadBoolPref("work-in-lite-mode");
     //        return true;
     }
+    ,removeId : function(id)
+    {
+        autopagerPref.savePref("ids",autopagerLite.removeIds(autopagerPref.loadPref("ids") ,"," + id + ","));
+    }
 }

@@ -12,7 +12,7 @@ function AutopagerCOMP() {
 
 var autopagerHTTPListener = {
     headerName  : "X-AutoPager",
-    autopagerVersionValue : "0.6.2.10",
+    autopagerVersionValue : "0.6.2.14",
     observe: function(obj,subject, topic, data)
     {
         let os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);

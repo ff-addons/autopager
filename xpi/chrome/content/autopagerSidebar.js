@@ -662,40 +662,41 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
           document.getElementById("contentXPath").focus();
           return false;
         }
-        var url = this.currentDoc.documentURI;
+        var doc = autopagerUtils.currentDocument();
+        var url = doc.documentURI;
 
-			var chkIsRegex = document.getElementById("chkIsRegex");
-			var urlPattern = document.getElementById("urlPattern");
+        var chkIsRegex = document.getElementById("chkIsRegex");
+        var urlPattern = document.getElementById("urlPattern");
 
-            var site = autopagerConfig.newSite(urlPattern.value,"AutoPager rule for " + this.currentDoc.location.host
-                ,linkXPath,contentXPath,[url]);
-            site.createdByYou = true;
-			site.isRegex = chkIsRegex.checked;
-            site.owner = autopagerPref.loadMyName();
-            while (site.owner.length == 0)
-                site.owner = autopagerPref.changeMyName();
-            //general link
-            var targets = this.getXPathNodes(this.currentDoc,linkXPath);
-            var target = targets[0];
+        var site = autopagerConfig.newSite(urlPattern.value,"AutoPager rule for " + doc.location.host
+            ,linkXPath,contentXPath,[url]);
+        site.createdByYou = true;
+                    site.isRegex = chkIsRegex.checked;
+        site.owner = autopagerPref.loadMyName();
+        while (site.owner.length == 0)
+            site.owner = autopagerPref.changeMyName();
+        //general link
+        var targets = this.getXPathNodes(doc,linkXPath);
+        var target = targets[0];
 //            if (target.tagName == "A" && target.hash!=null
 //								&& target.hash.length>0 &&
 //								target.onclick!=null && target.href.toLowerCase().indexOf("#") != -1)
 //                site.ajax = true;
 
-            //disable this by default for best performance
-            site.enableJS = false;
-            var personalRules = autopagerConfig.loadConfig();
-            autopagerConfig.insertAt(personalRules,0,site);
-            autopagerConfig.saveConfig(personalRules);
-            document.autopagerXPathModel = "";
-            document.autopagerWizardStep = "";
-			window.autopagerSelectUrl = autopagerSidebar.currUrl;
-            if (closethisFirst || (window.top.document.getElementById("sidebar")==null))
-            {
-                autopagerSidebar.quit()
-                window.close();
-            }
-            autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
+        //disable this by default for best performance
+        site.enableJS = false;
+        var personalRules = autopagerConfig.loadConfig();
+        autopagerConfig.insertAt(personalRules,0,site);
+        autopagerConfig.saveConfig(personalRules);
+        document.autopagerXPathModel = "";
+        document.autopagerWizardStep = "";
+                    window.autopagerSelectUrl = autopagerSidebar.currUrl;
+        if (closethisFirst || (window.top.document.getElementById("sidebar")==null))
+        {
+            autopagerSidebar.quit()
+            window.close();
+        }
+        autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
         return true;
     },
     openInOwnWin : function()

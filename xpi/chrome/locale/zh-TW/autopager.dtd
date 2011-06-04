@@ -68,8 +68,10 @@
 <!ENTITY checkbox.chkForceJS.label "強制使用 JavaScript 模式">
 <!ENTITY checkbox.ir.label "包含推薦規則">
 <!ENTITY label.Usages.value "用法">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "選取的規則編號 (以 , 分隔)">
-<!ENTITY label.lazyLoad "Lazy load image src attribute">
+<!ENTITY label.lazyLoad "延遲讀取圖片 src 屬性">
 <!ENTITY label.monitorXPathLbl.value "Monitor XPath:">
 <!ENTITY label.value "計數">
 <!ENTITY openautopagerSidebar.commandkey "S">
@@ -126,7 +128,7 @@
 <!ENTITY setting.label.grpRemoveXPath "過濾 XPath (加入時將符合的項目自動刪除):">
 <!ENTITY setting.label.grpSmart "智慧翻頁">
 <!ENTITY setting.label.hotkeys "啟用／停用快捷鍵:">
-<!ENTITY setting.label.ignoresite "Ignore Sites">
+<!ENTITY setting.label.ignoresite "忽略下列網站">
 <!ENTITY setting.label.lblContainerXPath "Container XPath:">
 <!ENTITY setting.label.lblDesc "描述:">
 <!ENTITY setting.label.lblLinkXPath "Link XPath:">
@@ -145,7 +147,7 @@
 <!ENTITY setting.label.marginEnd "倍視窗高度時自動翻頁">
 <!ENTITY setting.label.minipages "預讀最小頁面數">
 <!ENTITY setting.label.pagebreak "頁面分隔樣式:">
-<!ENTITY setting.label.showContextMenu "Show autopager context menu">
+<!ENTITY setting.label.showContextMenu "於右鍵功能表顯示 Autopager 選單">
 <!ENTITY setting.label.showHelpTips "顯示每個選項的說明圖片，按一下可瀏覽該選項描述">
 <!ENTITY setting.label.showPrompt "遇到新網站時顯示通知視窗">
 <!ENTITY setting.label.showStatusBar "於狀態列顯示 Autopager 圖示">
@@ -181,14 +183,14 @@
 <!ENTITY statusbar.menu.fix.label "修復翻頁錯誤">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "自動修復">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "自動修復翻頁錯誤">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
+<!ENTITY statusbar.menuitem.autoPagerReset.label "重設所有設定">
+<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "重設所有 AutoPager 設定">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "手動修復">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "手動修復">
 <!ENTITY statusbar.menuitem.autopager-clean.label "全部清除">
 <!ENTITY statusbar.menuitem.autopager-donation.label "贊助">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "顯示贊助頁面">
-<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "顯示相關搜尋">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "說明">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "顯示說明頁面">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "規則">
@@ -213,7 +215,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "永遠顯示自動辨識圖示">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager 核心設定">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "延遲讀取圖片 src 屬性">
 <!ENTITY textbox.monitorXPath.tooltiptext "當下列 XPath 元素被點選或變更時清除載入的網頁">
 <!ENTITY toolbarbutton.addSite.tooltiptext "加入網站設定值">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "全部清除">

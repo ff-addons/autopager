@@ -68,8 +68,10 @@
 <!ENTITY checkbox.chkForceJS.label "JavaScript-Modus erzwingen">
 <!ENTITY checkbox.ir.label "Empfohlene Regeln hinzufügen">
 <!ENTITY label.Usages.value "Befehle">
+<!ENTITY label.filterLabel.tooltiptext "Clear this filter to see all rules.">
+<!ENTITY label.filterLabel.value "Filter">
 <!ENTITY label.idsLabel.value "IDs der gewählte Regeln (getrennt durch ,)">
-<!ENTITY label.lazyLoad "Lazy load image src attribute">
+<!ENTITY label.lazyLoad "Bildquellen langsam laden">
 <!ENTITY label.monitorXPathLbl.value "XPath anzeigen:">
 <!ENTITY label.value "Anzahl">
 <!ENTITY openautopagerSidebar.commandkey "Q">
@@ -126,7 +128,7 @@
 <!ENTITY setting.label.grpRemoveXPath "XPath filtern (Elemente von neuen Seiten ignorieren):">
 <!ENTITY setting.label.grpSmart "Intelligenter Modus">
 <!ENTITY setting.label.hotkeys "Tastaturkürzel aktivieren/deaktivieren:">
-<!ENTITY setting.label.ignoresite "Ignore Sites">
+<!ENTITY setting.label.ignoresite "Seiten ignorieren">
 <!ENTITY setting.label.lblContainerXPath "XPath des Inhalts:">
 <!ENTITY setting.label.lblDesc "Beschreibung:">
 <!ENTITY setting.label.lblLinkXPath "XPath des Links:">
@@ -145,7 +147,7 @@
 <!ENTITY setting.label.marginEnd "Fensterhöhe(n) entspricht.">
 <!ENTITY setting.label.minipages "Minimum an vorgeladenen Seiten">
 <!ENTITY setting.label.pagebreak "CSS-Stil für Grenze zwischen Seiten:">
-<!ENTITY setting.label.showContextMenu "Show autopager context menu">
+<!ENTITY setting.label.showContextMenu "Autopages Kontextmenü anzeigen">
 <!ENTITY setting.label.showHelpTips "Einen Hilfetext für jede Funktion anzeigen, klicken für eine Beschreibung">
 <!ENTITY setting.label.showPrompt "Hinweis für die individuelle neue Seite anzeigen">
 <!ENTITY setting.label.showStatusBar "Symbol von AutoPager in der Statusleiste anzeigen">
@@ -181,14 +183,14 @@
 <!ENTITY statusbar.menu.fix.label "Fehler beheben">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.label "Automatisch beheben">
 <!ENTITY statusbar.menuitem.autoPagerAutoFix.tooltiptext "Fehler automatisch beheben">
-<!ENTITY statusbar.menuitem.autoPagerReset.label "Reset All Setting">
-<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Reset All AutoPager Setting">
+<!ENTITY statusbar.menuitem.autoPagerReset.label "Alle Einstellungen zurücksetzen">
+<!ENTITY statusbar.menuitem.autoPagerReset.tooltiptext "Alle Einstellungen für AutoPager zurücksetzen">
 <!ENTITY statusbar.menuitem.autoPagerShoting.label "Fehlersuche">
 <!ENTITY statusbar.menuitem.autoPagerShoting.tooltiptext "Fehlersuche">
 <!ENTITY statusbar.menuitem.autopager-clean.label "Alle leeren">
 <!ENTITY statusbar.menuitem.autopager-donation.label "Spenden">
 <!ENTITY statusbar.menuitem.autopager-donation.tooltiptext "Spendenseite anzeigen">
-<!ENTITY statusbar.menuitem.autopager-related-search.label "Show Related Search">
+<!ENTITY statusbar.menuitem.autopager-related-search.label "Ähnliche Suchen anzeigen">
 <!ENTITY statusbar.menuitem.autopager-showhelp.label "Hilfe">
 <!ENTITY statusbar.menuitem.autopager-showhelp.tooltiptext "Hilfeseite anzeigen">
 <!ENTITY statusbar.menuitem.autopager-showrules.label "Konfigurationen">
@@ -213,7 +215,7 @@
 <!ENTITY statusbar.menuitem.showDiscoverPanel.label "Fund-Icon immer anzeigen">
 <!ENTITY statusbar.menuitem.tooltiptext "AutoPager-Haupteinstellungen">
 <!ENTITY statusbar.statusbarpanel.autopagerlite_status.label "?">
-<!ENTITY textbox.lazyImgSrc.tooltiptext "Image Lazy load Attribute">
+<!ENTITY textbox.lazyImgSrc.tooltiptext "Bildquellen langsam laden Attribut">
 <!ENTITY textbox.monitorXPath.tooltiptext "Geladene Seiten entfernen wenn Elemente des folgenden XPaths geklickt/geändert werden">
 <!ENTITY toolbarbutton.addSite.tooltiptext "Seite hinzufügen">
 <!ENTITY toolbarbutton.clearAllPath.tooltiptext "Liste leeren">

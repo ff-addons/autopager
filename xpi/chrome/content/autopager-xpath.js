@@ -1009,7 +1009,7 @@ var autopagerXPath = {
             }catch(ex) {
                 autopagerUtils.log("unableevaluator");//TODO: autopagerUtils.autopagerFormatString("unableevaluator",[aExpr,e]));
             }
-        }
+        }       
         return found;
     },
     dumpResult : function (result,max)

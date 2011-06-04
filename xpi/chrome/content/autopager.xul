@@ -52,8 +52,13 @@
         <tabpanels  flex="1">
             <tabpanel id="site-setting"  flex="1">
                 <hbox flex="1">
-                    <vbox flex="2" orient="vertical">
-                        <textbox id="siteSearch" persist="value" type="search" searchbutton="true" emptytext="Search" keyword="Search"/>
+                    <vbox flex="3" orient="vertical">
+                        <vbox flex="0">
+                            <hbox flex="1">
+                                <label id="filterLabel" control="siteSearch" value="&label.filterLabel.value;" keyword="rulefilter" tooltiptext="&label.filterLabel.tooltiptext;"/>
+                                <textbox  flex="1" id="siteSearch" persist="value" type="search" searchbutton="true" emptytext="Search" keyword="Search"/>
+                            </hbox>
+                        </vbox>
                         <hbox flex="1">
                             <vbox flex="1">
                                 <tree flex="10"  id="treeSites" seltype="multiple" width="400">
