@@ -9,7 +9,7 @@ var AutoPagring = function (site,doc)
     this.tweakingSession = autopagerPref.loadBoolPref("tweaking-session");
 
     var minipages = this.getMinipages();
-    if (minipages>1 && autopagerMain.isEnabledOnDoc(doc))
+    if (minipages>1 && autopagerMain.getGlobalEnabled() && autopagerMain.isEnabledOnDoc(doc,this))
         this.forceLoadPage=minipages;
     this.autopagerPage=1;
     this.autopagerPageHeight = [];
@@ -56,7 +56,7 @@ var AutoPagring = function (site,doc)
                    autopagerPref.savePref("site.alertsHash." + host,alertsHash);
                    autopagerBwUtil.autopagerOpenIntab(url);
                }
-               autopagerBwUtil.openAlert("There's alerts for this rule",'need your attation.',url,callback)
+               autopagerBwUtil.openAlert(autopagerUtils.autopagerGetString("alertforrule"),autopagerUtils.autopagerGetString("needyourattention"),url,callback)
         }
     }
     this.pageOldHeight = this.getContainerHeight(doc);
@@ -312,9 +312,7 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
                         }
                         var needConfirm =  (!autopagerUtils.noprompt())
                         && (!this.autopagerUserConfirmed || (this.autopagerSessionAllowed
-                            && this.autopagerAllowedPageCount== this.autopagerPage))
-                        && (this.forceLoadPage==0);
-//alert(4 + " " + needConfirm);
+                            && this.autopagerAllowedPageCount== this.autopagerPage));
 
                         if (needConfirm)
                         {

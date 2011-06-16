@@ -106,9 +106,9 @@ var autopagerToolbar =
             if (lastVersion != autopagerUtils.version)
 {
                 var vers = currentVersion.split('.');
-
+                var lastVers = lastVersion.split('.');
                 //a dev update if the last number is an odd number
-                if (vers[vers.length-1]%2==1)
+                if (vers[vers.length-1]%2==1 && (vers[vers.length-1] - lastVers[lastVers.length-1])==1)
                 {
                     autopagerPref.savePref("last_version", autopagerUtils.version);
                 }else //a major update if the last number is an even number

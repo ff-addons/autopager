@@ -156,6 +156,7 @@ doContentLoad : function(event) {
       var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
      if ((browser&& !browser.getAttribute(AutoPagerNS.apSplitbrowse.getSplitKey())) || !autopagerBwUtil.supportHiddenBrowser()) {
           autopagerMain.handleDocLoad(doc,false);
+          autopagerUtils.updateStatusIcons();
           return true;
       }
     }
@@ -979,18 +980,23 @@ showAllPagingOptions : function() {
    }
     
 },
-isEnabledOnDoc : function(doc)
+isEnabledOnDoc : function(doc,paging)
 {
-    var match = this.isMatchedOnDoc(doc);
+    var match = this.isMatchedOnDoc(doc,paging);
     return match.enabled;
 },
-isMatchedOnDoc : function(doc)
+isMatchedOnDoc : function(doc,pagingObj)
 {
         var de = doc.documentElement;
         var enabled = true;
-        if (doc.location && autopagerUtils.getAutoPagerObject(de) != null)
+        var paging = pagingObj
+        if (typeof pagingObj =='undefined' || pagingObj==null)
         {
-            var obj = autopagerUtils.getAutoPagerObject(de)
+            paging = autopagerUtils.getAutoPagerObject(de)
+        }
+        if (doc.location && paging != null)
+        {
+            var obj = paging
             var siteConfirm = autopagerConfig.findConfirm(autopagerConfig.getConfirm(),
                 obj.site.guid,doc.location.host);
 

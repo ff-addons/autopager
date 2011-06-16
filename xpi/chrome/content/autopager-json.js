@@ -559,7 +559,7 @@ var autopagerJsonSetting= {
                    autopagerPref.savePref("latestMessageId",site.n);
                    autopagerBwUtil.autopagerOpenIntab(url);
                }
-               autopagerBwUtil.openAlert("There's alerts",'need your attation.',url,callback)
+               autopagerBwUtil.openAlert(autopagerUtils.autopagerGetString("thereisalert"),autopagerUtils.autopagerGetString("needyourattention"),url,callback)
            }
            
 

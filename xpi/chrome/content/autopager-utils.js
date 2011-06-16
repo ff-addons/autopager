@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.6.2.14",
+    version:"0.6.2.15",
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
