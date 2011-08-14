@@ -93,7 +93,7 @@ var autopagerToolbar =
             {
                 autopagerPref.savePref("last_version", autopagerUtils.version);
                 autopagerToolbar.addAutopagerButton();
-                if (autopagerBwUtil.isFennec())
+                if (autopagerBwUtil.isMobileVersion())
                 {
                     autopagerPref.saveBoolPref("noprompt", true);
                 }
@@ -104,7 +104,9 @@ var autopagerToolbar =
             var lastVersion = lv;
             var currentVersion = autopagerUtils.version;
             if (lastVersion != autopagerUtils.version)
-{
+            {
+                //check if migrate is needed
+                autopagerUtils.migrateAfterUpgrade(currentVersion)
                 var vers = currentVersion.split('.');
                 var lastVers = lastVersion.split('.');
                 //a dev update if the last number is an odd number
@@ -125,8 +127,18 @@ var autopagerToolbar =
     }
 };
 
-//window.addEventListener("load", function() {
-//    var self = arguments.callee;
-//    window.removeEventListener("load",self,false);
-//    setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-//}, false);
+AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
+{
+    post_init : function()
+    {
+        AutoPagerNS.browser.addEventListener("load", function(ev) {
+            AutoPagerNS.browser.removeEventListener("load", arguments.callee, false);
+            try
+            {
+                setTimeout(autopagerToolbar.autopagerToobarInit, 1000);
+            }catch(e){
+                autopagerBwUtil.consoleError("DOMContentLoaded with error:" + e)
+            }
+        }, false);    
+    }
+})

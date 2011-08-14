@@ -1,5 +1,6 @@
 var autopagerUtils = {
-    version:"0.6.2.15",
+    version:"0.7.0.0",
+    formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
         {
@@ -117,14 +118,23 @@ var autopagerUtils = {
         var count = autopagerUtils.numberOfWindows(false,aWindowtype);
         return count <=1;
     },
-    clone : function(obj){
+    clone : function(obj,level,noconstructor,ignorefunction){
+        if (typeof level== "undefined")
+            level = 10;
         if(obj == null || typeof obj != 'object')
             return obj;
-        var temp = new obj.constructor();
+        var temp;
+        if (!noconstructor)
+            temp = new obj.constructor();
+        else
+            temp = {}
 
-        for(var key in obj)
-        {
-            temp[key] = this.clone(obj[key]);
+        if (level>0){
+            for(var key in obj)
+            {
+                if (!ignorefunction || typeof obj[key] != "function")
+                    temp[key] = this.clone(obj[key],level-1,noconstructor,ignorefunction);
+            }            
         }
         return temp;
     },
@@ -222,6 +232,8 @@ var autopagerUtils = {
     },
     dumpObject : function (obj,level)
     {
+        if (typeof level=="undefined")
+            level = 1;
         if(obj == null || typeof obj != 'object' || level<0)
             return obj;
         var temp = "[";
@@ -294,7 +306,7 @@ var autopagerUtils = {
     getRegExp :function(site)
     {
         try{
-            if (site.regex==null)
+            if (!site.regex)
             {
                 if (site.isRegex)
                     try{
@@ -322,7 +334,7 @@ var autopagerUtils = {
     getRegExp2 :function(pattern)
     {
         try{
-            if (pattern.rg==null)
+            if (!pattern.rg)
             {
                 if (pattern.r)
                     try{
@@ -484,7 +496,7 @@ var autopagerUtils = {
     {
         if (doc == null)
             return false;
-        if (!(doc instanceof HTMLDocument))
+        if (!autopagerUtils.isHTMLDocument(doc))
         {
             return false;
         }
@@ -516,13 +528,19 @@ var autopagerUtils = {
     {
         var data = {};
         try {
-            var xpe = new XPathEvaluator();
+            var xpe = null;
+            try{
+                xpe = new XPathEvaluator();
+            }catch(e)
+            {
+                xpe = doc
+            }
             var nsResolver = xpe.createNSResolver(aFrame.document.documentElement);
             var xpathResult = aFrame.document.evaluate(
                 'descendant::textbox | descendant::*[local-name() = "input" or local-name() = "INPUT" or local-name() = "textarea" or local-name() = "TEXTAREA"]',
                 aFrame.document,
                 nsResolver,
-                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+                AutoPagerNS.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
                 null
                 );
             if (xpathResult.snapshotLength) {
@@ -601,13 +619,19 @@ var autopagerUtils = {
     deSerializeUserInput : function(aFrame,data)
     {
         try {
-            var xpe = new XPathEvaluator();
+            var xpe = null;
+            try{
+                xpe = new XPathEvaluator();
+            }catch(e)
+            {
+                xpe = aFrame.document
+            }
             var nsResolver = xpe.createNSResolver(aFrame.document.documentElement);
             var xpathResult = aFrame.document.evaluate(
                 'descendant::textbox | descendant::*[local-name() = "input" or local-name() = "INPUT" or local-name() = "textarea" or local-name() = "TEXTAREA"]',
                 aFrame.document,
                 nsResolver,
-                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+                AutoPagerNS.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
                 null
                 );
             if (xpathResult.snapshotLength) {
@@ -685,7 +709,7 @@ var autopagerUtils = {
     noprompt : function()
     {
         return autopagerPref.loadBoolPref("noprompt") || autopagerBwUtil.isInPrivateMode()
-        || autopagerBwUtil.isFennec();
+        || autopagerBwUtil.isMobileVersion();
     },
     containsNode : function(parent, descendant) {
         // We use browser specific methods for this if available since it is faster
@@ -850,20 +874,23 @@ delete * 24, for minutes, delete * 60 * 24
     },
     handleDocLoad : function(doc,safe)
     {
+//autopagerBwUtil.consoleLog("handleDocLoad 1");        
         if (autopagerBwUtil.handleDocLoad)
         {
             return autopagerBwUtil.handleDocLoad(doc,safe)
         }
 
-        autopagerMain.workingAllSites = AutoPagerNS.UpdateSites.loadAll();
-        //doc.documentElement.autopagerContentHandled = true;
-        var tmpSites = autopagerMain.loadTempConfig();
-
-        tmpSites.updateSite = new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
-            "","text/html; charset=utf-8",
-            "smart paging configurations",
-            "smartpaging.xml","//site",true,"autopager-xml",0);
-        autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
+//autopagerBwUtil.consoleLog("handleDocLoad 2");        
+//        autopagerMain.workingAllSites = AutoPagerNS.UpdateSites.loadAll();
+//        //doc.documentElement.autopagerContentHandled = true;
+//        var tmpSites = autopagerMain.loadTempConfig();
+//autopagerBwUtil.consoleLog("handleDocLoad 3");        
+//
+//        tmpSites.updateSite = new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+//            "","text/html; charset=utf-8",
+//            "smart paging configurations",
+//            "smartpaging.xml","//site",true,"autopager-xml",0);
+//        autopagerMain.workingAllSites[tmpSites.updateSite.filename] = tmpSites;
         return autopagerMain.onInitDoc(doc,safe);
     }
     ,
@@ -951,42 +978,39 @@ delete * 24, for minutes, delete * 60 * 24
         if (!pattern)
             return null;
         var resRegExp = "";
-        var reg = null;
+        var regStr = null;
+        var regTmp = null;
         var ps = pattern.split("\n");
         for(var i=0;i<ps.length;i++)
         {
             try{
                 //site.regex = new RegExp(autopagerUtils.correctRegExp(site.urlPattern));
-                new RegExp(ps[i]);
-                reg = ps[i]
+                regTmp = new RegExp(ps[i]);
+                regStr = ps[i]
             }catch(re)
             {
                 try{
-                    reg = autopagerUtils.correctRegExp(ps[i])
-                    new RegExp(reg);
+                    regStr = autopagerUtils.correctRegExp(ps[i])
+                    regTmp = new RegExp(regStr);
                 }catch(e){
                     //error create regexp, try to use it as pattern
-                    reg = autopagerUtils.convert2RegExpStr(ps[i]);
+                    regStr = autopagerUtils.convert2RegExpStr(ps[i]);
                 }
             }
             if (!(resRegExp===""))
             {
                 resRegExp = resRegExp + "|";
             }
-            resRegExp = resRegExp + reg
+            resRegExp = resRegExp + regStr
         }
         return new RegExp(resRegExp);
     }
-    ,
-    autopagerStrbundle : new autopagerStrings("autopager")
     ,
     autopagerGetString : function(name)
     {
         try{
 
-            if (autopagerUtils.autopagerStrbundle == null)
-                autopagerUtils.autopagerStrbundle = new autopagerStrings("autopager");
-            return autopagerUtils.autopagerStrbundle.getString(name);
+            return AutoPagerNS.strings.getString(name);
         }catch(e)
         {
             //alert(name + " " + e);
@@ -996,9 +1020,7 @@ delete * 24, for minutes, delete * 60 * 24
     autopagerFormatString :function(name,parms)
     {
         try{
-            if (autopagerUtils.autopagerStrbundle == null)
-                autopagerUtils.autopagerStrbundle = new autopagerUtils("autopager");
-            return autopagerUtils.autopagerStrbundle.getFormattedString(name, parms);
+            return AutoPagerNS.strings.getFormattedString(name, parms);
         }catch(e)
         {
             //alert(name + " " + e);
@@ -1093,15 +1115,338 @@ delete * 24, for minutes, delete * 60 * 24
             return autopagerBwUtil.getAddonsList();
         return [];
     }
-    ,updateStatusIcons : function()
+    ,updateStatusIcons : function(doc)
     {
-        if (typeof autopagerBwUtil.updateStatusIcons == "function")
-            autopagerBwUtil.updateStatusIcons();
+        if (!doc)
+            doc = AutoPagerNS.getContentDocument();
+        AutoPagerNS.message.call_function("autopager_update_site_status",{
+            site_disabled:!autopagerUtils.isEnabledOnHost(doc),
+            discovered_rules :  autopagerLite.getMatchedRules(doc)
+        })
+//        autopagerBwUtil.consoleLog("update status icons:" + autopagerLite.getMatchedRules(doc))
     }
     ,addTabSelectListener : function (callback,useCapture)
     {
         if (typeof autopagerBwUtil.addTabSelectListener == "function")
             autopagerBwUtil.addTabSelectListener(callback,useCapture);
     }
-
+    ,isHTMLDocument : function(doc)
+    {
+        if (typeof doc=="undefined" || !doc)
+            return false;
+        if (typeof autopagerBwUtil.isHTMLDocument == "function")
+            return autopagerBwUtil.isHTMLDocument(doc);
+        return doc instanceof HTMLDocument;
+    }
+    , 
+    newXMLHttpRequest: function()
+    {
+        var xmlhttp = null
+        try{
+            xmlhttp = new AutoPagerNS.window.XMLHttpRequest();
+        }catch(e){
+            try{
+                xmlhttp = new XMLHttpRequest();
+            }catch(ex){
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");                          
+            }
+        }
+        return xmlhttp
+    }
+    ,postHandlingPaging : function(doc)
+    {
+//        autopagerBwUtil.consoleLog("postHandlingPaging")
+        if (typeof autopagerBwUtil.postHandlingPaging == "function")
+            autopagerBwUtil.postHandlingPaging(doc);
+        
+        this.updateStatusIcons(doc)
+    }
+    ,getContentImage : function(name)
+    {
+        if (typeof autopagerBwUtil.getContentImage == "function")
+            return autopagerBwUtil.getContentImage(name);
+        return AutoPagerNS.get_url( name);
+    }
+    ,frameSafe : function()
+    {
+        if (typeof autopagerBwUtil.frameSafe == "function")
+            return autopagerBwUtil.frameSafe();
+        return true;
+    }
+    ,get_host : function (hostobj)
+    {
+        var host = "x";
+        if (typeof hostobj == "string")
+        {
+            host = hostobj;
+        }
+        else if (hostobj && hostobj.location && hostobj.location.host)
+            host = hostobj.location.host;
+        else if (hostobj && hostobj.location && hostobj.location.href)
+        {
+            var uri = autopagerUtils.parseUri(hostobj.location.href);
+            host = uri["host"];
+        }
+        else if (AutoPagerNS.getContentDocument() && AutoPagerNS.getContentDocument().location && AutoPagerNS.getContentDocument().location.host)
+            host = AutoPagerNS.getContentDocument().location.host;
+        else if(AutoPagerNS.window && AutoPagerNS.window.location && AutoPagerNS.window.location.host)
+        {
+            host = AutoPagerNS.window.location.host;
+        }else if(typeof location!="undefined" && location.host)
+        {
+            host = location.host;
+        }
+        return host;
+    }
+    ,isConfirmedOnHost : function (hostobj)
+    {
+        var host = this.get_host(hostobj);
+        return autopagerPref.loadBoolPref("host." + host + ".confirmed");
+    }
+    ,setConfirmedOnHost : function (confirmed,hostobj)
+    {
+        var host = this.get_host(hostobj);
+        if (confirmed)
+            autopagerPref.saveBoolPref("host." + host + ".confirmed",confirmed);
+        else
+            autopagerPref.resetPref("host." + host + ".confirmed");
+    }
+    ,isEnabledOnHost : function (hostobj)
+    {
+        var host = this.get_host(hostobj);
+        var disabled = autopagerPref.loadBoolPref("host." + host + ".disabled");
+        if (!autopagerUtils.noprompt() || this.isConfirmedOnHost(host))
+            return !disabled;
+        return !(autopagerPref.loadBoolPref("disable-by-default") || disabled);
+    }
+    ,setEnabledOnHost : function (enabled,hostobj)
+    {
+        var host = this.get_host(hostobj);
+        if (!enabled)
+            autopagerPref.saveBoolPref("host." + host + ".disabled",!enabled);
+        else
+            autopagerPref.resetPref("host." + host + ".disabled");
+    }
+    ,getStatus : function(enabled,siteenabeld,discoveredRules)
+    {
+        var status="ap-enabled";
+        if (!siteenabeld)
+            status = "ap-site-disabled";
+        else if (!enabled)
+            status = "ap-disabled";
+        else if(discoveredRules && discoveredRules>0)
+            status = "ap-lite";
+        return status
+    }
+    , compareVersion : function(ver1,ver2)
+    {
+        var ver1s = ver1.split('.');
+        var ver2s = ver2.split('.');
+        var ver1l = ver1s.length
+        var ver2l = ver2s.length
+        var minl = ver1l>ver2l?ver2l:ver1l;
+        for(var i=0;i<minl;i++)
+        {
+            if (ver1s[i]!=ver2s[i])
+                return ver1s[i]-ver2s[i];
+        }
+        return ver1l - ver2l;
+    }
+    , migrateAfterUpgrade : function (ver)
+    {
+        if (this.compareVersion("0.6.2.15",ver)<0)
+        {
+            //TODO: migrate confirm.xml, all sites.xml
+        }
+    }
+    ,
+    getCallStack : function() {
+      var callstack = [];
+      var isCallstackPopulated = false;
+      try {
+        i.dont.exist+=0; //doesn't exist- that's the point
+      } catch(e) {          
+        if (e.stack) { //Firefox
+          var lines = e.stack.split('\n');
+          for (var i=0, len=lines.length; i<len; i++) {
+            callstack.push(lines[i]);           
+          }
+          //Remove call to printStackTrace()
+          callstack.shift();
+          isCallstackPopulated = true;
+        }
+      }
+      if (!isCallstackPopulated) { //IE and Safari
+        var currentFunction = arguments.callee.caller;
+        while (currentFunction) {
+          var fn = currentFunction.toString();
+          var fname = fn.substring(fn.indexOf("function") + 8, fn.indexOf('')) || 'anonymous';
+          callstack.push(fname);
+          currentFunction = currentFunction.caller;
+        }
+      }
+      return (callstack);
+    }
+    ,
+    html_textarea_data_url : function (title,str)
+    {
+        return autopagerUtils.html_data_url(title,"<textarea rows='30' cols='100'>" + str + "</textarea>")
+    }
+    ,
+    html_data_url : function (title,str)
+    {
+        //autopagerUtils.base64_encode
+        var html = "<head><title>" + title + "</title><meta content='text/html; charset=utf-8' http-equiv='content-type'/></head>"
+                        + "<body>"+ str + "</body>";
+        return    "data:text/html;charset=utf-8,"+html
+    }        
+    ,
+    base64_encode : function (input){
+        return this.Base64.encode(input);
+    }
+    ,
+    base64_decode : function (input){
+        return this.Base64.decode(input);
+    }
+    ,
+    Base64 : {     
+        /**
+*
+*  Base64 encode / decode
+*  http://www.webtoolkit.info/
+*
+**/
+        // private property
+        _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+ 
+        // public method for encoding
+        encode : function (input) {
+            var output = "";
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+            var i = 0;
+ 
+            input = autopagerUtils.Base64._utf8_encode(input);
+ 
+            while (i < input.length) {
+ 
+                chr1 = input.charCodeAt(i++);
+                chr2 = input.charCodeAt(i++);
+                chr3 = input.charCodeAt(i++);
+ 
+                enc1 = chr1 >> 2;
+                enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                enc4 = chr3 & 63;
+ 
+                if (isNaN(chr2)) {
+                    enc3 = enc4 = 64;
+                } else if (isNaN(chr3)) {
+                    enc4 = 64;
+                }
+ 
+                output = output +
+                this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+ 
+            }
+ 
+            return output;
+        },
+ 
+        // public method for decoding
+        decode : function (input) {
+            var output = "";
+            var chr1, chr2, chr3;
+            var enc1, enc2, enc3, enc4;
+            var i = 0;
+ 
+            input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+ 
+            while (i < input.length) {
+ 
+                enc1 = this._keyStr.indexOf(input.charAt(i++));
+                enc2 = this._keyStr.indexOf(input.charAt(i++));
+                enc3 = this._keyStr.indexOf(input.charAt(i++));
+                enc4 = this._keyStr.indexOf(input.charAt(i++));
+ 
+                chr1 = (enc1 << 2) | (enc2 >> 4);
+                chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                chr3 = ((enc3 & 3) << 6) | enc4;
+ 
+                output = output + String.fromCharCode(chr1);
+ 
+                if (enc3 != 64) {
+                    output = output + String.fromCharCode(chr2);
+                }
+                if (enc4 != 64) {
+                    output = output + String.fromCharCode(chr3);
+                }
+ 
+            }
+ 
+            output = autopagerUtils.Base64._utf8_decode(output);
+ 
+            return output;
+ 
+        },
+ 
+        // private method for UTF-8 encoding
+        _utf8_encode : function (string) {
+            string = string.replace(/\r\n/g,"\n");
+            var utftext = "";
+ 
+            for (var n = 0; n < string.length; n++) {
+ 
+                var c = string.charCodeAt(n);
+ 
+                if (c < 128) {
+                    utftext += String.fromCharCode(c);
+                }
+                else if((c > 127) && (c < 2048)) {
+                    utftext += String.fromCharCode((c >> 6) | 192);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+                else {
+                    utftext += String.fromCharCode((c >> 12) | 224);
+                    utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                    utftext += String.fromCharCode((c & 63) | 128);
+                }
+ 
+            }
+ 
+            return utftext;
+        },
+ 
+        // private method for UTF-8 decoding
+        _utf8_decode : function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+ 
+            while ( i < utftext.length ) {
+ 
+                c = utftext.charCodeAt(i);
+ 
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                }
+                else if((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i+1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                }
+                else {
+                    c2 = utftext.charCodeAt(i+1);
+                    c3 = utftext.charCodeAt(i+2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+ 
+            }
+ 
+            return string;
+        }
+ 
+    }
 }

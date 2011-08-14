@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "URL Düzeni:">
 <!ENTITY setting.label.lblUpdate "Site Kurallarını Otomatik Güncelle:">
 <!ENTITY setting.label.loading "&quot;Yükleniyor...&quot; uyarısının biçemi:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Boş alan">
 <!ENTITY setting.label.marginEnd "pencere yüksekliğinden daha az ise başla">
 <!ENTITY setting.label.minipages "Önceden yüklenecek minimum sayfa sayısı:">

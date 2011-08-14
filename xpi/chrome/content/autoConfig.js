@@ -6,7 +6,6 @@ AutoPagerNS.UpdateSites=
     updatedCount: 0,
     init:function()
     {
-
         if (this.updateSites == null || this.AutopagerCOMP==null)
         {
             this.updateSites = this.getUpdateSites();
@@ -73,16 +72,16 @@ AutoPagerNS.UpdateSites=
         //        autopagerBwUtil.consoleLog("needUpdate:" + needUpdate)
         if (needUpdate)
         {            
-            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.url,force,error,updatesite.fullUpdate),updatesite.contenttype,this.callback,this.onerror,updatesite);
             //alert("update " + updatesite.filename)
         }
     },
     updateSiteOnlineBackup :function (updatesite,error)
     {
         if (updatesite.backupUrls!=null &&  updatesite.triedBackup < updatesite.backupUrls.length)
-            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup],true,error),updatesite.contenttype,this.callback,this.onerror,updatesite);
+            AutoPagerNS.apxmlhttprequest.xmlhttprequest( this.getUrl(updatesite.backupUrls[updatesite.triedBackup],true,error,updatesite.fullUpdate),updatesite.contenttype,this.callback,this.onerror,updatesite);
     },
-    getUrl : function (url,force,error)
+    getUrl : function (url,force,error,fullupdate)
     {
         var all=0;
         if (autopagerPref.loadBoolPref("include-unsafe-rules"))
@@ -92,6 +91,11 @@ AutoPagerNS.UpdateSites=
             t +=  (new Date()).getTime() + "&apForce=1";
         if (error!=0)
             t += (new Date()).getTime() + "&apError=" + error;
+        if (!force && fullupdate)
+        {
+            fullupdate = Math.ceil(fullupdate/1000);
+            t += "&ft=" + fullupdate;
+        }
 
         url = url.replace(/\{version\}/,autopagerUtils.version).replace(/\{timestamp\}/,t).replace(/\{all\}/,all);
         var ids = autopagerPref.loadUTF8Pref("ids");
@@ -167,15 +171,16 @@ AutoPagerNS.UpdateSites=
             AutoPagerNS.UpdateSites.updatedCount=0;
             this.init();
             AutoPagerNS.UpdateSites.submitCount=0;
-
-            for(var i=0;i<this.updateSites.length;i++)
+            var updateSites = AutoPagerNS.UpdateSites.getUpdateSites();
+            for(var i=0;i<updateSites.length;i++)
             {
-                var site= this.updateSites[i];
+                var site= updateSites[i];
                 if ( (force || site.enabled) && site.url.length >0)
                 {
                     site.triedTime = 0;
-                    site.triedBackup = 0;                    
-                    this.updateSiteOnline(site,force,0);
+                    site.triedBackup = 0;
+                    if (site.enabled)
+                        this.updateSiteOnline(site,force,0);
                 }
             }
         }
@@ -260,6 +265,8 @@ AutoPagerNS.UpdateSites=
         //if (AutoPagerNS.UpdateSites.submitCount<=0)
         autopagerPref.savePref("lastupdate",(new Date()).getTime());
         updatesite.lastupdate = (new Date()).getTime();
+        if (!sites.partlyUpdated)
+            updatesite.fullUpdate = (new Date()).getTime();
         var allSites = AutoPagerNS.UpdateSites.loadAll();
         allSites[updatesite.filename] = sites;
         AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allSites);//notify update
@@ -278,14 +285,18 @@ AutoPagerNS.UpdateSites=
     loadAll:function()
     {
         var allSiteSetting = this.getAutopagerCOMP().loadAll();
-        if (allSiteSetting == null || allSiteSetting.length==0)
+                
+        if (allSiteSetting == null || !allSiteSetting["autopager.xml"])
         {
             allSiteSetting = {};
+            //allSiteSetting.length=0;
             allSiteSetting["testing.xml"] = null;
-            for(var i=this.updateSites.length-1;i>=0;i--)
+            var updateSites = AutoPagerNS.UpdateSites.getUpdateSites();
+            for(var i=updateSites.length-1;i>=0;i--)
             {
-                var sites = autopagerConfig.reLoadConfig(allSiteSetting,this.updateSites[i]);
-                allSiteSetting[this.updateSites[i].filename] = sites;
+                var sites = autopagerConfig.reLoadConfig(allSiteSetting,updateSites[i]);
+                allSiteSetting[updateSites[i].filename] = sites;
+                //allSiteSetting.length++;
             }
             this.getAutopagerCOMP().setAll(allSiteSetting);
         }
@@ -305,6 +316,7 @@ AutoPagerNS.UpdateSites=
                 var pattern = autopagerUtils.getRegExp(site);
                 if (pattern.test(url)) {
                     var newSite = autopagerConfig.cloneSite (site);
+                    newSite = autopagerConfig.completeRule(newSite)
                     newSite.updateSite = tmpsites.updateSite;
                     newSites.push(newSite);
                     if (count == newSites.length)
@@ -344,36 +356,36 @@ AutoPagerNS.UpdateSites=
 
 AutoPagerNS.Site = function()
 {
-    this.urlPattern  = null;
-    this.regex = null;
-    this.isRegex = false;
-    this.enabled  = true;
-    this.enableJS  = false;
-    this.quickLoad = true;
-    this.fixOverflow  = false;
-    this.createdByYou  = false;
-    this.changedByYou  = false;
-    this.owner  = "";
-    this.contentXPath = [];//["//div[@class='g']"];
-
-    this.linkXPath = "//a[contains(.//text(),'Next')]";
-    this.containerXPath="";
-    this.monitorXPath="";
-    this.removeXPath=[];
-    //this.desc = null;
-    this.testLink = [];
-    this.oldSite = null;
-    this.margin = autopagerMain.getDefaultMargin();
-
-    this.maxLinks = -1;
-    this.isTemp = false;
-    this.tmpPaths = [];
-    this.guid = "";
-    this.ajax=false;
-    this.needMouseDown = false;
-    this.published = false;
-    this.minipages = -1;
-    this.delaymsecs = -1;
+//    this.urlPattern  = null;
+//    this.regex = null;
+//    this.isRegex = false;
+//    this.enabled  = true;
+//    this.enableJS  = false;
+//    this.quickLoad = true;
+//    this.fixOverflow  = false;
+//    this.createdByYou  = false;
+//    this.changedByYou  = false;
+//    this.owner  = "";
+//    this.contentXPath = [];//["//div[@class='g']"];
+//
+//    this.linkXPath = "//a[contains(.//text(),'Next')]";
+//    this.containerXPath="";
+//    this.monitorXPath="";
+//    this.removeXPath=[];
+//    //this.desc = null;
+//    this.testLink = [];
+//    this.oldSite = null;
+//    this.margin = autopagerMain.getDefaultMargin();
+//
+//    this.maxLinks = -1;
+//    this.isTemp = false;
+//    this.tmpPaths = [];
+//    this.guid = "";
+//    this.ajax=false;
+//    this.needMouseDown = false;
+//    this.published = false;
+//    this.minipages = -1;
+//    this.delaymsecs = -1;
 }
 
 AutoPagerNS.SiteConfirm=function()
@@ -388,11 +400,10 @@ AutoPagerNS.SiteConfirm=function()
 var autopagerConfig =
     {
     autoSites : null,
-    formatVersion: 1,
     autopagerDomParser : autopagerBwUtil.newDOMParser(),
     openSetting : function(url,obj) {
         var settingUrl = "chrome://autopager/content/autopager.xul";
-        if (!autopagerBwUtil.isFennec())
+        if (!autopagerBwUtil.isMobileVersion())
         {
             window.autopagerSelectUrl=url;
             window.autopagerOpenerObj = obj;
@@ -401,7 +412,7 @@ var autopagerConfig =
             win.focus();
         }else
         {
-            content.location.href=settingUrl;
+            AutoPagerNS.window.location.href=settingUrl;
             if (typeof Browser!="undefined" && Browser._browserView)
             {
                 var bv = Browser._browserView
@@ -458,7 +469,7 @@ var autopagerConfig =
             }
         }catch(e)
         {
-            autopagerBwUtil.consoleLog(e);
+            autopagerBwUtil.consoleError(e);
         }
         return file;
 
@@ -488,7 +499,7 @@ var autopagerConfig =
             }
         }catch(e)
         {
-            autopagerBwUtil.consoleLog(e);
+            autopagerBwUtil.consoleError(e);
         }
         return sites;
     }
@@ -502,7 +513,7 @@ var autopagerConfig =
                 confirmContents= autopagerBwUtil.getConfigFileContents("site-confim.xml");
             }catch(e)
             {
-                autopagerBwUtil.consoleLog(e);
+                autopagerBwUtil.consoleError(e);
             }
             confirms = this.loadConfirmFromStr(confirmContents);
             AutoPagerNS.UpdateSites.AutopagerCOMP.setSiteConfirms(confirms);
@@ -601,8 +612,9 @@ var autopagerConfig =
         newSite.changedByYou  = site.changedByYou;
         newSite.owner  = site.owner;
         newSite.contentXPath = [];
-        for(var i=0;i<site.contentXPath.length;++i)
-            newSite.contentXPath[i] = site.contentXPath[i];
+        if (site.contentXPath)
+            for(var i=0;i<site.contentXPath.length;++i)
+                newSite.contentXPath[i] = site.contentXPath[i];
 
         newSite.testLink = [];
         if (site.testLink)
@@ -647,7 +659,8 @@ var autopagerConfig =
             return true;
         else
         {
-            var oldSite = site.oldSite;
+            site = this.completeRule(site)
+            var oldSite = this.completeRule(site.oldSite);
             if (oldSite.urlPattern  != site.urlPattern
                 || oldSite.id  != site.id
                 || oldSite.guid  != site.guid
@@ -739,7 +752,7 @@ var autopagerConfig =
             .newFileURI(autopagerBwUtil.getConfigFile(fileName));
         }catch(e)
         {
-            autopagerBwUtil.consoleLog(e);
+            autopagerBwUtil.consoleError(e);
         }
     },
     getRemoteURI : function(url)
@@ -794,18 +807,22 @@ var autopagerConfig =
         return allConfigs["autopager.xml"];
     },
     reLoadConfig :function(allSiteSetting,updateSite) {
+        var sites= [];
         var configContents="";
         var loaded = false;
         var jsonfile = updateSite.filename.replace(/\.xml/,".json");
         var jsonOverridefile = updateSite.filename.replace(/\.xml/,".json.override");
         try{
-
-            configContents= autopagerBwUtil.getConfigFileContents(jsonfile);
-            if (configContents!=null && configContents.length>0)
+            if (updateSite.enabled ||!autopagerBwUtil.isMobileVersion())
+                configContents= autopagerBwUtil.getConfigFileContents(jsonfile);
+            if (typeof configContents !="undefined" && configContents!=null && configContents.length>0)
             {
-                var sites= null;
                 sites = autopagerJsonSetting.loadCompactFromString(configContents);
                 sites.updateSite = updateSite;
+//                for(var a=0;a<10;a++)
+//                {
+//                    sites["xx"+a] = autopagerJsonSetting.loadCompactFromString(configContents);
+//                }
                 loaded = true;
                 if (updateSite.filename != "autopager.xml")
                 {
@@ -826,20 +843,24 @@ var autopagerConfig =
         {
             try{
                 configContents= autopagerBwUtil.getConfigFileContents(updateSite.filename);
-                var sites= null;
-                sites = autopagerConfig.loadConfigFromStr(configContents,false);
-                sites.updateSite = updateSite;
-                //save to json
-                if (sites.length>0)
+                if (typeof configContents !="undefined" && configContents!=null && configContents.length>0)
                 {
-                    autopagerConfig.saveConfigToJsonFile(sites,autopagerBwUtil.getConfigFile(jsonfile),true);
-                    //todo:delete old xml file
+                    sites = autopagerConfig.loadConfigFromStr(configContents);
+                    sites.updateSite = updateSite;
+                    //save to json
+                    if (sites.length>0)
+                    {
+                        autopagerConfig.saveConfigToJsonFile(sites,autopagerBwUtil.getConfigFile(jsonfile),true);
+                        //todo:delete old xml file
+                    }
                 }
             }catch(e)
             {
-                autopagerBwUtil.consoleLog(e);
+                autopagerBwUtil.consoleError(e);
             }
         }
+        sites.updateSite = updateSite;
+        sites.updateSite.ruleCount = sites.length;
         allSiteSetting[updateSite.filename] = sites;
         return sites
     },
@@ -848,8 +869,10 @@ var autopagerConfig =
         if (typeof silient=='undefined')
             silient=false
         try{
-            var configContents = "<root>" + str + "</root>";
-            sites =  autopagerConfig.loadConfigFromStr(configContents,false);
+            var configContents =  str;
+            if (configContents.substr(0,1)!="[")
+                configContents = "<root>" + str + "</root>";
+            sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,silient,callback);
         }catch(e)
         {
@@ -898,7 +921,7 @@ var autopagerConfig =
             if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
             if (str) configContents = str.data.substring(0, strLength.value / 2);
 
-            sites =  autopagerConfig.loadConfigFromStr(configContents,false);
+            sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,false);
         }catch(e)
         {
@@ -919,13 +942,19 @@ var autopagerConfig =
                 return;
             }
             var configContents = autopagerConfig.autopagerGetContents(fileURI);
-            sites =  autopagerConfig.loadConfigFromStr(configContents,false);
+            sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,false);
         }catch(e)
         {
             autopagerBwUtil.consoleError(e);
         }
     },
+    exportToJson : function()
+    {
+        var sites = autopagerConfig.loadConfig();
+        return autopagerJsonSetting.saveNormalToCompactString(sites);
+    }
+    ,
     exportSetting : function()
     {
         var file = autopagerConfig.selectFile(autopagerUtils.autopagerGetString("outputfile"),Components.interfaces.nsIFilePicker.modeSave);
@@ -1030,7 +1059,7 @@ var autopagerConfig =
     loadConfigFromUrl : function(url) {
         try{
             var configContents = autopagerConfig.autopagerGetContents(autopagerConfig.getRemoteURI(url),"UTF-8",true);
-            return autopagerConfig.loadConfigFromStr(configContents,false);
+            return autopagerConfig.loadConfigFromStr(configContents);
         }
         catch(e)
         {
@@ -1059,7 +1088,7 @@ var autopagerConfig =
             return sites;
         var hasQuickLoad = false;
         for (var node = null; (node = nodes.iterateNext()); ) {
-            var site = new AutoPagerNS.Site();
+            var site = autopagerConfig.newDefaultSite();
             var ajax = false;
             var needMouseDown = false;
             var published =false;
@@ -1193,26 +1222,32 @@ var autopagerConfig =
         }
         return sites;
     },
-    loadConfigFromStr : function(configContents,remote) {
+    loadConfigFromStr : function(configContents) {
         var sites = null;
         try{
-
-            var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
-            sites = autopagerConfig.loadConfigFromDoc(doc);
+            //load xml
+            if (configContents.substr(0,1)!="[")
+            {
+                var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
+                sites = autopagerConfig.loadConfigFromDoc(doc);
+            }else{
+                //load json
+                sites = autopagerJsonSetting.loadCompactFromString(configContents);                
+            }
         }catch(e)
         {
-            autopagerBwUtil.consoleLog(e);
-        }
-        if (remote && sites.length ==0 )
-        {
-            //sites = autopagerConfig.loadConfigFromUrl(AutoPagerNS.UpdateSites.defaultSite());
-            //autopagerConfig.saveConfig(sites);
-        }
+            autopagerBwUtil.consoleError(e);
+        }        
         return sites;
     },
-    newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
+    newDefaultSite : function ()
     {
         var site = new AutoPagerNS.Site();
+        return autopagerConfig.completeRule (site);//fill defaults first
+    }
+    ,newSite : function(urlPattern,desc,linkXPath,contentXPath,testLink)
+    {
+        var site =autopagerConfig.newDefaultSite();
         site.urlPattern = urlPattern;
         site.desc =desc;
         site.linkXPath = linkXPath;
@@ -1238,6 +1273,8 @@ var autopagerConfig =
     {
         for (var key in allSites)
         {
+            if (!allSites[key].updateSite)
+                continue;
             var updateSite = allSites[key].updateSite;
             if (updateSite.fileName =='smartpaging.xml' || updateSite.fileName == 'testing.xml' || updateSite.fileName == 'autopager.xml')
                 continue;
@@ -1413,10 +1450,80 @@ var autopagerConfig =
         stream.init(output, "UTF-8", 0, 0x0000);
         return stream;
     }
+    ,defaultRule : {
+        urlPattern  : null,
+        regex : null,
+        isRegex : false,
+        enabled  : true,
+        enableJS  : false,
+        quickLoad : true,
+        fixOverflow  : false,
+        createdByYou  : false,
+        changedByYou  : false,
+        owner  : "",
+        contentXPath : [],//["//div[@class:'g']"]
+        linkXPath : "//a[contains(.//text(),'Next')]",
+        containerXPath:"",
+        monitorXPath:"",
+        removeXPath:[],
+        //desc : null,
+        testLink : [],
+        oldSite : null,
+        margin : autopagerPref.loadPref("defaultheight"),
 
+        maxLinks : -1,
+        isTemp : false,
+        tmpPaths : [],
+        guid : "",
+        ajax:false,
+        needMouseDown : false,
+        published : false,
+        minipages : -1,
+        delaymsecs : -1            
+    }
+    ,arrayField : {
+        contentXPath : [],//["//div[@class:'g']"]
+        removeXPath:[],
+        testLink : [],
+        tmpPaths : []
+    },
+    completeRule : function (rule)
+    {
+        var newRule = rule;//this.clone(rule);
+        
+        for(var k in this.arrayField)
+        {
+            if (typeof newRule[k]=="undefined")
+            {
+                newRule[k] = []
+            }
+        }
+        for(var k in this.defaultRule)
+        {
+            if (typeof newRule[k]=="undefined")
+            {
+                newRule[k] = this.defaultRule[k]
+            }
+        }
+        return newRule;
+    }
 };
-AutoPagerNS.UpdateSites.init();
 
+
+AutoPagerNS.util = AutoPagerNS.extend (AutoPagerNS.namespace("util"),
+    {
+        post_init : function()
+        {
+            try{
+                AutoPagerNS.UpdateSites.init();    
+            }catch(e)
+            {
+                autopagerBwUtil.consoleError(e);
+            }
+        }
+    }
+    );
+        
 /*
   sanitize privte data by clear the file site-confirm.xml
  */
@@ -1432,10 +1539,10 @@ var autopagerSanitizer = {
                 try {
                     autopagerSanitizer.sanitize();
                 } catch (ex) {
-                    try { Components.utils.reportError(ex); } catch(ex) {}
+                    try {Components.utils.reportError(ex);} catch(ex) {}
                 }
             },
-            get canClear() {
+            canClear :  function() {
                 return true;
             }
         }
@@ -1495,7 +1602,7 @@ var autopagerSanitizer = {
 
         try {
             var promptOnSanitize = prefService.getBoolPref("privacy.sanitize.promptOnSanitize");
-        } catch (e) { promptOnSanitize = true;}
+        } catch (e) {promptOnSanitize = true;}
 
         // if promptOnSanitize is true we call autopagerSanitizer.sanitize from Firefox Sanitizer
         if (promptOnSanitize)
@@ -1503,7 +1610,7 @@ var autopagerSanitizer = {
 
         try {
             var sanitizeAutopager = prefService.getBoolPref("privacy.item.extensions-autopager");
-        } catch (e) { sanitizeAutopager = false;}
+        } catch (e) {sanitizeAutopager = false;}
 
         if (!sanitizeAutopager)
             return false;

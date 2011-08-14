@@ -367,7 +367,7 @@ function getLevels(allSites,firstItem,filter,select)
     var parent = 0;
     var matched = false;
     for (var key in allSites){
-        if (allSites[key].updateSite.filename=="smartpaging.xml" || allSites[key].updateSite.filename=="testing.xml")
+        if (!allSites[key].updateSite || allSites[key].updateSite.filename=="smartpaging.xml" || allSites[key].updateSite.filename=="testing.xml")
             continue;
         var sites = null;
         if (allSites[key].updateSite.filename == "autopager.xml")

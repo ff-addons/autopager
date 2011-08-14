@@ -64,7 +64,7 @@ autopagerSelector.clearFunctions = function ()
 
 autopagerSelector.CanSelect = function (browser) {
 	if (!browser || !browser.contentWindow || 
-			!(browser.contentDocument instanceof HTMLDocument) ||
+			//!(browser.contentDocument instanceof HTMLDocument) ||
 			!browser.contentDocument.body)
 		return false;
 
@@ -180,7 +180,7 @@ autopagerSelector.initHelpBox = function() {
 	if (helpBoxRows!=null && helpBoxRows.firstChild)
 		added = true;;
 
-        var strings = new autopagerStrings("commands");
+        var strings = AutoPagerNS.strings;
 
 	for (var i = 0; i < this.commands.length; i++) {
 		var command = this.commands[i];
@@ -364,12 +364,14 @@ autopagerSelector.showBoxAndLabel = function(elem, string) {
                     }
 		catch (e) {
 			// Gecko 1.8 doesn't implement adoptNode, ignore
+                        autopagerBwUtil.consoleError(e)
 		}
                 try {
 			doc.documentElement.appendChild(n);
                     }
 		catch (e) {
                     //may already belong to this doc
+                    autopagerBwUtil.consoleError(e)
 		}
 		
 	}
@@ -410,8 +412,9 @@ autopagerSelector.showBoxAndLabel = function(elem, string) {
 	}
 	catch(e) {
 		// Gecko 1.8 doesn't implement adoptNode, ignore
+                autopagerBwUtil.consoleError(e)
 	}
-	doc.documentElement.appendChild(this.labelElem);
+	doc.body.appendChild(this.labelElem);
 
 	this.labelElem.innerHTML = string;
 	this.labelElem.style.display = "";

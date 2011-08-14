@@ -1,44 +1,44 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#autopager-button {
-  list-style-image: url("chrome://autopager/skin/autopager.gif");
+.autopager-status
+{
+  list-style-image: url("chrome://autopager/skin/autopager.png");    
 }
-#autopager-button.ap-disabled{
-  list-style-image: url("chrome://autopager/skin/autopager.off.gif");
+.autopager-status[apstatus='ap-enabled']
+{
+  list-style-image: url("chrome://autopager/skin/autopager.png");    
 }
-#autopager-button.ap-site-disabled{
-  list-style-image: url("chrome://autopager/skin/autopager-site.off.gif");
+.autopager-status[apstatus='ap-disabled']
+{
+  list-style-image: url("chrome://autopager/skin/autopager.off.png");    
 }
-
-toolbar[iconsize="small"] #autopager-button {
-  list-style-image: url("chrome://autopager/skin/autopager-small.on.gif");
+.autopager-status[apstatus='ap-site-disabled']
+{
+  list-style-image: url("chrome://autopager/skin/autopager-site.off.png");    
 }
-toolbar[iconsize="small"] #autopager-button.ap-disabled {
-  list-style-image: url("chrome://autopager/skin/autopager-small.off.gif");
-}
-toolbar[iconsize="small"] #autopager-button.ap-site-disabled {
-  list-style-image: url("chrome://autopager/skin/autopager-small-site.off.gif");
-}
-#autopager-button-fennec {
-  list-style-image: url("chrome://autopager/skin/autopager64.png");
-}
-#autopager-button-fennec.ap-disabled{
-  list-style-image: url("chrome://autopager/skin/autopager.off.gif");
-}
-#autopager-button-fennec.ap-site-disabled{
-  list-style-image: url("chrome://autopager/skin/autopager-site.off.gif");
+.autopager-status[apstatus='ap-lite']
+{
+  list-style-image: url("chrome://autopager/skin/autopager.lite.png");    
 }
 
-toolbar[iconsize="small"] #autopager-button-fennec {
-  list-style-image: url("chrome://autopager/skin/autopager32.ico");
+toolbar[iconsize="small"] .autopager-status[apstatus='ap-enabled'] {
+  list-style-image: url("chrome://autopager/skin/autopager-small.on.png");
 }
-toolbar[iconsize="small"] #autopager-button-fennec.ap-disabled {
-  list-style-image: url("chrome://autopager/skin/autopager-small.off.gif");
+toolbar[iconsize="small"] .autopager-status[apstatus='ap-disabled'] {
+  list-style-image: url("chrome://autopager/skin/autopager-small.off.png");
 }
-toolbar[iconsize="small"] #autopager-button-fennec.ap-site-disabled {
-  list-style-image: url("chrome://autopager/skin/autopager-small-site.off.gif");
+toolbar[iconsize="small"] .autopager-status[apstatus='ap-site-disabled'] {
+  list-style-image: url("chrome://autopager/skin/autopager-small-site.off.png");
+}
+toolbar[iconsize="small"] .autopager-status[apstatus='ap-lite'] {
+  list-style-image: url("chrome://autopager/skin/autopager-small.lite.png");
 }
 
+#autopager-pageaction-fennec .pageaction-image {
+	width: 32px;
+	height: 32px;
+	padding: 4px;
+}
 #autopager-button-fennec.autopager-fennec {
   -moz-border-radius: 8px;
   border: 2px solid #444;
@@ -55,9 +55,9 @@ toolbar[iconsize="small"] #autopager-button-fennec.ap-site-disabled {
 }
 
 #autopager-immedialate-load-button {
-  list-style-image: url("chrome://autopager/skin/play.ico") !important;
+  list-style-image: url("chrome://autopager/skin/play.png") !important;
 }
 
 .popup-notification-icon[popupid="autopager-popup"] {
-  list-style-image: url("chrome://autopager/skin/autopager32.gif");
+  list-style-image: url("chrome://autopager/skin/autopager32.png");
 }

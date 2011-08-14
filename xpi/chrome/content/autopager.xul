@@ -26,6 +26,7 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-lite.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
@@ -38,9 +39,8 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-selector.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
-
+    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
 
     <tabbox id="autopager-tabbox" flex="1">
         <tabs>

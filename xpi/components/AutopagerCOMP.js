@@ -12,7 +12,7 @@ function AutopagerCOMP() {
 
 var autopagerHTTPListener = {
     headerName  : "X-AutoPager",
-    autopagerVersionValue : "0.6.2.15",
+    autopagerVersionValue : "0.7.0.0",
     observe: function(obj,subject, topic, data)
     {
         let os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
@@ -88,7 +88,7 @@ var autopagerHTTPListener = {
     get pref(){
         let pf = Components.classes["@mozilla.org/preferences-service;1"].
             getService(Components.interfaces.nsIPrefService).getBranch("extensions.autopager");
-        this.__defineGetter__("pref", function() pf);
+        this.__defineGetter__("pref", function() {return pf;});
         return this.pref;
     } ,
     getPolicyPrivate : function ()

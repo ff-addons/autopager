@@ -7,10 +7,13 @@ var autopagerTroubleShoting =
     shoting : function (doc, autofix)
     {
         //check whether AutoPager enabled
-        if (!autopagerMain.getGlobalEnabled())
+        if (!autopagerPref.loadBoolPref("enabled") || !autopagerUtils.isEnabledOnHost(doc))
         {
-            if (autofix || autopagerTroubleShoting.prompt("AutoFix","EnableAutoPager"))
+            if (autofix || autopagerTroubleShoting.prompt("AutoFix","EnableAutoPager")){
                 autopagerMain.setGlobalEnabled(true);
+                autopagerUtils.setEnabledOnHost(true,doc)                
+                autopagerUtils.setConfirmedOnHost(true,doc)
+            }
         }
 
         //check whether AutoPager enabled on the site

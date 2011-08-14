@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "Mẫu URL:">
 <!ENTITY setting.label.lblUpdate "Tự động Cập nhật Cấu hình Trang:">
 <!ENTITY setting.label.loading "style thông báo đang tải:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Lật trang khi khoảng trống ít hơn">
 <!ENTITY setting.label.marginEnd "chiều cao cửa sổ">
 <!ENTITY setting.label.minipages "Lượt đếm trang tải sẵn tối thiểu">

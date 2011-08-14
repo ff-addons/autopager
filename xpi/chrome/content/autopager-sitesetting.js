@@ -19,7 +19,7 @@ var autopagerSiteSetting =
     {
         var doc = event;
 
-        if (doc == null || !(doc instanceof HTMLDocument))
+        if (!autopagerUtils.isHTMLDocument(doc))
         {
             if (autopagerUtils.isValidDoc(event.target))
                 doc = event.target;

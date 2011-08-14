@@ -35,7 +35,7 @@ var AutoPagerize= {
             var site = ifo.data;
             if (site["url"]=="^https?://.*" || site["url"]=="^https?://.")
                 continue;
-            var newSite = new AutoPagerNS.Site();
+            var newSite = autopagerConfig.newDefaultSite();
             newSite.urlPattern  = site["url"];
             newSite.guid  = ifo.resource_url;
             newSite.isRegex  = true;
@@ -90,7 +90,7 @@ var AutoPagerize= {
     {    var sites = new Array();
         for(var i=0;i<info.length;i++){
             var site = info[i];
-            var newSite = new AutoPagerNS.Site();
+            var newSite = autopagerConfig.newDefaultSite();
             newSite.urlPattern  = site["url"];
             newSite.guid  = newSite.urlPattern;
             newSite.isRegex  = true;

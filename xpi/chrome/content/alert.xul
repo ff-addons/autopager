@@ -53,7 +53,7 @@
         <hbox>
             <vbox onclick="autopagerAlert.onAlertClick();">
                 <spacer height="4px"/>
-                <image src='chrome://autopager/skin/autopager48.ico'/>
+                <image src='chrome://autopager/skin/autopager48.png'/>
             </vbox>
 
             <vbox onclick="autopagerAlert.onAlertClick();">

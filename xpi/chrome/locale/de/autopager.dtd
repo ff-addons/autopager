@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "Adressregel:">
 <!ENTITY setting.label.lblUpdate "Seitenkonfigurationen aktualisieren:">
 <!ENTITY setting.label.loading "CSS-Stil für Laden der nächsten Seite:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Nächste Seite aufrufen, wenn der restliche Seitenbereich kleiner als">
 <!ENTITY setting.label.marginEnd "Fensterhöhe(n) entspricht.">
 <!ENTITY setting.label.minipages "Minimum an vorgeladenen Seiten">

@@ -6,6 +6,7 @@ var hashSites = null;
     var sites = null;
     var userModifiableTreeChildren=null;
     var treeSites,treebox, urlPattern,isRegex, description,lblOwner;
+    var descriptions = {} //description caches for current view, avoid polling them evey time
     var chkEnabled, chkEnableJS,chkForceJS,chkAjax,chkneedMouseDown
     var chkFixOverflow,btnAdd,btnCopy, btnClone,btnDelete,btnPublic,btnReset;
     var btnAddPath,btnEditPath,btnDeletePath,btnPickLinkPath;
@@ -48,16 +49,16 @@ if (autopagerPref.loadBoolPref("show-help"))
     	{
             setTimeout(function (){
             //var t = new Date().getTime();
-            var url = window.opener.autopagerSelectUrl;
-            if (typeof window.opener.autopagerSelectUrl == 'undefined')
-                url = autopagerUtils.currentDocument().location.href;
-            if (url.indexOf('about:')==0)
-                url = ''
-            //window.autopagerSelectUrl = url;
-            if (url != null )
-            {
+            var url = "";
+            if (window.opener && window.opener.autopagerSelectUrl)
+                url = window.opener.autopagerSelectUrl;
+            else
+                url = AutoPagerNS.get_tab_url(AutoPagerNS.do_get_current_tab());
+            
+            if (!url || url.indexOf('about:')==0 || url.indexOf('chrome:')==0)
+                url = ""
+            if(url)
                 siteSearch.setAttribute("value",url)
-            }
             
             onSiteFilter(url,true,true);
             
@@ -165,15 +166,7 @@ if (autopagerPref.loadBoolPref("show-help"))
         autopagerBwUtil.autopagerOpenIntab("http://autopager.teesoft.info/help.html",null);
     }
     function handleOkButton() {
-       	handleApplyButton();         
-          if (window.opener.getBrowser)
-            window.opener.getBrowser().contentDocument.location.reload();
-          else if (window.opener.gBrowser)
-              window.opener.gBrowser.contentDocument.location.reload();
-          else if (window.opener.autopagerOpenerObj)
-              window.opener.autopagerOpenerObj.contentDocument.location.reload();
-          else if (typeof window.opener.autopagerSelectUrl == 'undefined')
-            autopagerUtils.currentDocument().location.reload();
+       	handleApplyButton();                  
         return true;
     }
     function handleApplyButton() {
@@ -181,10 +174,12 @@ if (autopagerPref.loadBoolPref("show-help"))
         var allConfigs = {};
         autopagerConfig.saveAllOverride(allSites);
         for (var key in allSites){
+            if(!allSites[key].updateSite)
+                continue;
             allConfigs[allSites[key].updateSite.filename] = allSites[key]
         }
         allConfigs["autopager.xml"] = sites;
-        AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allConfigs);
+        AutoPagerNS.UpdateSites.getAutopagerCOMP().setAll(allConfigs);
         //autopagerConfig.autoSites = autopagerConfig.loadConfig();
         
 	autopagerMain.saveMyName(mynameText.value);
@@ -217,7 +212,28 @@ if (autopagerPref.loadBoolPref("show-help"))
 
          AutoPagerNS.AutoPagerUpdateTypes.saveSettingSiteConfig(getAllRepository(allSites));
          //AutoPagerNS.AutoPagerUpdateTypes.saveAllSettingSiteConfig();
-	     return true;
+	 
+        var doc
+        if (window.opener.getBrowser)
+            doc = window.opener.getBrowser().contentDocument;
+        else if (window.opener.gBrowser)
+            doc = window.opener.gBrowser.contentDocument;
+        else if (window.opener.autopagerOpenerObj)
+            doc = window.opener.autopagerOpenerObj.contentDocument;
+        else if (typeof window.opener.autopagerSelectUrl == 'undefined')
+            doc = autopagerUtils.currentDocument();
+        if (doc)
+        {
+            var event = doc.createEvent("Events");
+            event.initEvent("AutoPagerRefreshPage", true, true);
+            try{
+                doc.dispatchEvent(event)
+            }catch(e)
+            {
+                autopagerBwUtil.consoleError(e);
+            }
+        }
+         return true;
     }
     function onSiteChange(treeitem,site,invalidateRow)
     {
@@ -922,7 +938,7 @@ if (autopagerPref.loadBoolPref("show-help"))
 //               if (enableEdit)
 //                    selectedSite = sites[selectedListItem.siteIndex];
 //                else
-                    selectedSite = selectedListItem.site;
+                    selectedSite = autopagerConfig.completeRule(selectedListItem.site);
 
                if (selectedSite.oldSite == null)
                    selectedSite.oldSite = autopagerConfig.cloneSite(selectedSite);
@@ -946,31 +962,35 @@ if (autopagerPref.loadBoolPref("show-help"))
                     description.value = selectedSite.desc;
                 else if (selectedSite.id)
                 {
-                    description.value = "loading"
-                    try{
-                        var xmlhttp
+                    if (descriptions[selectedSite.id])
+                    {
+                        description.value = descriptions[selectedSite.id]
+                    }
+                    else
+                    {
+                        description.value = "loading"
                         try{
-                            xmlhttp = new XMLHttpRequest();
-                        }catch(e){
-                            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                        }
-                        xmlhttp.overrideMimeType("text/plan");
-                        xmlhttp.onreadystatechange = function (aEvt) {
-                            if(xmlhttp.readyState == 4) {
-                                if(xmlhttp.status == 200) {
-                                    description.value = xmlhttp.responseText
+                            var xmlhttp
+                            xmlhttp=autopagerUtils.newXMLHttpRequest()
+                            xmlhttp.overrideMimeType("text/plan");
+                            xmlhttp.onreadystatechange = function (aEvt) {
+                                if(xmlhttp.readyState == 4) {
+                                    if(xmlhttp.status == 200) {
+                                        var value = xmlhttp.responseText
+                                        description.value = value
+                                        descriptions[selectedSite.id] = value
+                                    }
                                 }
                             }
-                        }
 
-                        xmlhttp.open("GET", autopagerPref.loadPref("repository-site") +"d/desc?id=" +selectedSite.id, true);
-                        //window.content.status = "loading ... " + url;
-                        xmlhttp.send(null);
+                            xmlhttp.open("GET", autopagerPref.loadPref("repository-site") +"d/desc?id=" +selectedSite.id, true);
+                            //window.content.status = "loading ... " + url;
+                            xmlhttp.send(null);
 
-                    }catch (e){
-                        description.value = "failed to load"
+                        }catch (e){
+                            description.value = "failed to load"
+                        }                        
                     }
-
                 }
                 chkEnabled.checked = selectedSite.enabled;
                 chkEnableJS.checked = selectedSite.enableJS>0;
@@ -1067,6 +1087,8 @@ if (autopagerPref.loadBoolPref("show-help"))
       }
 	function populateXPath(paths,lst)
 	{
+            if (typeof paths=="undefined")
+                paths=[]
 		//clear
 		while (lst.hasChildNodes()) {
                     lst.removeChild(lst.childNodes[0]);
@@ -1405,7 +1427,7 @@ if (autopagerPref.loadBoolPref("show-help"))
     {
         try
         {
-            siteSearch._searchIcons.selectedIndex = (!filter || filter=="")?0:1;
+            siteSearch._searchIcons.selectedIndex = (!filter)?0:1;
         } catch(e){
         }         
     }
@@ -1488,7 +1510,7 @@ if (autopagerPref.loadBoolPref("show-help"))
      function getColor(site)
     {
 		var color='';
-        if (!site.enabled) {
+        if (!(typeof site.enabled=="undefined") && !site.enabled) {
             color = 'gray';
         }
 		else if(site.published)

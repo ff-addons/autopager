@@ -100,7 +100,7 @@ autopagerDescription.prototype= {
         var hostPrefix = autopagerPref.loadPref("site-prefix")
         if (autopagerUtils.isBlank(hostPrefix))
             hostPrefix = 'http://www.teesoft.info';
-        autopagerBwUtil.autopagerOpenIntab(hostPrefix + "/wiki/" + this.likPrefix + ele.getAttribute("keyword"), "_blank", "");
+        AutoPagerNS.add_tab({url:hostPrefix + "/wiki/" + this.likPrefix + ele.getAttribute("keyword"), target:"_blank"});
         window.setTimeout(function(){autopagerUtils.currentBrowser().contentWindow.focus();}, 20);
         
     }

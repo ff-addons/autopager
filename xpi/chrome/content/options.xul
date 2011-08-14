@@ -27,7 +27,8 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
+    
     <vbox flex="1">
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
@@ -64,7 +65,7 @@
         </hbox>
     </vbox>
       <script type="text/javascript">
-      if (autopagerBwUtil.isFennec())
+      if (autopagerBwUtil.isMobileVersion())
       {
         document.getElementById("autopager-options").setAttribute('buttons','help,accept,cancel')
       }

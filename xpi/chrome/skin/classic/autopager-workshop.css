@@ -19,10 +19,10 @@ toolbarbutton.autopager_button .toolbarbutton-text {
 	list-style-image:	url("chrome://autopager/skin/apply.png") !important;
 }
 #testSite {
-	list-style-image:	url("chrome://autopager/skin/play.ico") !important;
+	list-style-image:	url("chrome://autopager/skin/play.png") !important;
 }
 #clearAllPath {
-	list-style-image:	url("chrome://autopager/skin/clear.ico") !important;
+	list-style-image:	url("chrome://autopager/skin/clear.png") !important;
 }
 #pickupLinkPath {
 	list-style-image:	url("chrome://autopager/skin/pickupLink.png") !important;

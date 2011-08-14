@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "URL-mönster:">
 <!ENTITY setting.label.lblUpdate "Uppdatera webbplatskonfigurationer automatiskt:">
 <!ENTITY setting.label.loading "Inläsningsmeddelande-stil:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Sidväxla när utrymmet är mindre än motsvarande">
 <!ENTITY setting.label.marginEnd "fönsterhöjd(er)">
 <!ENTITY setting.label.minipages "Minsta antal förinlästa sidor">

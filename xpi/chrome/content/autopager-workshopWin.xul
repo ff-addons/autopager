@@ -11,7 +11,6 @@
 <dialog id="autopagerWorkshopDialog"
         title="&autopager.sidebarTitle;"
         orient="vertical"
-        onload="autopagerSidebar.onLoad();"
         ondialogcancel="autopagerSidebar.quit();"
         ondialogaccept="return autopagerSidebar.doAddSite(true);"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -19,6 +18,11 @@
     </vbox>
     <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript">
+        window.addEventListener("DOMContentLoaded",function(event) {
+                window.removeEventListener("DOMContentLoaded", arguments.callee, false);
+                autopagerSidebar.onLoad()
+            },false);
+            
         if (typeof window.opener.autopagerSelectUrl != 'undefined')
         {
         window.addEventListener("load",function(event) {

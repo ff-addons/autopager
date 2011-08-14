@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "URL パターン:">
 <!ENTITY setting.label.lblUpdate "サイト設定の自動更新:">
 <!ENTITY setting.label.loading "読み込み通知のスタイル:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "残りスペースがウィンドウ高さ">
 <!ENTITY setting.label.marginEnd "未満になったらページングする">
 <!ENTITY setting.label.minipages "前もって読み込んでおく最小のページ数">

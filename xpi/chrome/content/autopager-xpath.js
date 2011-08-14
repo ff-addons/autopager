@@ -671,6 +671,8 @@ var autopagerXPath = {
         return xi;
     },
     getTagName : function(node) {
+        if (!node)
+            return "nosuchnode";
         var tagname = node.tagName.toLowerCase();
         if (tagname == 'td' || tagname == 'th' || tagname == 'tr' || tagname == 'tbody')
             tagname = "table";
@@ -704,6 +706,8 @@ var autopagerXPath = {
     },
     
     getXPathForObjectByChild : function(target,maxChildCount,level) {
+        if (!target)
+            return [];
         var tagname = this.getTagName(target);
         var dir = this.getPathDir(tagname,target.tagName.toLowerCase());
         var path="//" + tagname;
@@ -844,7 +848,7 @@ var autopagerXPath = {
     getNodeParents : function(node) {
         var result = []
 
-        while (node !=null && node.nodeType == 1 || node.nodeType == 3) {
+        while (node && (node.nodeType == 1 || node.nodeType == 3)) {
             result.unshift(node)
             if (node.nodeType == 1 && node.hasAttribute("id")) return result
             if (node.nodeType == 1 && node.tagName=='BODY') return result
@@ -969,10 +973,16 @@ var autopagerXPath = {
         
     },
     isValidXPath:function(xpath,doc) {
-        var evaluator = new XPathEvaluator()
+        var xpe = null;
+        try{
+            xpe = new XPathEvaluator();
+        }catch(e)
+        {
+            xpe = doc
+        }
         var expr = this.preparePath(doc,xpath,true);
         try {
-            evaluator.createExpression(expr, evaluator.createNSResolver(doc))
+            xpe.createExpression(expr, xpe.createNSResolver(doc))
         } catch(e) {
             autopagerUtils.log("xpath exception: "+e)
             return false;
@@ -987,7 +997,15 @@ var autopagerXPath = {
         var doc = (node.ownerDocument == null) ? node : node.ownerDocument;
         var found = [];
         var aExpr = this.preparePath(doc,expr,enableJS);
-        var xpe = new XPathEvaluator();
+        var xpe = null;
+        try{
+            xpe = new XPathEvaluator();
+        }catch(e)
+        {
+            xpe = doc
+        }
+        //autopagerBwUtil.consoleLog("evaluate aExpr:" + aExpr)
+        
         var defaultNSResolver = xpe.createNSResolver(doc.documentElement);
         function nsResolver(prefix) {
             var ns = {
@@ -997,14 +1015,16 @@ var autopagerXPath = {
             return ns[prefix] || defaultNSResolver(prefix);
         }
         try{
-            var result = xpe.evaluate(aExpr, node, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
-
+            var result = xpe.evaluate(aExpr, node, nsResolver, AutoPagerNS.XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        
             found = this.dumpResult(result,max);
+            //autopagerBwUtil.consoleLog("evaluate result:" + found)
         }catch(e) {
+            //autopagerBwUtil.consoleLog("evaluate exception:" + e)
             //[not (@class='autoPagerS')]
             try{
                 aExpr = aExpr.replace("[not (@class='autoPagerS')]",'');
-                var result2 = xpe.evaluate(aExpr, node, nsResolver, XPathResult.ANY_TYPE, null);
+                var result2 = xpe.evaluate(aExpr, node, nsResolver, AutoPagerNS.XPathResult.ANY_TYPE, null);
                 found = this.dumpResult(result2,max);
             }catch(ex) {
                 autopagerUtils.log("unableevaluator");//TODO: autopagerUtils.autopagerFormatString("unableevaluator",[aExpr,e]));
@@ -1018,13 +1038,13 @@ var autopagerXPath = {
         var res;
         switch (result.resultType)
         {
-            case XPathResult.NUMBER_TYPE:
+            case AutoPagerNS.XPathResult.NUMBER_TYPE:
                 found.push(String(result.numberValue));
                 break;
-            case XPathResult.STRING_TYPE:
+            case AutoPagerNS.XPathResult.STRING_TYPE:
                 found.push(result.stringValue);
                 break;
-            case XPathResult.BOOLEAN_TYPE:
+            case AutoPagerNS.XPathResult.BOOLEAN_TYPE:
                 found.push(String(result.booleanValue));
                 break;
             default:

@@ -8,18 +8,6 @@
 <overlay id="autopager" 
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-    
-    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
-
-    
-    
     <hbox id="loading-hbox">
         <button id="loadingReset" label="&reset.label;" accesskey="&reset.accesskey;"
             oncommand="try{autopagerPref.resetPref('loading');}catch(e){}; txtLoading.value = autopagerMain.getLoadingStyle();"/>

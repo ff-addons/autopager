@@ -11,7 +11,7 @@ var autopagerRelated =
             {
                 sts = autopagerBwUtil.decodeJSON(searchEngines);
             }
-            var siteEnabled = autopagerPref.loadPref("site.related-search-enabled." + host);
+            var siteEnabled = autopagerPref.loadPref("host." + host +".related-search-enabled");
             if (typeof siteEnabled == "undefined" || siteEnabled===null || siteEnabled==="")
             {
                 siteEnabled = autopagerPref.loadBoolPref("related-search-enabled");

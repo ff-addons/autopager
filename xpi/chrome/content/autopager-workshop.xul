@@ -13,11 +13,13 @@
 
         <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+        <script type="text/javascript" src="chrome://autopager/content/autopager-shared.js"></script>
+        <script type="text/javascript" src="chrome://autopager/content/autopager-common-global.js"></script>    
+        <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
-
         <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-highlight.js"></script>
@@ -32,7 +34,8 @@
         <script type="text/javascript" src="chrome://autopager/content/autopager-selector.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-tips.js"></script>
         <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
-        <script type="text/javascript" src="chrome://autopager/content/autopager-toolbar.js"></script>
+        <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>    
+        <script type="text/javascript" src="chrome://autopager/content/autopager-end.js"></script>
 
         <toolbox class="plain">
             <toolbar>

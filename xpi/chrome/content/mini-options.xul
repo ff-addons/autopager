@@ -3,12 +3,23 @@
 
 <vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
-  <setting pref="autopager.enabled" type="bool" title="&autopager.status.enabled;"></setting>
-  <setting pref="autopager.work-in-lite-mode" type="bool" title="&statusbar.menuitem.liteModel.label;"/>
+  <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+  <setting pref="extensions.autopager.enabled" type="bool" title="&autopager.status.enabled;"></setting>
+  <setting pref="extensions.autopager.work-in-lite-mode" type="bool" title="&statusbar.menuitem.liteModel.label;"/>
+  <setting pref="extensions.autopager.with-lite-discovery" type="bool" title="&statusbar.menuitem.discover.label;"/>  
   <setting type="button">
-    <button label="&statusbar.menuitem.autopagerlite-discover.label;"
-        oncommand="autopagerLite.openRulesSelector(content.document);BrowserUI.hidePanel();"/>
+    <button image="chrome://autopager/skin/autopager.lite.png" label="&statusbar.menuitem.autopagerlite-discover.label;"
+        oncommand="autopagerServer.openRuleSelector();BrowserUI.hidePanel();"/>
   </setting>
+  <setting type="button">
+    <button label="&autopager.status.update;"
+        oncommand="AutoPagerNS.UpdateSites.updateOnline(true);BrowserUI.hidePanel();"/>
+  </setting>
+  <setting type="button">
+    <button label="&options.dialog.autopager-options.buttonlabelextra1;"
+        oncommand="autopagerBwUtil.autopagerOpenIntab('chrome://autopager/content/options.html','_blank');BrowserUI.hidePanel();"/>
+  </setting>
+  
   <!--
   disabled until fennec can handle dialog
   <setting type="button">
@@ -17,7 +28,7 @@
   </setting>
   -->
   <script type="text/javascript">
-      //if (!autopagerBwUtil.isFennec())
+      if (!autopagerBwUtil.isMobileVersion())
       {
           window.close();
           window.open('chrome://autopager/content/options.xul', 'autopager-core',

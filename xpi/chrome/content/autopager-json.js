@@ -1,16 +1,18 @@
 var autopagerJsonSetting= {
     apOtherConfig:"http://ap.teesoft.info/autopager/default",
+    apUpdates:"updates",
     onJsonLoad :function(doc,updatesite)
     {
         return autopagerJsonSetting.loadCompactFromString(doc);
     },
-    loadCompactFromString : function (str)
+    loadCompactFromString : function (str,updatesite)
     {        
         var info = autopagerBwUtil.decodeJSON(str);
-        var sites = new Array();
+        var sites = new Array();        
         if (info)
         {
             var browserId = autopagerBwUtil.apBrowserId();
+            var browserFlag = (1<<browserId);
             for(var i=0;i<info.length;i++){
                 var site = info[i]
                 if (site.u == autopagerJsonSetting.apOtherConfig)
@@ -18,7 +20,11 @@ var autopagerJsonSetting= {
                     autopagerJsonSetting.saveApConfig(site);
                     continue;
                 }
-                if (autopagerJsonSetting.supported(site,browserId))
+                if (site.u == autopagerJsonSetting.apUpdates && site.ur)
+                {
+                    return autopagerJsonSetting.loadFromUpdate(site.ur,updatesite);
+                }
+                if (!site.bf || site.bf & browserFlag)
                 {
                     var newSite = autopagerJsonSetting.compactToNormal(site);
                     newSite.oldSite = null;
@@ -28,6 +34,26 @@ var autopagerJsonSetting= {
         }
         return sites;
     },
+    loadFromUpdate : function (updates,updateSite)
+    {
+        var sites; 
+        var configContents="";
+        var jsonfile = updateSite.filename.replace(/\.xml/,".json");
+        try{
+            configContents= autopagerBwUtil.getConfigFileContents(jsonfile);
+            if (typeof configContents !="undefined" && configContents!=null && configContents.length>0)
+            {
+                sites = autopagerJsonSetting.loadCompactFromString(configContents,updateSite);
+                sites.updateSite = updateSite;                
+            }
+            sites = autopagerJsonSetting.doMergeOverrides(sites,updates,true);
+        }catch(e){
+            sites = new Array();
+        }
+        sites.partlyUpdated = true;
+        return sites;
+    }
+    ,
     saveCompactToString : function (sites)
     {
         return autopagerBwUtil.encodeJSON(sites);
@@ -36,10 +62,11 @@ var autopagerJsonSetting= {
     {
         var str = null;
         var sites = new Array();
+        var defaultMargin = autopagerMain.getDefaultMargin();
         for(var i=0;i<normalSites.length;i++){
             var site = normalSites[i]
 
-            var newSite = autopagerJsonSetting.normalToCompact(site);
+            var newSite = autopagerJsonSetting.normalToCompact(site,defaultMargin);
             sites.push(newSite);
         }
 
@@ -84,11 +111,7 @@ var autopagerJsonSetting= {
         if (guids.length>0)
         {
             try{
-                try{
-                    xmlhttp = new XMLHttpRequest();
-                }catch(e){
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
+                xmlhttp=autopagerUtils.newXMLHttpRequest()
                 xmlhttp.overrideMimeType("application/json");
                 xmlhttp.onreadystatechange = function (aEvt) {
                     if(xmlhttp.readyState == 4) {
@@ -132,27 +155,51 @@ var autopagerJsonSetting= {
             autopagerJsonSetting.doMergeOverrides(normalSites,overrides)
         }
     }
-    ,doMergeOverrides : function (normalSites,overrides)
+    ,doMergeOverrides : function (normalSites,overrides,noOldRefer)
     {
-        for(var o=0;o<overrides.length;o++)
+        var newSites = []
+        for(var o=overrides.length-1;o>=0;o--)
         {
+            var merged = false;
             try{
                 var override = overrides[o]
-
-                for(var i=0;i<normalSites.length;i++){
+                //check the first part of rules
+                for(var i=o;i>=0;i--){
                     var site = normalSites[i]
                     if (site.guid == override.g || (override.k && site.id == override.k))
                     {
-                        autopagerJsonSetting.mergeOverrideToNormal(site,override);
+                        autopagerJsonSetting.mergeOverrideToNormal(site,override,noOldRefer);
+                        merged = true;
+                        break;
                     }
+                }
+                if (!merged){
+                    for(i=o+1;i<normalSites.length;i++){
+                        site = normalSites[i]
+                        if (site.guid == override.g || (override.k && site.id == override.k))
+                        {
+                            autopagerJsonSetting.mergeOverrideToNormal(site,override,noOldRefer);
+                            merged = true;
+                            break;
+                        }
+                    }                    
+                }                    
+                if (!merged)
+                {
+                    var newSite = autopagerJsonSetting.compactToNormal(override);
+                    newSites.push(newSite);
                 }
             }catch (e){
                 autopagerBwUtil.consoleError(e);
             }
         }
+        if(newSites.length==0)
+            return normalSites;
+        return newSites.concat(normalSites);
     },
+    trimRegex:/(^\s*)|(\s*$)/,
     trim : function (str) {
-        return str.replace(/^\s*/, "").replace(/\s*$/, "");
+        return str.replace(this.trimRegex, "");
     },
     compactToNormal : function(site)
     {
@@ -175,18 +222,22 @@ var autopagerJsonSetting= {
             if (typeof site.j != 'undefined')
                 newSite.enableJS  = site.j;
 
-            if (typeof site.x == 'undefined')
-            {}
-            else if (typeof site.x == 'string')
+            
+            if (!(typeof site.x == 'undefined'))
             {
-                if (this.trim(site.x).length>0)
-                newSite.contentXPath.push(this.trim(site.x));
-            }
-            else
-            {
-                for(var i=0;i<site.x.length;i++)
+                newSite.contentXPath=[]
+                if (typeof site.x == 'string')
                 {
-                    newSite.contentXPath.push(site.x[i]);
+                    var x = site.x.replace(this.trimRegex, "")
+                    if (x.length>0)
+                        newSite.contentXPath.push(x);
+                }
+                else
+                {
+                    for(var i=0;i<site.x.length;i++)
+                    {
+                        newSite.contentXPath.push(site.x[i]);
+                    }
                 }
             }
 
@@ -215,7 +266,10 @@ var autopagerJsonSetting= {
                 newSite.owner  = site.o;
 
             if (typeof site.t != 'undefined')
+            {
+                newSite.testLink = []
                 newSite.testLink.push(site.t);
+            }
             if (typeof site.h != 'undefined')
                 newSite.containerXPath=site.h;
             if (typeof site.b != 'undefined')
@@ -223,6 +277,7 @@ var autopagerJsonSetting= {
 
             if (typeof site.l != 'undefined')
             {
+                newSite.removeXPath = []
                 if (typeof site.l == 'string')
                     newSite.removeXPath.push(site.l);
                 else
@@ -257,12 +312,15 @@ var autopagerJsonSetting= {
 
             return newSite;
     },
-    mergeOverrideToNormal : function(normalSite,site)
+    mergeOverrideToNormal : function(normalSite,site,noOldRefer)
     {
-        if (normalSite.guid  != site.g)
+        if (normalSite.guid  != site.g && normalSite.guid  != site.k)
             return;
-        normalSite.oldSite = autopagerConfig.cloneSite(normalSite);
-
+        if (!noOldRefer)
+        {
+            normalSite.oldSite = autopagerConfig.cloneSite(normalSite);
+            normalSite.changedByYou  = true;
+        }
             if (typeof site.u != 'undefined')
                 normalSite.urlPattern  = site.u;
             //normalSite.guid  = site.g;
@@ -280,8 +338,9 @@ var autopagerJsonSetting= {
                 normalSite.contentXPath = [];
                 if (typeof site.x == 'string')
                 {
-                    if (this.trim(site.x).length>0)
-                    normalSite.contentXPath.push(this.trim(site.x));
+                    var x = this.trim(site.x);
+                    if (x.length>0)
+                        normalSite.contentXPath.push(x);
                 }
                 else
                 {
@@ -306,11 +365,6 @@ var autopagerJsonSetting= {
             if (typeof site.f != 'undefined')
                 normalSite.fixOverflow  = site.f;
 
-//            if (typeof site.c != 'undefined')
-//                normalSite.createdByYou  = site.c;
-
-//            if (typeof site.u != 'undefined')
-            normalSite.changedByYou  = true;
 
             if (typeof site.o != 'undefined')
                 normalSite.owner  = site.o;
@@ -351,10 +405,20 @@ var autopagerJsonSetting= {
                 normalSite.formatVersion = site.v;
             if (typeof site.lz != 'undefined')
                 normalSite.lazyImgSrc  = site.lz;
+            if (typeof site.kx != 'undefined')
+                normalSite.keywordXPath  = site.kx;
+            if (typeof site.ah != 'undefined')
+                normalSite.alertsHash  = site.ah;
     },
 
     arrayEqual : function (a1, a2)
     {
+        if (a1==null)
+        {
+            return (a2==null);
+        }
+        if (a2==null)
+            return false;
         if (a1.length!=a2.length)
             return false;
         for(var i=0;i<a1.length;++i)
@@ -457,14 +521,14 @@ var autopagerJsonSetting= {
                 return override;
             return null;
     },
-    normalToCompact : function(normal)
+    normalToCompact : function(normal,defaultMargin)
     {
             var site = new Object();
             site.u = normal.urlPattern;
             site.g = normal.guid;
             if (normal.isRegex)
                 site.r = normal.isRegex;
-            if (normal.margin != autopagerMain.getDefaultMargin())
+            if (normal.margin != defaultMargin)
                 site.m = normal.margin;
             if (!normal.enabled)
               site.e = normal.enabled;
@@ -534,14 +598,10 @@ var autopagerJsonSetting= {
 
             return site;
     },
-    supported : function (site,browserId)
+    supported : function (site,browserFlag)
     {
         //browser flag
-        if (typeof site.bf != 'undefined')
-        {
-            return site.bf & (1<<browserId);
-        }
-        return true;
+        return !site.bf || site.bf & browserFlag;
     },
     saveApConfig : function (site)
     {
@@ -557,9 +617,9 @@ var autopagerJsonSetting= {
                var callback = function()
                {
                    autopagerPref.savePref("latestMessageId",site.n);
-                   autopagerBwUtil.autopagerOpenIntab(url);
+                   AutoPagerNS.add_tab({url:url});
                }
-               autopagerBwUtil.openAlert(autopagerUtils.autopagerGetString("thereisalert"),autopagerUtils.autopagerGetString("needyourattention"),url,callback)
+               AutoPagerNS.browser.open_alert(autopagerUtils.autopagerGetString("thereisalert"),autopagerUtils.autopagerGetString("needyourattention"),url,callback)
            }
            
 

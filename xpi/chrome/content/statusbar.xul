@@ -5,6 +5,7 @@
 <overlay id="autopagestatus" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-shared.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
@@ -24,6 +25,10 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-sitesetting.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
     <script type="text/javascript" src="chrome://autopager/content/autopager-related.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-common-global.js"></script>    
+    <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>    
+    <script type="text/javascript" src="chrome://autopager/content/autopager-content.js"></script>    
+    <script type="text/javascript" src="chrome://autopager/content/autopager-end.js"></script>
 
     <window id="main-window">
         <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
@@ -423,7 +428,7 @@
 
     <toolbarpalette id="BrowserToolbarPalette">
         <toolbarbutton id="autopager-button" type="menu-button"
-            class="chromeclass-toolbar-additional"
+            class="chromeclass-toolbar-additional autopager-status"
             label="&autopager.toolbarLabel;"
             tooltiptext="&autopager.tooltip;"
             oncontextmenu="event.target.open = true;event.preventDefault();"
@@ -443,32 +448,17 @@
             </menupopup>
         </toolbarbutton>
     </toolbarpalette>
-    
-    <!--
-    <toolbar id="toolbar-main">
-        <toolbarbutton id="autopager-button-fennec"
-            class="autopager-toolbar-additional autopager-fennec"
-            label="&autopager.toolbarLabel;"
-            tooltiptext="&autopager.tooltip;"
-            buttonstyle="pictures"
-            insertafter="tool-bookmarks"
-            popupdisabled="autopager-toolbar-popup"
-            oncommand="autopagerLite.openRulesSelector(content.document);"
-            />
-    </toolbar>
-    -->
+        
     <script type="text/javascript">
         window.addEventListener("load", function() {
             var self = arguments.callee;
             window.removeEventListener("load",self,false);
             setTimeout(function(){
                 AutoPagerNS.apSplitbrowse.init();
-                setTimeout(autopagerToolbar.autopagerToobarInit, 250);
-                AutoPagerNS.apSplitbrowse.init();
-                autopagerMain.autopagerOnLoad();
-                autopagerLite.apRuleSiteOnInit();
-                window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);
-                autopagerMain.showStatus();
+                //autopagerMain.autopagerOnLoad();
+                //autopagerLite.apRuleSiteOnInit();
+                //window.setTimeout(function(){autopagerConfig.autopagerUpdate();},40);
+                //autopagerMain.showStatus();
             },10)
         }, false);
     </script>

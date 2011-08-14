@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "Șablon adresă:">
 <!ENTITY setting.label.lblUpdate "Actualizează automat configurațiile saiturilor:">
 <!ENTITY setting.label.loading "Stil notificare a încărcării:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Se încarcă pagina următoare când spațiul este mai mic decât:">
 <!ENTITY setting.label.marginEnd "înălțimi ale ferestrei">
 <!ENTITY setting.label.minipages "Număr minim de pagini preîncărcate:">

@@ -106,7 +106,7 @@ _handleParse: function (event) {
   },
     // utility functions.
     createHTMLDocumentByString: function(str) {
-    var doc = content.document;
+    var doc = AutoPagerNS.getContentDocument();
 
     var html = str.replace(/<!DOCTYPE.*>/, '').replace(/<html.*>/, '').replace(/<\/html>.*/, '');
         var htmlDoc  = doc.implementation.createDocument(null, 'html', null);
@@ -117,7 +117,7 @@ _handleParse: function (event) {
             htmlDoc.documentElement.appendChild(htmlDoc.importNode( fragment,true));
         }catch(e)
         {
-            //autopagerBwUtil.consoleError(e)
+            autopagerBwUtil.consoleError(e)
         }
 
         return htmlDoc;
@@ -142,7 +142,7 @@ _handleParse: function (event) {
             }
         }catch(e)
         {
-            //autopagerBwUtil.consoleError(e)
+            autopagerBwUtil.consoleError(e)
         }
         return nodes;
     },
@@ -155,13 +155,9 @@ _handleParse: function (event) {
             var xmlhttp=null;
             var doc=null;
             try{
-                  try{
-                    xmlhttp = new window.XMLHttpRequest();
-                  }catch(e){
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                  }
+                xmlhttp=autopagerUtils.newXMLHttpRequest()
             xmlhttp.overrideMimeType(type);
-            xmlhttp.onreadystatechange = function (aEvt) {
+            xmlhttp.onreadystatechange = function (aEvt) {                   
             if(xmlhttp.readyState == 4)
             {
                     if(xmlhttp.status == 200)
@@ -172,6 +168,8 @@ _handleParse: function (event) {
                         else if(xmlhttp.getAllResponseHeader)
                             contentType = xmlhttp.getAllResponseHeader("Content-Type");
 
+                        //autopagerBwUtil.consoleLog("get xmlhttp:"  + xmlhttp.responseText.length  +":"+ url);
+                
                         if ((contentType != "" && contentType != null  && (contentType.indexOf("text\/plain")>-1
                                     || contentType.indexOf("application\/json")>-1))
                                     || xmlhttp.responseText.substring(0,2)=='[{')

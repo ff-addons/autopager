@@ -1,129 +1,123 @@
 var autopagerRules =
 {
-    AutopagerCOMP:null,
+    autopagerCOMP:null,
     ignoresites : null,
     ignoreRegex : null,
+    isAllowUpdate : function()
+    {
+        return true;
+    }
+    ,
     getAutopagerCOMP : function ()
     {
-        if (this.AutopagerCOMP == null)
+        if (this.autopagerCOMP == null)
         {
-            // this is needed to generally allow usage of components in javascript
-            //netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            this.AutopagerCOMP = Components.classes['@www.teesoft.com/AutopagerCOMP;1'].getService().wrappedJSObject;
+            this.autopagerCOMP = new AutopagerCOMPType();
         }
-        return this.AutopagerCOMP;
-    },
-    getNextMatchedSiteConfig: function(url,pos,matchCallBack)
+        return this.autopagerCOMP;
+    }
+    ,
+    getNextMatchedSiteConfig: function(url,pos)
     {
+        //truncateUrl long url
+        if (url.length>1024)
+            url = this.truncateUrl(url);
         if (!autopagerUtils.equals(autopagerPref.loadPref("ignoresites"),this.ignoresites))
         {
             this.ignoresites = autopagerPref.loadPref("ignoresites");
-            this.ignoreRegex = autopagerUtils.newRegExp(this.ignoresites)
+            this.ignoreRegex = autopagerUtils.newRegExp(this.ignoresites);
         }
         if (this.ignoreRegex && this.ignoreRegex.test(url))
         {
-            matchCallBack(null);
             return null;
         }
-        
-        if (url.length>256) //truncate the url
-            url = url.substring(0,256);
-//        autopagerBwUtil.consoleLog("Process " + url)
-        var allSites=autopagerMain.workingAllSites
-        for (var key in allSites){
-            //alert(key)
+        return autopagerRules.doGetNextMatchedSiteConfig(AutoPagerNS.UpdateSites.loadAll(),url,pos);
+    }
+    ,
+    doGetNextMatchedSiteConfig: function(allSites,url,pos)
+    {
+        var key;
+        var fileStarted = (pos ==="" || pos ==null || pos.key==null || pos.index==null);
+        var firstCall = fileStarted
+        //var lineStarted = (pos =="" || pos ==null || pos.key==null || pos.index==null);
+        for ( key in allSites){
             var tmpsites = allSites[key];
-            if (tmpsites==null || !tmpsites.updateSite.enabled)
+            
+            // alert(autopagerBwUtil.encodeJSON(tmpsites))
+            if (tmpsites==null || !tmpsites.updateSite || !tmpsites.updateSite.enabled)
                 continue;
+            if (!fileStarted)
+                fileStarted = (key == pos.key);
+            if (!fileStarted)
+                continue;
+            var start = 0;
+            if (!firstCall && key == pos.key)
+                start = pos.index +1
+            //alert(tmpsites.updateSite.filename + ":" + tmpsites.length)
 
-            for (var i = 0; i < tmpsites.length; i++) {
+            for (var i = start; i < tmpsites.length; i++) {
+            //                if (!started)
+            //                    started = ((key == pos.key) && i>=pos.index);
+            //                else
             {
                 var site = tmpsites[i];
-                var pattern = autopagerUtils.getRegExp(site);
+                var pattern = site.regex || autopagerUtils.getRegExp(site);
                 if (pattern.test(url)) {
                     var newSite = autopagerConfig.cloneSite (site);
-                    newSite.updateSite = tmpsites.updateSite;
-                    pos = new Array();
-                    pos.key = key;
-                    pos.index = i;
-                    pos.site=newSite;
-                    if (matchCallBack(pos))
-                    {
-                        return pos;
-                    }
+                    newSite = autopagerConfig.completeRule(newSite)
+                    newSite.updateSite = null;
+                    newSite.oldSite = null;
+
+                    var p = {};
+                    p.key = key;
+                    p.index = i;
+                    p.site=newSite;
+                    return p;
                 }
             }
             }
         }
-        matchCallBack(null);
         return null;
-    },
-    discoverRule: function(url,matchCallBack)
-    {
-        if (autopagerPref.loadBoolPref("with-lite-discovery"))
-        {
-            if (autopagerPref.loadBoolPref("lite-discovery-prompted"))
-            {
-                this.doDiscoverRule(url,matchCallBack);
-            }
-            else
-                autopagerLite.promptLiteDiscovery();
-        }
-        else
-            matchCallBack(null);
     }
     ,
-    doDiscoverRule: function(url,matchCallBack)
+    discoverRule: function(url)
     {
-        if (!autopagerMain.getGlobalEnabled())
+        if (!autopagerPref.loadBoolPref("with-lite-discovery"))
             return null;
+        if (!autopagerPref.loadBoolPref("lite-discovery-prompted"))
+        {
+//            //use chrome notification api if there are
+//            safari.windows.getCurrent(function(w){
+//                alert(w.notifications)
+//                alert(w.webkitNotifications)
+//            })
+            //safari.windows.create({url:'about:blank',height:90},function(w){                
+            //})
+            return {promptNeed:true};
+        }
+        //truncateUrl long url
+        if (url.length>1024)
+            url = this.truncateUrl(url);
         var patterns = this.getAutopagerCOMP().getPatterns();
         if (patterns)
         {
             for(var i=0;i<patterns.length;i++)
             {
                 var pattern = patterns[i];
-                var p = autopagerUtils.getRegExp2(pattern);
-                if (p.test(url)) {
-                    matchCallBack(pattern);
-                    return p;
+                if (pattern)
+                {
+                    var p = pattern.rg || autopagerUtils.getRegExp2(pattern);
+                    if (p.test(url)) {
+                        return pattern;
+                    }                    
                 }
             }
         }
-        matchCallBack(null);
         return null;
     }
-    ,
-    getPublishingSite : function ()
+    ,truncateUrl : function(url)
     {
-        return this.getAutopagerCOMP().getPublishingSite();
-    },
-    setPublishingSite : function (publishingSite)
-    {
-        this.getAutopagerCOMP().setPublishingSite(publishingSite);
-    }
-    ,
-    isAllowUpdate : function()
-    {
-        return true;
-    }
-    ,
-    resetAll : function()
-    {
-        var allSiteSetting = this.getAutopagerCOMP().loadAll();
-        if (allSiteSetting != null)
-        {
-            for(var k in allSiteSetting)
-            {
-                var setting = allSiteSetting[k]
-                if (setting)
-                {
-                    var newSetting=[];
-                    newSetting.updateSite = setting.updateSite
-                    allSiteSetting[k] = newSetting
-                }
-            }
-            this.getAutopagerCOMP().setAll(allSiteSetting);
-        }
+        //include the first 1000 char and the latest 24 chars
+        return url.substr(0,1000) + url.substr(url.length-24);
     }
 }

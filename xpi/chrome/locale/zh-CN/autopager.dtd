@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "URL:">
 <!ENTITY setting.label.lblUpdate "自动更新站点配置:">
 <!ENTITY setting.label.loading "&apos;加载中&apos;提示的样式:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "剩余页面小于">
 <!ENTITY setting.label.marginEnd "倍窗体高度时自动翻页">
 <!ENTITY setting.label.minipages "最小预载入页面数">

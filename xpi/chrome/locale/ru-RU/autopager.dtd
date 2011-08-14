@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "Шаблон URL:">
 <!ENTITY setting.label.lblUpdate "Автоматически обновлять конфигурации сайтов:">
 <!ENTITY setting.label.loading "Стиль уведомления о загрузке:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Листать, когда пространство меньше чем">
 <!ENTITY setting.label.marginEnd "высоты окна">
 <!ENTITY setting.label.minipages "Минимальное число предзагруженных страниц">

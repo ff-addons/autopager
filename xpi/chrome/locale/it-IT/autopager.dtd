@@ -143,6 +143,7 @@
 <!ENTITY setting.label.lblURLPattern "Modello dell&apos;URL">
 <!ENTITY setting.label.lblUpdate "Configurazione del sito per gli aggiornamenti automatici:">
 <!ENTITY setting.label.loading "Stile per le notifiche di caricamento:">
+<!ENTITY setting.label.localrules "Local Rules">
 <!ENTITY setting.label.margin "Paginazione quando lo spazio è inferiore a">
 <!ENTITY setting.label.marginEnd "Altezza della finestra">
 <!ENTITY setting.label.minipages "Minimum preloaded page count">

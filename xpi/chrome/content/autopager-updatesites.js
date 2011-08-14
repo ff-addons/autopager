@@ -94,13 +94,27 @@ AutoPagerNS.AutoPagerUpdateTypes =
                     newSite.referred = sites[i];
                     sites[i]= newSite;
             }
-            //this.saveSettingSiteConfig(sites);
+            this.saveSettingSiteConfig(sites);
         }
         return sites;
     },
     getDefaultSites : function()
     {
-            var sites = new Array();
+        var repositories = new Array();
+        var offlineMode = false;
+        //always ask users to confirm the mode in mobile browsers
+        if (autopagerBwUtil.isMobileVersion())
+        {
+            var prompted = autopagerPref.loadBoolPref("mode-prompted");
+            if (!prompted)
+            {
+                //autopagerLite.promptAutoPagerMode();
+                offlineMode = true;
+            }else if(autopagerPref.loadBoolPref("mode-no-repository"))
+            {
+                offlineMode = true;
+            }                        
+        }
         
 //            sites.push(new AutoPagerNS.AutoPagerUpdateSite("pagerization","all",
 //                        "http://k75.s321.xrea.com/pagerization/siteinfo","text/html; charset=utf-8",
@@ -109,26 +123,22 @@ AutoPagerNS.AutoPagerUpdateTypes =
             var lite = autopagerLite.isInLiteMode();
             var withlite = autopagerPref.loadBoolPref("with-lite-rules");
 
-            if(!lite)
-            {
-            if (!autopagerBwUtil.isFennec())
-            {
 //            sites.push(new AutoPagerNS.AutoPagerUpdateSite("autopagerize","all",
 //                        "http://swdyh.infogami.com/autopagerize","text/html; charset=utf-8",
 //                        "autopagerize configurations",
 //                        "autopagerize.xml",'//*[@class="autopagerize_data"]',false,"autopagerize",0,[]));
 
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("autopagerize","all",
+            repositories.push(new AutoPagerNS.AutoPagerUpdateSite("autopagerize","all",
                         "http://rep.teesoft.info/autopager/AutoPagerize/items.json?lastupdate={timestamp}","text/plain; charset=utf-8",
                         "autopagerize new configurations. Use our cached version first. Use the orgnial sites if our cache failed.\nhttp://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp},http://utatane.appjet.net/databases/AutoPagerize/items.json",
-                        "autopagerizeJson.xml",'',true,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
+                        "autopagerizeJson.xml",'',!offlineMode && !lite,"autopagerize-json",168,["http://wedata.net/databases/AutoPagerize/items.json?lastupdate={timestamp}","http://utatane.appjet.net/databases/AutoPagerize/items.json"]));
 
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+            repositories.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://autopager.mozdev.org/conf.d/autopager.xml","text/xml; charset=utf-8",
-                        "default configurations on autopager.mozdev.org",
-                        "autopagerMozdev.xml","//site",true,"autopager-xml",0,[]));
-            }
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+                        "configurations on autopager.mozdev.org",
+                        "autopagerMozdev.xml","//site",false,"autopager-xml",0,[]));
+
+            repositories.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "Experimental configurations @ teesoft.info, please don't enable this.",
                         "autopagerBeta.xml","//site",false,"autopager-xml",-2,[
@@ -136,10 +146,10 @@ AutoPagerNS.AutoPagerUpdateTypes =
                             "http://stone.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}",
                             "http://s2.teesoft.info/autopager/json/?approvedOnly=0&version={version}&lastupdate={timestamp}&all={all}"]));
 
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+            repositories.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "http://rep.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "default configurations @ teesoft.info",
-                        "autopagerTee.xml","//site",true,"autopager-xml",-2,
+                        "autopagerTee.xml","//site",!offlineMode && !lite,"autopager-xml",-2,
                                 ["http://vps.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
                                 "http://stone.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
                                 "http://s2.teesoft.info/autopager/json/?version={version}&lastupdate={timestamp}&all={all}",
@@ -150,22 +160,22 @@ AutoPagerNS.AutoPagerUpdateTypes =
                                 "http://teesoft.co.cc/autopager/json/?version={version}&lastupdate={timestamp}&all={all}"]));
 
 
-            }
+            
             if(withlite || lite)
             {
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+                repositories.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         autopagerPref.loadPref("repository-site") +"d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}","application/json; charset=utf-8",
                         "AutoPager Lite Configurations @ teesoft.info",
-                        "autopagerLite.xml","//site",true,"autopager-lite",-2,
+                        "autopagerLite.xml","//site",!offlineMode,"autopager-lite",-2,
                                 ["http://s1-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
                                 "http://member-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}",
                                 "http://es4-ap.teesoft.info/d/json?ids={ids}&version={version}&lastupdate={timestamp}&all={all}"]));
             }
-            sites.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+            repositories.push(new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
                         "","text/html; charset=utf-8",
                         "user created configurations",
                         "autopager.xml","//site",true,"autopager-xml",-2,[]));
-           return sites;
+           return repositories;
         
     },
     xmlConfigCallback : function(doc,updatesite)
@@ -177,9 +187,9 @@ AutoPagerNS.AutoPagerUpdateTypes =
     {
         var sites = null;
         if (typeof doc =='string')
-            sites = autopagerJsonSetting.loadCompactFromString(doc);
+            sites = autopagerJsonSetting.loadCompactFromString(doc,updatesite);
         else
-            sites = autopagerConfig.loadConfigFromDoc(doc);
+            sites = autopagerConfig.loadConfigFromDoc(doc,updatesite);
         return sites;
     },
     blogConfigCallback : function(doc,updatesite)
@@ -189,7 +199,7 @@ AutoPagerNS.AutoPagerUpdateTypes =
         var allSites = new Array();
         for (var node = null; (node = nodes.iterateNext()); ) {
             
-            var sites = autopagerConfig.loadConfigFromStr( "<root>" + node.textContent + "</root>",false);
+            var sites = autopagerConfig.loadConfigFromStr( "<root>" + node.textContent + "</root>");
             autopagerConfig.mergeArray(allSites,sites,true);
         }
         return allSites;
@@ -201,21 +211,22 @@ AutoPagerNS.AutoPagerUpdateTypes =
         var sites= null;
         var newSites = [];
         try{
-            var file = "all-sites.xml";
+            var file = "all-sites.json";
             if (autopagerLite.isInLiteMode())
-                file = "all-sites-lite.xml";
+                file = "all-sites-lite.json";
             configContents= autopagerBwUtil.getConfigFileContents(file);
-            var doc = autopagerConfig.autopagerDomParser.parseFromString(configContents, "text/xml");
-            sites = this.loadSettingSitesFromDoc(doc);
-			var defaultSites = this.getDefaultSites();
-			var needSave = false;
+            sites = autopagerBwUtil.decodeJSON(configContents);
+            if (!sites)
+                sites = {}
+            var defaultSites = this.getDefaultSites();
+            var needSave = false;
             for(var i in sites)
             {
-				var site = sites[i];
+                var site = sites[i];
                 var found = false;
-				for(var h in defaultSites)
-				{
-					var defaultSite = defaultSites[h]
+                for(var h in defaultSites)
+                {
+                    var defaultSite = defaultSites[h]
                     if (defaultSite.filename == site.filename)
                     {
                         if (typeof site.url != 'undefined')
@@ -225,22 +236,18 @@ AutoPagerNS.AutoPagerUpdateTypes =
                         newSite.referred = defaultSite;
                         if (typeof site.enabled != 'undefined')
                             newSite.enabled = site.enabled;
-                        if (needSave && site.filename == "chinalist.xml")
-                        {
-                            var isChineseLocale = autopagerUtils.isChineseLocale();
-                            if (isChineseLocale)
-                                newSite.enabled = true;
-                        }
+
                         if (typeof site.updateType != 'undefined')
                             newSite.updateType = site.updateType;
                         if (typeof site.updateperiod != 'undefined')
                             newSite.updateperiod = site.updateperiod;
                         newSite.lastupdate = site.lastupdate
+                        newSite.fullUpdate = site.fullUpdate
                         newSites.push(newSite);
                         found = true;
                         break;
                     }
-				}
+                }
                 if (!found && (typeof site.url != 'undefined'))
                 {
                     newSites.push(site)
@@ -278,142 +285,78 @@ AutoPagerNS.AutoPagerUpdateTypes =
             {
                 this.saveSettingSiteConfig(newSites);
             }
-                      
+
         }catch(e)
         {
-            //autopagerBwUtil.consoleError(e);
+        //autopagerBwUtil.consoleError(e);
         }
         return newSites;
-        
-    },
-    loadSettingSitesFromDoc : function (doc)
-    {
-        var sites = new Array();
-    
-        var nodes = doc.evaluate("//update-site", doc, null, 0, null);
-        if (nodes == null)
-            return sites;
-        for (var node = null; (node = nodes.iterateNext()); ) {
-            var site = new AutoPagerNS.AutoPagerUpdateSite();
 
-            var childNodes = node.childNodes;
-            //childNode = childNodes[i]
-            for (var i = 0, childNode = null; (childNode = childNodes[i]) ; i++) {
-                var nodeName = childNode.nodeName;
-                if (nodeName == "owner") {
-                    site.owner	= autopagerConfig.getValue(childNode) ;
-                }
-                else if (nodeName == "locales") {
-                    site.locales = autopagerConfig.getValue(childNode);
-                }else  if (nodeName == "url") {
-                    site.url = autopagerConfig.getValue(childNode);
-                }else if (nodeName == "contenttype") {
-                    site.contenttype	= (autopagerConfig.getValue(childNode) == 'true');
-                }
-                else if (nodeName == "desc") {
-                    site.desc = autopagerConfig.getValue(childNode);
-                }
-                else if (nodeName == "filename") {
-                    site.filename	= autopagerConfig.getValue(childNode);
-                }
-                else if (nodeName == "updateType") {
-                    site.updateType	= AutoPagerNS.AutoPagerUpdateTypes.getType(autopagerConfig.getValue(childNode));
-                    site.callback = site.updateType.callback;
-                    if (site.contenttype==null || site.contenttype=="")
-                        site.contenttype = site.updateType.contentType;
-                }
-                else if (nodeName == "enabled") {
-                    site.enabled = (autopagerConfig.getValue(childNode) == 'true');
-                }
-                else if (nodeName == "xpath") {
-                    site.xpath	= autopagerConfig.getValue(childNode) ;
-                }
-                else if (nodeName == "updateperiod") {
-                    site.updateperiod	= autopagerConfig.getValue(childNode) ;
-                }
-                else if (nodeName == "lastupdate") {
-                    site.lastupdate	= autopagerConfig.getValue(childNode) ;
-                }                
-                else if (nodeName == "defaulted") {
-                    site.defaulted	= autopagerConfig.getValue(childNode) ;
-                }                
-                else if (nodeName == "backupUrl") {
-					if (site.backupUrls==null)
-						site.backupUrls = [];
-
-                    site.backupUrls.push(autopagerConfig.getValue(childNode));
-                }
-                
-            }
-            sites.push(site);
-        }
-        return sites;
-        
     },
     saveAllSettingSiteConfig : function() {
         this.saveSettingSiteConfig(AutoPagerNS.UpdateSites.getUpdateSites());
     },
     saveSettingSiteConfig : function(sites) {
-        var file = "all-sites.xml";
+        var file = "all-sites.json";
         if (autopagerLite.isInLiteMode())
-            file = "all-sites-lite.xml";
+            file = "all-sites-lite.json";
         this.saveSettingSiteConfigToFile(sites,autopagerBwUtil.getConfigFile(file));
     },    
     saveSettingSiteConfigToFile : function(sites,saveFile) {
-        try{
-            var doc = document.implementation.createDocument("", "all-sites", null);
-            doc.firstChild.appendChild(doc.createTextNode("\n"))
-            
+        try{                        
+            var newSites = [];            
             if (sites!=null)
             {
                 for (var i = 0, siteObj = null; (siteObj = sites[i]); i++) {
-                    var siteNode = doc.createElement("update-site");
+                    var siteNode = {};
                     if (typeof siteObj.referred == 'undefined')
                     {
-                        autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);
-                        autopagerConfig.createNode(siteNode,"updateType",siteObj.updateType.type);
-                        autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);
+                        siteNode["enabled"]=siteObj.enabled;
+                        siteNode["updateType"]=siteObj.updateType.type;
+                        siteNode["updateperiod"]=siteObj.updateperiod;
+                        siteNode["url"]=siteObj.url;
 
-                        autopagerConfig.createNode(siteNode,"owner",siteObj.owner);
-                        autopagerConfig.createNode(siteNode,"locales",siteObj.locales);
-                        autopagerConfig.createNode(siteNode,"url",siteObj.url);
-                        autopagerConfig.createNode(siteNode,"contenttype",siteObj.contenttype);
-                        autopagerConfig.createNode(siteNode,"xpath",siteObj.xpath);
-                        autopagerConfig.createNode(siteNode,"desc",siteObj.desc);
-                        autopagerConfig.createNode(siteNode,"defaulted",siteObj.defaulted);
-                        if (siteObj.backupUrls!=null)
-                        {
-                            for(var u=0;u<siteObj.backupUrls.length;u++)
-                                autopagerConfig.createNode(siteNode,"backupUrl",siteObj.backupUrls[u]);
-                        }
+                        siteNode["owner"]=siteObj.owner;
+                        if (siteObj.locales)
+                            siteNode["locales"]=siteObj.locales;
+                        if (siteObj.contenttype)
+                            siteNode["contenttype"]=siteObj.contenttype;
+                        if (siteObj.xpath)
+                            siteNode["xpath"]=siteObj.xpath;
+                        if (siteObj.desc)
+                            siteNode["desc"]=siteObj.desc;
+                        if (siteObj.defaulted)
+                            siteNode["defaulted"]=siteObj.defaulted;
+                        if (siteObj.backupUrls)
+                            siteNode["backupUrl"]=siteObj.backupUrls;
                     }
                     else
                     {
                         if (siteObj.enabled != siteObj.referred.enabled)
                         {
-                            autopagerConfig.createNode(siteNode,"enabled",siteObj.enabled);                                
+                            siteNode["enabled"]=siteObj.enabled;                                
                         }
                         if (siteObj.updateType.type != siteObj.referred.updateType.type)
                         {
-                            autopagerConfig.createNode(siteNode,"updateType",siteObj.updateType.type);                                
+                            siteNode["updateType"]=siteObj.updateType.type;                                
                         }
                         if (siteObj.updateperiod != siteObj.referred.updateperiod)
                         {
-                            autopagerConfig.createNode(siteNode,"updateperiod",siteObj.updateperiod);                                
+                            siteNode["updateperiod"]=siteObj.updateperiod;                                
                         }
                     }
-                    autopagerConfig.createNode(siteNode,"filename",siteObj.filename);
-                    autopagerConfig.createNode(siteNode,"lastupdate",siteObj.lastupdate);
-
-                    doc.firstChild.appendChild(siteNode);
-                    doc.firstChild.appendChild(doc.createTextNode("\n"));
+                    siteNode["filename"]=siteObj.filename;
+                    if (siteObj.lastupdate)
+                        siteNode["lastupdate"]=siteObj.lastupdate;
+                    if (siteObj.fullUpdate)
+                        siteNode["fullUpdate"]=siteObj.fullUpdate;
+                    newSites.push(siteNode);
                 }
             }
-            autopagerBwUtil.saveContentToFile(new XMLSerializer().serializeToString(doc),saveFile);
-
-//            var configStream = autopagerConfig.getWriteStream(saveFile);
-//            new XMLSerializer().serializeToStream(doc, configStream, "utf-8");
-//            configStream.close();
+            
+            var str = autopagerBwUtil.encodeJSON(newSites)
+            autopagerBwUtil.saveContentToFile(str,saveFile);
+            
         }catch(e)
         {
             autopagerBwUtil.consoleError(e);

@@ -55,7 +55,7 @@ var autopagerAlert=
     {
         var me = autopagerAlert;
         if(typeof sizeToContent == "function")
-            sizeToContent();
+            sizeToContent();        
         me.gFinalHeight = window.outerHeight;  //134  5 lines - 152 6 lines
         if ( me.gFinalHeight > me.g_MAX_HEIGHT ) {
             me.gFinalHeight = me.g_MAX_HEIGHT;
@@ -95,16 +95,16 @@ var autopagerAlert=
     onAlertClick : function()
     {
         if (autopagerAlert.callback)
-            autopagerAlert.callback()
+            autopagerAlert.callback({})
         else
-            autopagerBwUtil.autopagerOpenIntab(autopagerAlert.link);
+            AutoPagerNS.add_tab({url:autopagerAlert.link});
     },
     onLinkClick : function(aEvent)
     {
         if (autopagerAlert.callback)
-            autopagerAlert.callback()
+            autopagerAlert.callback({})
         else
-            autopagerBwUtil.autopagerOpenIntab(autopagerAlert.link);
+            AutoPagerNS.add_tab({url:autopagerAlert.link});
         // Close the alert soon
         setTimeout(autopagerAlert._closeAlert, autopagerAlert.gOpenTimeAfterLinkClick);
         // Don't open the sidebar
