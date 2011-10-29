@@ -59,4 +59,11 @@ var autopagerRules =
     {
         return false;
     }
+    , addRule : function (key,rule)
+    {
+        AutoPagerNS.message.call_function('autopager_add_rule',{
+              key:key,rule:rule      
+            },function (options){
+            })
+    }
 }

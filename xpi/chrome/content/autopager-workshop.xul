@@ -59,7 +59,7 @@
                                   oncommand="autopagerMain.showTutorials()"
                                   />
                         <menuitem id="autopager-showhelp" label="&statusbar.menuitem.autopager-showhelp.label;" tooltiptext="&statusbar.menuitem.autopager-showhelp.tooltiptext;"
-                                  oncommand="autopagerMain.showHelp()"
+                                  oncommand="autopagerUtils.showHelp()"
                                   />
                         <menuseparator class="autopager-sep-global"/>
                         <menuitem id="autopager-showrules" label="&statusbar.menuitem.autopager-showrules.label;" tooltiptext="&statusbar.menuitem.autopager-showrules.tooltiptext;"

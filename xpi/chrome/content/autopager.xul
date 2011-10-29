@@ -14,35 +14,8 @@
         buttonlabelextra1="&setting.buttonlabelextra1;"
         ondialogextra1="return handleApplyButton()"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    
-    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-lite.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopagerTreeView.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-tips.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopagerUI.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-highlight.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-selector.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
-
-    <tabbox id="autopager-tabbox" flex="1">
+    <vbox flex="1">
+    <tabbox id="autopager-options"  selectedIndex="0" flex="1" minwidth="400" minheight="400">
         <tabs>
             <tab label="&setting.label.sites;"/>
             <tab label="&setting.label.general;"/>
@@ -56,7 +29,7 @@
                         <vbox flex="0">
                             <hbox flex="1">
                                 <label id="filterLabel" control="siteSearch" value="&label.filterLabel.value;" keyword="rulefilter" tooltiptext="&label.filterLabel.tooltiptext;"/>
-                                <textbox  flex="1" id="siteSearch" persist="value" type="search" searchbutton="true" emptytext="Search" keyword="Search"/>
+                                <textbox  flex="1" id="siteSearch" type="search" searchbutton="true" emptytext="Search" keyword="Search"/>
                             </hbox>
                         </vbox>
                         <hbox flex="1">
@@ -249,9 +222,7 @@
                         </vbox>
                         <vbox>
                             <vbox flex="1">
-                                <descrition>
-                            &setting.label.lblSetting;
-                                </descrition>
+                                <description>&setting.label.lblSetting;</description>
 
                                 <hbox align="center">
                                     <label control="lblSettingOwner" value="&setting.label.lblSettingOwner;" keyword="Repository Owner"/>
@@ -352,7 +323,8 @@
                     </hbox>
                     <vbox>
                         <hbox align="center">
-                            <checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1" keyword="Smart Paging"/>
+                            <checkbox id="smartenable" label="&setting.label.smartenable;" check="false" flex="1" keyword="Smart Paging" style="color:red"/>
+                            <checkbox id="smartmatch" label="&setting.label.smartmatch;" check="true" flex="1" keyword="Smart Paging Exactly Match"/>
                         </hbox>
                         <hbox flex="1">
                             <groupbox id="grpSmart" orient="vertical" flex="1">
@@ -445,4 +417,33 @@
             </tabpanel>
         </tabpanels>
     </tabbox>
+    </vbox>
+    
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-lite.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-common-global.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerTreeView.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-tips.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-description.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerUI.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-highlight.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-xpath.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-selector.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-troubleshoting.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
 </dialog>

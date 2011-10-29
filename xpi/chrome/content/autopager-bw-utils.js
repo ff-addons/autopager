@@ -5,7 +5,7 @@ var autopagerBwUtil =
         var file = this.getConfigDir();
         file.append(fileName);
         if (!file.exists()) {
-            file.create(Components.interfaces.nsIFile.FILE_TYPE, 0755);
+            file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
         }
 
         return file;
@@ -541,7 +541,7 @@ var autopagerBwUtil =
     showStatus : function(){
             var statusBar = document.getElementById("autopager_status");
             if (statusBar!=null)
-				statusBar.hidden = autopagerPref.loadBoolPref("hide-status");
+                statusBar.hidden = autopagerPref.loadBoolPref("hide-status");
             var separator1 = document.getElementById("autopager-context-separator1");
             if (separator1!=null)
                 separator1.hidden = autopagerPref.loadBoolPref("hide-context-menu");
@@ -709,7 +709,53 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
         }catch(e){
         }
         return false;
-    }    
+    },
+    openSettingForDoc : function(doc)
+    {
+         var url = AutoPagerNS.getContentDocument().location.href;
+         try{
+             var docs = autopagerMain.getAllEnabledDoc(doc)
+             if (docs != null && docs.length >0)
+             {
+                 var i=0;
+                 while(docs[i].location == null && i< docs.length )
+                    i++;
+                  if (i<docs.length )
+                  {
+                      url = docs[i].location.href;
+                  }
+             }
+         }catch(e){}
+         autopagerBwUtil.openSetting(url);
+    },
+    openSetting : function(url,obj) {
+        var settingUrl = "chrome://autopager/content/autopager.xul";
+        if (!autopagerBwUtil.isMobileVersion())
+        {
+            var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
+            var windows = wm.getEnumerator(null);
+            while (windows.hasMoreElements()) {
+              var win = windows.getNext();
+              if (win.document.documentURI == settingUrl) {
+                win.focus();
+                return;
+              }
+            }
+            window.autopagerSelectUrl=url;
+            window.autopagerOpenerObj = obj;
+            var win = window.open(settingUrl, "autopager",
+            "chrome,resizable,centerscreen");
+            win.focus();
+        }else
+        {
+            AutoPagerNS.window.location.href=settingUrl;
+            if (typeof Browser!="undefined" && Browser._browserView)
+            {
+                var bv = Browser._browserView
+                bv.setZoomLevel(0.5);
+            }
+        }
+    }
 }
 
 //autopagerBwUtil.consoleLog("autopagerBwUtil loaded")

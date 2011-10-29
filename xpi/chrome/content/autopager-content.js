@@ -55,7 +55,11 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
             var xpath = request.options.xpath
             var doc = AutoPagerNS.getContentDocument();
             var results =autopagerXPath.evaluate(doc,"(" + xpath + ")[not (@class='autoPagerS')]",true,20);
-            autopagerHightlight.HighlightNodes(doc,results,-1,"blue",true);
+            try{
+                autopagerHightlight.HighlightNodes(doc,results,-1,"blue",true);                
+            }catch(e){
+                autopagerBwUtil.consoleError(e)
+            }                       
         }
     }
     ,

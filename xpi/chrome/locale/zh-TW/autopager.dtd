@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "啟用智慧翻頁">
 <!ENTITY setting.label.smartlinks "只在符合的連結少於">
 <!ENTITY setting.label.smartlinksEnd "個連結時才自動翻頁">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "尋找下個連結搜尋的文字／圖片、來源／ID／Class 連結 (用 '|' 分隔):">
 <!ENTITY setting.label.timeout "頁面載入逾時設定 (秒):">
 <!ENTITY setting.label.update "自動更新">

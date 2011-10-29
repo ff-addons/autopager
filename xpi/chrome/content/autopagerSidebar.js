@@ -696,7 +696,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
             autopagerSidebar.quit()
             window.close();
         }
-        autopagerConfig.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
+        autopagerBwUtil.openSetting(autopagerSidebar.currUrl,autopagerUtils.currentBrowser());
         return true;
     },
     openInOwnWin : function()
@@ -761,13 +761,22 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
                   if (autopagerSidebar.currUrl != doc.documentURI)
                     autopagerSidebar.loadXPathForNode(doc);
 
-                 var nodes = [];
-                 nodes.push(elem);
 
                   var links = document.getElementById("autoLinkPathTreeBody").parentNode.xpathes;
                   if (!links)
                       links = [];
-                  links = autopagerXPath.discoveryMoreLinks(doc,links,nodes);
+                  links = autopagerXPath.discoveryMoreLinks(doc,links,[elem]);
+                  if (elem.parentNode && elem.parentNode.tagName.toLowerCase()=="a")
+                  {
+                      var alinks = autopagerXPath.discoveryMoreLinks(doc,[],[elem.parentNode]);
+                      if (alinks)
+                      {
+                          for(var i in alinks)
+                          {
+                              links.push(alinks[i]);
+                          }
+                      }
+                  }
                   autopagerSidebar.showXPathList(document.getElementById("autoLinkPathTreeBody"),links)
 
                   window.focus();

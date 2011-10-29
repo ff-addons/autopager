@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Enable Smart Paging">
 <!ENTITY setting.label.smartlinks "Follow link when there are no more then">
 <!ENTITY setting.label.smartlinksEnd "meet links.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Next Link Search Text/Image Src/ID/Class(Split by &apos;|&apos;):">
 <!ENTITY setting.label.timeout "page loading timeout(Seconds):">
 <!ENTITY setting.label.update "Update">

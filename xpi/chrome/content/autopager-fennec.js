@@ -111,6 +111,7 @@ var autopagerServer = {
         messageManager.loadFrameScript("chrome://autopager/content/autopager-troubleshoting.js", true);
         messageManager.loadFrameScript("chrome://autopager/content/autopager-sitesetting.js", true);
         messageManager.loadFrameScript("chrome://autopager/content/autopager-description.js", true);
+        messageManager.loadFrameScript("chrome://autopager/content/autopager-highlight.js", true);
         messageManager.loadFrameScript("chrome://autopager/content/autopager-related.js", true);
         messageManager.loadFrameScript("chrome://autopager/content/autopager-end.js", true);
     },
@@ -136,6 +137,19 @@ var autopagerServer = {
         if (Browser.selectedTab && Browser.selectedTab.browser && Browser.selectedTab.browser.currentURI)
             autopagerLite.openRulesSelectorForUrl(Browser.selectedTab.browser.currentURI.spec);
         
+    },
+    autopager_open_xpather: function ()
+    {
+        var xpath = prompt(autopagerUtils.autopagerGetString("setting.label.lblSettingXPath"))
+        if (xpath)
+        {
+            AutoPagerNS.get_current_tab(function(tab) {
+    //            autopagerBwUtil.consoleLog("autopager_open_xpather:" + autopagerUtils.dumpObject(tab,1)) 
+                if (tab)
+                    AutoPagerNS.message.call_function_on_object("autopager_test_xpath_content",{xpath:xpath},function(){},AutoPagerNS.get_messager(tab));
+            })        
+            
+        }
     }
     , 
     optionPageUrl : ""

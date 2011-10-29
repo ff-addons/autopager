@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Akıllı Sayfalamayı Etkinleştir">
 <!ENTITY setting.label.smartlinks "Anahtar ifadelerle izlenen bağlantı">
 <!ENTITY setting.label.smartlinksEnd "adetten fazla değilse başla">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Akıllı Sayfalama için anahtar ifadeler: Yazı/Resim Src/ID/Class('|' ile ayırın):">
 <!ENTITY setting.label.timeout "sayfa yüklenme zaman aşımı (saniye):">
 <!ENTITY setting.label.update "Güncelle">

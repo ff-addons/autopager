@@ -9,7 +9,7 @@ var autopagerSiteSetting =
     {
         // During initialisation
         //window.addEventListener("load", autopagerSiteSetting.onContentLoad, false);
-        window.addEventListener("DOMContentLoaded", autopagerSiteSetting.onContentLoad, false);
+        AutoPagerNS.browser.addEventListener("DOMContentLoaded", autopagerSiteSetting.onContentLoad, false);
     },
     TabSelected : function(event)
     {

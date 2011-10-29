@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Включить умное листание">
 <!ENTITY setting.label.smartlinks "Идти по ссылке, если найдено не более">
 <!ENTITY setting.label.smartlinksEnd "ссылок">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Текст/class/id/src рисунка для поиска следующей ссылки (разделять &apos;|&apos;):">
 <!ENTITY setting.label.timeout "Таймаут загрузки страницы (сек.)">
 <!ENTITY setting.label.update "Обновление">

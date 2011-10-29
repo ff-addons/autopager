@@ -66,7 +66,7 @@ var autopagerRules =
                     var newSite = autopagerConfig.cloneSite (site);
                     newSite = autopagerConfig.completeRule(newSite)
                     newSite.updateSite = null;
-                    newSite.oldSite = null;
+                    delete newSite.oldSite;
 
                     var p = {};
                     p.key = key;
@@ -119,5 +119,21 @@ var autopagerRules =
     {
         //include the first 1000 char and the latest 24 chars
         return url.substr(0,1000) + url.substr(url.length-24);
+    }
+    , addRule : function (key,rule)
+    {
+        var repos = AutoPagerNS.UpdateSites.loadAll();
+        var tmpsites = repos[key];
+        if (!tmpsites)
+        {
+            tmpsites = []
+            tmpsites.updateSite = new AutoPagerNS.AutoPagerUpdateSite("Wind Li","all",
+            "","text/html; charset=utf-8",
+            key+ " configurations",
+            key,"//site",true,"autopager-xml",0);
+            repos[key] = tmpsites;
+        }
+        tmpsites.push(rule);
+        return {key:key,index:tmpsites.length-1,site:rule};
     }
 }

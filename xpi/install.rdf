@@ -4,14 +4,14 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.7.0.0"
+                     em:version="0.7.1.0"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a Firefox/Mozilla/Chrome/Opera/Safari/Fennec extension to autoload the next page(s) when you scroll pages."
                      em:creator="Wind Li"
                      em:optionsURL="chrome://autopager/content/mini-options.xul"
                      em:homepageURL="http://www.teesoft.info/"
                      em:iconURL="chrome://autopager/skin/autopager32.png"
-		     >
+                     >
         <em:contributor>skylove  at http://bbs.chinaunix.net</em:contributor>
         <em:contributor>DLSQFLY  at http://forums.mozine.cn</em:contributor>
         <em:contributor>Chris  atclbertelson2  at hotmail.com</em:contributor>
@@ -41,7 +41,7 @@
 	<RDF:Description>
 		<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 		<em:minVersion>3.0</em:minVersion>
-		<em:maxVersion>8.0a1</em:maxVersion>
+		<em:maxVersion>9.0a1</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 
@@ -59,7 +59,7 @@
 	<RDF:Description>
 		<em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
 		<em:minVersion>1.0</em:minVersion>
-		<em:maxVersion>2.2.*</em:maxVersion>
+		<em:maxVersion>2.3.*</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 
@@ -77,7 +77,7 @@
 	<RDF:Description>
 		<em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id>
 		<em:minVersion>4.0b1pre</em:minVersion>
-		<em:maxVersion>8.0a1</em:maxVersion>
+		<em:maxVersion>9.0</em:maxVersion>
 	</RDF:Description>
 </em:targetApplication>
 

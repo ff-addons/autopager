@@ -22,7 +22,7 @@ var autopagerOptionUI = {
         }
     },
     handleHelpButton : function(){
-        autopagerMain.showHelp();
+        autopagerUtils.showHelp();
     },
     setBoolPref : function (key, v)
     {
@@ -56,6 +56,6 @@ var autopagerOptionUI = {
     },
     handleMoreOptionButton : function()
     {
-        autopagerConfig.openSetting("");
+        autopagerBwUtil.openSetting("");
     }
 }

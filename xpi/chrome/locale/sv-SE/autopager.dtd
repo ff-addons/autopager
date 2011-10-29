@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Aktivera smart sidväxling">
 <!ENTITY setting.label.smartlinks "Använd denna länk, om inte fler än">
 <!ENTITY setting.label.smartlinksEnd "lämpliga länkar finns.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "&apos;Nästa&apos;-länkar (länktext, bildkälla, ID, CSS-klass), separerade av vertikalstreck (&apos;|&apos;):">
 <!ENTITY setting.label.timeout "Tidsgräns för sidinläsning (s):">
 <!ENTITY setting.label.update "Uppdatera">

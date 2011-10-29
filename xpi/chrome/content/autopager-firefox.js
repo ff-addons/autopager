@@ -36,8 +36,9 @@ autopagerRules = AutoPagerNS.extend (autopagerRules,
     getNextMatchedSiteConfig: function(url,pos,matchCallBack)
     {
         var posNew = this["superObj"].getNextMatchedSiteConfig(url,pos);
-            
-        if (!matchCallBack(posNew) && posNew!=null)
+        
+        var ret = matchCallBack(posNew); 
+        if ((!ret) && posNew!=null)
         {
             this.getNextMatchedSiteConfig(url,posNew,matchCallBack)
         }

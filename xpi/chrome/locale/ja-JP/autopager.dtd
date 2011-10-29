@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "スマートページングを有効にする">
 <!ENTITY setting.label.smartlinks "リンクが">
 <!ENTITY setting.label.smartlinksEnd "以上ない場合にリンクを追う。">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "次のリンクを探す テキスト・画像の src・ID・class (「|」で分割):">
 <!ENTITY setting.label.timeout "ページ読み込み待ち時間 (秒):">
 <!ENTITY setting.label.update "更新">

@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Activează încărcarea inteligentă a paginilor">
 <!ENTITY setting.label.smartlinks "Se urmărește legătura când nu există mai mult de:">
 <!ENTITY setting.label.smartlinksEnd "legături întâlnite">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Legătură la pagina următoare - Text|Sursă imagine|Identificator|Clasă (separate prin „|”):">
 <!ENTITY setting.label.timeout "Timp expirare a încărcării paginii (sec):">
 <!ENTITY setting.label.update "Actualizare">

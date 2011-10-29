@@ -4,7 +4,7 @@
 
 <!DOCTYPE dialog SYSTEM "chrome://autopager/locale/autopager.dtd" >
 
-<dialog id="autopager-options"
+<dialog id="autopager-manage-setting"
       onload="autopagerOptionUI.init();"
       buttons="help,extra1,accept,cancel"
       ondialoghelp="return autopagerOptionUI.handleHelpButton()"
@@ -12,24 +12,7 @@
       buttonlabelextra1="&options.dialog.autopager-options.buttonlabelextra1;"
       ondialogextra1="return autopagerOptionUI.handleMoreOptionButton()"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-optionsUI.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
-    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
-    
-    <vbox flex="1">
+    <vbox flex="0">
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-toolbar-icon" label="&setting.label.showToolbarIcon;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showStatusBar" prefV="hide-status" label="&setting.label.showStatusBar;" check="true" flex="1"/>
         <checkbox type="checkbox"  id="showToolbarIcon" prefV="hide-context-menu" label="&setting.label.showContextMenu;" check="true" flex="1"/>
@@ -64,11 +47,30 @@
             </menulist>
         </hbox>
     </vbox>
-      <script type="text/javascript">
+    <script type="text/javascript" src="chrome://autopager/content/autopager-namespace.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-bw-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-strings.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-optionsUI.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-utils.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-pref.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/splitbrowse.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/apxmlhttp.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopagerize.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-updatesites.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-rules.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autoConfig.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-json.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-paging.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-common-global.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-firefox.js"></script>
+    <script type="text/javascript" src="chrome://autopager/content/autopager-end"></script>
+    
+    <script type="text/javascript">
       if (autopagerBwUtil.isMobileVersion())
       {
-        document.getElementById("autopager-options").setAttribute('buttons','help,accept,cancel')
+        document.getElementById("autopager-manage-setting").setAttribute('buttons','help,accept,cancel')
       }
-  </script>
+    </script>
 
 </dialog>

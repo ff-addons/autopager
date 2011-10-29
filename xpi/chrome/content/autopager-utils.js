@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.7.0.0",
+    version:"0.7.1.0",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -460,7 +460,7 @@ var autopagerUtils = {
             if (childNode !=null && childNode.href)
                 return childNode.href;
         }
-        for (i = 0; (childNode = ele.childNodes[i]); i++)
+        for (var i = 0; (childNode = ele.childNodes[i]); i++)
         {
             var href = this.findUrlInBelowElement(childNode);
             if (href != null && typeof href == 'string')
@@ -828,7 +828,14 @@ delete * 24, for minutes, delete * 60 * 24
     // Converts a pattern in this programs simple notation to a regular expression.
     // thanks AdBlock! http://www.mozdev.org/source/browse/adblock/adblock/
     ,
+    simpleRegex : /^[^*]+\*$/,
+    isSimple : function (s)
+    {
+        return (s && this.simpleRegex.test(s));
+    },
     convert2RegExp : function( pattern ) {
+        if (this.isSimple(pattern))
+            return new AutoPagerNS.SimpleRegExp(pattern);        
         return new RegExp(autopagerUtils.convert2RegExpStr(pattern), "i");
     },
     convert2RegExpStr : function( pattern ) {
@@ -922,7 +929,7 @@ delete * 24, for minutes, delete * 60 * 24
             if (autopagerUtils.isValidLink(c))
                 return c;
         }
-        for (i=0;i<node.childNodes.length;i++)
+        for (var i=0;i<node.childNodes.length;i++)
         {
             var link = autopagerUtils.getValidLinkFromChild(node.childNodes[i])
             if (link)
@@ -1159,6 +1166,8 @@ delete * 24, for minutes, delete * 60 * 24
         if (typeof autopagerBwUtil.postHandlingPaging == "function")
             autopagerBwUtil.postHandlingPaging(doc);
         
+        if (typeof autopagerLite!="undefined")
+            autopagerLite.clearMatchedRules(doc)
         this.updateStatusIcons(doc)
     }
     ,getContentImage : function(name)
@@ -1421,8 +1430,11 @@ delete * 24, for minutes, delete * 60 * 24
         _utf8_decode : function (utftext) {
             var string = "";
             var i = 0;
-            var c = c1 = c2 = 0;
- 
+            var c = 0;
+            var c1 = 0;
+            var c2 = 0;
+            var c3;
+            
             while ( i < utftext.length ) {
  
                 c = utftext.charCodeAt(i);
@@ -1449,4 +1461,18 @@ delete * 24, for minutes, delete * 60 * 24
         }
  
     }
+    ,
+  showHelp : function()
+    {
+        AutoPagerNS.add_tab({url:"http://autopager.teesoft.info/help.html"});
+    }    
+}
+
+AutoPagerNS.SimpleRegExp = function (s)
+{
+    this.p = s.substr(0,s.indexOf("*")).toLowerCase();
+}
+AutoPagerNS.SimpleRegExp.prototype.test = function(str)
+{
+    return str && str.toLowerCase().indexOf(this.p)==0;
 }

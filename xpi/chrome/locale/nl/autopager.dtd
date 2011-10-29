@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Slim pagineren inschakelen">
 <!ENTITY setting.label.smartlinks "Koppeling volgen wanneer er niet meer dan">
 <!ENTITY setting.label.smartlinksEnd "koppelingen worden gevonden.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Volgende koppeling zoektekst/afbeeldingsbron/ID/Class (scheiden door ‘|’):">
 <!ENTITY setting.label.timeout "Timeout voor laden van pagina (seconden):">
 <!ENTITY setting.label.update "Bijwerken">

@@ -552,7 +552,7 @@ var autopagerXPath = {
         }
         if (xpaths.length==0 && nodes.length>0)
         {
-            xpath = this.getXPathForObjectBySibling(nodes[0],3,level);
+            var xpath = this.getXPathForObjectBySibling(nodes[0],3,level);
             if (xpath!= null && xpath.length>0)
                 xpaths.push (xpath );
             xpath = this.getXPathForObjectBySibling2(nodes[0],3,level);
@@ -584,6 +584,9 @@ var autopagerXPath = {
         try{
             if (level>=1 && node.getAttribute("id") != null && node.getAttribute("id").length >0) {
                 xi = this.appendAndCondition(xi,dir + "@id='" + node.getAttribute("id") + "'");
+            }
+            if (level>=1 && node.getAttribute("rel") != null && node.getAttribute("rel").length >0) {
+                xi = this.appendAndCondition(xi,dir + "@rel='" + node.getAttribute("rel") + "'");
             }
             if (level>=2 &&(node.className != null) && (node.className.length >0)) {
                 xi = this.appendAndCondition(xi,dir + "@class='" + node.className + "'");
@@ -1055,19 +1058,26 @@ var autopagerXPath = {
         }
         return found;
     },
-    convertToXpath  : function(str) {
+    convertToXpath  : function(str,exactlymatch) {
         var xpaths = new Array();
         var strs = str.split("|");
         for(var k=0;k<strs.length;++k)
-            strs[k] = strs[k].toLowerCase().replace(new RegExp(" ","gm"),"");
+        {
+            if (!exactlymatch)
+                strs[k] = strs[k].toLowerCase().replace(new RegExp(" ","gm"),"");
+        }
         for(var i=0;i<strs.length;++i) {
             if (strs[i].length==0)
-                continue;
-            var strCon =  this.convertStringToXPath(strs[i],"");
-            if (strCon.length >0)
+                continue;            
+            this.convertStringToXPath(xpaths,"//a[","]",strs[i],"",exactlymatch);
+            this.convertStringToXPath(xpaths,"//*[","][count(a)=1]/a",strs[i],"",exactlymatch);
+            this.convertStringToXPath(xpaths,"//input[(@type='submit' or @type='button' or @type='image') and ","]",strs[i],"",exactlymatch);
+            this.convertStringToXPath(xpaths,"//*[","][count(input)=1]/input",strs[i],"",exactlymatch);
+            var chars = this.getChars(str);
+            xpaths.push( "//head/link[" + this.xpathEquals("@ref",chars,str) + "]/@href");
+            if (!exactlymatch)
             {
-                xpaths.push( "//a[" + strCon + "] | //input[(@type='submit' or @type='button' or @type='image') and " + strCon + "]");
-                xpaths.push( "//*[" + strCon + "][count(a)=1]/a | //*[" + strCon + "][count(input)=1]/input");
+                xpaths.push( "//head/link[" + this.xpathContains("@ref",chars,str) + "]/@href");
             }
         }
         return xpaths;
@@ -1078,25 +1088,48 @@ var autopagerXPath = {
     xpathContains : function(path,chars,str) {
         return "contains(translate(normalize-space(" + path +"),'" + chars.toUpperCase() +"', " + "'" + chars +"'),'" + str + "')";
     },
-    convertStringToXPath : function(str,dir) {
-        var xi="";
+    xpathEquals : function(path,chars,str) {
+        return path +"='" + str + "'";
+    },
+    convertStringToXPath : function(xpaths,prefix, subfix,str,dir,exactlymatch) {
         var chars = this.getChars(str);
-        if (str.length>0) {
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("@id",chars,str) );
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("@name",chars,str));
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("@title",chars,str));
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("@class",chars,str));
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("img/@src",chars,str));
-            xi = this.appendOrCondition(xi,  dir + "img[" + this.xpathContains("@src",chars,str) + "]" );
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("text()",chars,str) );
-            xi = this.appendOrCondition(xi,  dir + "span[" + this.xpathContains("text()",chars,str) + "]" );
-            xi = this.appendOrCondition(xi,  dir + "font[" + this.xpathContains("text()",chars,str) + "]" );
-            xi = this.appendOrCondition(xi,  dir + "b[" + this.xpathContains("text()",chars,str) + "]" );
-            xi = this.appendOrCondition(xi,  dir + "strong[" + this.xpathContains("text()",chars,str) + "]" );
-            xi = this.appendOrCondition(xi,  dir + this.xpathContains("substring(img/@src,string-length(img/@src) - "
-                + str.length + ")",chars,str));
+        if (str.length>0) {            
+            xpaths.push( dir + prefix + this.xpathEquals("@id",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("@rel",chars,str)  + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("@name",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("@title",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("@class",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("img/@src",chars,str) + subfix);
+            xpaths.push( dir + prefix + "img[" + this.xpathEquals("@src",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "img[" + this.xpathEquals("@alt",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("text()",chars,str) + subfix);
+            xpaths.push( dir + prefix + "span[" + this.xpathEquals("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "font[" + this.xpathEquals("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "b[" + this.xpathEquals("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "strong[" + this.xpathEquals("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + this.xpathEquals("substring(img/@src,string-length(img/@src) - "
+                + str.length + ")",chars,str) + subfix);
+            if (!exactlymatch)
+            {
+            xpaths.push( dir + prefix + this.xpathContains("@id",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("@rel",chars,str)  + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("@name",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("@title",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("@class",chars,str) + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("img/@src",chars,str) + subfix);
+            xpaths.push( dir + prefix + "img[" + this.xpathContains("@src",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "img[" + this.xpathContains("@alt",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("text()",chars,str) );
+            xpaths.push( dir + prefix + "span[" + this.xpathContains("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "font[" + this.xpathContains("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "b[" + this.xpathContains("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + "strong[" + this.xpathContains("text()",chars,str) + "]"  + subfix);
+            xpaths.push( dir + prefix + this.xpathContains("substring(img/@src,string-length(img/@src) - "
+                + str.length + ")",chars,str) + subfix);
+                
+            }
         }
-        return xi;
+        
     },
     getChars : function(str)
     {
@@ -1189,6 +1222,15 @@ var autopagerXPath = {
         }
         return newPath;
     
+    }
+    , isValidateLink : function(node)
+    {
+        if (node.tagName.toLowerCase()=="a" && node.getAttribute("href"))
+        {
+            var jsOrAjaxPath = /^[ ]*javascript|^\#[0-9a-zA-Z]*/;
+            return !jsOrAjaxPath.test(node.getAttribute("href").toLowerCase());
+        }
+        return true;
     }
    
 };

@@ -16,6 +16,10 @@ const autopagerHightlight =
         for(var i=0;i<nodes.length;i++)
         {
             var node = nodes[i];
+            if (typeof node == "string") //text node
+            {             
+                node = this.createTextDiv(doc,"autopagerText" + i,node);
+            }
             if (node.nodeType == 2)
                 node = node.ownerElement;
             
@@ -52,7 +56,10 @@ const autopagerHightlight =
 				datas.push(node);
         }
         for (var i = 0; i<datas.length;++i ) {
-				this.hiddenDiv(datas[i],true);
+            this.hiddenDiv(datas[i],true);
+            var text = doc.getElementById("autopagerText" + i);
+            if (text)
+                text.parentNode.removeChild(text);
         }
         this.count = 0;
     },
@@ -108,6 +115,15 @@ const autopagerHightlight =
     
         if (style.length>0)
             div.style.cssText = style;
+        return div;
+    },
+    createTextDiv : function (doc,divName,text)
+    {
+        var div = doc.getElementById(divName);
+        if (div)
+            div.parentNode.removeChild(div);
+        div = this.createDiv(doc,divName,"");
+        div.textContent = text
         return div;
     },
     getSelectorDiv :function (doc,divName,color) {

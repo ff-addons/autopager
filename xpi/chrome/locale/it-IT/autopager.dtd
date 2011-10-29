@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Attiva lo Smart Paging">
 <!ENTITY setting.label.smartlinks "Segui il link quando non ci sono più di">
 <!ENTITY setting.label.smartlinksEnd "link conosciuti.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Ricerca testo/immagini Src/ID/Class (separati da &apos;|&apos;) nel prossimo link:">
 <!ENTITY setting.label.timeout "Timeout per il caricamento pagina (in secondi):">
 <!ENTITY setting.label.update "Aggiornamento">

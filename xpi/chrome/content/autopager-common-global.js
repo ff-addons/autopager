@@ -167,6 +167,20 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
         }
     }
     ,
+    autopager_add_rule : function(request, sender, callback)
+    {
+        try{
+//            autopagerBwUtil.consoleLog("autopager_getNextMatchedSiteConfig")
+            var pos = autopagerRules.addRule(request.options.key,request.options.rule)
+            if(callback)
+            callback({
+                posNew:pos
+            });
+        }catch(e){                
+            autopagerBwUtil.consoleError(e)
+        }
+    }
+    ,
     autopager_getRelelatedSearchOptions : function(request, sender, callback)
     {
         autopagerRelated.getRelelatedSearchOptions(request.options.host,function(options){

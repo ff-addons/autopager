@@ -401,25 +401,6 @@ var autopagerConfig =
     {
     autoSites : null,
     autopagerDomParser : autopagerBwUtil.newDOMParser(),
-    openSetting : function(url,obj) {
-        var settingUrl = "chrome://autopager/content/autopager.xul";
-        if (!autopagerBwUtil.isMobileVersion())
-        {
-            window.autopagerSelectUrl=url;
-            window.autopagerOpenerObj = obj;
-            var win = window.open(settingUrl, "autopager",
-            "chrome,resizable,centerscreen");
-            win.focus();
-        }else
-        {
-            AutoPagerNS.window.location.href=settingUrl;
-            if (typeof Browser!="undefined" && Browser._browserView)
-            {
-                var bv = Browser._browserView
-                bv.setZoomLevel(0.5);
-            }
-        }
-    },
     saveConfirmToFile : function(sites,saveFile) {
         try{
             var doc = document.implementation.createDocument("", "autopager", null);
@@ -608,8 +589,10 @@ var autopagerConfig =
         newSite.published = site.published;
         newSite.quickLoad  = site.quickLoad;
         newSite.fixOverflow  = site.fixOverflow;
-        newSite.createdByYou  = site.createdByYou;
-        newSite.changedByYou  = site.changedByYou;
+        if (site.createdByYou)
+            newSite.createdByYou  = site.createdByYou;
+        if (site.changedByYou)
+            newSite.changedByYou  = site.changedByYou;
         newSite.owner  = site.owner;
         newSite.contentXPath = [];
         if (site.contentXPath)
@@ -872,7 +855,7 @@ var autopagerConfig =
             var configContents =  str;
             if (configContents.substr(0,1)!="[")
                 configContents = "<root>" + str + "</root>";
-            sites =  autopagerConfig.loadConfigFromStr(configContents);
+            var sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,silient,callback);
         }catch(e)
         {
@@ -921,7 +904,7 @@ var autopagerConfig =
             if (str) str       = str.value.QueryInterface(Components.interfaces.nsISupportsString);
             if (str) configContents = str.data.substring(0, strLength.value / 2);
 
-            sites =  autopagerConfig.loadConfigFromStr(configContents);
+            var sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,false);
         }catch(e)
         {
@@ -942,7 +925,7 @@ var autopagerConfig =
                 return;
             }
             var configContents = autopagerConfig.autopagerGetContents(fileURI);
-            sites =  autopagerConfig.loadConfigFromStr(configContents);
+            var sites =  autopagerConfig.loadConfigFromStr(configContents);
             autopagerConfig.mergeSetting(sites,false);
         }catch(e)
         {
@@ -1213,8 +1196,10 @@ var autopagerConfig =
             site.quickLoad = quickLoad;
             site.fixOverflow = fixOverflow;
             site.isRegex = isRegex;
-            site.createdByYou = createdByYou;
-            site.changedByYou = changedByYou;
+            if (createdByYou)
+                site.createdByYou = createdByYou;
+            if (changedByYou)
+                site.changedByYou = changedByYou;
 
             if (site.guid.length == 0 && site.createdByYou)
                 site.guid = autopagerConfig.generateGuid();
@@ -1524,130 +1509,3 @@ AutoPagerNS.util = AutoPagerNS.extend (AutoPagerNS.namespace("util"),
     }
     );
         
-/*
-  sanitize privte data by clear the file site-confirm.xml
- */
-var autopagerSanitizer = {
-    addSanitizeItem: function ()
-    {
-        window.removeEventListener('load', autopagerSanitizer.addSanitizeItem, true);
-        if (typeof Sanitizer != 'function')
-            return;
-        // Sanitizer will execute this
-        Sanitizer.prototype.items['extensions-autopager'] = {
-            clear : function() {
-                try {
-                    autopagerSanitizer.sanitize();
-                } catch (ex) {
-                    try {Components.utils.reportError(ex);} catch(ex) {}
-                }
-            },
-            canClear :  function() {
-                return true;
-            }
-        }
-    },
-
-    addMenuItem: function ()
-    {
-        var prefs = document.getElementsByTagName('preferences')[0];
-        var firstCheckbox = document.getElementsByTagName('checkbox')[0];
-        if (prefs && firstCheckbox) // if this isn't true we are lost :)
-        {
-            var pref = document.createElement('preference');
-            pref.setAttribute('id', 'privacy.item.extensions-autopager');
-            pref.setAttribute('name', 'privacy.item.extensions-autopager');
-            pref.setAttribute('type', 'bool');
-            prefs.appendChild(pref);
-
-            var check = document.createElement('checkbox');
-            check.setAttribute('label', autopagerSanitize.label);
-            check.setAttribute('accesskey', autopagerSanitize.accesskey);
-            check.setAttribute('preference', 'privacy.item.extensions-autopager');
-            check.setAttribute('oncommand', 'autopagerSanitizer.confirm(this);');
-            firstCheckbox.parentNode.insertBefore(check, firstCheckbox);
-
-            if (typeof(gSanitizePromptDialog) == 'object')
-            {
-                pref.setAttribute('readonly', 'true');
-                check.setAttribute('onsyncfrompreference', 'return gSanitizePromptDialog.onReadGeneric();');
-            }
-        }
-    },
-
-    confirm: function (aCheckbox)
-    {
-        if (!aCheckbox.checked)
-            return;
-
-        var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
-        .getService(Components.interfaces.nsIPromptService);
-
-        var title = "AutoPager - " + document.title;
-        var msg = autopagerSanitize.confirm;
-        var buttonPressed = promptService.confirmEx(null,
-        title,
-        msg,
-        (promptService.BUTTON_TITLE_YES * promptService.BUTTON_POS_0)
-            + (promptService.BUTTON_TITLE_NO * promptService.BUTTON_POS_1),
-        null, null, null, null, {});
-        if (buttonPressed == 1)
-            aCheckbox.checked = false;
-    },
-
-    isSanitizeAPwithoutPrompet: function ()
-    {
-        var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-        .getService(Components.interfaces.nsIPrefBranch);
-
-        try {
-            var promptOnSanitize = prefService.getBoolPref("privacy.sanitize.promptOnSanitize");
-        } catch (e) {promptOnSanitize = true;}
-
-        // if promptOnSanitize is true we call autopagerSanitizer.sanitize from Firefox Sanitizer
-        if (promptOnSanitize)
-            return false;
-
-        try {
-            var sanitizeAutopager = prefService.getBoolPref("privacy.item.extensions-autopager");
-        } catch (e) {sanitizeAutopager = false;}
-
-        if (!sanitizeAutopager)
-            return false;
-
-        return true;
-    },
-
-    tryToSanitize: function ()
-    {
-        if (this.isSanitizeAPwithoutPrompet()) {
-            this.sanitize();
-            return true;
-        }
-
-        return false;
-    },
-
-    sanitize: function AP_SN_sanitize()
-    {
-        AutoPagerNS.UpdateSites.AutopagerCOMP.setSiteConfirms(new Array());
-        autopagerConfig.saveConfirm(new Array());
-        //autopagerPref.resetPref("noprompt")
-    },
-    onWindowClose : function()
-    {
-        try{
-            window.removeEventListener("unload", autopagerSanitizer.onWindowClose, false);
-            if (autopagerUtils.isLastWindow())
-            {
-                var prefService = Components.classes["@mozilla.org/preferences-service;1"]
-                .getService(Components.interfaces.nsIPrefBranch);
-                if (prefService.getBoolPref("privacy.sanitize.sanitizeOnShutdown"))
-                    autopagerSanitizer.tryToSanitize();
-            }
-        }catch(e)
-        {
-            autopagerBwUtil.consoleError(e);
-        }
-    }
-}

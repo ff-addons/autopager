@@ -126,7 +126,7 @@ autopagerSelector.start = function(browser) {
 		this.viewSourceURL = null;
 		for (var i = 0; i < urls.length && !this.viewSourceURL; i++) {
 			var request = new XMLHttpRequest();
-			request.open("GET", urls[i], false);
+			request.open("GET", urls[i], urls[i].indexOf("chrome")==0);//local synchronous request
 			try {
 				request.send(null);
 				this.viewSourceURL = urls[i];

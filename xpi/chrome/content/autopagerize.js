@@ -61,7 +61,7 @@ var AutoPagerize= {
 //            else if (site["desc"])
 //                newSite.desc = site["desc"];
 //            
-            newSite.oldSite = null;
+//            newSite.oldSite = null;
             sites.push(newSite);
 	}
         

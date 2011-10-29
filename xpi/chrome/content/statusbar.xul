@@ -31,7 +31,7 @@
     <script type="text/javascript" src="chrome://autopager/content/autopager-end.js"></script>
 
     <window id="main-window">
-        <splitter id="autopager-split-splitter" orient="vertical" collapsed="false" flex="0">
+        <splitter id="autopager-split-splitter" orient="vertical" collapsed="true" flex="0">
             <spring flex="1"/>
             <grippy/>
             <spring flex="1"/>
@@ -44,7 +44,7 @@
         </vbox>
         <popupset id="autopager-popupset"/>
     </window>
-
+    
     <statusbar id="status-bar">
         <tooltip id="autopager_tip" orient="vertical" style="background-color: #33DD00;">
             <label value="&autopager.label.value;"></label>
@@ -82,7 +82,7 @@
         </statusbarpanel>
         <!-- <progressmeter id="apLoading" mode="undetermined"/> -->
     </statusbar>
-
+    
     <!-- Firefox page context menu -->
     <popup id="contentAreaContextMenu">
         <menuseparator id="autopager-context-separator1"/>
@@ -163,7 +163,7 @@
             <menuitem
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="autopagerMain.openSettingForDoc(content.document);"
+                    oncommand="autopagerBwUtil.openSettingForDoc(content.document);"
                 />
             <menuitem
                     label="&autopager.status.sitewizard;"
@@ -187,7 +187,7 @@
                     id="autopager-setting"
                     label="&autopager.status.setting;"
                     tooltiptext="&autopager.status.settingTip;"
-                    oncommand="autopagerMain.openSettingForDoc(content.document);"
+                    oncommand="autopagerBwUtil.openSettingForDoc(content.document);"
                 />
             <menuitem
                     label="&autopager.status.update;"
@@ -385,7 +385,7 @@
                                   oncommand="autopagerMain.showTutorials()"
                         />
                     <menuitem id="autopager-showhelp" label="&statusbar.menuitem.autopager-showhelp.label;" tooltiptext="&statusbar.menuitem.autopager-showhelp.tooltiptext;"
-                                  oncommand="autopagerMain.showHelp()"
+                                  oncommand="autopagerUtils.showHelp()"
                         />
                     <menuseparator class="autopager-sep-global"/>
                     <menuitem id="autopager-showrules" label="&statusbar.menuitem.autopager-showrules.label;" tooltiptext="&statusbar.menuitem.autopager-showrules.tooltiptext;"
@@ -433,7 +433,8 @@
             tooltiptext="&autopager.tooltip;"
             oncontextmenu="event.target.open = true;event.preventDefault();"
             context="autopager-toolbar-popup"
-            oncommand="if (event.target == this) autopagerMain.onToolbarClick();">
+            oncommand="if (event.target == this) autopagerMain.onToolbarClick(event);"
+            onclick="if (event.button==1){autopagerMain.onEnable();}/*Make middle mouse click on the AP's icon to switch it off/on*/">
             <menupopup id="autopager-toolbar-popup"  onpopupshowing="autopagerMain.FillPopup(event.target,'tb')">
             </menupopup>
         </toolbarbutton>

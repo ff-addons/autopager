@@ -1,10 +1,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-.autopager-status
-{
-  list-style-image: url("chrome://autopager/skin/autopager.png");    
-}
-.autopager-status[apstatus='ap-enabled']
+.autopager-status,.autopager-status[apstatus='ap-enabled']
 {
   list-style-image: url("chrome://autopager/skin/autopager.png");    
 }
@@ -20,8 +16,7 @@
 {
   list-style-image: url("chrome://autopager/skin/autopager.lite.png");    
 }
-
-toolbar[iconsize="small"] .autopager-status[apstatus='ap-enabled'] {
+toolbar[iconsize="small"] .autopager-status,toolbar[iconsize="small"] .autopager-status[apstatus='ap-enabled'] {
   list-style-image: url("chrome://autopager/skin/autopager-small.on.png");
 }
 toolbar[iconsize="small"] .autopager-status[apstatus='ap-disabled'] {

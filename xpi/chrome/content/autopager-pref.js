@@ -5,8 +5,6 @@
 var autopagerPref =
 {
     autopagerPrefs : null,
-        
-    unicodeConverter: null,
     getAutopagerPrefs : function () {
         if (this.autopagerPrefs == null && (typeof Components == 'object')) {
             this.autopagerPrefs = Components.classes["@mozilla.org/preferences-service;1"].
@@ -29,23 +27,31 @@ var autopagerPref =
         }
     },
     init : function()
-    {
-        this.unicodeConverter = Components
-        .classes["@mozilla.org/intl/scriptableunicodeconverter"]
-        .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-        this.unicodeConverter.charset = "utf-8";  
+    {        
     },
+    getUnicodeConverter : function()
+    {
+        if (!this.unicodeConverter)
+        {
+            this.unicodeConverter = Components
+                .classes["@mozilla.org/intl/scriptableunicodeconverter"]
+                .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+            this.unicodeConverter.charset = "utf-8";  
+        }
+        return this.unicodeConverter;
+    }
+    ,
     loadUTF8Pref : function(name) {
         var str = this.loadPref(name);
         try{
-            return this.unicodeConverter.ConvertToUnicode(str);
+            return this.getUnicodeConverter().ConvertToUnicode(str);
         }catch(e) {
             return str;
         }	  	
     },
     saveUTF8Pref : function(name,value) {
         try{
-            this.savePref(name,this.unicodeConverter.ConvertFromUnicode(value));
+            this.savePref(name,this.getUnicodeConverter().ConvertFromUnicode(value));
         }catch(e) {
             this.savePref(name,value);
         }	  	
@@ -239,4 +245,3 @@ var autopagerPref =
         return (k.indexOf("default-of-")==-1 && k.indexOf("host.")==-1 && k.indexOf("config.")==-1)
     }    
 }
-//autopagerPref.init();

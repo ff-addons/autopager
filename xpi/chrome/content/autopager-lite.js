@@ -199,6 +199,12 @@ var autopagerLite =
         {
             return;
         }
+        var now = new Date();
+        
+        if (this.promptAutoPagerModetime && !(this.promptAutoPagerModetime && now.getTime()-this.promptAutoPagerModetime.getTime()<(1000 * 60 * 2) ))
+            return
+        this.promptAutoPagerModetime = now.getTime();
+        
         var message = autopagerUtils.autopagerGetString("autopager-mode");
         var id = "autopager-mode";
         var buttons = [{
@@ -269,6 +275,15 @@ var autopagerLite =
         if (doc && doc.documentElement)
         {
             return doc.documentElement.getAttribute("autopagerMatchedRules")
+        }
+        return 0;
+    },
+    clearMatchedRules : function(doc)
+    {
+        if (doc && doc.documentElement)
+        {
+            doc.documentElement.removeAttribute("autopagerMatchedRules");
+            autopagerLite.setStatus(doc,0,true);
         }
         return 0;
     },

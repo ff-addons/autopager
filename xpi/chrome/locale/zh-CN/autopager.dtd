@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "启用智能翻页">
 <!ENTITY setting.label.smartlinks "仅当匹配不多于:">
 <!ENTITY setting.label.smartlinksEnd "链接时才启用翻页。">
+<!ENTITY setting.label.smartmatch "完全匹配">
 <!ENTITY setting.label.smarttext "寻找下一链接搜索的字符串/控件编号/Html类/图片链接(用&apos;|&apos;分割):">
 <!ENTITY setting.label.timeout "载入超时(秒):">
 <!ENTITY setting.label.update "自动更新">

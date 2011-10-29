@@ -119,6 +119,7 @@ autopagerTreeView.prototype = {
       var parent = item._parentItem;
       if (!parent)
         throw 0x80004005; // Components.results.NS_ERROR_FAILURE;
+      var tmp;
       for (var i = 0; (tmp = parent._childItems[i]) != item; ++i)
         if (tmp._open)
           index += tmp._subtreeItems.length;
@@ -339,7 +340,7 @@ autopagerTreeView.prototype = {
   _rowCount: -1
 };
 
-function SitesItem(parent, sites) {
+function autopagerSitesItem(parent, sites) {
   this.updateSite = sites.updateSite;
   this.sites = sites
   this.urlPatternCol = sites.updateSite.filename;
@@ -347,18 +348,18 @@ function SitesItem(parent, sites) {
   this._subtreeItems = new Array();
   parent.quickAppendItem(this);
 }
-SitesItem.prototype = new autopagerTreeView();
+autopagerSitesItem.prototype = new autopagerTreeView();
 
-function SiteItem(parent, site) {
+function autopagerSiteItem(parent, site) {
   this.site = site;
   this.urlPatternCol = site.urlPattern;
   this.descCol = site.desc;
   this._subtreeItems = new Array();
   parent.quickAppendItem(this);
 }
-SiteItem.prototype = new autopagerTreeView();
+autopagerSiteItem.prototype = new autopagerTreeView();
 
-function getLevels(allSites,firstItem,filter,select)
+function getAutoPagerTree(allSites,firstItem,filter,select)
 {
 
     var levels = [new autopagerTreeView()];
@@ -375,7 +376,7 @@ function getLevels(allSites,firstItem,filter,select)
         else
             sites = allSites[key];
 
-        levels[k] = new SitesItem(levels[parent], sites);
+        levels[k] = new autopagerSitesItem(levels[parent], sites);
         
         var siteIndex = levels[k];
         k++;
@@ -386,7 +387,7 @@ function getLevels(allSites,firstItem,filter,select)
                     ||  ( autopagerUtils.getRegExp(site).test(filter))               
                     ))
             {
-                levels[k] = new SiteItem(siteIndex, site)
+                levels[k] = new autopagerSiteItem(siteIndex, site)
                 if (!select || select == "" ||( site.urlPattern.toLowerCase().indexOf(select) != -1
                     ||  (site.desc != null && site.desc.toLowerCase().indexOf(select) != -1)
                     ||  ( autopagerUtils.getRegExp(site).test(select))               

@@ -3,6 +3,8 @@ pref("extensions.autopager.debug", false);
 pref("extensions.autopager.showpagehold", false);
 pref("extensions.autopager.myname", "");
 pref("extensions.autopager.smartenable", false);
+pref("extensions.autopager.smartexactlymatch", true);
+pref("extensions.autopager.smartmaxsize", "2");
 pref("extensions.autopager.smarttext", "next|>|下一页|次を表示");
 //refer to http://www.teesoft.info/phpbb/viewtopic.php?t=330 fro "NEXT" in Different Languages
 pref("extensions.autopager.discoverytext", "navbar|right_arrow|pagN|page|pages|paging|下页|次页|Volgende|Volg|Verder|Напред|Следва|Næste|Nächste|Naechste|Weiter|Vorwärts|Vorwaerts|Volgende|Continue|Onward|Venonta|Seuraava|Suivant|Prochaine|Επόμενη|Næst|Successive|Successiva|Successivo|Prossima|Prossime|Prossimo|Altra|Altro|次へ|다음|Neste|Dalej|Następna|Następne|Następny|Więcej|Próximo|Înainte|Înaintare|Următor|Următoare|След|Следующая|Siguiente|Próxima|Próximos|Nästa|Sonraki|Devam|İlerle");
@@ -19,6 +21,7 @@ pref("extensions.autopager.optionstyle", "line-height:normal;width:200px;positio
 
 pref("extensions.autopager.pagebreak", "clear:both; line-height:20px; background:#E6E6E6; text-align:center;margin-top:20px;margin-bottom:20px;");
 pref("extensions.autopager.timeout", "120");
+pref("extensions.autopager.lazyload", "1000");
 pref("extensions.autopager.update", "48");
 pref("extensions.autopager.settingupdatedate", "");
 pref("extensions.autopager.noprompt", false);
@@ -63,3 +66,4 @@ pref("extensions.autopager.show-nav-immedialate-load",true);
 pref("extensions.autopager.related-search-discover-url","http://api.search.live.net/json.aspx?Appid=41CC52599D6F30EE0E2C7D7F1C4DDCB97F98992B&query={query}&Sources=RelatedSearch");
 pref("extensions.autopager.related-search-prompted",false);
 pref("extensions.autopager.related-search-enabled",false);
+pref("extensions.autopager.show-rate",true);

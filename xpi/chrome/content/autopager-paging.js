@@ -45,6 +45,21 @@ var AutoPagring = function (site,doc)
     AutoPagerNS.browser.addEventListener("mousedown", this.wheelClickMonitor, true)
     AutoPagerNS.browser.addEventListener("popuphidden", this.autoScrollingMonitor, true)
 
+    function isNumberKeyCode(keyCode)
+    {
+        return (keyCode>=48 &&keyCode<=57) || (keyCode>=96 &&keyCode<=105);
+    }
+    
+    this.keyupMonitor = function(e){
+        if (e.ctrlKey && e.altKey && e.keyCode>=48 &&e.keyCode<=57){
+            var pages = e.keyCode>57 ? e.keyCode - 96 : e.keyCode - 48;
+            if (pages==0)
+                pages = 10;
+            Me.loadPages(e.target.ownerDocument,pages)
+        }
+    } 
+    doc.addEventListener("keyup", this.keyupMonitor, false)
+    
     if (this.site.alertsHash)
     {
         var host = doc.location.host
@@ -215,7 +230,7 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
                         var scrollContainer = null;
                         if (this.site.containerXPath)
                         {
-                            containerXPath = this.site.containerXPath;
+                            var containerXPath = this.site.containerXPath;
                             var autopagerContainer = null;
                             if (containerXPath != "")
                             {
@@ -467,8 +482,8 @@ AutoPagring.prototype.isFullLink = function(url) {
 }
 AutoPagring.prototype.isRelativeLink = function(url) {
     var fullPath = /^https?\:\/\//;
-    var jsPath = /^[ ]*javascript/;
-    return url.constructor == String && !fullPath.test(url.toLowerCase())&& !jsPath.test(url.toLowerCase());
+    var jsOrAjaxPath = /^[ ]*javascript|^\#[0-9a-zA-Z]*/;
+    return url.constructor == String && !fullPath.test(url.toLowerCase())&& !jsOrAjaxPath.test(url.toLowerCase());
 }
 AutoPagring.prototype.isJavascriptLink = function(url) {
     var reg = /^[ ]*javascript/;
@@ -546,7 +561,7 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
                         var scrollContainer = null;
                         if (paging.site.containerXPath)
                         {
-                            autopagerContainer = autopagerMain.findNodeInDoc(
+                            var autopagerContainer = autopagerMain.findNodeInDoc(
                                 de,paging.site.containerXPath,false);
                             if (autopagerContainer!=null)
                             {
@@ -1297,7 +1312,7 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
 			var scrollContainer = null;
 			if (this.site.containerXPath)
 			{
-					autopagerContainer = autopagerMain.findNodeInDoc(
+					var autopagerContainer = autopagerMain.findNodeInDoc(
 							de,this.site.containerXPath,false);
 					if (autopagerContainer!=null)
 					{
@@ -1756,6 +1771,11 @@ AutoPagring.prototype.onDocUnLoad = function(doc) {
             AutoPagerNS.browser.removeEventListener("mousedown", this.wheelClickMonitor, true);
             this.wheelEvent = null;
         }
+        if (this.keyupMonitor)
+        {
+            doc.removeEventListener("keyup", this.keyupMonitor, false);
+            this.keyupMonitor = null;
+        }
 
         if (this.intervalId)
             AutoPagerNS.window.clearInterval(this.intervalId)
@@ -1937,7 +1957,7 @@ AutoPagring.prototype.onSplitDocLoadedWithDelay = function(doc,timeout)
                     this.autopagerPagingCount = 0
                 AutoPagerNS.window.setTimeout(function(){
                     topDoc =AutoPagerNS.getContentDocument();
-                    de = topDoc.documentElement;
+                    var de = topDoc.documentElement;
                     doc = topDoc
                     paging.autopagerRunning = false;
                     autopagerMain.onInitDoc(doc,false);
@@ -1983,7 +2003,7 @@ AutoPagring.prototype.getChangeMonitor = function()
     {
         paging.changeMonitor =  function _changeMonitor(evt){
             if (evt && evt.target && evt.target.ownerDocument)
-                autopagerMain.doClearLoadedPages(evt.target.ownerDocument,true)
+                autopagerMain.doClearLoadedPages(evt.target.ownerDocument,true,paging,false)
         }
     }
     return paging.changeMonitor;
@@ -2001,7 +2021,7 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
 //                paging.clearnedTime = null;
                 var n = evt.target;
                 
-                if (n.getAttribute("class")=='autoPagerS')
+                if (!n || !n.getAttribute || n.getAttribute("class")=='autoPagerS')
                     return;
                 var nodes = autopagerMain.findLinkInDoc(evt.target,paging.site.linkXPath,paging.enableJS);
                 var contained = true;
@@ -2019,7 +2039,7 @@ AutoPagring.prototype.getDOMNodeMonitor = function()
                     nodes = autopagerMain.findNodeInDoc(evt.target,paging.site.contentXPath,paging.enableJS);
                     if (nodes.length>0)
                     {
-                        autopagerMain.doClearLoadedPages(evt.target.ownerDocument,true,paging);
+                        autopagerMain.doClearLoadedPages(evt.target.ownerDocument,true,paging,false);
 //                        cleared = true;
 //                        paging.clearnedTime = new Date().getTime()
                     }
@@ -2102,46 +2122,60 @@ AutoPagring.prototype.loadLazyImages = function(node,lazyImgSrc)
 }
 AutoPagring.prototype.onBreakClick = function(e)
 {
-    var node = e.target
-    if (node && node.name == "xxAutoPagerimmedialate-load")
+    var Me = this
+    function handler(node)
     {
-        //http://member.teesoft.info/phpbb/viewtopic.php?f=5&t=3596
-        var pages = 3
-        var nodes = autopagerXPath.evaluate(node,"./following-sibling::input[@type='inputbox' and @name='xxAutoPagerimmedialate-load-count']",false);
-        if (nodes && nodes.length>0)
+        if (node && node.name == "xxAutoPagerimmedialate-load")
         {
-            pages = nodes[0].value
-        }
-        if (autopagerPref.loadPref("immedialate-load-count")!=pages)
-            autopagerPref.savePref("immedialate-load-count",pages)
-        this.loadPages(node.ownerDocument,pages)
-    }else if (node && node.name == "xxAlertTest")
-    {
-        AutoPagerNS.browser.open_alert("Test title","test message","http://www.teesoft.info",function(){
-            var callback= function(button){
-                AutoPagerNS.window.alert(button.label)
+            //http://member.teesoft.info/phpbb/viewtopic.php?f=5&t=3596
+            var pages = 3
+            var nodes = autopagerXPath.evaluate(node,"./following-sibling::input[@type='inputbox' and @name='xxAutoPagerimmedialate-load-count']",false);
+            if (nodes && nodes.length>0)
+            {
+                pages = nodes[0].value
             }
-                autopagerUtils.notification("autopager-new-rule","notification message",
-                    [
-                    {
-                        label: "Button1",
-                        accessKey: "accessKey1",
-                        callback: callback
-                    },
-                    {
-                        label: "Button2",
-                        accessKey: "accessKey2",
-                        callback: callback
-                    },
-                    {
-                        label: "Button3",
-                        accessKey: "accessKey3",
-                        callback: callback
-                    }
-                    ]
-                    );
-            //alert("alert test done")
-        })
+            if (autopagerPref.loadPref("immedialate-load-count")!=pages)
+                autopagerPref.savePref("immedialate-load-count",pages)
+            Me.loadPages(node.ownerDocument,pages)
+        }else if (node && node.name == "xxAlertTest")
+        {
+            AutoPagerNS.browser.open_alert("Test title","test message","http://www.teesoft.info",function(){
+                var callback= function(button){
+                    AutoPagerNS.window.alert(button.label)
+                }
+                    autopagerUtils.notification("autopager-new-rule","notification message",
+                        [
+                        {
+                            label: "Button1",
+                            accessKey: "accessKey1",
+                            callback: callback
+                        },
+                        {
+                            label: "Button2",
+                            accessKey: "accessKey2",
+                            callback: callback
+                        },
+                        {
+                            label: "Button3",
+                            accessKey: "accessKey3",
+                            callback: callback
+                        }
+                        ]
+                        );
+                //alert("alert test done")
+            })
+        }else if (node && node.name == "xxAutoPagerRate")
+        {
+            AutoPagerNS.add_tab({url:autopagerPref.loadPref("repository-site") + "view?id=" +Me.site.id + "&s=review"})
+        }
+        else
+            return false;
+        return true;
+    }
+    var node = e.target
+    while(node && !handler(node))
+    {
+        node = node.parentNode;
     }
 }
 AutoPagring.prototype.loadPages = function (doc,pages)
@@ -2248,8 +2282,16 @@ AutoPagring.prototype.getContentBottomMargin = function (doc)
         }
         var sh = (doc && doc.scrollHeight)
                 ? doc.scrollHeight : doc.body.scrollHeight;
-        h = sh - maxH;
-        this.contentBottomMargin = h>0?h:0;        
+        var he = sh - maxH;
+        this.contentBottomMargin = he>0?he:0;        
     }
     return this.contentBottomMargin;
+}
+
+AutoPagring.prototype.getRate = function ()
+{
+    //return Math.random()*5;
+    if (typeof this.site.rate != 'undefined')
+        return this.site.rate;
+    return 0;
 }

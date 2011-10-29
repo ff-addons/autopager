@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Activer la pagination intelligente">
 <!ENTITY setting.label.smartlinks "Suivre le lien quand il n'y a pas plus de">
 <!ENTITY setting.label.smartlinksEnd "liens rassemblés.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Noms (de textes, d'images, de champs ou de classes) déterminant le lien vers la page suivante. Les séparer avec la barre verticale « | » :">
 <!ENTITY setting.label.timeout "Délai de chargement de page (en secondes) :">
 <!ENTITY setting.label.update "Mise à jour">

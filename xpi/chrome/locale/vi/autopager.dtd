@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Bật Lật trang Thông minh">
 <!ENTITY setting.label.smartlinks "Theo liên kết khi không có hơn">
 <!ENTITY setting.label.smartlinksEnd "liên kết đã gặp.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Lớp/ID/Nguồn Hình/Chữ cho Tìm kiếm Liên kết Tiếp theo (tách bởi &apos;|&apos;):">
 <!ENTITY setting.label.timeout "thời gian hết hạn cho việc tải trang (giây):">
 <!ENTITY setting.label.update "Cập nhật">

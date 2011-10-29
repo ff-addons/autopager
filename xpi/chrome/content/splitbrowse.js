@@ -628,6 +628,7 @@ AutoPagerNS.splitpanelProgressListener  = function (listener)
 AutoPagerNS.splitpanelProgressListener.prototype = {
     onStateChange : function(aWebProgress, aRequest, aStateFlags, aStatus)
     {
+//        autopagerBwUtil.consoleError("aStateFlags=" + aStateFlags +  ",aStatus=" + aStatus);
         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
         const nsIChannel = Components.interfaces.nsIChannel;
         if (aStateFlags & nsIWebProgressListener.STATE_START &&
@@ -652,6 +653,7 @@ AutoPagerNS.splitpanelProgressListener.prototype = {
     },
     onStatusChange : function(webProgress, request, status, message)
     {
+//        autopagerBwUtil.consoleError("status=" + status +  ",message=" + message);
         return;
     },
     onLocationChange : function(webProgress, request, location)

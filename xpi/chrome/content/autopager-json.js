@@ -27,7 +27,7 @@ var autopagerJsonSetting= {
                 if (!site.bf || site.bf & browserFlag)
                 {
                     var newSite = autopagerJsonSetting.compactToNormal(site);
-                    newSite.oldSite = null;
+                    //newSite.oldSite = null;
                     sites.push(newSite);
                 }
             }
@@ -111,7 +111,7 @@ var autopagerJsonSetting= {
         if (guids.length>0)
         {
             try{
-                xmlhttp=autopagerUtils.newXMLHttpRequest()
+                var xmlhttp=autopagerUtils.newXMLHttpRequest()
                 xmlhttp.overrideMimeType("application/json");
                 xmlhttp.onreadystatechange = function (aEvt) {
                     if(xmlhttp.readyState == 4) {
@@ -174,8 +174,8 @@ var autopagerJsonSetting= {
                     }
                 }
                 if (!merged){
-                    for(i=o+1;i<normalSites.length;i++){
-                        site = normalSites[i]
+                    for(var i=o+1;i<normalSites.length;i++){
+                        var site = normalSites[i]
                         if (site.guid == override.g || (override.k && site.id == override.k))
                         {
                             autopagerJsonSetting.mergeOverrideToNormal(site,override,noOldRefer);
@@ -248,18 +248,16 @@ var autopagerJsonSetting= {
             if (typeof site.m != 'undefined')
                 newSite.margin  = site.m;
 
-            if (typeof site.q != 'undefined')
+            if (typeof site.q != 'undefined' && site.q!=1 && site.q!=true)
                 newSite.quickLoad  = site.q;
-            else
-                newSite.quickLoad = false;
 
             if (typeof site.f != 'undefined')
                 newSite.fixOverflow  = site.f;
 
-            if (typeof site.c != 'undefined')
+            if (site.c)
                 newSite.createdByYou  = site.c;
 
-            if (typeof site.u != 'undefined')
+            if (site.y)
                 newSite.changedByYou  = site.y;
 
             if (typeof site.o != 'undefined')
@@ -310,6 +308,9 @@ var autopagerJsonSetting= {
             if (typeof site.ah != 'undefined')
                 newSite.alertsHash  = site.ah;
 
+            if (typeof site.rt != 'undefined')
+                newSite.rate  = site.rt;
+            
             return newSite;
     },
     mergeOverrideToNormal : function(normalSite,site,noOldRefer)
@@ -359,7 +360,7 @@ var autopagerJsonSetting= {
             if (typeof site.m != 'undefined')
                 normalSite.margin  = site.m;
 
-            if (typeof site.q != 'undefined')
+            if (typeof site.q != 'undefined' && site.q!=1 && site.q!=true)
                 normalSite.quickLoad  = site.q;
 
             if (typeof site.f != 'undefined')
@@ -409,6 +410,8 @@ var autopagerJsonSetting= {
                 normalSite.keywordXPath  = site.kx;
             if (typeof site.ah != 'undefined')
                 normalSite.alertsHash  = site.ah;
+            if (typeof site.rt != 'undefined')
+                normalSite.rate  = site.rt;
     },
 
     arrayEqual : function (a1, a2)
@@ -473,17 +476,16 @@ var autopagerJsonSetting= {
             if (normal.desc != oldSite.desc)
                 if (typeof normal.desc != 'undefined' && normal.desc!=null && normal.desc.length>0)
                     override.d = normal.desc;
-
-            if (normal.testLink != oldSite.testLink)
-            if (normal.testLink.length>0)
+            
+            if (normal.testLink && normal.testLink != oldSite.testLink && normal.testLink.length>0)
                 override.t = normal.testLink[0];
 
             if (normal.containerXPath != oldSite.containerXPath)
-            if (normal.containerXPath!=null && normal.containerXPath.length>0)
+            if (normal.containerXPath && normal.containerXPath.length>0)
                 override.h = normal.containerXPath;
 
             if (normal.monitorXPath != oldSite.monitorXPath)
-            if (normal.monitorXPath!=null && normal.monitorXPath.length>0)
+            if (normal.monitorXPath && normal.monitorXPath.length>0)
                 override.b = normal.monitorXPath;
 
             if (!autopagerJsonSetting.arrayEqual(normal.removeXPath,oldSite.removeXPath))
@@ -507,7 +509,7 @@ var autopagerJsonSetting= {
                  override.i = normal.minipages;
             if (normal.delaymsecs != oldSite.delaymsecs)
                 override.s = normal.delaymsecs;
-
+            
             if (typeof normal.id != 'undefined')
                 override.k = normal.id;
 
@@ -535,7 +537,7 @@ var autopagerJsonSetting= {
 
             if (normal.enableJS)
                 site.j = normal.enableJS;
-            if (normal.quickLoad)
+            if (!normal.quickLoad)
                 site.q = normal.quickLoad;
             if (normal.fixOverflow)
                 site.f = normal.fixOverflow;
@@ -594,7 +596,8 @@ var autopagerJsonSetting= {
 
             if (typeof normal.alertsHash != 'undefined')
                 site.ah = normal.alertsHash;
-
+            if (typeof normal.rate != 'undefined')
+                site.rt = normal.rate;
 
             return site;
     },

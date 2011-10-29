@@ -158,6 +158,7 @@
 <!ENTITY setting.label.smartenable "Intelligenten Modus aktivieren">
 <!ENTITY setting.label.smartlinks "Diesen Link verwenden, wenn nicht mehr als">
 <!ENTITY setting.label.smartlinksEnd "zutreffende Links gefunden werden.">
+<!ENTITY setting.label.smartmatch "Exactly match only">
 <!ENTITY setting.label.smarttext "Text des Links zur nächsten Seite/Pfad der verlinkenden Grafik/ID oder CSS-Klasse des Links (getrennt durch '|'):">
 <!ENTITY setting.label.timeout "Maximale Wartezeit beim Laden einer Seite (Sekunden):">
 <!ENTITY setting.label.update "Aktualisierung">

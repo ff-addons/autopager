@@ -78,7 +78,11 @@
                 <setting type="button">
                     <button label="&autopager.status.update;"
                         oncommand="AutoPagerNS.UpdateSites.updateOnline(true);AutoPagerPopup.hide();BrowserUI.hidePanel();"/>
-                </setting>                
+                </setting> 
+                <setting type="button">
+                    <button label="XPather Tester"
+                        oncommand="AutoPagerPopup.hide();BrowserUI.hidePanel();autopagerServer.autopager_open_xpather();"/>
+                </setting>                                 
             </vbox>
         </arrowbox>        
  </stack>
