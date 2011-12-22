@@ -635,6 +635,6 @@ var autopagerJsonSetting= {
             autopagerPref.savePref("keywordXPath","");
 
         if (typeof site.ss != 'undefined')
-            autopagerPref.savePref("searches",site.sn);
+            autopagerPref.savePref("searchs",autopagerBwUtil.encodeJSON(site.ss));
     }
 }
