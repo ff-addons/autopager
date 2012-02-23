@@ -29,6 +29,8 @@ var autopagerRelated =
         var discoverUrl = options.discoverUrl
         if (ut.d)
             discoverUrl = ut.d
+        if (!discoverUrl)
+            return;
         var url = discoverUrl.replace(/{query}/g,options.searchQuery.replace(/ /g, '+'))
 
         var xhr = new window.XMLHttpRequest();

@@ -45,9 +45,8 @@ if (autopagerPref.loadBoolPref("show-help"))
 var btnAddRemovePath, btnEditRemovePath, btnDeleteRemovePath, lstRemoveXPath
 
 var settingDeck;
-window.addEventListener("load", function(ev) {
-    var self = arguments.callee;
-    window.removeEventListener("load",self,false);
+var winLoad =  function(ev) {
+    window.removeEventListener("load",winLoad,false);
         
     loadControls();
     {
@@ -79,7 +78,8 @@ window.addEventListener("load", function(ev) {
         },20);
             
     }
-}, false);
+}
+window.addEventListener("load",winLoad, false);
 function getMatchedIndex(url)
 {
     var index = -1;
@@ -970,6 +970,7 @@ function doUdateDetails(event) {
             else
             {
                 description.value = "loading"
+                var id=selectedSite.id
                 try{
                     var xmlhttp
                     xmlhttp=autopagerUtils.newXMLHttpRequest()
@@ -979,7 +980,7 @@ function doUdateDetails(event) {
                             if(xmlhttp.status == 200) {
                                 var value = xmlhttp.responseText
                                 description.value = value
-                                descriptions[selectedSite.id] = value
+                                descriptions[id] = value
                             }
                         }
                     }

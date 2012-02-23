@@ -244,8 +244,8 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
         {
             setTimeout(function(){
             var iframe = document.getElementById( "resultsFrame");
-            iframe.addEventListener("DOMContentLoaded", function() {
-                var self = arguments.callee;
+            var domLoad =  function() {
+                var self = domLoad;
                 var iframe = document.getElementById( "resultsFrame");
                 iframe.removeEventListener("DOMContentLoaded",self,false);
                 autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
@@ -255,12 +255,12 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
                 var b=autopagerSidebar.addNode(div,"b");
                 autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
             }
-            , false);
+            iframe.addEventListener("DOMContentLoaded",domLoad, false);
             autopagerUtils.cloneBrowser(iframe, browser);
 
             iframe = document.getElementById( "resultsFrame2");
-            iframe.addEventListener("DOMContentLoaded", function() {
-                var self = arguments.callee;
+            var domLoad2 = function() {
+                var self = domLoad2;
                 var iframe = document.getElementById( "resultsFrame2");
                 iframe.removeEventListener("DOMContentLoaded",self,false);
                 autopagerSidebar.clearNoneLink(iframe.contentDocument.documentElement);
@@ -270,7 +270,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
                 var b=autopagerSidebar.addNode(div,"b");
                 autopagerSidebar.addTextNode(b,autopagerSidebar.getString("testprompt"));
             }
-            , false);
+            iframe.addEventListener("DOMContentLoaded",domLoad2, false);
             autopagerUtils.cloneBrowser(iframe, browser);
             },1000);
         }
@@ -466,7 +466,7 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
     }
     ,countProperties:function(obj) {
         var result = 0
-        for (p in obj) {
+        for (var p in obj) {
             result++
         }
         return result

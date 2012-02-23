@@ -416,9 +416,9 @@ AutoPagerNS.options = AutoPagerNS.extend (AutoPagerNS.namespace("options"),
     post_init : function()
     {
 //        autopagerBwUtil.consoleLog("content options post_init")
-        var contentDOmload = function(ev) {            
+        var contentDomload = function(ev) {            
 //            autopagerBwUtil.consoleLog("content DOMContentLoaded options")
-            AutoPagerNS.browser.removeEventListener("DOMContentLoaded", arguments.callee, false);
+            AutoPagerNS.browser.removeEventListener("DOMContentLoaded", contentDomload, false);
                 
             AutoPagerNS.message.call_function("autopager_get_addon_urlprefix",{},function(options){
                 try
@@ -439,6 +439,6 @@ AutoPagerNS.options = AutoPagerNS.extend (AutoPagerNS.namespace("options"),
                 }catch(e){}
             })
         }
-        AutoPagerNS.browser.addEventListener("DOMContentLoaded", contentDOmload, false);
+        AutoPagerNS.browser.addEventListener("DOMContentLoaded", contentDomload, false);
     }
 });

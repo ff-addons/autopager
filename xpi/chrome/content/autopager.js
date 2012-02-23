@@ -132,7 +132,7 @@ onContentLoad : function(event,force) {
     AutoPagerNS.window.setTimeout(function(){
         autopagerMain.doContentLoad(event);
         function firstScroll(e){
-            AutoPagerNS.browser.removeEventListener("scroll", arguments.callee, false);
+            AutoPagerNS.browser.removeEventListener("scroll", firstScroll, false);
             //try on first scroll
             //alert(autopagerPref.loadPref("lazyload"))
             AutoPagerNS.window.setTimeout(function(){
@@ -141,7 +141,7 @@ onContentLoad : function(event,force) {
         }
         AutoPagerNS.browser.addEventListener("scroll",firstScroll,false);
         function firstClick(e){
-            AutoPagerNS.browser.removeEventListener("click", arguments.callee, false);
+            AutoPagerNS.browser.removeEventListener("click", firstClick, false);
             //try on first scroll
             //alert(autopagerPref.loadPref("lazyload"))
             autopagerMain.doContentLoad(e);
@@ -2190,11 +2190,12 @@ showAutoPagerMenu : function(menuid) {
         menuid="autopager-popup";
     var popup = document.getElementById(menuid);
     popup.hidden=false;
-    popup.addEventListener("popuphidden", function(ev) {
+    var popuphidden = function(ev) {
         if(ev.currentTarget != ev.target) return;
-        ev.target.removeEventListener("popuphidden", arguments.callee, false);
+        ev.target.removeEventListener("popuphidden", popuphidden, false);
         ev.target.hidden=true;
-    }, false);    
+    }
+    popup.addEventListener("popuphidden", popuphidden, false);    
     popup.showPopup();
     
 }

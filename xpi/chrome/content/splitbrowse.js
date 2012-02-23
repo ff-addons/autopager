@@ -277,10 +277,11 @@ AutoPagerNS.apSplitbrowse = {
     cloneBrowser: function(targetB, originalB)
     {
         var d = autopagerUtils.serializeUserInput(originalB.contentWindow)
-        targetB.addEventListener('DOMContentLoaded', function() {
-            targetB.removeEventListener('DOMContentLoaded', arguments.callee, false);
+        var domLoad = function() {
+            targetB.removeEventListener('DOMContentLoaded', domLoad, false);
             autopagerUtils.deSerializeUserInput(targetB.contentWindow, d);
-        }, false);
+        }
+        targetB.addEventListener('DOMContentLoaded',domLoad, false);
 
         //        if (AutoPagerNS.apSplitbrowse.cloneWithSessionStore(targetB, originalB))
         //            return;
@@ -397,25 +398,17 @@ AutoPagerNS.apSplitbrowse = {
             splitBrowser.autopagerSplitWinFirstDocloaded = false;
             splitBrowser.loadURI("about:blank",null,null);
                         
-//            if (typeof GM_BrowserUI != "undefined" && typeof GM_BrowserUI.contentLoad == "function")
-//                splitBrowser.addEventListener("DOMContentLoaded", GM_BrowserUI.contentLoad, true);
-
-            //    	if (!browser.getAttribute("flex"))
-            //	    		browser.setAttribute("flex", "1");
-            //this.setVisible(splitBrowser,!this.hidden);
-                   
-//            browser.parentNode.parentNode.addEventListener("DOMNodeRemoved",function(event){
-//                event.target.removeEventListener("DOMNodeRemoved", arguments.callee, false);
-//                AutoPagerNS.apSplitbrowse.onclose(event,sl)
-//            },false);
-              doc.defaultView.addEventListener("beforeunload",function(event){
-                  doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
+              var beforeUnload = function(event){
+                  doc.defaultView.removeEventListener("DOMNodeRemoved", beforeUnload, false);
                   AutoPagerNS.apSplitbrowse.onclose(splitBrowser,sl)
-              },true);
-              doc.defaultView.addEventListener("AutoPagerClean",function(event){
-                  doc.defaultView.removeEventListener("DOMNodeRemoved", arguments.callee, false);
+              }
+              doc.defaultView.addEventListener("beforeunload",beforeUnload,true);
+              
+              var domRemoved = function(event){
+                  doc.defaultView.removeEventListener("DOMNodeRemoved", domRemoved, false);
                   AutoPagerNS.apSplitbrowse.onclose(splitBrowser,sl)
-              },true);        
+              }
+              doc.defaultView.addEventListener("AutoPagerClean",domRemoved,true);        
         }
 
         if (splitBrowser != null)

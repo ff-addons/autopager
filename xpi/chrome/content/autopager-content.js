@@ -165,8 +165,8 @@ AutoPagerNS.browsercontent = AutoPagerNS.extend (AutoPagerNS.namespace("browserc
     post_init : function()
     {
         autopagerPref.init();
-        AutoPagerNS.browser.addEventListener("DOMContentLoaded", function(ev) {
-            AutoPagerNS.browser.removeEventListener("DOMContentLoaded", arguments.callee, false);
+        var domLoad = function(ev) {
+            AutoPagerNS.browser.removeEventListener("DOMContentLoaded", domLoad, false);
             try
             {
                 if (typeof autopagerMain!="undefined")
@@ -176,7 +176,8 @@ AutoPagerNS.browsercontent = AutoPagerNS.extend (AutoPagerNS.namespace("browserc
             }catch(e){
                 autopagerBwUtil.consoleError("DOMContentLoaded with error:" + e)
             }
-        }, false);               
+        }
+        AutoPagerNS.browser.addEventListener("DOMContentLoaded", domLoad, false);               
                         
     }
 })

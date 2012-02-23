@@ -586,10 +586,11 @@ var autopagerBwUtil =
                 }
             }
             container.addEventListener("TabSelect", listner, useCapture);
-            window.addEventListener("unload", function(){
-                window.removeEventListener("unload", arguments.callee, false);
+            var tabUnload = function(){
+                window.removeEventListener("unload", tabUnload, false);
                 container.removeEventListener("TabSelect", listner, useCapture);
-            },false);
+            }
+            window.addEventListener("unload", tabUnload ,false);
         }
     },
     createXpath : function(doc) {

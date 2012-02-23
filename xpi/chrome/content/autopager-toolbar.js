@@ -131,14 +131,15 @@ AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
 {
     post_init : function()
     {
-        AutoPagerNS.browser.addEventListener("load", function(ev) {
-            AutoPagerNS.browser.removeEventListener("load", arguments.callee, false);
+        var domLoad = function(ev) {
+            AutoPagerNS.browser.removeEventListener("load", domLoad, false);
             try
             {
                 setTimeout(autopagerToolbar.autopagerToobarInit, 1000);
             }catch(e){
                 autopagerBwUtil.consoleError("DOMContentLoaded with error:" + e)
             }
-        }, false);    
+        }
+        AutoPagerNS.browser.addEventListener("load", domLoad, false);    
     }
 })

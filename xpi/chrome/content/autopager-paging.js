@@ -405,8 +405,6 @@ AutoPagring.prototype.doScrollWatcher = function(scrollTarget,pageY)
         autopagerBwUtil.consoleError(e);
     }
     this.scrollWatching = false;
-//    var self = arguments.callee;
-//setTimeout(self,400);
 }
 AutoPagring.prototype.loadNextPage = function(doc){
     var nextUrl = this.autopagernextUrl;
@@ -536,10 +534,9 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
             this.autopagerNodeListener = null;
         }
         var paging = this;
-        doc.addEventListener("DOMNodeInserted",function(e)
+        var domInsert = function(e)
             {
-                var self = arguments.callee;
-                paging.autopagerNodeListener = self;
+                paging.autopagerNodeListener = domInsert;
                 var urlNodes = autopagerMain.findLinkInDoc(doc,paging.site.linkXPath,paging.enableJS || paging.inSplitWindow);
                 if (urlNodes != null && urlNodes.length >0)
                 {
@@ -592,7 +589,8 @@ AutoPagring.prototype.processByClickOnly = function(doc,url)
                     }, paging.site.delaymsecs);
                 }
 
-            },false);
+            }
+            doc.addEventListener("DOMNodeInserted",domInsert,false);
         this.autopagerPage++;
         this.autopagerSimulateClick(doc.defaultView, doc,url);
 
@@ -707,7 +705,7 @@ AutoPagring.prototype.processInSplitWinByUrl  = function(doc,url){
 AutoPagring.prototype.lazyLoad = function(doc)
 {
     var paging = this
-    return function (event){
+    var lazyLoadFunc =  function (event){
         try{
             var target = null;
             if (event.target != null)
@@ -728,8 +726,8 @@ AutoPagring.prototype.lazyLoad = function(doc)
                 paging.scrollWindow(doc,newDoc);
                 paging.onStopPaging(doc);
                 try{
-                    frame.removeEventListener("DOMContentLoaded", arguments.callee, false);
-                    frame.removeEventListener("load", arguments.callee, false);
+                    frame.removeEventListener("DOMContentLoaded", lazyLoadFunc, false);
+                    frame.removeEventListener("load", lazyLoadFunc, false);
                 }catch(e){
                     autopagerBwUtil.consoleError(e)
                 }
@@ -738,6 +736,7 @@ AutoPagring.prototype.lazyLoad = function(doc)
             autopagerBwUtil.consoleError(e)
         }
     }
+    return lazyLoadFunc;
 }
 AutoPagring.prototype.loadInFrame = function(doc,url){
     var frame = autopagerMain.getSelectorLoadFrame(doc,url);
@@ -1665,15 +1664,14 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
         listener = this.observeConnection(node.ownerDocument);
     }
     AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
-    var focused = (document && document.commandDispatcher)?
-            document.commandDispatcher.focusedElement : null;
-
+    var focused = (document && document.commandDispatcher && document.commandDispatcher.focusedElement)?  document.commandDispatcher.focusedElement : null;
+    
 
     AutoPagerNS.apSplitbrowse.switchToCollapsed(true);
 
     var canceled = false;
-    var needMouseEvents =  autopagerPref.loadBoolPref("simulateMouseDown") || this.site.ajax || this.site.needMouseDown;
-    if (needMouseEvents)
+    var needMouseDownEvents =  autopagerPref.loadBoolPref("simulateMouseDown") || this.site.ajax || this.site.needMouseDown;
+    if (needMouseDownEvents)
     {
         AutoPagerNS.apSplitbrowse.switchToCollapsed(false);
         canceled = !node.dispatchEvent(mousedown);
@@ -1682,7 +1680,7 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
     canceled = !node.dispatchEvent(click);
     //if the mouse is currently down then the click event may be canceled,
     //let's try it again with simulating mouse down ,click and up
-    if (canceled && !needMouseEvents)
+    if (canceled && !needMouseDownEvents)
     {
         node.dispatchEvent(mousedown);
         //renew the click event
@@ -1692,8 +1690,9 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
         node.dispatchEvent(click);
         node.dispatchEvent(mouseup);
     }
-    if (needMouseEvents)
+    if (needMouseDownEvents)
         canceled = !node.dispatchEvent(mouseup);
+    
     if (focused && focused.focus && focused != document.commandDispatcher.focusedElement
         && focused.ownerDocument && focused.ownerDocument.getBoxObjectFor)
     {
@@ -1705,7 +1704,9 @@ AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
                 || (!(de instanceof HTMLHtmlElement) && (box.x < de.width && box.y < de.height)))
             )
             focused.focus();
-    }
+    }else if (needMouseDownEvents && doc.documentElement && typeof doc.documentElement.focus=="function")
+            doc.documentElement.focus(); //reset the default focus to the document itself to avoid steal focus when simulate mouse down
+
 //    var canceled =false;
 //    node.doCommand();
     if (this.site.ajax)

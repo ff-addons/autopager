@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.7.1.2",
+    version:"0.7.1.4",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -1189,14 +1189,20 @@ delete * 24, for minutes, delete * 60 * 24
         {
             host = hostobj;
         }
-        else if (hostobj && hostobj.location && hostobj.location.host)
-            host = hostobj.location.host;
+        else if (hostobj && hostobj.location && typeof hostobj.location.host != "undefined")
+        {
+            try{
+                host = hostobj.location.host;
+            }catch(e){
+                autopagerBwUtil.consoleError(e)
+            }            
+        }
         else if (hostobj && hostobj.location && hostobj.location.href)
         {
             var uri = autopagerUtils.parseUri(hostobj.location.href);
             host = uri["host"];
         }
-        else if (AutoPagerNS.getContentDocument() && AutoPagerNS.getContentDocument().location && AutoPagerNS.getContentDocument().location.host)
+        else if (AutoPagerNS.getContentDocument() && AutoPagerNS.getContentDocument().location && typeof AutoPagerNS.getContentDocument().location.host!="undefined")
             host = AutoPagerNS.getContentDocument().location.host;
         else if(AutoPagerNS.window && AutoPagerNS.window.location && AutoPagerNS.window.location.host)
         {
