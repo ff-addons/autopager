@@ -197,10 +197,6 @@ var autopagerJsonSetting= {
             return normalSites;
         return newSites.concat(normalSites);
     },
-    trimRegex:/(^\s*)|(\s*$)/,
-    trim : function (str) {
-        return str.replace(this.trimRegex, "");
-    },
     compactToNormal : function(site)
     {
             var newSite = new AutoPagerNS.Site();
@@ -228,7 +224,7 @@ var autopagerJsonSetting= {
                 newSite.contentXPath=[]
                 if (typeof site.x == 'string')
                 {
-                    var x = site.x.replace(this.trimRegex, "")
+                    var x = autopagerUtils.trim(site.x);
                     if (x.length>0)
                         newSite.contentXPath.push(x);
                 }
@@ -339,7 +335,7 @@ var autopagerJsonSetting= {
                 normalSite.contentXPath = [];
                 if (typeof site.x == 'string')
                 {
-                    var x = this.trim(site.x);
+                    var x = autopagerUtils.trim(site.x);
                     if (x.length>0)
                         normalSite.contentXPath.push(x);
                 }

@@ -15,7 +15,7 @@ var autopagerXPath = {
     {
         var url = doc.documentURI;        
         
-        var smarttext = autopagerPref.loadUTF8Pref("smarttext");
+        var smarttext = autopagerUtils.getSmarttext();
         var discoverytext = autopagerPref.loadUTF8Pref("discoverytext");
         
         var body = doc.documentElement.innerHTML
@@ -998,8 +998,20 @@ var autopagerXPath = {
     evaluate : function(node,expr,enableJS,max)
     {
         var doc = (node.ownerDocument == null) ? node : node.ownerDocument;
-        var found = [];
         var aExpr = this.preparePath(doc,expr,enableJS);
+        if(aExpr.match(/^\(auto\-.*\)/)) //"(auto-xxx)[not (@class='autoPagerS')]"
+        {
+            aExpr = expr.substring(1,expr.indexOf(')'))
+        }
+        if(aExpr.match(/^auto\-.*/)) //"auto-xxx"
+        {            
+            var autoNodes = this.evaluateAutoNodes(doc,aExpr.substring(5),{max:max});
+            if (autoNodes && autoNodes.length)
+            {
+                return this.dumpAutoResult(autoNodes,max);
+            }
+        }
+        var found = [];
         var xpe = null;
         try{
             xpe = new XPathEvaluator();
@@ -1057,6 +1069,487 @@ var autopagerXPath = {
             }
         }
         return found;
+    },
+    evaluateAutoNodes : function(doc,func,options)
+    {
+        var found = []
+        var methods = this.getAutoMethods(func);
+        for(var i in methods)
+        {
+            var m = methods[i]
+            var subFound = m.func(doc,func,options,m);
+            if (subFound){
+                for(var k in subFound)
+                {
+                    var f = subFound[k]
+                    found.push(f)
+                }
+            }
+        }
+        return found;
+    },
+    dumpAutoResult: function(autoNodes,max){
+        var found = [];
+        for(var i in autoNodes){
+            var node = autoNodes[i]
+            if (found.length>=max)
+                break;
+            if (found.indexOf(node.node)==-1)
+            {
+                found.push(node.node);
+            }    
+        }
+        return found;
+    },
+    getAutoMethods : function(func)
+    {
+        var ms = [];
+        var allMS = this.getAllAutoMethods()
+        for(var i in allMS)
+        {
+            var m = allMS[i]
+            if (m.name.substring(0,func.length)==func)
+            {
+                ms.push(m);
+            }
+        }
+        return ms;
+    },
+    getAllAutoMethods : function()
+    {
+        if (!this._autoMethods){
+            this._autoMethods = [
+                {name:"nextlink-ids",func:this.findLinksNextWithIDs}
+                ,{name:"nextlink-keywords-rel",func:this.findLinksNextWithKeywords,attrfunc:function(node){return node.getAttribute("rel")}}
+                ,{name:"nextlink-navbar",func:this.findLinksNextInNavbar}
+                ,{name:"nextlink-keywords-class",func:this.findLinksNextWithKeywords,attrfunc:function(node){var v =node.getAttribute("class");if (v) return autopagerUtils.trim(v).split(" ");return null;}}
+                ,{name:"nextlink-keywords-text",func:this.findLinksNextWithKeywords,attrfunc:function(node){return node.textContent;}}
+                ,{name:"nextlink-next2curr",func:this.findLinksNext2curr} //this may introduce issue for example in http://marc.info/?l=php-general&r=2&b=201202&w=2
+                ,{name:"nextlink-neighbour",func:this.findLinksNextNeighbour} //this may introduce issue for example in http://marc.info/?l=php-general&r=2&b=201202&w=2
+                ,{name:"nextlink-javascript-next",func:this.findLinksNextWithJavascriptFunction}
+                ,{name:"rev-nextlink-next2curr",func:this.findLinksNext2currRev}
+                ,{name:"rev-nextlink-neighbour",func:this.findLinksNextNeighbourRev}
+            ]
+        }
+        return this._autoMethods;
+    },
+    getAllEnabledLinks : function (doc){
+        var nodes = doc.getElementsByTagName("A");
+        var enabled = [];
+        for(var i=nodes.length-1;i>=0;i--){
+            var n = nodes[i];
+            if (!n.disabled && (!n.getAttribute("class") || !n.getAttribute("class").match(/disabled/))){
+                enabled.push(n);
+            }
+        }
+        return enabled;
+    },
+    findLinksNext2curr : function (doc,expr,options,ps)
+    {
+        //find links next to current within 50 px
+        var found=[]
+        var nodes = autopagerXPath.getAllEnabledLinks(doc);
+        var url = doc.location.href;
+        var currs = []
+        for(var i=nodes.length-1;i>=0;i--){
+            var n = nodes[i];
+            if (url == n.href){
+                currs.push({node:n,pos:autopagerMain.myGetPos(n)});
+            }
+        }
+        for(var i=nodes.length-1;i>=0;i--){
+            var n = nodes[i];
+            var pos = autopagerMain.myGetPos(n);
+            for(var k in currs){
+                var c = currs[k];
+                var xOffset = pos.x - (c.pos.x + c.node.scrollWidth)
+                //y position similar, x position a little bigger
+                if (xOffset>0 && xOffset<40 && Math.abs(pos.y-c.pos.y)<10){
+                    found.push({func:ps.name,node:n,pos:pos,offset:xOffset})
+                }
+            }            
+        }
+        if (found.length>1)
+        found.sort(function(a,b){
+            return a.offset - b.offset
+        })
+        if(found.length>options.max){
+            found = found.slice(0, options.max-1)
+        }
+        return found;
+    },
+    findLinksNext2currRev : function (doc,expr,options)
+    {
+        //find links next to current within 50 px
+    },    
+    findLinksNextNeighbour : function (doc,expr,options,ps)
+    {
+        //find links with page number next to the current link
+        //for example curr link = http://aaa.com/xxx?page=10, we return the link if it has all others same as current page but has a page=11
+        //or for http://aaa.com/xxx?row=100, find the links with the min row and with all the others the same
+        var found = autopagerXPath.findLinksNextNeighbourImpl(doc,expr,options,ps,{func:function(uri,nodeUri){
+            if (!this.clearedUri){
+                this.clearedUri = autopagerUtils.getPathOfUri(uri)
+                this.miniSameKeyCount = uri["searchParts"].length>0?1:0;
+            }
+            if (this.clearedUri != autopagerUtils.getPathOfUri(nodeUri))
+                return false;
+            var diffCount =0;
+            var sameKeyCount = 0;
+            for(var k in uri["searchParts"]){
+                if (typeof nodeUri["searchParts"][k]!="undefined"){
+                    sameKeyCount ++;
+                    if (nodeUri["searchParts"][k]!=uri["searchParts"][k])
+                        diffCount++;
+                }
+            }
+            return sameKeyCount > this.miniSameKeyCount && diffCount<=1;
+        }})
+        if (!found || found.length==0){
+            found = autopagerXPath.findLinksNextNeighbourImpl(doc,expr,options,ps,{func:function(uri,nodeUri){
+                if (!this.clearedUri){
+                    this.clearedUri = autopagerUtils.doClearedUrl(uri)
+                }
+                return this.clearedUri == autopagerUtils.doClearedUrl(nodeUri);
+            }})  
+        }
+        if (!found || found.length==0){
+            found = autopagerXPath.findLinksNextNeighbourImpl(doc,expr,options,ps,{func:function(uri,nodeUri){
+                if (!this.clearedUri){
+                    this.clearedUri = autopagerUtils.getPathOfUri(uri)
+                }
+                if (this.clearedUri != autopagerUtils.getPathOfUri(nodeUri))
+                    return false;
+                for(var k in uri["searchParts"]){
+                    if (typeof nodeUri["searchParts"][k]!="undefined")
+                        return true;
+                }
+                return false;
+            }})  
+        }
+        return found;
+    },
+    findLinksNextNeighbourImpl : function (doc,expr,options,ps,groupFunc)
+    {
+        //find links with page number next to the current link
+        //for example curr link = http://aaa.com/xxx?page=10, we return the link if it has all others same as current page but has a page=11
+        //or for http://aaa.com/xxx?row=100, find the links with the min row and with all the others the same
+        var url = doc.location.href;
+        var uri = autopagerUtils.parseUri(url);
+        var params = [];
+        var paramsHash = [];
+        var searchParts = uri["searchParts"];
+        for(var k in searchParts)
+        {
+            var p={name:k,value:searchParts[k],values:[searchParts[k]]};
+            params.push(p);
+            paramsHash[k]=p;
+        }
+         
+        var simularNodes = [];
+        var nodes = autopagerXPath.getAllEnabledLinks(doc);
+        
+        for(var i=0;i<nodes.length;i++){
+            var n = nodes[i];
+            if (!n.href)
+                continue;
+            var nodeUri = autopagerUtils.parseUri(n.href)
+            if (groupFunc.func(uri,nodeUri)){
+                simularNodes.push({node:n,uri:nodeUri})
+                searchParts = nodeUri["searchParts"];
+                for(var k in searchParts)
+                {
+                    if (!paramsHash[k]){
+                        var p={name:k,values:[searchParts[k]]};
+                        params.push(p);
+                        paramsHash[k]=p;
+                    }
+                    if (paramsHash[k] && paramsHash[k].values && paramsHash[k].values.indexOf(searchParts[k])==-1)
+                        paramsHash[k].values.push(searchParts[k]);
+                }
+            }
+        }
+        var compareValue = function(v1,v2){
+            //if a value <=1 then we treat it as null
+            if ((!v1||v1<=1) && (!v2 || v2<=1)){
+                return 0;
+            }else if (!v1||v1<=1){
+                return -1;
+            }else if (!v2|| v2<=1){
+                return 1;
+            }else if (numParameter){
+                return parseInt(v1) - parseInt(v2)
+            }else {
+                return v1==v2 ? 0 : (v1<v2?-1:1);
+            }
+        }
+        function isParamAllNum (param){
+            var numParameter = true;
+            for(var i=0;i<param.values.length;i++){
+                var v = param.values[i];
+                numParameter = !v || !isNaN(parseInt(v));
+                if (!numParameter)
+                    break;
+            }
+            return numParameter;
+        }
+        for (var i in params){
+            params[i].isNum = isParamAllNum(params[i])
+        }
+        //sort params to get the key with max number values,for example page number
+        params.sort(function(p1,p2){
+            //treat as double if a parameter is a number parameter
+            var v1 = p1.values.length * (p1.isNum?2:1);
+            var v2 = p2.values.length * (p2.isNum?2:1);
+            
+            if (v1 == v2 && v2>0)
+                return compareValue(p1.values[0], p2.values[0]);
+            return v2 - v1;
+        });
+        var found = [];
+        if (params.length>0)
+        {
+            var pageIdentifier=params[0];
+            var numParameter = isParamAllNum(pageIdentifier);                
+            
+            var compareNode = function(n1,n2){
+                return compareValue(n1.uri["searchParts"][pageIdentifier.name],n2.uri["searchParts"][pageIdentifier.name])                
+            }
+            simularNodes.sort(compareNode);
+            var nIndex=0;
+            while(nIndex<simularNodes.length && ( typeof simularNodes[nIndex].uri["searchParts"][pageIdentifier.name] == "undefined" |  compareValue(simularNodes[nIndex].uri["searchParts"][pageIdentifier.name],pageIdentifier.value)<=0)){
+                nIndex++;
+            }
+            if (nIndex<simularNodes.length){
+                var firstValue = simularNodes[nIndex].uri["searchParts"][pageIdentifier.name];
+                while(nIndex<simularNodes.length && simularNodes[nIndex].uri["searchParts"][pageIdentifier.name]==firstValue){
+                    found.push({func:ps.name,node:simularNodes[nIndex].node})
+                    nIndex++;
+                }
+            }
+        }
+        return found;
+    },
+    findLinksNextNeighbourRev : function (doc,expr,options)
+    {
+        //find links with page number prev to the current link, for site with page num/record num in rev order
+        //for example curr link = http://aaa.com/xxx?page=10, we return the link if it has all others same as current page but has a page=9
+        //or for http://aaa.com/xxx?row=100, find the links with the max row and with all the others the same. row=90 for example
+    },    
+    findLinksNextWithIDs : function (doc,expr,options,ps)
+    {
+        //find by ids
+        var smarttext = autopagerUtils.getSmarttext();
+        var strs = (smarttext).split("|");
+        var found=[]
+        for(var i in strs){            
+            var id=strs[i];
+            var n = doc.getElementById(id);
+            if (!n && id!=id.toLowerCase()){
+                n = doc.getElementById(id.toLowerCase);
+            }
+            if (n){
+                found.push({func:ps.name,node:n})            
+                if(found.length>=options.max-1)
+                    break;
+            }
+        }
+        return found;
+    },
+    findLinksNextWithKeywords : function (doc,expr,options,ps)
+    {
+        //find keywords in @rel, @class, text()
+        var attrfunc = ps.attrfunc
+        var smarttext = autopagerUtils.getSmarttext();
+        var strs = (smarttext).split("|");
+        var found=[]
+        var nodes = autopagerXPath.getAllEnabledLinks(doc);
+        for(var i=0;i<nodes.length;i++){
+            var n = nodes[i];
+            for(var k=0;k<strs.length;k++){
+                var str = strs[k];
+                var attrValue = attrfunc(n);
+                if(attrValue){
+                    var attrs
+                    if (attrValue.constructor==Array){
+                        attrs = attrValue
+                    }else
+                        attrs = [attrValue]
+                    for(var a in attrs){
+                        var attr = autopagerUtils.trim(attrs[a]);
+                        if(attr)
+                        {
+                            if (str == attr){
+                                found.push({func:ps.name,node:n,exactly:true});
+                            }else if(str.toLowerCase()==attr.toLowerCase()){
+                                found.push({func:ps.name,node:n,exactly:false});
+                            }                            
+                        }    
+                    }
+                    
+                }
+            }
+        }
+        return found;
+    },
+    findLinksNextInNavbar : function (doc,expr,options,ps)
+    {
+        //find links by finding the navagation bar, then find the current link/text and find the next one then
+        //different to findLinksNextNeighbour is that this is major find the number series in text insteadof url
+        //for example, a navbar looks like 1 2 3 4 [5] 6 7. [5] here is special. So 6 is the next page. Current page can also be with different color or size.
+        //so we find all parent for "a" (grant parent if "a"'s parent is "li" or is an element with "a" as the only child.
+        var nodes = autopagerXPath.getAllEnabledLinks(doc);
+        var positions=[]
+        for(var i=0;i<nodes.length-1;i++){
+            var n = nodes[i];
+            var t = autopagerUtils.trim(n.textContent);
+            if (t.match(/^[\[\(\<\{\s]*\d[\s\]\)\>\}]*$/)){
+                var pos = autopagerMain.myGetPos(n);
+                positions.push({node:n,pos:pos,text:t,num:parseInt(t.replace(/[\[\(\<\{\s\]\)\>\}]/g,''))});                
+            }
+        }
+        if (positions.length>1){
+            positions.sort(function(a,b){
+                if (Math.abs(a.pos.y - b.pos.y)<5){
+                    return a.pos.x - b.pos.x;
+                }
+                return a.pos.y - b.pos.y
+            })
+            var groupStart=0;
+            var groupEnd =1;
+            var found=[]
+        
+            while(groupEnd <= positions.length)
+            {                
+                while(groupEnd < positions.length && Math.abs(positions[groupEnd].pos.y - positions[groupEnd-1].pos.y)<5){
+                    groupEnd++;
+                }
+                var group = positions.slice(groupStart, groupEnd);
+                if (group.length>1)
+                {
+                    var step = getStep(group);
+                    var firstNotMatchStep=getFirstNotMatchStep(group,step);
+                    if (firstNotMatchStep>=0){
+                        found.push({func:ps.name,node:group[firstNotMatchStep].node})
+                    }else{
+                        var fistSpecial = getFirstSpecial(group);
+                        if (fistSpecial>=0 && fistSpecial<group.length-1){
+                            found.push({func:ps.name,node:group[fistSpecial+1].node})
+                        }
+                        else{
+                            //try first node. If its previous node has a previous number then the first node is the one we found
+                            var previousNum=group[0].num - step;
+                            var firstNode = group[0].node
+                            var regx = new RegExp("[\\[\\(\\<\\{\\s]*" + previousNum + "[\\]\\)\\>\\}\\s]*$");
+                            var previousNode = getPreviousSiblingNoneEmptyNode(firstNode)
+                            if (previousNode && previousNode.textContent.match(regx)){
+                                found.push({func:ps.name,node:firstNode})
+                            }
+                        }
+                    }
+                }
+                
+                groupStart=groupEnd;
+                groupEnd ++;
+            }        
+        }
+        function getStep(group){
+            var step=10000;
+            for(var i=1; i<group.length;i++){
+                if (step>Math.abs(group[i].num - group[i-1].num)){
+                    step = Math.abs(group[i].num - group[i-1].num);
+                }
+            }
+            return (group[group.length-1].num - group[0].num)>0?step : step*-1;
+        }
+        function getFirstNotMatchStep(group,step){
+            for(var i=1; i<group.length;i++){
+                if (step!=group[i].num - group[i-1].num){
+                    return i;
+                }
+            }
+            return -1;
+        }
+        function getFirstSpecial(group){
+            for(var i=0; i<group.length;i++){
+                if (group[i].text.match(/^[\[\(\<\]{\s]*\d[\s]*[\]\)\>\}]+$/)){
+                    return i;
+                }
+                if(i>0 && inDifferentStyle(group[i-1].node,group[i].node)){
+                    return i;
+                }
+            }
+            var regx=/[\[\(\<\{][\s]*$/; //"[","(","<" or "{" before a link. [ 6 ], for example
+            for(var i=0; i<group.length;i++){
+                var previousNode = getPreviousSiblingNoneEmptyNode(group[i].node)
+                if (previousNode && previousNode.textContent.match(regx)){
+                    return i;
+                }
+            }
+            return -1;
+        }
+        function getPreviousSiblingNoneEmptyNode(node){
+            var curr=node.previousSibling;
+            while(curr && curr.previousSibling && autopagerUtils.trim(curr.textContent)==""){
+                curr = curr.previousSibling;
+            }
+            if (!curr || curr == node || autopagerUtils.trim(curr.textContent)==""){
+                if (node.parentNode && autopagerUtils.trim(node.parentNode.textContent)==autopagerUtils.trim(node.textContent))
+                    return getPreviousSiblingNoneEmptyNode(node.parentNode)
+                return null;
+            }
+            return curr;
+        }
+        function inDifferentStyle(n1,n2){
+            if (n1.getAttribute("class")!=n2.getAttribute("class")){
+                return true;
+            }
+            else if (n1.parentNode.tagName!=n2.parentNode.tagName){
+                return true;
+            }else if (n1.parentNode.getAttribute("class")!=n2.parentNode.getAttribute("class")){
+                return true;
+            }
+            else if (n1.style["color"]!=n2.style["color"]){
+                return true;
+            }
+            else if (n1.style["background-color"]!=n2.style["background-color"]){
+                return true;
+            }
+            return false;
+        }
+        if(found && found.length>options.max){
+            found = found.slice(0, options.max-1)
+        }
+        return found;
+    },    
+    findLinksNextWithJavascriptFunction : function (doc,expr,options,ps)
+    {
+        //find links with href=javascript:next(),javascript:gonext(),javascript:go2next()
+        var attrfunc = function (node){
+            var href=autopagerUtils.trim(node.href);
+            if (!href || !href.match(/^javascript\:/))
+                return null;
+            href = href.substring(11,href.indexOf("("));            
+            return autopagerUtils.trim(href).toLowerCase();
+        }
+        var smarttext = autopagerUtils.getSmarttext();
+        var strs = (smarttext).split("|");
+        var found=[]
+        var nodes = autopagerXPath.getAllEnabledLinks(doc);
+        for(var i=0;i<nodes.length;i++){
+            var n = nodes[i];
+            for(var k=0;k<strs.length;k++){
+                var str = strs[k].toLowerCase();
+                var attr = autopagerUtils.trim(attrfunc(n));
+                if(attr){
+                    if (str == attr){
+                        found.push({func:ps.name,node:n,exactly:true});
+                    }else if("go"+str==attr || "go2"+str==attr || "goto"+str==attr){
+                        found.push({func:ps.name,node:n,exactly:false});
+                    }
+                }
+            }
+        }
     },
     convertToXpath  : function(str,exactlymatch) {
         var xpaths = new Array();

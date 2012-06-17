@@ -357,6 +357,9 @@ AutoPagerNS.apSplitbrowse = {
         var browser = this.getBrowserNode(doc);
         if (!browser)
             return null;
+        if (browser.parentNode.id=="autopager-split-box"){
+            return null;
+        }
         if (!browser.getAttribute(this.autopagerPrefix + "splitbrowse-id"))
         {
             document.splitBrowserCount ++;
@@ -445,7 +448,7 @@ AutoPagerNS.apSplitbrowse = {
                 }
                 else
                 {
-                    if (!doc.documentElement.autopagerUseSafeEvent )
+                    if (listener && !listener.autopagerUseSafeEvent )
                     {
                         //autopagerBwUtil.consoleError("load in hidden browser");
                         AutoPagerNS.apSplitbrowse.cloneBrowser(splitBrowser,browser);
@@ -580,11 +583,17 @@ AutoPagerNS.apSplitbrowse = {
     // ***** set done navigation ui
     done : function(doc,sl)
     {
+        var Me = this
         //alert("done");
         if (doc.location.href=='about:blank')
             return true;
 
         try{
+            Me.disableMedia(doc,"video");
+            Me.disableMedia(doc,"audio");
+            
+            if (sl && sl.listener)
+                sl.listener.apLazySrcUsed=true            
             doc.defaultView.AutoPagerHiddenBrowser={};
             //scroll to page end to ensure some lazy load objects been loaded
             //fix http://member.teesoft.info/phpbb/viewtopic.php?f=3&t=3498
@@ -598,6 +607,20 @@ AutoPagerNS.apSplitbrowse = {
                 autopagerMain.onSplitDocLoaded(doc,true);
         },AutoPagerNS.apSplitbrowse.getDelayMiliseconds(doc));
         return false;
+    },
+    disableMedia : function (doc,tag){
+        var medias = doc.getElementsByTagName(tag);
+        for(var i=0;i<medias.length;i++){
+            var media = medias[i];
+            if (!media.hasAttribute("disabled")){
+                media.paused=true;
+                media.autoplay=false
+                media.setAttribute("ap-lazy-src",media.src)
+                media.setAttribute("src","")
+                media.setAttribute("disabled","disabled-by-ap")
+                
+            }
+        }
     },
     getDelayMiliseconds : function ( doc ){
         var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(doc);
@@ -643,6 +666,7 @@ AutoPagerNS.splitpanelProgressListener.prototype = {
             }
             
         }
+        //autopagerBwUtil.consoleError("onStateChange: " + aWebProgress.DOMWindow.location + ":" + aWebProgress.DOMWindow.AutoPagerHiddenBrowser);
     },
     onStatusChange : function(webProgress, request, status, message)
     {

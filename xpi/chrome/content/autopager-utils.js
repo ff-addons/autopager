@@ -1,5 +1,5 @@
 var autopagerUtils = {
-    version:"0.7.1.4",
+    version:"0.7.1.6",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -58,6 +58,26 @@ var autopagerUtils = {
 
         webNav.gotoIndex(0);
     
+    },
+    trim : function (str) {
+        if (!str)
+            return str;
+        var	str = str.replace(/^\s\s*/, ''),
+		ws = /\s/,
+		i = str.length;
+	while (ws.test(str.charAt(--i)));
+	return str.slice(0, i + 1);
+    },
+    getSmarttext: function(){
+        return "autopager-next|" + autopagerPref.loadUTF8Pref("smarttext");  
+    },
+    getStyle :function (el, cssprop){
+        if (el.ownerDocument && el.ownerDocument.defaultView && el.ownerDocument.defaultView.getComputedStyle) 
+            return el.ownerDocument.defaultView.getComputedStyle(el, "")[cssprop]
+        else if (el.currentStyle)
+            return el.currentStyle[cssprop]
+        else //try and get inline style
+            return el.style[cssprop]
     },
     cloneHistoryEntry: function(aEntry) {
         if (!aEntry)
@@ -162,9 +182,14 @@ var autopagerUtils = {
         var uri = autopagerUtils.parseUri(sourceUri)
         return autopagerUtils.doClearedUrl(uri)
     },
-    doClearedUrl : function (uri)
+    getPathOfUri : function (uri)
     {
         var u = uri["protocol"] + "://" + uri["host"] + ":" + uri["port"] + uri["directoryPath"] + uri["fileName"];
+        return u;
+    },
+    doClearedUrl : function (uri)
+    {
+        var u = this.getPathOfUri(uri);
         for(var k in uri["searchParts"])
         {
             u += k + "=&";
@@ -504,6 +529,9 @@ var autopagerUtils = {
             return false;
         if (doc.location == null)
         {
+            return false;
+        }
+        if (doc.contentType && /application\/xml/.test(doc.contentType)){
             return false;
         }
         return true;
@@ -1140,7 +1168,7 @@ delete * 24, for minutes, delete * 60 * 24
     ,isHTMLDocument : function(doc)
     {
         if (typeof doc=="undefined" || !doc)
-            return false;
+            return false;    
         if (typeof autopagerBwUtil.isHTMLDocument == "function")
             return autopagerBwUtil.isHTMLDocument(doc);
         return doc instanceof HTMLDocument;
@@ -1176,11 +1204,17 @@ delete * 24, for minutes, delete * 60 * 24
             return autopagerBwUtil.getContentImage(name);
         return AutoPagerNS.get_url( name);
     }
-    ,frameSafe : function()
+    ,frameSafe : function(paging,doc)
     {
         if (typeof autopagerBwUtil.frameSafe == "function")
             return autopagerBwUtil.frameSafe();
-        return true;
+        return paging.site.enableJS==3 && !autopagerMain.hasTopLocationRefer(doc.documentElement.innerHTML)
+                    && !doc.documentElement.getAttribute("xmlns")
+    }
+    ,safe_get : function(obj,key){
+      try{
+          return obj[key]
+      }catch(e){}
     }
     ,get_host : function (hostobj)
     {
@@ -1189,7 +1223,7 @@ delete * 24, for minutes, delete * 60 * 24
         {
             host = hostobj;
         }
-        else if (hostobj && hostobj.location && typeof hostobj.location.host != "undefined")
+        else if (hostobj && hostobj.location && typeof autopagerUtils.safe_get(hostobj.location,"host") != "undefined")
         {
             try{
                 host = hostobj.location.host;
@@ -1471,7 +1505,16 @@ delete * 24, for minutes, delete * 60 * 24
   showHelp : function()
     {
         AutoPagerNS.add_tab({url:"http://autopager.teesoft.info/help.html"});
-    }    
+    },
+    isSameDomain : function(doc,url) {
+        var uri = autopagerUtils.parseUri(url)
+        if (uri) {
+            return (uri.protocol == doc.location.protocol || uri.protocol +":" == doc.location.protocol) && uri.host ==doc.location.host;
+        }
+        else {
+            return true
+        }
+    }
 }
 
 AutoPagerNS.SimpleRegExp = function (s)

@@ -690,6 +690,12 @@ AutoPagring.prototype.processInSplitDoc = function(doc,splitDoc,b){
 }
 AutoPagring.prototype.processInSplitWinByUrl  = function(doc,url){
     try{
+        var urlStr = this.getSameDomainUrl(doc,url)
+        if (!urlStr || ! (typeof urlStr == 'string'))
+        {
+            this.onNotSameDomainError(doc,url);
+            return;
+        }
         var b = autopagerMain.getSplitBrowserForDoc(doc,false,this);
         b.auotpagerContentDoc = doc;
         b.autopagerSplitWinFirstDocSubmited=true;
@@ -720,6 +726,15 @@ AutoPagring.prototype.lazyLoad = function(doc)
             var frame=target;
             if (!frame.autoPagerInited) {
                 //autopagerMain.fireFrameDOMContentLoaded(frame);
+                try{
+                    if (!frame.contentDocument || !frame.contentDocument.documentElement)
+                    {
+                        return;
+                    }
+                }catch(e){
+                    paging.onNotSameDomainError(doc,frame.src);
+                    return;
+                }
                 var newDoc = frame.contentDocument;
                 newDoc.documentElement.setAttribute("autopageCurrentPageLoaded","false")
 
@@ -744,12 +759,13 @@ AutoPagring.prototype.loadInFrame = function(doc,url){
     var called = false
     var callback = function(e)
     {
-        if (!called){
+       if (!called){
             called = true;
             //alert(e.target.contentDocument.documentElement.innerHTML)
             lazyLoad(e);
-        }
+       }        
     }
+    frame.sandbox = 'allow-same-origin';
     frame.addEventListener("load", callback, false);
     frame.addEventListener("DOMContentLoaded", callback, false);
     //frame.setAttribute('src', url);
@@ -768,33 +784,14 @@ AutoPagring.prototype.processNextDocUsingXMLHttpRequest = function(doc,url){
     //alert(autopagerUtils.getUrl(doc));
     try{
         var paging = this
-        var urlStr = ""
-        if (! (typeof url == 'string'))
+        var urlStr = this.getSameDomainUrl(doc,url)
+        if (!urlStr || ! (typeof urlStr == 'string'))
         {
-            urlStr = autopagerUtils.findUrlInElement(url);
-        }
-        else
-            urlStr = url
-        if (doc && doc.location && doc.location.host)
-        {
-            var currentHost = doc.location.host
-            var pos = urlStr.indexOf("://");
-            var protocol = urlStr.substring(0,pos);
-            var urlPart = urlStr.substring(pos+3)
-            if (urlPart.substring(0,currentHost.length)!=currentHost)
-            {
-                //link to a different domain,try to parse the url to get the real one
-                if (urlPart.indexOf(currentHost)>0)
-                    urlStr = protocol + "://" + unescape(urlPart.substring(urlPart.indexOf(currentHost)))
-            }
-        }
-
-        if (typeof paging.frameSafe == "undefined")
-            paging.frameSafe = paging.site.enableJS==3 && !autopagerMain.hasTopLocationRefer(doc.documentElement.innerHTML)
-                    && !doc.documentElement.getAttribute("xmlns")
-                    && autopagerUtils.frameSafe();
+            this.onNotSameDomainError(doc,url);
+            return;
+        }        
         //loade the next page in a iframe if the page doesn't redirect to top
-        if (paging.frameSafe)
+        if (paging.frameSafe(doc))
         {
             paging.loadInFrame(doc,urlStr);
             return;
@@ -1287,6 +1284,11 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
         var site = this.site;
         var reg = autopagerUtils.getRegExp (site)
         var url = autopagerMain.getDocURL(doc,this.inSplitWindow);
+        if (!autopagerUtils.isSameDomain(container,url))
+        {
+            this.onNotSameDomainError(container,url);
+            return;
+        }
         if (!this.inSplitWindow || reg.test(url))
         {
 //        autopagerBwUtil.consoleLog("scrollWindow 2")
@@ -1331,6 +1333,11 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
 					sh = scrollDoc.body.scrollHeight;
 			}
 
+            try{
+                var href = nextUrl && nextUrl.href
+            }catch(ex){
+                nextUrl = null;
+            }
             if (typeof nextUrl=='undefined' || nextUrl==null)
             {
                 var urlNodes = autopagerMain.findLinkInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
@@ -1626,6 +1633,22 @@ AutoPagring.prototype.autopagerSimulateClick = function(win,doc,node) {
     }
 }
 AutoPagring.prototype.doAutopagerSimulateClick = function(win,doc,node) {
+    var urlStr = ""
+    if (! (typeof node == 'string'))
+    {
+        urlStr = autopagerUtils.findUrlInElement(node);
+    }
+    else
+        urlStr = node
+    if (urlStr){
+        var newUrlStr = this.getSameDomainUrl(doc,urlStr)
+        if (!newUrlStr || ! (typeof newUrlStr == 'string'))
+        {
+            this.onNotSameDomainError(doc,urlStr);
+            return;
+        }        
+    }
+        
     this.shouldMonitorAutoScroll = true;
     this.autoScrolling = false;
     
@@ -2074,7 +2097,7 @@ AutoPagring.prototype.getDOMNodeRemovedMonitor = function()
 
 AutoPagring.prototype.isLazyLoadImage = function()
 {
-    return (this.site.quickLoad & 2) ==2;
+    return this.apLazySrcUsed || (this.site.quickLoad & 2) ==2;
 }
 
 AutoPagring.prototype.getSiteLazyLoadAttr = function()
@@ -2089,6 +2112,9 @@ AutoPagring.prototype.postAfterInsert = function(node)
         var nodes = autopagerXPath.evaluate(node,".//*[@ap-lazy-src]",false);
             for(var k=0;k<nodes.length;++k) {
                 nodes[k].setAttribute("src", nodes[k].getAttribute("ap-lazy-src"));
+                if (nodes[k].getAttribute("disabled")==disabled-by-ap){
+                    nodes[k].removeAttribute("disabled")
+                }
             }
     }
     var lazyImgSrc = this.getSiteLazyLoadAttr();
@@ -2295,4 +2321,61 @@ AutoPagring.prototype.getRate = function ()
     if (typeof this.site.rate != 'undefined')
         return this.site.rate;
     return 0;
+}
+AutoPagring.prototype.onErrorStopPaging = function(doc) {
+    autopagerMain.hiddenDiv(autopagerMain.getPagingWatcherDiv(doc,false),true);
+    var loadgingImg = doc.getElementById("autopagerLoadingImg");
+    while (loadgingImg)
+    {
+        loadgingImg.parentNode.removeChild(loadgingImg);
+        loadgingImg = doc.getElementById("autopagerLoadingImg");
+    }
+
+    this.autopagerEnabledSite = false
+
+    if (this.site.monitorXPath)
+    {
+        autopagerMain.monitorForCleanPages(doc,this)
+    }
+}
+AutoPagring.prototype.onNotSameDomainError = function (doc,url)
+{
+    this.onErrorStopPaging(doc);
+    var infoUrl ="http://autopager.teesoft.info/notsamedomain?c=" + escape(doc.location.href) + "&n=" + escape(url);
+    var callback = function()
+    {
+        AutoPagerNS.add_tab({
+            url:infoUrl
+        });
+    }
+    AutoPagerNS.browser.open_alert(autopagerUtils.autopagerGetString("errorload"),autopagerUtils.autopagerGetString("needyourattention"),infoUrl
+        ,callback)
+}
+AutoPagring.prototype.getSameDomainUrl = function (doc,url)
+{    
+    var urlStr = ""
+    if (! (typeof url == 'string'))
+    {
+        urlStr = autopagerUtils.findUrlInElement(url);
+    }
+    else
+        urlStr = url
+    if (!autopagerUtils.isSameDomain(doc,urlStr))
+    {
+        var currentHost = doc.location.host
+        if (urlStr.indexOf(currentHost)!=-1)
+        {
+            var protocol = doc.location.protocol
+            urlStr = protocol + "//" + unescape(urlStr.substring(urlStr.indexOf(currentHost)))            
+        }else
+            urlStr = null;
+    }    
+    return urlStr;
+}
+
+AutoPagring.prototype.frameSafe = function (doc)
+{ 
+    if (typeof this.frameSafe == "undefined")
+        this.frameSafe = autopagerUtils.frameSafe(this,doc);
+    return this.frameSafe;
 }

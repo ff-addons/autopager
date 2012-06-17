@@ -6,68 +6,68 @@
 <!ENTITY xpath-exprestion.tab.nodeset.label "Node-Set 関数">
 <!ENTITY xpath-exprestion.tab.number.label "Number 関数">
 <!ENTITY xpath-exprestion.tab.string.label "String 関数">
-<!ENTITY xpath-exprestion.treecell.d_ancestor-or-self.label "コンテキストノードの祖先と自分自身を選択します。">
-<!ENTITY xpath-exprestion.treecell.d_ancestor.label "コンテキストノードの祖先を選択します。">
-<!ENTITY xpath-exprestion.treecell.d_attribute.label "コンテキストノードの要素を選択します。">
-<!ENTITY xpath-exprestion.treecell.d_boolean.label "object 引数の boolean 表現を返します。">
-<!ENTITY xpath-exprestion.treecell.d_ceiling.label "引数の小数第一位を切り上げた整数を返します。">
-<!ENTITY xpath-exprestion.treecell.d_child.label "コンテキストノードの子ノードを返します。">
+<!ENTITY xpath-exprestion.treecell.d_ancestor-or-self.label "コンテキスト ノードの祖先と自分自身を選択します">
+<!ENTITY xpath-exprestion.treecell.d_ancestor.label "コンテキスト ノードの祖先を選択します">
+<!ENTITY xpath-exprestion.treecell.d_attribute.label "コンテキスト ノードの属性を選択します">
+<!ENTITY xpath-exprestion.treecell.d_boolean.label "オブジェクト引数の boolean 表現を返します">
+<!ENTITY xpath-exprestion.treecell.d_ceiling.label "引数より大きい最小の整数値を返します。">
+<!ENTITY xpath-exprestion.treecell.d_child.label "コンテキスト ノードの子供を選択します">
 <!ENTITY xpath-exprestion.treecell.d_concat.label "その引数を連結して返します。">
-<!ENTITY xpath-exprestion.treecell.d_contains.label "第一引数が第二引数の文字列を含んでいるときにtrueを返します。">
+<!ENTITY xpath-exprestion.treecell.d_contains.label "第 1 引数が第 2 引数の文字列を含んでいれば true を返します。">
 <!ENTITY xpath-exprestion.treecell.d_count.label "ノードセットのノードの数を返します。">
-<!ENTITY xpath-exprestion.treecell.d_descendant-or-self.label "コンテキストノードの子孫ノードと自分自身を選択します。">
-<!ENTITY xpath-exprestion.treecell.d_descendant.label "コンテキストノードの子孫ノードを返します。">
-<!ENTITY xpath-exprestion.treecell.d_false.label "falseの値でbooleanを返します。">
-<!ENTITY xpath-exprestion.treecell.d_floor.label "引数の小数第一位を切り捨てた整数を返します。">
-<!ENTITY xpath-exprestion.treecell.d_following-sibling.label "コンテクストノードの兄弟ノードのうちの後方のノードを選択します。">
-<!ENTITY xpath-exprestion.treecell.d_following.label "コンテキストノードより後方にある全てのノードを選択します。">
-<!ENTITY xpath-exprestion.treecell.d_id.label "ユニークなidによって指定された要素を返します。">
-<!ENTITY xpath-exprestion.treecell.d_lang.label "コンテキストノードが引数で指定された言語とおなじ場合にtrueを返します。">
-<!ENTITY xpath-exprestion.treecell.d_last.label "コンテキストリストの最後のノードの位置を返します。">
-<!ENTITY xpath-exprestion.treecell.d_local-name.label "コンテキストノードのローカル名を返します。">
+<!ENTITY xpath-exprestion.treecell.d_descendant-or-self.label "コンテキスト ノードの子孫と自分自身を選択します">
+<!ENTITY xpath-exprestion.treecell.d_descendant.label "コンテキスト ノードの子孫を選択します">
+<!ENTITY xpath-exprestion.treecell.d_false.label "false 値を持つ boolean を返します。">
+<!ENTITY xpath-exprestion.treecell.d_floor.label "引数を超えない最大の整数を返します。">
+<!ENTITY xpath-exprestion.treecell.d_following-sibling.label "コンテキスト ノードの後方の兄弟を選択します">
+<!ENTITY xpath-exprestion.treecell.d_following.label "コンテキスト ノードの後方ノードを選択します">
+<!ENTITY xpath-exprestion.treecell.d_id.label "ユニークな id で指定された要素を返します。">
+<!ENTITY xpath-exprestion.treecell.d_lang.label "コンテキスト ノードの言語が引数で指定された言語と同じ場合にtrueを返します。">
+<!ENTITY xpath-exprestion.treecell.d_last.label "コンテキスト リストの最後のノードの位置を返します。">
+<!ENTITY xpath-exprestion.treecell.d_local-name.label "コンテキスト ノードのローカル名を返します。">
 <!ENTITY xpath-exprestion.treecell.d_local-name_N.label "ノードセットの最初のノードのローカル名を返します。">
-<!ENTITY xpath-exprestion.treecell.d_name.label "コンテキストノードの名前を返します。">
+<!ENTITY xpath-exprestion.treecell.d_name.label "コンテキスト ノードの名前を返します。">
 <!ENTITY xpath-exprestion.treecell.d_name_N.label "ノードセットの最初のノードの名前を返します。">
-<!ENTITY xpath-exprestion.treecell.d_namespace-uri.label "コンテキストノードの名前空間URIを返します。">
-<!ENTITY xpath-exprestion.treecell.d_namespace-uri_N.label "ノードセットの最初のノードの名前空間URIを返します。">
-<!ENTITY xpath-exprestion.treecell.d_namespace.label "コンテキストノードの名前空間を返します。">
-<!ENTITY xpath-exprestion.treecell.d_normalize-space.label "コンテキストノードで指定された文字列の空白文字を正規化して返します。">
-<!ENTITY xpath-exprestion.treecell.d_normalize-space_S.label "引数で指定された文字列の空白文字を正規化して返します。">
-<!ENTITY xpath-exprestion.treecell.d_not.label "引数の逆の値のbooleanを返します。">
-<!ENTITY xpath-exprestion.treecell.d_number.label "コンテキストノードの表す数値を返します。">
+<!ENTITY xpath-exprestion.treecell.d_namespace-uri.label "コンテキスト ノードの名前空間 URI を返します。">
+<!ENTITY xpath-exprestion.treecell.d_namespace-uri_N.label "ノードセットの最初のノードの名前空間 URI を返します。">
+<!ENTITY xpath-exprestion.treecell.d_namespace.label "コンテキスト ノードの名前空間を返します。">
+<!ENTITY xpath-exprestion.treecell.d_normalize-space.label "コンテキスト ノードで指定された文字列の空白を正規化して返します。">
+<!ENTITY xpath-exprestion.treecell.d_normalize-space_S.label "引数で指定された文字列の空白を正規化して返します。">
+<!ENTITY xpath-exprestion.treecell.d_not.label "引数の値を反転した boolean を返します。">
+<!ENTITY xpath-exprestion.treecell.d_number.label "コンテキスト ノードが表す数値を返します。">
 <!ENTITY xpath-exprestion.treecell.d_number_O.label "オブジェクト引数が表す数値を返します。">
-<!ENTITY xpath-exprestion.treecell.d_parent.label "コンテキストノードの親ノードを返します。">
-<!ENTITY xpath-exprestion.treecell.d_position.label "現在のコンテキストノードの場所を返します。">
-<!ENTITY xpath-exprestion.treecell.d_preceding-sibling.label "コンテクストノードの兄弟ノードのうちの前方のノードを選択します。">
-<!ENTITY xpath-exprestion.treecell.d_preceding.label "コンテキストノードより前方にある全てのノードを選択します。">
-<!ENTITY xpath-exprestion.treecell.d_round.label "引数の小数第一位をを四捨五入した整数値を返します。">
-<!ENTITY xpath-exprestion.treecell.d_self.label "コンテキストノードを選択します。">
-<!ENTITY xpath-exprestion.treecell.d_starts-with.label "第一引数の文字列が第二引数の文字列で始まっているときにtrueを返します。">
-<!ENTITY xpath-exprestion.treecell.d_string-length.label "コンテキストノードで指定された文字列の長さを返します。">
+<!ENTITY xpath-exprestion.treecell.d_parent.label "コンテキスト ノードの親を返します">
+<!ENTITY xpath-exprestion.treecell.d_position.label "現在のコンテキスト ノードの位置を返します。">
+<!ENTITY xpath-exprestion.treecell.d_preceding-sibling.label "コンテキスト ノードの前方の兄弟を選択します">
+<!ENTITY xpath-exprestion.treecell.d_preceding.label "コンテキスト ノードの前方ノードを選択します">
+<!ENTITY xpath-exprestion.treecell.d_round.label "引数に最も近い整数値を返します。">
+<!ENTITY xpath-exprestion.treecell.d_self.label "コンテキスト ノードを選択します">
+<!ENTITY xpath-exprestion.treecell.d_starts-with.label "第 1 引数の文字列が第 2 引数の文字列で始まっていれば true を返します。">
+<!ENTITY xpath-exprestion.treecell.d_string-length.label "コンテキスト ノードで指定された文字列の長さを返します。">
 <!ENTITY xpath-exprestion.treecell.d_string-length_S.label "引数で指定された文字列の長さを返します。">
-<!ENTITY xpath-exprestion.treecell.d_string.label "コンテキストノードで表されている文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_string_O.label "オブジェクト引数で表されている文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_substring-after.label "第二引数が第一引数の文字列の中で最初に現れた後に来る文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_substring-before.label "第二引数が第一引数の文字列の中で最初に現れる前の文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_substring.label "第二引数で指定された位置から始まる第一引数の部分文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_substring_N.label "第二引数で指定された位置から第三引数で指定された長さの第一引数の部分文字列を返します。">
-<!ENTITY xpath-exprestion.treecell.d_sum.label "ノードセットの全てのノード数値の合計を返します。">
-<!ENTITY xpath-exprestion.treecell.d_text.label "コンテキストノードのテキストコンテントを返します。">
-<!ENTITY xpath-exprestion.treecell.d_translate.label "第二引数で指定した文字列が第一引数に存在した場合、第三引数で指定した文字列に置換して返します。">
-<!ENTITY xpath-exprestion.treecell.d_true.label "trueの値でbooleanを返します。">
-<!ENTITY xpath-exprestion.treecell.s_ancestor-or-self.label "コンテキストノードの祖先ノードと自分自身">
-<!ENTITY xpath-exprestion.treecell.s_ancestor.label "コンテキストノードの祖先ノード">
-<!ENTITY xpath-exprestion.treecell.s_attribute.label "コンテキストノードの属性ノード">
-<!ENTITY xpath-exprestion.treecell.s_child.label "コンテキストノードの子ノード">
-<!ENTITY xpath-exprestion.treecell.s_descendant-or-self.label "コンテキストノードの子孫ノードと自分自身">
-<!ENTITY xpath-exprestion.treecell.s_descendant.label "コンテキストノードの子孫ノード">
-<!ENTITY xpath-exprestion.treecell.s_following-sibling.label "コンテキストノードの後ろにあるすべての兄弟ノード">
-<!ENTITY xpath-exprestion.treecell.s_following.label "コンテキストノードの後ろにあるすべてのノード">
-<!ENTITY xpath-exprestion.treecell.s_namespace.label "コンテキストノードの名前空間">
-<!ENTITY xpath-exprestion.treecell.s_parent.label "コンテキストノードの親ノード">
-<!ENTITY xpath-exprestion.treecell.s_preceding-sibling.label "コンテキストノードの前にあるすべての兄弟ノード">
-<!ENTITY xpath-exprestion.treecell.s_preceding.label "コンテキストノードの前にあるすべてのノード">
-<!ENTITY xpath-exprestion.treecell.s_self.label "コンテキストノード">
+<!ENTITY xpath-exprestion.treecell.d_string.label "コンテキスト ノードが表す文字列値を返します。">
+<!ENTITY xpath-exprestion.treecell.d_string_O.label "オブジェクト引数が表す文字列を返します。">
+<!ENTITY xpath-exprestion.treecell.d_substring-after.label "第 2 引数が第 1 引数の文字列内で最初に現れた位置以降の部分文字列を返します。">
+<!ENTITY xpath-exprestion.treecell.d_substring-before.label "第 2 引数が第 1 引数の文字列内で最初に現れた位置より前の部分文字列を返します。">
+<!ENTITY xpath-exprestion.treecell.d_substring.label "第 1 引数の、第 2 引数で指定された位置以降の部分文字列を返します。">
+<!ENTITY xpath-exprestion.treecell.d_substring_N.label "第 1 引数の文字列の、第 2 引数で指定された位置から第 3 引数で指定された長さの部分文字列を返します。">
+<!ENTITY xpath-exprestion.treecell.d_sum.label "ノードセットの全ノードの合計を返します。">
+<!ENTITY xpath-exprestion.treecell.d_text.label "コンテキスト ノードのテキスト コンテンツを返します。">
+<!ENTITY xpath-exprestion.treecell.d_translate.label "第 2 引数で指定した文字列を第 3 引数で指定した文字列に置換します。">
+<!ENTITY xpath-exprestion.treecell.d_true.label "true の値を持つ boolean を返します。">
+<!ENTITY xpath-exprestion.treecell.s_ancestor-or-self.label "コンテキスト ノードの祖先と自分自身">
+<!ENTITY xpath-exprestion.treecell.s_ancestor.label "コンテキスト ノードの祖先">
+<!ENTITY xpath-exprestion.treecell.s_attribute.label "コンテキスト ノードの属性">
+<!ENTITY xpath-exprestion.treecell.s_child.label "コンテキスト ノードの子供">
+<!ENTITY xpath-exprestion.treecell.s_descendant-or-self.label "コンテキスト ノードの子孫と自分自身">
+<!ENTITY xpath-exprestion.treecell.s_descendant.label "コンテキスト ノードの子孫">
+<!ENTITY xpath-exprestion.treecell.s_following-sibling.label "コンテキスト ノードの後方の兄弟">
+<!ENTITY xpath-exprestion.treecell.s_following.label "コンテキスト ノードの後方のノード">
+<!ENTITY xpath-exprestion.treecell.s_namespace.label "コンテキスト ノードの名前空間">
+<!ENTITY xpath-exprestion.treecell.s_parent.label "コンテキスト ノードの親">
+<!ENTITY xpath-exprestion.treecell.s_preceding-sibling.label "コンテキスト ノードの前方の兄弟">
+<!ENTITY xpath-exprestion.treecell.s_preceding.label "コンテキスト ノードの前方のノード">
+<!ENTITY xpath-exprestion.treecell.s_self.label "コンテキスト ノード">
 <!ENTITY xpath-exprestion.treecol.description.label "説明">
 <!ENTITY xpath-exprestion.treecol.function.label "関数">
 <!ENTITY xpath-exprestion.treecol.shortdescription.label "簡単な説明">

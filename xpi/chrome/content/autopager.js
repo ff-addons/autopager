@@ -131,7 +131,7 @@ onContentLoad : function(event,force) {
     }
     AutoPagerNS.window.setTimeout(function(){
         autopagerMain.doContentLoad(event);
-        function firstScroll(e){
+        var firstScroll=function(e){
             AutoPagerNS.browser.removeEventListener("scroll", firstScroll, false);
             //try on first scroll
             //alert(autopagerPref.loadPref("lazyload"))
@@ -140,7 +140,7 @@ onContentLoad : function(event,force) {
             },100);
         }
         AutoPagerNS.browser.addEventListener("scroll",firstScroll,false);
-        function firstClick(e){
+        var firstClick=function(e){
             AutoPagerNS.browser.removeEventListener("click", firstClick, false);
             //try on first scroll
             //alert(autopagerPref.loadPref("lazyload"))
@@ -279,7 +279,7 @@ loadTempConfig : function() {
     var smartenable = autopagerPref.loadBoolPref("smartenable");
     if (smartenable) {
         
-        var smarttext = autopagerPref.loadUTF8Pref("smarttext");
+        var smarttext = autopagerUtils.getSmarttext();
         if (smarttext.length>0) {
             var smartlinks = autopagerPref.loadPref("smartlinks");
             var site = autopagerConfig.newSite("*","temp site for smart paging"
@@ -417,7 +417,7 @@ onNoMatchedRule : function (doc,url,safe)
     var smartenable = autopagerPref.loadBoolPref("smartenable");
     var matched = false;
     if (smartenable) {
-        var smarttext = autopagerPref.loadUTF8Pref("smarttext");
+        var smarttext = autopagerUtils.getSmarttext();
         var html = doc.documentElement.innerHTML;
         //ignore html match then 
         if (smarttext.length>0 && html.length<autopagerPref.loadPref("smartmaxsize")*1024*1024) {
@@ -760,7 +760,7 @@ doOnInitDoc : function(doc,safe) {
 
                 }
 
-                paging.autopagerUseSafeEvent = (doc.defaultView.top != doc.defaultView) || (!sitepos.site.quickLoad);
+                paging.autopagerUseSafeEvent = (doc.defaultView.top != doc.defaultView) || (!sitepos.site.quickLoad) || doc.getElementsByTagName("video").length>0 || doc.getElementsByTagName("audio").length>0;
                 de.setAttribute('fixOverflow',sitepos.site.fixOverflow);
                 de.setAttribute('contentXPath',sitepos.site.contentXPath);
                 de.setAttribute('linkXPath',sitepos.site.linkXPath);

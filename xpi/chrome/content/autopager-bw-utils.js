@@ -703,10 +703,10 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
     ,
     isHTMLDocument : function(doc)
     {
-        if (typeof doc=="undefined" || !doc)
+        if (typeof doc=="undefined" || !doc || typeof doc.documentElement=="undefined")
             return false;
-        try{
-            return typeof doc.documentElement!="undefined";            
+        try{            
+            return (/[Hh][Tt][Mm][Ll]Element/.test(doc.documentElement.toString()));
         }catch(e){
         }
         return false;
