@@ -20,6 +20,10 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
 );
 
 AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
+    get_browser_name : function ()
+    {
+        return "fennec";
+    },
     do_get_windows : function () //get browser windows
     {
         //return browsers for fennec

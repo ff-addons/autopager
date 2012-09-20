@@ -114,6 +114,10 @@ autopagerRules = AutoPagerNS.extend (autopagerRules,
 })
 
 AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
+    get_browser_name : function ()
+    {
+        return "firefox";
+    },
     do_get_windows : function () //get browser windows
     {
         var wm = Components.classes['@mozilla.org/appshell/window-mediator;1']

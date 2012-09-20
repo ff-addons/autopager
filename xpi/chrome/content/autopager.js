@@ -510,7 +510,7 @@ doOnInitDoc : function(doc,safe) {
 //                autopagerBwUtil.consoleLog("matchCallBack 4" )
 
                 var start = new Date().getTime();
-                var ret = autopagerMain.checkSiteRule(doc,sitepos,url,safe);
+                var ret = autopagerMain.checkSiteRule(doc,sitepos,url,safe);                
 //                autopagerBwUtil.consoleLog("matchCallBack 5" )
                 if (ret!=1 && sitepos.site.delaymsecs>0)
                 {

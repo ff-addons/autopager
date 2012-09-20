@@ -5,7 +5,7 @@ var autopagerBwUtil =
         var file = this.getConfigDir();
         file.append(fileName);
         if (!file.exists()) {
-            file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
+            file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, parseInt("0755", 8));
         }
 
         return file;
@@ -18,7 +18,7 @@ var autopagerBwUtil =
             .get("ProfD", Components.interfaces.nsILocalFile);
             file.append("autopager");
             if (!file.exists()) {
-                file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+                file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, parseInt("0755", 8));
             }
         }catch(e)
         {
@@ -575,16 +575,17 @@ var autopagerBwUtil =
             container = gBrowser.tabContainer;
         else if (typeof getBrowser != 'undefined' && getBrowser() && getBrowser().mTabContainer)
             container = getBrowser().mTabContainer;
+        //FF 15 strict mode doesn't allow function in if branch, so move it here
+        function listner(event)
+        {
+            if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
+            {
+                var doc = gBrowser.selectedTab.linkedBrowser.contentDocument
+                callback(doc)
+            }
+        }
         if (container)
         {
-            function listner(event)
-            {
-                if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
-                {
-                    var doc = gBrowser.selectedTab.linkedBrowser.contentDocument
-                    callback(doc)
-                }
-            }
             container.addEventListener("TabSelect", listner, useCapture);
             var tabUnload = function(){
                 window.removeEventListener("unload", tabUnload, false);

@@ -267,6 +267,7 @@ AutoPagerNS.UpdateSites=
         updatesite.lastupdate = (new Date()).getTime();
         if (!sites.partlyUpdated)
             updatesite.fullUpdate = (new Date()).getTime();
+        updatesite.ruleCount = sites.length;        
         var allSites = AutoPagerNS.UpdateSites.loadAll();
         allSites[updatesite.filename] = sites;
         AutoPagerNS.UpdateSites.AutopagerCOMP.setAll(allSites);//notify update
@@ -433,7 +434,7 @@ var autopagerConfig =
         var file = this.getConfigDir();
         file.append(fileName);
         if (!file.exists()) {
-            file.create(Components.interfaces.nsIFile.FILE_TYPE, 0755);
+            file.create(Components.interfaces.nsIFile.FILE_TYPE, parseInt("0755", 8));
         }
 
         return file;
@@ -446,7 +447,7 @@ var autopagerConfig =
             .get("ProfD", Components.interfaces.nsILocalFile);
             file.append("autopager");
             if (!file.exists()) {
-                file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+                file.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, Components.interfaces.nsIFile);
             }
         }catch(e)
         {

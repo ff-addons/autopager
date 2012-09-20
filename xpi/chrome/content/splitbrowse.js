@@ -53,7 +53,7 @@ AutoPagerNS.apSplitbrowse = {
         } else return null;
             }
             if(!ctx) return null;
-            ctx = lm(ctx, "top")();
+            ctx = ctx.top;
 
             var bi = new this.BrowserIterator();
             for(var b; b = bi.next();) {

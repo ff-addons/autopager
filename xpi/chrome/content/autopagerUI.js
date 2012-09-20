@@ -1262,7 +1262,7 @@ function exportSelectedSetting(exportToClipboard)
             .getService(Components.interfaces.nsIProperties)
             .get("TmpD", Components.interfaces.nsIFile);
             file.append("autopager.tmp");
-            file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0664);
+            file.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, parseInt("0664", 8));
         // do whatever you need to the created file
         //alert(file.path);
         }
