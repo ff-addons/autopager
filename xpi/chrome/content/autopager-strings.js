@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.strings = AutoPagerNS.extend (AutoPagerNS.namespace("strings"),{
     inited : false,
     init : function ()
@@ -132,6 +133,7 @@ AutoPagerNS.stringsfile = AutoPagerNS.extend (AutoPagerNS.namespace("stringsfile
         try{
             var url = AutoPagerNS.get_url("/locale/" + filename + "." + type); // + lang + "/"
             var xhr = autopagerUtils.newXMLHttpRequest();
+            xhr.overrideMimeType('text/plan');
             xhr.open("GET",url, false);
             xhr.send(null);
             this.process(xhr.responseText,type)

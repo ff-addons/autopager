@@ -1,3 +1,4 @@
+'use strict';
 //In GPL license
 var AutoPagring = function (site,doc)
 {

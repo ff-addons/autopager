@@ -1,3 +1,4 @@
+'use strict';
 var autopagerPrefLocalstarage
 var autopagerPref
 try{

@@ -1,3 +1,4 @@
+'use strict';
 //common routers shared by both global and content pages
 //class constructor
 function AutopagerCOMPType() {
@@ -56,4 +57,3 @@ AutopagerCOMPType.prototype = {
 ////                return this;
 ////        }
 };
-

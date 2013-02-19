@@ -1,3 +1,4 @@
+'use strict';
 var autopagerTroubleShoting =
 {
     autoFix : function (doc)

@@ -1,5 +1,6 @@
+'use strict';
 var autopagerUtils = {
-    version:"0.8.0.3",
+    version:"0.8.0.4",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -14,7 +15,9 @@ var autopagerUtils = {
     },    
     currentDocument: function()
     {
-        return this.currentBrowser().contentDocument;
+        var b = this.currentBrowser();
+        if (b && b.docShell)
+            return this.currentBrowser().contentDocument;
     },
     currentBrowser: function()
     {
@@ -32,7 +35,9 @@ var autopagerUtils = {
     },
     cloneBrowser: function(targetB, originalB)
     {
-        var webNav = targetB.webNavigation;
+        if (!targetB.docShell)
+            return;
+        var webNav = targetB.docShell.QueryInterface(Components.interfaces.nsIWebNavigation);
         var newHistory = webNav.sessionHistory;
 
         if (newHistory == null)
@@ -46,7 +51,7 @@ var autopagerUtils = {
     
         if (newHistory.count > 0)
             newHistory.PurgeHistory(newHistory.count);
-        var originalHistory  = originalB.webNavigation.sessionHistory;
+        var originalHistory  = webNav.sessionHistory;
         originalHistory = originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
 

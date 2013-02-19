@@ -1,3 +1,4 @@
+'use strict';
 var autopagerRelated =
 {
     relatedSearch: "http://api.search.live.net/json.aspx?Appid=41CC52599D6F30EE0E2C7D7F1C4DDCB97F98992B&query=autopager&Sources=RelatedSearch",

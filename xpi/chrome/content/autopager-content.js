@@ -1,3 +1,4 @@
+'use strict';
 //common routers for global pages
 AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("message_handlers"),{
     autopager_get_content_status: function (request, sender, callback)

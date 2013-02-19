@@ -1,3 +1,4 @@
+'use strict';
 var AutoPagerNS = typeof AutoPagerNS != "undefined"?AutoPagerNS:{};
 AutoPagerNS.is_global = function() {
     return false;

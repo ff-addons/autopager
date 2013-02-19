@@ -12,7 +12,7 @@ function AutopagerCOMP() {
 
 var autopagerHTTPListener = {
     headerName  : "X-AutoPager",
-    autopagerVersionValue : "0.8.0.3",
+    autopagerVersionValue : "0.8.0.4",
     observe: function(obj,subject, topic, data)
     {
         let os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
@@ -112,10 +112,10 @@ var autopagerHTTPListener = {
                 }
             case "app-startup": {
                     //os.addObserver(obj, "http-on-modify-request", true);
-                    os.addObserver(obj, "profile-after-change", true);
+                    os.addObserver(obj, "final-ui-startup", true);
                     break;
                 }
-            case "profile-after-change": {
+            case "final-ui-startup": {
                     os.addObserver(obj, "quit-application", true);
 //                    os.addObserver(obj, "http-on-modify-request", false);
 //                    os.addObserver(obj, "http-on-examine-response", false);
@@ -212,7 +212,7 @@ var autopagerHTTPListener = {
                             //                                
                             //                                //Me.LOG("compareDocumentPosition:" + b.contentDocument.compareDocumentPosition( wnd.document))
                             
-                            if (b!=null && b.contentDocument == wnd.document)
+                            if (b!=null && b.docShell && b.contentDocument == wnd.document)
                             {
                                 return b;
                             }
@@ -275,7 +275,7 @@ var autopagerHTTPListener = {
                 return this.shouldAccept(contentType, contentLocation,node);
             },
             shouldAccept: function(contentType, contentLocation,node)
-            {                
+            {
                 if (!node)
                     return Components.interfaces.nsIContentPolicy.ACCEPT;
                 if (contentType != Components.interfaces.nsIContentPolicy.TYPE_MEDIA
@@ -409,7 +409,7 @@ var autopagerHTTPListener = {
             },
 
             onLocationChange: function(progress, request, uri) 
-            {
+            {return;
                 const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
                 const nsIChannel = Components.interfaces.nsIChannel;
                 //if (flags & nsIWebProgressListener.STATE_IS_NETWORK) 

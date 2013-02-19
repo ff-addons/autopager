@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {
@@ -287,7 +288,9 @@ AutoPagerNS.apSplitbrowse = {
 
         //        if (AutoPagerNS.apSplitbrowse.cloneWithSessionStore(targetB, originalB))
         //            return;
-        var webNav = targetB.webNavigation;
+        if (!targetB.docShell)
+            return;
+        var webNav = targetB.docShell.QueryInterface(Components.interfaces.nsIWebNavigation);
         var newHistory = webNav.sessionHistory;
 
         newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
@@ -295,7 +298,7 @@ AutoPagerNS.apSplitbrowse = {
         // delete history entries if they are present
         if (newHistory.count > 0)
             newHistory.PurgeHistory(newHistory.count);
-        var originalHistory  = originalB.webNavigation.QueryInterface(Components.interfaces.nsIWebNavigation).sessionHistory;
+        var originalHistory  = originalB.docShell.QueryInterface(Components.interfaces.nsIWebNavigation).sessionHistory;
         originalHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
 
 

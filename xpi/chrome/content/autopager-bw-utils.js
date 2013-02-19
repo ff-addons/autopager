@@ -1,3 +1,4 @@
+'use strict';
 var autopagerBwUtil =
 {
     debug: false,
@@ -594,7 +595,9 @@ var autopagerBwUtil =
             container.addEventListener("TabSelect", listner, useCapture);
             var tabUnload = function(){
                 container.removeEventListener("TabSelect", listner, useCapture);
-                AutoPagerNS.do_get_current_window().removeEventListener("unload", tabUnload, false);
+                var w = AutoPagerNS.do_get_current_window()
+                if (w)
+                    w.removeEventListener("unload", tabUnload, false);
             }
             AutoPagerNS.do_get_current_window().addEventListener("unload", tabUnload ,false);
         }
@@ -641,9 +644,9 @@ sitewizard : function(doc) {
     changeSessionUrl: function (container, url,pagenum)
     {
         var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(container);
-        if (!browser)
+        if (!browser || !browser.docShell)
             return;
-        var webNav = browser.webNavigation;
+        var webNav = browser.docShell.QueryInterface(Components.interfaces.nsIWebNavigation);
         var newHistory = webNav.sessionHistory;
 
         newHistory = newHistory.QueryInterface(Components.interfaces.nsISHistoryInternal);
