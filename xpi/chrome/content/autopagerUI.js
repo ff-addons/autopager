@@ -1,4 +1,3 @@
-'use strict';
 const CI = Components.interfaces;
 const CC = Components.classes;
 

@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.strings = AutoPagerNS.extend (AutoPagerNS.namespace("strings"),{
     inited : false,
     init : function ()
@@ -10,6 +9,7 @@ AutoPagerNS.strings = AutoPagerNS.extend (AutoPagerNS.namespace("strings"),{
                 command:"commands"
             });
             this.inited = true;
+            AutoPagerNS.stringsfile.init();
         }
         return this;   
     }
@@ -134,13 +134,15 @@ AutoPagerNS.stringsfile = AutoPagerNS.extend (AutoPagerNS.namespace("stringsfile
             var url = AutoPagerNS.get_url("/locale/" + filename + "." + type); // + lang + "/"
             var xhr = autopagerUtils.newXMLHttpRequest();
             xhr.overrideMimeType('text/plan');
-            xhr.open("GET",url, false);
+            var Me = this;
+            xhr.onreadystatechange = function() {
+                Me.process(xhr.responseText, type);
+            };
+            xhr.open("GET",url, true);
             xhr.send(null);
-            this.process(xhr.responseText,type)
             
         }catch(e)
         {
-            alert("error load:" + url)
             autopagerBwUtil.consoleError("error load file:" + url +":" + e);
         }
 

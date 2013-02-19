@@ -1,4 +1,3 @@
-'use strict';
 var autopagerOptionUI = {
     init : function()
     {

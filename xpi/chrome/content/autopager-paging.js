@@ -1,4 +1,3 @@
-'use strict';
 //In GPL license
 var AutoPagring = function (site,doc)
 {
@@ -1402,7 +1401,7 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
             var Me = this
             div.addEventListener("click",function(e) {
                 Me.onBreakClick(e);
-            },false);
+            },true);
             //load preload xpaths, like //style for make WOT works
             
             var preXPath=autopagerMain.getPreloadXPaths();
@@ -2173,6 +2172,7 @@ AutoPagring.prototype.isImageNode = function(node)
 AutoPagring.prototype.onBreakClick = function(e)
 {
     var Me = this
+    var returnValue = true;
     function handler(node)
     {
         if (node && node.name == "xxAutoPagerimmedialate-load")
@@ -2218,6 +2218,19 @@ AutoPagring.prototype.onBreakClick = function(e)
         {
             AutoPagerNS.add_tab({url:autopagerPref.loadPref("repository-site") + "view?id=" + (typeof Me.site.id!="undefined"?Me.site.id:Me.site.guid) + "&s=review"})
         }
+        else if (node && node.tagName == "A" && node.textContent.match(/\xA0\xA0\xA0[0-9]+\xA0\xA0\xA0/))
+        {
+            //prevent the next page link in page break being handling by web site.
+            if (e.preventDefault)
+                e.preventDefault();
+            if (e.preventBubble)
+                e.preventBubble();
+            if (e.stopPropagation)
+                e.stopPropagation();
+            returnValue = false;
+            node.ownerDocument.location.href = node.href;
+            return true;
+        }
         else
             return false;
         return true;
@@ -2227,6 +2240,7 @@ AutoPagring.prototype.onBreakClick = function(e)
     {
         node = node.parentNode;
     }
+    return returnValue;
 }
 AutoPagring.prototype.loadPages = function (doc,pages)
 {

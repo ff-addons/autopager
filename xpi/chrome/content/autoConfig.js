@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.UpdateSites=
     {
     updateSites: null,

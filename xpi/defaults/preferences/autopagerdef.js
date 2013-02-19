@@ -38,7 +38,7 @@ pref("extensions.autopager.miniheight", "0.5");
 pref("extensions.autopager.defaultheight", "1");
 pref("extensions.autopager.minipages", "0");
 pref("extensions.autopager.simulateMouseDown",false);
-pref("extensions.autopager.show-workshop-in-sidebar",true);
+pref("extensions.autopager.show-workshop-in-sidebar",false);
 pref("extensions.autopager.tweaking-workshop-result-style",false);
 pref("extensions.autopager.show-nav-up",true);
 pref("extensions.autopager.show-nav-down",true);

@@ -1,4 +1,3 @@
-'use strict';
 //firefox global routers
 AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
     {
@@ -232,3 +231,4 @@ window.addEventListener("load", function(e) {
         toolbox.addEventListener("DOMNodeRemoved",autopagerBwUtil.toolbarDisableMonitor,false);               
     }
 }, false);
+

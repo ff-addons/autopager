@@ -1,4 +1,3 @@
-'use strict';
 var autopagerBwUtil =
 {
     debug: false,
@@ -445,10 +444,6 @@ var autopagerBwUtil =
             return;
         
         var apStatus = autopagerUtils.getStatus(enabled,siteenabeld,discoveredRules);
-        if (!autopagerPref.loadBoolPref("hide-toolbar-icon"))
-            autopagerToolbar.addAutopagerButton();
-        else
-            autopagerToolbar.removeAutopagerButton();
         if(!doc.getElementById("autopager-button"))
         {
 //            AutoPagerNS.buttons.setPageIcon(enabled,siteenabeld,discoveredRules,options);

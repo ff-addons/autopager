@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.language = AutoPagerNS.extend (AutoPagerNS.namespace("language"),
 {
     currentlang: "en-US",

@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {

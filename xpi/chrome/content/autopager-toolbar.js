@@ -1,4 +1,3 @@
-'use strict';
 var autopagerToolbar =
 {
     getBrowserDocument : function(){

@@ -1,4 +1,3 @@
-'use strict';
 var autopagerMain = 
 {
     autopagerDebug : false,
@@ -2405,7 +2404,7 @@ alertErr : function(e) {
   },
   showWorkshop : function()
   {
-    if (autopagerPref.loadBoolPref("show-workshop-in-sidebar"))
+    if (autopagerPref.loadBoolPref("show-workshop-in-sidebar") && typeof toggleSidebar!="undefined")
         toggleSidebar('autopagerSiteWizardSidebar');
     else
         autopagerBwUtil.openWorkshopInDialog();
