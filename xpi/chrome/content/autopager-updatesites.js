@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.AutoPagerUpdateType=function (type,defaultLocales,defaultUrl,contentType,filenamePrefix,callback,xpath,desc)
 {
     this.type=type;
@@ -103,17 +104,16 @@ AutoPagerNS.AutoPagerUpdateTypes =
         var repositories = new Array();
         var offlineMode = false;
         //always ask users to confirm the mode in mobile browsers
-        if (autopagerBwUtil.isMobileVersion())
+        //if (autopagerBwUtil.isMobileVersion())
         {
             var prompted = autopagerPref.loadBoolPref("mode-prompted");
             if (!prompted)
-            {
-                //autopagerLite.promptAutoPagerMode();
+            {                
                 offlineMode = true;
             }else if(autopagerPref.loadBoolPref("mode-no-repository"))
             {
                 offlineMode = true;
-            }                        
+            }
         }
         
 //            sites.push(new AutoPagerNS.AutoPagerUpdateSite("pagerization","all",

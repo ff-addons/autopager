@@ -2,31 +2,31 @@
 
 .autopager-status,.autopager-status[apstatus='ap-enabled']
 {
-  list-style-image: url("chrome://autopager/skin/autopager.png");    
+  list-style-image: url("chrome://autopager/skin/autopager.png") !important;    
 }
 .autopager-status[apstatus='ap-disabled']
 {
-  list-style-image: url("chrome://autopager/skin/autopager.off.png");    
+  list-style-image: url("chrome://autopager/skin/autopager.off.png") !important;    
 }
 .autopager-status[apstatus='ap-site-disabled']
 {
-  list-style-image: url("chrome://autopager/skin/autopager-site.off.png");    
+  list-style-image: url("chrome://autopager/skin/autopager-site.off.png") !important;    
 }
 .autopager-status[apstatus='ap-lite']
 {
-  list-style-image: url("chrome://autopager/skin/autopager.lite.png");    
+  list-style-image: url("chrome://autopager/skin/autopager.lite.png") !important;    
 }
 toolbar[iconsize="small"] .autopager-status,toolbar[iconsize="small"] .autopager-status[apstatus='ap-enabled'] {
-  list-style-image: url("chrome://autopager/skin/autopager-small.on.png");
+  list-style-image: url("chrome://autopager/skin/autopager-small.on.png") !important;
 }
 toolbar[iconsize="small"] .autopager-status[apstatus='ap-disabled'] {
-  list-style-image: url("chrome://autopager/skin/autopager-small.off.png");
+  list-style-image: url("chrome://autopager/skin/autopager-small.off.png")!important;
 }
 toolbar[iconsize="small"] .autopager-status[apstatus='ap-site-disabled'] {
-  list-style-image: url("chrome://autopager/skin/autopager-small-site.off.png");
+  list-style-image: url("chrome://autopager/skin/autopager-small-site.off.png") !important;
 }
 toolbar[iconsize="small"] .autopager-status[apstatus='ap-lite'] {
-  list-style-image: url("chrome://autopager/skin/autopager-small.lite.png");
+  list-style-image: url("chrome://autopager/skin/autopager-small.lite.png") !important;
 }
 
 #autopager-pageaction-fennec .pageaction-image {
@@ -35,7 +35,6 @@ toolbar[iconsize="small"] .autopager-status[apstatus='ap-lite'] {
 	padding: 4px;
 }
 #autopager-button-fennec.autopager-fennec {
-  -moz-border-radius: 8px;
   border: 2px solid #444;
   -moz-border-bottom-colors: #aaa #888;
   -moz-border-top-colors: #666 #444;
@@ -54,5 +53,5 @@ toolbar[iconsize="small"] .autopager-status[apstatus='ap-lite'] {
 }
 
 .popup-notification-icon[popupid="autopager-popup"] {
-  list-style-image: url("chrome://autopager/skin/autopager32.png");
+  list-style-image: url("chrome://autopager/skin/autopager32.png") !important;
 }

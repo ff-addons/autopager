@@ -406,10 +406,10 @@
                         oncommand="autopagerLite.openRulesSelector(content.document);"
                 />
             <menuitem id="autopagerlite-switchToNormal" label="&statusbar.menuitem.autopagerlite-switchToNormal.label;" tooltiptext="&statusbar.menuitem.autopagerlite-switchToNormal.tooltiptext;"
-                        oncommand="autopagerLite.switchToLite(content.document,false);"
+                        oncommand="autopagerLite.switchToLite(false);"
                 />
             <menuitem id="autopagerlite-switchToLite" label="&statusbar.menuitem.autopagerlite-switchToLite.label;" tooltiptext="&statusbar.menuitem.autopagerlite-switchToLite.tooltiptext;"
-                        oncommand="autopagerLite.switchToLite(content.document,true);"
+                        oncommand="autopagerLite.switchToLite(true);"
                 />
             <menuseparator class="autopager-sep-global"/>
             <menuitem id="autopager-enabled"

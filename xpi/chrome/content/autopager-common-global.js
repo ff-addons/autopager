@@ -1,3 +1,4 @@
+'use strict';
 //common routers for global pages
 AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("message_handlers"),{
     autopager_reportissue: function (request, sender, callback)
@@ -123,7 +124,7 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
     autopager_switch_to_lite : function(request, sender, callback)
     {
         var litemode = request.options.litemode
-        autopagerLite.switchToLite(document,litemode);
+        autopagerLite.switchToLite(litemode);
         if (callback)
             callback({
                 litemode:litemode
@@ -265,9 +266,9 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
         var options = request.options
         var changed = false;
         changed = autopagerPref.saveBoolPref("enabled",!options.disabled);
-        changed = changed || autopagerLite.switchToLite(document,options.litemode)
-        changed = changed || autopagerPref.saveBoolPref("hide-toolbar-icon",!options.showicon)
-        changed = changed || autopagerPref.savePref("ignoresites",options.ignoresites)
+        changed = autopagerLite.switchToLite(options.litemode) || changed;
+        changed = autopagerPref.saveBoolPref("hide-toolbar-icon",!options.showicon) || changed;
+        changed = autopagerPref.savePref("ignoresites",options.ignoresites) || changed;
         autopagerPref.saveBoolPref("disable-by-default",options.disable_by_default)
         autopagerPref.saveBoolPref("noprompt",options.noprompt)
         if (changed)
@@ -487,7 +488,6 @@ AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
         if (!autopagerPref.loadBoolPref("hide-toolbar-icon"))
         {
             try{
-//                autopagerBwUtil.consoleLog("update button")
                 this.updateButton(this.getIcon(enabled,site_enabled,discoveredRules,options));
             }catch(e){
                 autopagerBwUtil.consoleError("error set page icon:" + e)
@@ -609,7 +609,7 @@ AutoPagerNS.util = AutoPagerNS.extend (AutoPagerNS.namespace("util"),
                             doc = AutoPagerNS.getContentDocument();
                         }
                         if (doc)
-                            autopagerMain.onContentLoad(doc);
+                            autopagerMain.doContentLoad(doc);
                     }
                     AutoPagerNS.browser.open_alert(autopagerUtils.autopagerGetString('rulesupdated'),autopagerUtils.autopagerGetString('clicktotrynewrules'),autopagerPref.loadPref("repository-site"),callback)
                     break;

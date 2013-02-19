@@ -1,5 +1,6 @@
+'use strict';
 var autopagerUtils = {
-    version:"0.7.2.0",
+    version:"0.8.0.2",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -62,11 +63,11 @@ var autopagerUtils = {
     trim : function (str) {
         if (!str)
             return str;
-        var	str = str.replace(/^\s\s*/, ''),
+        var newstr = str.replace(/^\s\s*/, ''),
 		ws = /\s/,
-		i = str.length;
+		i = newstr.length;
 	while (ws.test(str.charAt(--i)));
-	return str.slice(0, i + 1);
+	return newstr.slice(0, i + 1);
     },
     getSmarttext: function(){
         return "autopager-next|" + autopagerPref.loadUTF8Pref("smarttext");  

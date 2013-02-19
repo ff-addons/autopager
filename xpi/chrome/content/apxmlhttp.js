@@ -1,3 +1,4 @@
+'use strict';
 
 AutoPagerNS.apxmlhttprequest=
 {

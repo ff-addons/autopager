@@ -1,3 +1,4 @@
+'use strict';
 //In GPL license
 var AutoPagring = function (site,doc)
 {
@@ -901,14 +902,17 @@ AutoPagring.prototype.insertLoadingBreak = function(doc) {
         var index = this.autopagerPage;
         if (this.hasContentXPath || this.autopagerPage==1)
         {
-            if (typeof this.relatedSearchOptions!="undefined" && this.relatedSearchOptions!=null)
-            {
-                this.performRelatedSearch(this.relatedSearchOptions,doc,index,div);
-            }
-            else
-            {
-                this.asyncRelatedSearch(doc,index,div);
-            }
+                if (!doc.getElementById("ap_related_" + index))
+                {
+                    if (typeof this.relatedSearchOptions!="undefined" && this.relatedSearchOptions!=null)
+                    {
+                        this.performRelatedSearch(this.relatedSearchOptions,doc,index,div);
+                    }
+                    else
+                    {
+                        this.asyncRelatedSearch(doc,index,div);
+                    }
+                }                
         }
         this.lastBreakStart = div;
     }
@@ -2141,11 +2145,26 @@ AutoPagring.prototype.loadLazyImages = function(node,lazyImgSrc)
 
     var images = autopagerXPath.evaluate(node,".//*[@" + lazyImgSrc + "]",false);
     for(var i=0;i<images.length;++i) {
-        images[i].setAttribute("src", images[i].getAttribute(lazyImgSrc));
+        var imgSrc = images[i].getAttribute(lazyImgSrc);
+        images[i].setAttribute("src", imgSrc);
         images[i].setAttribute(lazyImgSrc, null);
         //http://member.teesoft.info/phpbb/viewtopic.php?p=10797#10797
         images[i].style.visibility = 'visible';
+        //http://member.teesoft.info/phpbb/viewtopic.php?p=14249
+        if(!this.isImageNode(images[i])){
+            var alreadyLoaded = autopagerXPath.evaluate(images[i],".//img[@src='" + imgSrc + "']",false);
+            if (!alreadyLoaded || alreadyLoaded.length==0)
+            {
+                var img = images[i].ownerDocument.createElement("img");
+                img.setAttribute("src", imgSrc);
+                images[i].appendChild(img);                
+            }
+        }
     }
+}
+AutoPagring.prototype.isImageNode = function(node)
+{
+    return node && node.tagName && node.tagName.toLowerCase()=='img';
 }
 AutoPagring.prototype.onBreakClick = function(e)
 {
@@ -2193,7 +2212,7 @@ AutoPagring.prototype.onBreakClick = function(e)
             })
         }else if (node && node.name == "xxAutoPagerRate")
         {
-            AutoPagerNS.add_tab({url:autopagerPref.loadPref("repository-site") + "view?id=" +Me.site.id + "&s=review"})
+            AutoPagerNS.add_tab({url:autopagerPref.loadPref("repository-site") + "view?id=" + (typeof Me.site.id!="undefined"?Me.site.id:Me.site.guid) + "&s=review"})
         }
         else
             return false;
@@ -2211,7 +2230,7 @@ AutoPagring.prototype.loadPages = function (doc,pages)
 	if (this.autopagerPage!=null && this.autopagerPage!=0)
 		this.forceLoadPage += this.autopagerPage;
 
-        autopagerMain.onContentLoad(doc);
+        autopagerMain.doContentLoad(doc);
 	//doc.documentElement.setAttribute("autopagerEnabledSite", true);
     if (typeof this.scrollWatcher != "undefined")
 	this.scrollWatcher(doc);

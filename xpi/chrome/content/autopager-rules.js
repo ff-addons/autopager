@@ -1,3 +1,4 @@
+'use strict';
 var autopagerRules =
 {
     autopagerCOMP:null,
@@ -84,7 +85,7 @@ var autopagerRules =
     {
         if (!autopagerPref.loadBoolPref("with-lite-discovery"))
             return null;
-        if (!autopagerPref.loadBoolPref("lite-discovery-prompted"))
+        if (!autopagerPref.loadBoolPref("mode-prompted") || !autopagerPref.loadBoolPref("lite-discovery-prompted"))
         {
 //            //use chrome notification api if there are
 //            safari.windows.getCurrent(function(w){

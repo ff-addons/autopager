@@ -1,9 +1,28 @@
+'use strict';
 var autopagerToolbar =
 {
+    getBrowserDocument : function(){
+        var doc;
+        if(typeof document=="undefined")
+        {
+            if (typeof AutoPagerNS.getBrowserDocument=="undefined")
+                return;
+            else
+                doc = AutoPagerNS.getBrowserDocument();
+        }else
+            doc = document;
+        return doc;
+    }
+    ,
     addAutopagerButton : function() {
-        var toolbox = document.getElementById("navigator-toolbox");
+        var doc = this.getBrowserDocument();
+        if (!doc)
+            return;
+        var toolbox = doc.getElementById("navigator-toolbox");
         if (!toolbox)
             return;
+        if (AutoPagerNS.toolbar && !AutoPagerNS.toolbar.button)
+            AutoPagerNS.toolbar.init();
         var toolboxDocument = toolbox.ownerDocument;
 
         var hasAutopagerButton = false;
@@ -43,7 +62,12 @@ var autopagerToolbar =
         }
     },
     removeAutopagerButton : function() {
-        var toolbox = document.getElementById("navigator-toolbox");
+        var doc = this.getBrowserDocument();
+        if (!doc)
+            return;
+        var toolbox = doc.getElementById("navigator-toolbox");
+        if (!toolbox)
+            return;
         var toolboxDocument = toolbox.ownerDocument;
 
         var hasAutopagerButton = false;
@@ -135,7 +159,13 @@ AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
             AutoPagerNS.browser.removeEventListener("load", domLoad, false);
             try
             {
-                setTimeout(autopagerToolbar.autopagerToobarInit, 1000);
+                if (typeof setTimeout != "undefined")
+                    setTimeout(autopagerToolbar.autopagerToobarInit, 1000);
+                else if (AutoPagerNS.get_current_window)
+                    AutoPagerNS.get_current_window(function(window){
+                        window.setTimeout(autopagerToolbar.autopagerToobarInit, 1000);
+                    });
+                    
             }catch(e){
                 autopagerBwUtil.consoleError("DOMContentLoaded with error:" + e)
             }

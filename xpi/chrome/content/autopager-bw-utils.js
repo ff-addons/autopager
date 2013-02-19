@@ -1,3 +1,4 @@
+'use strict';
 var autopagerBwUtil =
 {
     debug: false,
@@ -102,67 +103,21 @@ var autopagerBwUtil =
     {
         if (typeof Components == "object")
         {
-            var wm =  Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator);
-            var w = wm && wm.getMostRecentWindow('navigator:browser', true);
-            var b = null
-            if(w && !w.closed)
+            if (url)
             {
-                b = w.getBrowser();//w.getBrowser();
-            }else if (typeof getBrowser!="undefined")
-                b = getBrowser();
-
-            if (b)
-            {
-                var b = w.getBrowser();//w.getBrowser();
-                var ioService = Components.classes["@mozilla.org/network/io-service;1"]
-                .getService(Components.interfaces.nsIIOService);
-                var ops = ioService.newURI("http://www.teesoft.info", null, null);
-                var uri = ioService.newURI(url, null, null);
-                var tab = null;
-                if (typeof b.addTab !="undefined")
+                var focus = (!obj || typeof obj.focus=="undefined" || obj.focus);
+                var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+                var mainWindow = wm.getMostRecentWindow("navigator:browser");
+                var browser = (mainWindow && mainWindow.gBrowser)? mainWindow.gBrowser : mainWindow.BrowserApp;
+                if (browser)
                 {
-                    try{
-                        tab = b.addTab(url,ops);
-                        b.selectedTab = tab;
-                    }catch(e)
-                    {
-                        if (window.Browser && window.Browser._content)
-                        {
-                            tab = window.Browser._content.newTab(true);
-                        }
-                    }
+                    var tab = browser.addTab(url);
+                    if (focus)
+                        browser.selectedTab = tab;
+                    return tab;
+                }else{
+                    return AutoPagerNS.window.open(url,'_blank');
                 }
-                else if (window.Browser && window.Browser._content)
-                {
-                    try{
-                        tab = window.Browser._content.newTab(true);
-                        if (tab) {
-                            var content = Browser._content;
-                            var b = content.getBrowserForDisplay(content.getDisplayForTab(tab));
-                            newWindow = b.contentWindow;
-                        }
-                        newWindow.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
-                        .getInterface(Components.interfaces.nsIWebNavigation)
-                        .loadURI(uri.spec,
-                            Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE,
-                            null, null, null);
-                        newWindow.focus();
-                        return true;
-                    }catch(e)
-                    {
-                        autopagerBwUtil.consoleError(e)
-                    }
-                }else if (Browser && Browser.addTab)
-                {
-                    tab = Browser.addTab(url,ops);
-                }
-                else
-                {
-                    return window.open(url, "_blank")!=null;
-                }
-                return tab;
-            } else {
-                return window.open(url, "_blank")!=null;
             }
         }
         else
@@ -239,12 +194,12 @@ var autopagerBwUtil =
         try{
             return JSON.parse(str);
         }catch(e){
+            this.consoleLog("error parser:" +e + ":"  + str)
             if (Components && Components.classes["@mozilla.org/dom/json;1"])
             {
                 var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
                 return nativeJSON.decode(str);
             }
-            this.consoleLog("error parser:" +e + ":"  + str)
             throw "unable to parser str";
         }
     }
@@ -359,9 +314,9 @@ var autopagerBwUtil =
     {
         //AutoPager supported browser id
         //Firefox 0, Fennec 1, MicroB 2, Chrome 3
-        if  (navigator.userAgent.indexOf(" Fennec/")!=-1)
+        if  (AutoPagerNS.window.navigator.userAgent.indexOf(" Fennec/")!=-1)
             return 1;
-        if (navigator.userAgent.indexOf(" Maemo/")!=-1)
+        if (AutoPagerNS.window.navigator.userAgent.indexOf(" Maemo/")!=-1)
             return 2;
         return 0;
     }
@@ -428,7 +383,7 @@ var autopagerBwUtil =
 //                }
         }
         var priority = notificationBox.PRIORITY_INFO_MEDIUM;
-        notificationBox.appendNotification(message, "autopager-lite-discovery",
+        notificationBox.appendNotification(message, id,
             "chrome://autopager/skin/autopager32.png",
             priority, buttons);
     }
@@ -470,15 +425,47 @@ var autopagerBwUtil =
         }
         return this.addonsList;
     },
-    updateStatus : function(enabled,siteenabeld,discoveredRules,options) {
+    getBrowserDocument : function(){
+        var doc;
+        if(typeof document=="undefined")
+        {
+            if (typeof AutoPagerNS.getBrowserDocument=="undefined")
+                return;
+            else
+                doc = AutoPagerNS.getBrowserDocument();
+        }else
+            doc = document;
+        return doc;
+    }
+    ,
+    updateStatus : function(enabled,siteenabeld,discoveredRules,options) {        
+      AutoPagerNS.buttons.setPageIcon(enabled,siteenabeld,discoveredRules,options);
+      var doc = this.getBrowserDocument();
+        if (!doc)
+            return;
+        
         var apStatus = autopagerUtils.getStatus(enabled,siteenabeld,discoveredRules);
+        if (!autopagerPref.loadBoolPref("hide-toolbar-icon"))
+            autopagerToolbar.addAutopagerButton();
+        else
+            autopagerToolbar.removeAutopagerButton();
+        if(!doc.getElementById("autopager-button"))
+        {
+//            AutoPagerNS.buttons.setPageIcon(enabled,siteenabeld,discoveredRules,options);
+            return ;
+        }
 //        autopagerBwUtil.consoleLog("updateStatus:" + apStatus) 
-        var autopagerButton = document.getElementById("autopager-button");
-        var autopagerButton2= document.getElementById("autopager-button-fennec");
+        var autopagerButton = doc.getElementById("autopager-button");
+        if (autopagerButton){
+            autopagerButton.setAttribute("tooltiptext",
+            autopagerLite.isInLiteMode()? autopagerUtils.autopagerGetString("statusbar.menuitem.autopagerlite-discover.label"):
+                            autopagerUtils.autopagerGetString("autopager.tooltip"));
+        }
+        var autopagerButton2= doc.getElementById("autopager-button-fennec");
         if (autopagerButton2){
             //autopagerButton2.setAttribute("hidden", !autopagerLite.isInLiteMode());
         }
-        var autopagerButton3= document.getElementById("autopager-pageaction-fennec");
+        var autopagerButton3= doc.getElementById("autopager-pageaction-fennec");
         if (autopagerButton3)
         {
             var status = (!enabled || !siteenabeld)?"disabled":"enabled";
@@ -494,7 +481,7 @@ var autopagerBwUtil =
             
             var statusText = autopagerUtils.autopagerFormatString("autopagerstatus",[ status,hostDisapley ])
             autopagerButton3.setAttribute("title", statusText);
-            var autopagerButton4= document.getElementById("autopager-site-enable-popup");
+            var autopagerButton4= doc.getElementById("autopager-site-enable-popup");
             if (autopagerButton4)
             {
                 if (host)
@@ -516,7 +503,7 @@ var autopagerBwUtil =
             }
         }
 //        autopagerBwUtil.consoleLog("updateStatus autopagerButton3:" + autopagerButton3) 
-        var image = document.getElementById("autopager_status");
+        var image = doc.getElementById("autopager_status");
         if (autopagerButton!=null || image!=null || autopagerButton2!=null || autopagerButton3!=null)
         {
             this.changeButtonStatus(autopagerButton,apStatus);
@@ -539,13 +526,14 @@ var autopagerBwUtil =
     }
     ,
     showStatus : function(){
-            var statusBar = document.getElementById("autopager_status");
+        var doc = this.getBrowserDocument();
+            var statusBar = doc.getElementById("autopager_status");
             if (statusBar!=null)
                 statusBar.hidden = autopagerPref.loadBoolPref("hide-status");
-            var separator1 = document.getElementById("autopager-context-separator1");
+            var separator1 = doc.getElementById("autopager-context-separator1");
             if (separator1!=null)
                 separator1.hidden = autopagerPref.loadBoolPref("hide-context-menu");
-            var menu = document.getElementById("autopager-context-menu");
+            var menu = doc.getElementById("autopager-context-menu");
             if (menu!=null)
                 menu.hidden = autopagerPref.loadBoolPref("hide-context-menu");
 
@@ -571,27 +559,45 @@ var autopagerBwUtil =
         if (typeof callback == "undefined")
             return;
         var container = null;
+        var browser = null;
         if (typeof gBrowser != 'undefined' && gBrowser.tabContainer)
-            container = gBrowser.tabContainer;
-        else if (typeof getBrowser != 'undefined' && getBrowser() && getBrowser().mTabContainer)
-            container = getBrowser().mTabContainer;
-        //FF 15 strict mode doesn't allow function in if branch, so move it here
-        function listner(event)
         {
-            if (gBrowser && gBrowser.selectedTab && gBrowser.selectedTab.linkedBrowser)
+            browser = gBrowser;
+            container = browser.tabContainer;
+        }
+        else{
+            var w = AutoPagerNS.do_get_current_window();
+            if (w)
             {
-                var doc = gBrowser.selectedTab.linkedBrowser.contentDocument
-                callback(doc)
+                if(w.gBrowser){
+                    browser = w.gBrowser;
+                    container = browser.tabContainer;                    
+                }else if (w.BrowserApp){
+                    browser = w.BrowserApp;
+                    container = browser.deck;   
+                }
             }
         }
         if (container)
         {
+            var listner=function(event)
+            {
+                if (browser && browser.selectedTab && browser.selectedTab.linkedBrowser)
+                {
+                    var doc = browser.selectedTab.linkedBrowser.contentDocument;
+                    callback(doc);
+                }else if (browser && browser.selectedTab && browser.selectedTab.browser)
+                {
+                    var doc = browser.selectedTab.browser.contentDocument;
+                    callback(doc);
+                }
+            };
             container.addEventListener("TabSelect", listner, useCapture);
             var tabUnload = function(){
-                window.removeEventListener("unload", tabUnload, false);
                 container.removeEventListener("TabSelect", listner, useCapture);
+                AutoPagerNS.do_get_current_window().removeEventListener("unload", tabUnload, false);
             }
-            window.addEventListener("unload", tabUnload ,false);
+            AutoPagerNS.do_get_current_window().addEventListener("unload", tabUnload ,false);
         }
     },
     createXpath : function(doc) {
@@ -704,8 +710,23 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
     ,
     isHTMLDocument : function(doc)
     {
-        if (typeof doc=="undefined" || !doc || typeof doc.documentElement=="undefined")
+        if (typeof doc=="undefined" || !doc)
             return false;
+        if (typeof HTMLDocument !="undefined" && (!(doc instanceof HTMLDocument)))
+            return false;
+        else{
+            return (typeof doc.documentElement!="undefined");
+        }
+        if (typeof XULElement !="undefined" && (doc instanceof XULElement))
+            return false;
+        if (typeof XULElement !="undefined" && (doc instanceof XULElement))
+            return false;
+        if (typeof Event !="undefined" && (doc instanceof Event))
+            return false;
+        if (typeof doc.documentElement=="undefined")
+        {
+            return false;
+        }
         try{            
             return (/[Hh][Tt][Mm][Ll]Element/.test(doc.documentElement.toString()));
         }catch(e){

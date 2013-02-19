@@ -1,33 +1,69 @@
+'use strict';
 var autopagerOptions =
 {   
     options : {},
-    onload : function ()
+    onload : function (document)
     {
 //        autopagerBwUtil.consoleLog("load options 1")
-        var Me = this
+        var Me = this;
+        
         var onOptions= function(options){
+            var onSaveChange = function ()
+            {
+                var enabled = document.getElementById("autopager-enabled");
+                if (enabled)
+                    options.disabled = !enabled.checked;
+                var lite = document.getElementById("autopager-lite");
+                if (lite)
+                    options.litemode = lite.checked;
+                var showicon = document.getElementById("autopager-showicon");
+                if (showicon)
+                    options.showicon = showicon.checked;
+
+                var ignoresites = document.getElementById("ignoresites");
+                if (ignoresites)
+                {
+                    options.ignoresites = ignoresites.value;
+                }
+                var showprompt = document.getElementById("autopager-showprompt");
+                if (showprompt)
+                {
+                    options.noprompt = !showprompt.checked;
+                }
+                var disableOnDefault = document.getElementById("autopager-disable-on-default");
+                if (disableOnDefault)
+                {
+                    options.disable_by_default = disableOnDefault.checked;
+                }
+                var disableOnDefaultDiv = document.getElementById("autopager-disable-on-default-div");
+                if(disableOnDefaultDiv)
+                {
+                    disableOnDefaultDiv.style.display = options.noprompt?"block":"none";
+                } 
+                autopagerOptions.call_function("autopager_set_options",
+                    options);
+            };
 //            autopagerBwUtil.consoleLog("load options 2")
-            autopagerTranslate.translateDefault();
-            Me.options = options
+            autopagerTranslate.translate(document);
 //            autopagerBwUtil.consoleLog("load options 3")
             var enabled = document.getElementById("autopager-enabled");
             if (enabled)
             {
                 enabled.checked= !options.disabled;
-                enabled.addEventListener("change", Me.onSaveChange, false)
+                enabled.addEventListener("change", onSaveChange, false)
             }
             var lite = document.getElementById("autopager-lite");
             if (lite)
             {
                 lite.checked=options.litemode;
-                lite.addEventListener("change", Me.onSaveChange, false)
+                lite.addEventListener("change", onSaveChange, false)
             }
 
             var showicon = document.getElementById("autopager-showicon");
             if (showicon)
             {
                 showicon.checked = options.showicon;//!autopagerPref.loadBoolPref("hide-toolbar-icon");
-                showicon.addEventListener("change", Me.onSaveChange, false)
+                showicon.addEventListener("change", onSaveChange, false)
             }
 
             var ignoresites = document.getElementById("ignoresites");
@@ -40,24 +76,23 @@ var autopagerOptions =
             if (showprompt)
             {
                 showprompt.checked = !options.noprompt;
-                showprompt.addEventListener("change", Me.onSaveChange, false)
+                showprompt.addEventListener("change", onSaveChange, false)
             }
             var disableOnDefault = document.getElementById("autopager-disable-on-default");
             if (disableOnDefault)
             {
                 disableOnDefault.checked = options.disable_by_default;
-                disableOnDefault.addEventListener("change", Me.onSaveChange, false)
+                disableOnDefault.addEventListener("change", onSaveChange, false)
             }
             var disableOnDefaultDiv = document.getElementById("autopager-disable-on-default-div")
             if(disableOnDefaultDiv)
             {
                 disableOnDefaultDiv.style.display = options.noprompt?"block":"none";
             }                    
-
+            var saveignores = document.getElementById("saveignores");
+            if (saveignores)
+                saveignores.addEventListener("click", onSaveChange, false)
         }
-        var saveignores = document.getElementById("saveignores");
-        if (saveignores)
-            saveignores.addEventListener("click", Me.onSaveChange, false)
         
 
 //        autopagerBwUtil.consoleLog("load options 4")
@@ -248,44 +283,7 @@ var autopagerOptions =
             AutoPagerNS.message.call_function("autopager_get_repositories",
             {},outputRepository)
         }
-        
-    }
-    ,
-    onSaveChange : function ()
-    {
-        var options = autopagerOptions.options
-        var enabled = document.getElementById("autopager-enabled");
-        if (enabled)
-            options.disabled = !enabled.checked
-        var lite = document.getElementById("autopager-lite");
-        if (lite)
-            options.litemode = lite.checked
-        var showicon = document.getElementById("autopager-showicon");
-        if (showicon)
-            options.showicon = showicon.checked
-        
-        var ignoresites = document.getElementById("ignoresites");
-        if (ignoresites)
-        {
-            options.ignoresites = ignoresites.value
-        }
-        var showprompt = document.getElementById("autopager-showprompt");
-        if (showprompt)
-        {
-            options.noprompt = !showprompt.checked;
-        }
-        var disableOnDefault = document.getElementById("autopager-disable-on-default");
-        if (disableOnDefault)
-        {
-            options.disable_by_default = disableOnDefault.checked;
-        }
-        var disableOnDefaultDiv = document.getElementById("autopager-disable-on-default-div")
-        if(disableOnDefaultDiv)
-        {
-            disableOnDefaultDiv.style.display = options.noprompt?"block":"none";
-        } 
-        autopagerOptions.call_function("autopager_set_options",
-            options)   
+                
     }    
     ,
     clearRules : function ()
@@ -418,7 +416,7 @@ AutoPagerNS.options = AutoPagerNS.extend (AutoPagerNS.namespace("options"),
 //        autopagerBwUtil.consoleLog("content options post_init")
         var contentDomload = function(ev) {            
 //            autopagerBwUtil.consoleLog("content DOMContentLoaded options")
-            AutoPagerNS.browser.removeEventListener("DOMContentLoaded", contentDomload, false);
+            //AutoPagerNS.browser.removeEventListener("DOMContentLoaded", contentDomload, false);
                 
             AutoPagerNS.message.call_function("autopager_get_addon_urlprefix",{},function(options){
                 try
@@ -434,7 +432,7 @@ AutoPagerNS.options = AutoPagerNS.extend (AutoPagerNS.namespace("options"),
                         {
 //                        autopagerBwUtil.consoleLog("load options")
             
-                        autopagerOptions.onload();
+                        autopagerOptions.onload(doc);
                     }
                 }catch(e){}
             })

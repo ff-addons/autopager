@@ -1,3 +1,4 @@
+'use strict';
 var autopagerRelated =
 {
     relatedSearch: "http://api.search.live.net/json.aspx?Appid=41CC52599D6F30EE0E2C7D7F1C4DDCB97F98992B&query=autopager&Sources=RelatedSearch",
@@ -33,17 +34,17 @@ var autopagerRelated =
             return;
         var url = discoverUrl.replace(/{query}/g,options.searchQuery.replace(/ /g, '+'))
 
-        var xhr = new window.XMLHttpRequest();
+        var xhr = autopagerUtils.newXMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 var texts = []
                 try{
                     var ss = autopagerBwUtil.decodeJSON(xhr.responseText)
-                    var results = ss.SearchResponse.RelatedSearch.Results
+                    var results = ss[1]
                     for(var i in results)
                     {
-                        texts.push(results[i].Title)
+                        texts.push(results[i])
                         if (texts.length==8)
                             break;
                     }                    

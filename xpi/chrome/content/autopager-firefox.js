@@ -1,3 +1,4 @@
+'use strict';
 //firefox global routers
 AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
     {
@@ -47,7 +48,7 @@ autopagerRules = AutoPagerNS.extend (autopagerRules,
     {
         if (autopagerPref.loadBoolPref("with-lite-discovery"))
         {
-            if (autopagerPref.loadBoolPref("lite-discovery-prompted"))
+            if (autopagerPref.loadBoolPref("mode-prompted") && autopagerPref.loadBoolPref("lite-discovery-prompted"))
             {
                 this.doDiscoverRule(url,matchCallBack);
             }

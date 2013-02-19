@@ -1,7 +1,8 @@
+'use strict';
 var AutoPagerNS = typeof AutoPagerNS != "undefined"?AutoPagerNS:{};
 AutoPagerNS.is_global = function() {
     return false;
-}
+};
 AutoPagerNS.namespace = function(ns) {
     if (!ns || !ns.length) {
         return null;
@@ -34,16 +35,17 @@ AutoPagerNS.createDelegate = function(instance, method)
     return function()
     {
         return method.apply(instance, arguments);
-    }
-}
+    };
+};
 
 AutoPagerNS.extend  = function(destination, source) {
+    if (typeof destination=="undefined") destination = {};
     for (var property in source) {
         if (property=="post_init")
         {
             if (typeof destination["_post_inits"] == "undefined")
             {
-                destination["_post_inits"] = []
+                destination["_post_inits"] = [];
                 destination["post_init"]= function(){
                     var inits = destination["_post_inits"];
                     for(var i in inits)
@@ -52,10 +54,10 @@ AutoPagerNS.extend  = function(destination, source) {
                             if (inits[i])
                                 inits[i].apply(destination,arguments);
                         }catch(e){
-                            autopagerBwUtil.consoleError(e)
+                            autopagerBwUtil.consoleError(e);
                         }
                     }
-                }                
+                };
             }
             destination["_post_inits"].push(source[property]);
         }
@@ -63,13 +65,13 @@ AutoPagerNS.extend  = function(destination, source) {
             if (destination[property])
             {
                 if (!destination["superObj"])
-                    destination["superObj"]={}
-                var p = source[property]
+                    destination["superObj"]={};
+                var p = source[property];
                 if (typeof destination[property] == "function")
                 {
-                    p = AutoPagerNS.createDelegate(destination,destination[property])
+                    p = AutoPagerNS.createDelegate(destination,destination[property]);
                 }
-                destination["superObj"][property] = p
+                destination["superObj"][property] = p;
             }           
             destination[property] = source[property];
         }
@@ -78,10 +80,10 @@ AutoPagerNS.extend  = function(destination, source) {
 };
 AutoPagerNS.enableEvents = function(obj)
 {
-    AutoPagerNS.extend(obj,{
+    return AutoPagerNS.extend(obj,{
         _eventListenters : [],
         attachEventListener :function(event,method,allowblock,instance){
-            this._eventListenters.push({event:event,method:method,allowblock:allowblock,instance:instance})
+            this._eventListenters.push({event:event,method:method,allowblock:allowblock,instance:instance});
         }
         ,
         detachEventListener :function(event,method,allowblock,instance){
@@ -115,25 +117,36 @@ AutoPagerNS.enableEvents = function(obj)
                         if (el.allowblock && ret)
                             return true;                        
                     }catch(e){
-                        autopagerBwUtil.consoleError(e)
+                        autopagerBwUtil.consoleError(e);
                     }
                 }
             }
             return false;
         }
+        ,
+        getEventListenters : function(){
+            return this._eventListenters;
+        }
     });
-}
+};
 AutoPagerNS.namespace("util");
 AutoPagerNS.namespace("strings");
 
 AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
-    window: typeof window != "undefined" ? window : typeof content != "undefined"? content:undefined
+    window: typeof window != "undefined" ? window : typeof content != "undefined"? content:{}
     ,
-    getDocument: function(){return (AutoPagerNS.get(this.window,"document") || typeof document != "undefined" ? document : undefined);}
+    getDocument: function(){var doc =AutoPagerNS.get(this.window,"document"); if (doc) return doc; else return ((typeof document != "undefined") ? document : undefined);}
     ,
     document: AutoPagerNS.get(this.window,"document") || typeof document != "undefined" ? document : undefined
     ,
     getContentDocument : function() {return ((typeof content != "undefined") && content && (typeof content.document != "undefined")) ? content.document:this.getDocument();}
+    ,
+    getContentWindow : function() {
+        var win = typeof window != "undefined" ? window : typeof content != "undefined"? content:null;
+        if (win)
+            return win;
+        return null;
+    }
     ,
     XPathResult : typeof XPathResult != "undefined" ? XPathResult : AutoPagerNS.get(this.window,"XPathResult") || {    
         ANY_TYPE 	:0,
@@ -169,10 +182,10 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
         //can be override in each browser implementation
         if (!callback)
             return;
-        var ws = this.do_get_windows()
+        var ws = this.do_get_windows();
         for(var k in ws)
         {
-            callback(ws[k])
+            callback(ws[k]);
         }
     }
     ,
@@ -181,10 +194,10 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
         //can be override in each browser implementation
         if (!callback)
             return;
-        var tabs = this.do_get_tabs(win)
+        var tabs = this.do_get_tabs(win);
         for(var k in tabs)
         {
-            callback(win,tabs[k])
+            callback(win,tabs[k]);
         }
     }
     ,
@@ -206,7 +219,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     {
         if (callback)
         {
-            callback(this.do_get_current_window())
+            callback(this.do_get_current_window());
         }
     }
     ,
@@ -214,7 +227,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     {
         if (callback)
         {
-            callback(this.do_get_current_tab())
+            callback(this.do_get_current_tab());
         }
     }
     ,
@@ -232,7 +245,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     ,
     get_tab_url : function (tab) //get tab_url
     {
-        var doc = this.get_tab_content(tab)
+        var doc = this.get_tab_content(tab);
         if (doc && doc.location && doc.location.href)
             return doc.location.href;
         return null;
@@ -253,7 +266,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     {
         if (callback)
         {
-            callback(this.do_get_accept_languages())
+            callback(this.do_get_accept_languages());
         }
     }
     ,
@@ -261,9 +274,9 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     {
         var lang = "en-US";
         if (typeof navigator!="undefined" && navigator && navigator.language)
-            lang = navigator.language
+            lang = navigator.language;
         else if (typeof AutoPagerNS.window.navigator!="undefined" && AutoPagerNS.window.navigator && AutoPagerNS.window.navigator.language)
-            lang = AutoPagerNS.window.navigator.language
+            lang = AutoPagerNS.window.navigator.language;
         return [lang];
     }
     ,
@@ -274,7 +287,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
     , 
     newXMLHttpRequest: function()
     {
-        var xmlhttp = null
+        var xmlhttp = null;
         try{
             xmlhttp = new AutoPagerNS.window.XMLHttpRequest();
         }catch(e){
@@ -284,11 +297,11 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");                          
             }
         }
-        return xmlhttp
+        return xmlhttp;
     },
     createWindow : function(url,name,specs,replace)
     {
-        return window.open(url,name,specs,replace)
+        return window.open(url,name,specs,replace);
     },
     add_tab : function(options)
     {
@@ -300,7 +313,7 @@ AutoPagerNS = AutoPagerNS.extend(AutoPagerNS,{
                 return autopagerBwUtil.autopagerOpenIntab(options.url);
         }
     }    
-})
+});
 
 //include gloable function like addEventListener/removeEventListener on window
 AutoPagerNS.browser = AutoPagerNS.extend(AutoPagerNS.namespace("browser"),{
@@ -316,7 +329,7 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
     call_function : function(fn,options,callback)
     {
 //        autopagerBwUtil.consoleLog("call_function:" + fn)
-        this.call_function_on_object(fn,options,callback)
+        this.call_function_on_object(fn,options,callback);
     }
     ,call_function_on_object : function(fn,options,callback,messager)
     {
@@ -328,37 +341,38 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
             for(var i=0;i<6;i++)
                 subfix += Math.floor(Math.random()*16).toString(16).toUpperCase();
             options.callback=fn + "_" + subfix;
-            this.callbacks[options.callback] = callback
+            this.callbacks[options.callback] = callback;
             this.callbacks.length++;
         }
         var msg = {
                 fn:fn,
                 options:options
-            }
+            };
         try{
-            this.do_call_function_on_object(messager,this.msgname,msg)
+            this.do_call_function_on_object(messager,this.msgname,msg);
         }catch(e){
-            autopagerBwUtil.consoleError("error call_function_on_object:" + fn + ":" + messager + ":" + e) 
+            autopagerBwUtil.consoleError("error call_function_on_object:" + fn + ":" + messager + ":" + e) ;
         }
     }
     ,handle_callback : function (data)
     {
-        var callback = this.callbacks[data.fn]
+        var callback = this.callbacks[data.fn];
 //        autopagerBwUtil.consoleLog("handle_callback:" + data.fn + ":" + callback)
         if (callback)
         {
-            delete this.callbacks[data.fn]
+            delete this.callbacks[data.fn];
             
-            callback(data.options)
+            callback(data.options);
         }   
     }
     ,broadcastMessage : function(fn,options,callback)
-    {var me = this
+    {
+        var me = this;
         AutoPagerNS.walk_windows(function(w){
             AutoPagerNS.walk_tabs(w,function(win,tab){
-                me.call_function_on_object(fn,options,callback,AutoPagerNS.get_messager(tab))
-            })
-        })        
+                me.call_function_on_object(fn,options,callback,AutoPagerNS.get_messager(tab));
+            });
+        });
     }
     ,prepareOptions : function (fn,options,callback,messager)
     {
@@ -371,9 +385,9 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
         {
             var location = AutoPagerNS.window.location;
             if (!options["host"] && location.host )
-                options["host"] = location.host
+                options["host"] = location.host;
             if (!options["url"] && location.href )
-                options["url"] = location.href            
+                options["url"] = location.href;      
         }
         return options;
     }
@@ -386,13 +400,13 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
             return;
         if (request.fn_res)
         {
-            this.handle_callback(request)                                 
+            this.handle_callback(request);
         }
-        else if (AutoPagerNS.message_handlers[request.fn])
+        else if (AutoPagerNS.namespace("message_handlers")[request.fn])
         {
-            var options = request.options
-            var Me = this
-            AutoPagerNS.message_handlers[request.fn](request, sender,function(msg){
+            var options = request.options;
+            var Me = this;
+            AutoPagerNS.namespace("message_handlers")[request.fn](request, sender,function(msg){
                 if (options.callback)
                 {
 //                    autopagerBwUtil.consoleLog("call back:" + request.fn + " " + msg + " on " + sender)
@@ -415,7 +429,7 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
     {
         if (AutoPagerNS.browser.open_alert)
         {
-            var options = request.options
+            var options = request.options;
             AutoPagerNS.browser.open_alert(options.title,options.message,options.link,callback,options);            
         }        
     }
@@ -423,25 +437,24 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
     {
         if (AutoPagerNS.browser.open_notification)
         {
-            var options = request.options
+            var options = request.options;
             AutoPagerNS.browser.open_notification(options.id,options.message,options.buttons,callback,options);            
         }        
     }
-})
+});
 
 AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
 {
     updateButton : function (icon)
     {
-        var item = this.getButton()
-//        autopagerBwUtil.consoleLog("updateButton:" + item + ":" + icon)
+        var item = this.getButton();
         if (!item)
-            this.addButton(icon)
+            this.addButton(icon);
         else
             if (typeof icon!="undefined")
             {
                 try{
-                    this.setButtonIcon(item, icon)
+                    this.setButtonIcon(item, icon);
                 }catch(e){
 //                    autopagerBwUtil.consoleLog("updateButton:" + item + ":" + icon + " with error:" +e)
                     this.removeButton();
@@ -467,4 +480,4 @@ AutoPagerNS.buttons = AutoPagerNS.extend (AutoPagerNS.namespace("buttons"),
     {
         //need be implemented in each browser implementation
     }
-})
+});

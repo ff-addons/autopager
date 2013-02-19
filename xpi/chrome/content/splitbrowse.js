@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {
@@ -246,7 +247,9 @@ AutoPagerNS.apSplitbrowse = {
             cacheKeyNum = aEntry.cacheKey.QueryInterface(Components.interfaces.nsISupportsPRUint32).data;
         }
         var cacheKey = Components.classes['@mozilla.org/supports-PRUint32;1'].createInstance(Components.interfaces.nsISupportsPRUint32);
-        cacheKey.type = cacheKey.TYPE_PRUINT32;
+        try{
+            cacheKey.type = 12;//cacheKey.TYPE_PRUINT32;            
+        }catch(e){}
         cacheKey.data = parseInt(cacheKeyNum);
         cacheKey = cacheKey.QueryInterface(Components.interfaces.nsISupports);
         newEntry.cacheKey         = cacheKey;
@@ -647,11 +650,12 @@ AutoPagerNS.splitpanelProgressListener.prototype = {
 //        autopagerBwUtil.consoleError("aStateFlags=" + aStateFlags +  ",aStatus=" + aStatus);
         const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
         const nsIChannel = Components.interfaces.nsIChannel;
-        if (aStateFlags & nsIWebProgressListener.STATE_START &&
-            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
-            AutoPagerNS.apSplitbrowse.start(this);
-            return;
-        } else if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
+//        if (aStateFlags & nsIWebProgressListener.STATE_START &&
+//            aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK) {
+//            AutoPagerNS.apSplitbrowse.start(this);
+//            return;
+//        } else 
+        if (aStateFlags & nsIWebProgressListener.STATE_STOP &&
             aStateFlags & nsIWebProgressListener.STATE_IS_NETWORK && aStatus==0) {
             //aStateFlags & nsIWebProgressListener.STATE_IS_WINDOW
             AutoPagerNS.apSplitbrowse.done( aWebProgress.DOMWindow.document,this);

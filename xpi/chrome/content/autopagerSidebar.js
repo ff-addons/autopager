@@ -1,3 +1,4 @@
+'use strict';
 var autopagerSidebar =  
     {
     initialized: false,
@@ -8,7 +9,7 @@ var autopagerSidebar =
 	contentColor: "orange",
 	maxWidth: '',
 	orgPriority: '',
-    search: false,
+    searching: false,
     tips : null,
     xpathes : [],
     loadString: function() {
@@ -940,4 +941,3 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
     }
 };
 autopagerUtils.log("loading window.js");
-

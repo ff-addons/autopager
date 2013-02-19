@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.UpdateSites=
     {
     updateSites: null,
@@ -219,7 +220,7 @@ AutoPagerNS.UpdateSites=
         {
             obj.triedTime ++;
             //try 2 times
-            window.setTimeout(function(){
+            AutoPagerNS.window.setTimeout(function(){
                 AutoPagerNS.UpdateSites.updateSiteOnline(obj,true,obj.triedTime)
             },10);
 
@@ -227,7 +228,7 @@ AutoPagerNS.UpdateSites=
         else
             if (obj.backupUrls!=null &&  obj.triedBackup < obj.backupUrls.length)
         {
-            window.setTimeout(function(){
+            AutoPagerNS.window.setTimeout(function(){
                 obj.triedBackup ++;
                 AutoPagerNS.UpdateSites.updateSiteOnlineBackup(obj,obj.triedBackup * -1)
             },10);
@@ -625,15 +626,16 @@ var autopagerConfig =
         if (typeof site.formatVersion != 'undefined')
             newSite.formatVersion = site.formatVersion;
         newSite.oldSite = site;
-        newSite.isTemp = site.isTemp
-        newSite.tmpPaths = site.tmpPaths
-        newSite.maxLinks = site.maxLinks
+        newSite.isTemp = site.isTemp;
+        newSite.tmpPaths = site.tmpPaths;
+        newSite.maxLinks = site.maxLinks;
         if (!autopagerUtils.isBlank(site.lazyImgSrc))
-            newSite.lazyImgSrc = site.lazyImgSrc
+            newSite.lazyImgSrc = site.lazyImgSrc;
         if (!autopagerUtils.isBlank(site.keywordXPath))
-            newSite.keywordXPath = site.keywordXPath
+            newSite.keywordXPath = site.keywordXPath;
         if (!autopagerUtils.isBlank(site.alertsHash))
-            newSite.alertsHash = site.alertsHash
+            newSite.alertsHash = site.alertsHash;
+        newSite.rate = site.rate;
         return newSite;
     }
     ,
@@ -643,7 +645,7 @@ var autopagerConfig =
             return true;
         else
         {
-            site = this.completeRule(site)
+            site = this.completeRule(site);
             var oldSite = this.completeRule(site.oldSite);
             if (oldSite.urlPattern  != site.urlPattern
                 || oldSite.id  != site.id
@@ -869,7 +871,7 @@ var autopagerConfig =
         AutoPagerNS.UpdateSites.defaultSite());
         if (url!=null && url.length >0)
         {
-            function callback(doc,obj)
+            var callback=function(doc,obj)
             {
                 var sites = autopagerConfig.loadConfigFromDoc(doc);
                 autopagerConfig.mergeSetting(sites,false);
@@ -878,7 +880,7 @@ var autopagerConfig =
                     func();
                 autopagerMain.handleCurrentDoc();
             }
-            function onerror(doc,obj)
+            var onerror=function(doc,obj)
             {
                 //TODO:notify error
             }
@@ -952,7 +954,6 @@ var autopagerConfig =
         var fp = Components.classes["@mozilla.org/filepicker;1"]
         .createInstance(Components.interfaces.nsIFilePicker);
 
-        var title = title;
         fp.init(window, title, mode);
         fp.appendFilters(Components.interfaces.nsIFilePicker.filterAll);
 
@@ -986,7 +987,7 @@ var autopagerConfig =
         autopagerConfig.autoSites = autopagerConfig.loadConfig();
         autopagerConfig.mergeArray(autopagerConfig.autoSites,sites,silient,callback);
         autopagerConfig.saveConfig(autopagerConfig.autoSites);
-        //autopagerConfig.autoSites = autopagerConfig.loadConfig();
+        //autopagerConfig.autoSites = autopagerConfig.loadConfig();        
         try{
             autopagerMain.handleCurrentDoc();
         }catch(e){}
@@ -1465,7 +1466,8 @@ var autopagerConfig =
         needMouseDown : false,
         published : false,
         minipages : -1,
-        delaymsecs : -1            
+        delaymsecs : -1,
+        rate : 0
     }
     ,arrayField : {
         contentXPath : [],//["//div[@class:'g']"]

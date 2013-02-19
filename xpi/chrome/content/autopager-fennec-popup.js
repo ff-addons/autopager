@@ -1,3 +1,4 @@
+'use strict';
 var AutoPagerPopup = {
     get box() {
         delete this.box;

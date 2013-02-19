@@ -199,7 +199,7 @@
 <!ENTITY statusbar.menuitem.autopager-showrules.tooltiptext "显示在线配置">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.label "教程">
 <!ENTITY statusbar.menuitem.autopager-showtutorials.tooltiptext "显示教程页">
-<!ENTITY statusbar.menuitem.autopagerlite-discover.label "在线查找">
+<!ENTITY statusbar.menuitem.autopagerlite-discover.label "在线查找翻页规则">
 <!ENTITY statusbar.menuitem.autopagerlite-discover.tooltiptext "在线查找翻页规则">
 <!ENTITY statusbar.menuitem.autopagerlite-switchToLite.label "迷你模式">
 <!ENTITY statusbar.menuitem.autopagerlite-switchToLite.tooltiptext "切换到自动翻页的迷你模式">

@@ -1,3 +1,4 @@
+'use strict';
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -28,7 +29,7 @@ var autopagerLite =
         var url=autopagerPref.loadPref("repository-site");
         if (!pageurl)
             pageurl = "";
-        url = url + "d/r?apv=" + autopagerUtils.version + "&exp=1&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
+        url = url + "d/r?apv=" + autopagerUtils.version + "&exp=0&url=" + encodeURIComponent(pageurl) + "&ids=" + autopagerPref.loadPref("ids");
         AutoPagerNS.add_tab({url:url});
     },
     asyncRequest : function(url,contentType, handler)
@@ -147,7 +148,8 @@ var autopagerLite =
     },
     promptLiteDiscovery : function ()
     {        
-        if (autopagerBwUtil.isMobileVersion() && !autopagerPref.loadBoolPref("mode-prompted"))
+        if (/*autopagerBwUtil.isMobileVersion() &&*/
+                !autopagerPref.loadBoolPref("mode-prompted"))
         {
             autopagerLite.promptAutoPagerMode();
             return;
@@ -201,8 +203,8 @@ var autopagerLite =
         }
         var now = new Date();
         
-        if (this.promptAutoPagerModetime && !(this.promptAutoPagerModetime && now.getTime()-this.promptAutoPagerModetime.getTime()<(1000 * 60 * 2) ))
-            return
+//        if (this.promptAutoPagerModetime && (now.getTime()-this.promptAutoPagerModetime<(1000 * 60 * 2) ))
+//            return
         this.promptAutoPagerModetime = now.getTime();
         
         var message = autopagerUtils.autopagerGetString("autopager-mode");
@@ -316,6 +318,7 @@ var autopagerLite =
     },
     onContentLoad : function (event)
     {
+        //autopagerLite.promptAutoPagerMode();
 //        autopagerBwUtil.consoleLog("autopagerLite onContentLoad")
         var doc = event;
         if (!autopagerUtils.isHTMLDocument(doc))
@@ -345,7 +348,10 @@ var autopagerLite =
         //              }
         //            }
         }
-
+        var needAp = doc.getElementById("need-ap");
+        if (needAp)
+            needAp.style.display='none';
+        
         var selectAll = doc.getElementById("apRulesForm:rulesTable:selectAll");
         if (selectAll)
             selectAll.checked = false;
@@ -496,7 +502,7 @@ var autopagerLite =
         }
         return newS;
     },
-    switchToLite : function(doc,liteMode)
+    switchToLite : function(liteMode)
     {
         var changed = autopagerPref.saveBoolPref("work-in-lite-mode",liteMode);
         if (changed)

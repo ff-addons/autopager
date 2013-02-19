@@ -1,3 +1,4 @@
+'use strict';
 var autopagerTranslate =
 {
     translateStrings : function(doc,callback)
@@ -97,11 +98,6 @@ var autopagerTranslate =
         }
         //alert(str)
         return str;
-    }
-    ,
-    translateDefault : function (callback)
-    {
-        this.translate(document,callback);
     }
     ,
     translate : function (doc,callback)
