@@ -1,4 +1,3 @@
-'use strict';
 var AutoPagerNS = typeof AutoPagerNS != "undefined"?AutoPagerNS:{};
 AutoPagerNS.is_global = function() {
     return false;
@@ -381,9 +380,9 @@ AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
             options = {};
         }
         //attach some caller info
-        if (AutoPagerNS.window && AutoPagerNS.window.location)
+        if (AutoPagerNS.getContentWindow() && AutoPagerNS.getContentWindow().location)
         {
-            var location = AutoPagerNS.window.location;
+            var location = AutoPagerNS.getContentWindow().location;
             if (!options["host"] && location.host )
                 options["host"] = location.host;
             if (!options["url"] && location.href )

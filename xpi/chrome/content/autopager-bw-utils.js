@@ -1,4 +1,3 @@
-'use strict';
 var autopagerBwUtil =
 {
     debug: false,
@@ -108,14 +107,14 @@ var autopagerBwUtil =
                 var focus = (!obj || typeof obj.focus=="undefined" || obj.focus);
                 var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
                 var mainWindow = wm.getMostRecentWindow("navigator:browser");
-                var browser = (mainWindow && mainWindow.gBrowser)? mainWindow.gBrowser : mainWindow.BrowserApp;
+                var browser = !mainWindow?null:(mainWindow && mainWindow.gBrowser)? mainWindow.gBrowser : mainWindow.BrowserApp;
                 if (browser)
                 {
                     var tab = browser.addTab(url);
                     if (focus)
                         browser.selectedTab = tab;
                     return tab;
-                }else{
+                }else if (AutoPagerNS.window){
                     return AutoPagerNS.window.open(url,'_blank');
                 }
             }
@@ -314,9 +313,9 @@ var autopagerBwUtil =
     {
         //AutoPager supported browser id
         //Firefox 0, Fennec 1, MicroB 2, Chrome 3
-        if  (AutoPagerNS.window.navigator.userAgent.indexOf(" Fennec/")!=-1)
+        if  (AutoPagerNS.getContentWindow().navigator.userAgent.indexOf(" Fennec/")!=-1)
             return 1;
-        if (AutoPagerNS.window.navigator.userAgent.indexOf(" Maemo/")!=-1)
+        if (AutoPagerNS.getContentWindow().navigator.userAgent.indexOf(" Maemo/")!=-1)
             return 2;
         return 0;
     }
@@ -642,6 +641,8 @@ sitewizard : function(doc) {
     changeSessionUrl: function (container, url,pagenum)
     {
         var browser = AutoPagerNS.apSplitbrowse.getBrowserNode(container);
+        if (!browser)
+            return;
         var webNav = browser.webNavigation;
         var newHistory = webNav.sessionHistory;
 
@@ -779,6 +780,41 @@ var rds = extensionManager.datasource.QueryInterface(Components.interfaces.nsIRD
             }
         }
     }
-}
+    ,frameSafe : function()
+    {
+        return false;
+    }
+    ,
+    toolbarDisableMonitor: function(e) {
+        if (autopagerToolbar.removing)
+            return;
+        
+        if ((e.type == 'DOMNodeRemoved') && e.target && e.relatedNode && (e.target.id == 'autopager-button') && e.relatedNode.id == 'wrapper-autopager-button')
+        {
+            autopagerBwUtil.usermodifingToolbar = true;
+            return;
+        }
+        if (autopagerBwUtil.usermodifingToolbar){
+            if ((e.type == 'DOMNodeInserted') && e.target && e.relatedNode && (e.target.id == 'autopager-button') && e.relatedNode.id != 'wrapper-autopager-button')
+            {
+                //toolbar icon added by user
+                if (autopagerPref.loadBoolPref("hide-toolbar-icon"))
+                {
+                    autopagerPref.saveBoolPref("hide-toolbar-icon", false);
+                }
+                autopagerBwUtil.usermodifingToolbar = false;
+            }
+            else if ((e.type == 'DOMNodeRemoved') && e.target && e.relatedNode && (e.target.id == 'wrapper-autopager-button') && e.relatedNode.id != 'wrapper-autopager-button')
+            {
+                //toolbar icon removed by user
+                if (!autopagerPref.loadBoolPref("hide-toolbar-icon"))
+                {
+                    autopagerPref.saveBoolPref("hide-toolbar-icon", true);
+                }
+                autopagerBwUtil.usermodifingToolbar = false;
+            }
+        }
+    }
+    }
 
 //autopagerBwUtil.consoleLog("autopagerBwUtil loaded")

@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.AutoPagerUpdateType=function (type,defaultLocales,defaultUrl,contentType,filenamePrefix,callback,xpath,desc)
 {
     this.type=type;

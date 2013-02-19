@@ -1,4 +1,3 @@
-'use strict';
 var autopagerRelated =
 {
     relatedSearch: "http://api.search.live.net/json.aspx?Appid=41CC52599D6F30EE0E2C7D7F1C4DDCB97F98992B&query=autopager&Sources=RelatedSearch",
@@ -27,6 +26,11 @@ var autopagerRelated =
     }
     , getRelelatedSearchText : function (options,ut,callback)
     {
+        if (!AutoPagerNS.is_global())
+        {
+            AutoPagerNS.message.call_function("autopager_getRelelatedSearchText",{options:options,ut:ut},function(options){callback(options.texts)});
+            return;
+        }
         var discoverUrl = options.discoverUrl
         if (ut.d)
             discoverUrl = ut.d
@@ -40,6 +44,10 @@ var autopagerRelated =
             if (xhr.readyState == 4) {
                 var texts = []
                 try{
+                    if (!xhr.responseText || xhr.responseText.length==0){
+                        callback(texts);
+                        return;
+                    }
                     var ss = autopagerBwUtil.decodeJSON(xhr.responseText)
                     var results = ss[1]
                     for(var i in results)

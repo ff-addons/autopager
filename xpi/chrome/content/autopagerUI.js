@@ -1,4 +1,3 @@
-'use strict';
 const CI = Components.interfaces;
 const CC = Components.classes;
 
@@ -756,8 +755,8 @@ function loadControls() {
     }, false);
     btnEditPath.addEventListener("command", function() {
         if (contentXPath.selectedCount > 0) {
-            treeitem = contentXPath.getSelectedItem(0);
-            xpath = treeitem.label;
+            var treeitem = contentXPath.getSelectedItem(0);
+            var xpath = treeitem.label;
             xpath = prompt(autopagerUtils.autopagerGetString("inputxpath"),xpath);
             if (btnAddPath.disabled)
                 return;

@@ -1,11 +1,16 @@
-'use strict';
 AutoPagerNS.strings = AutoPagerNS.extend (AutoPagerNS.namespace("strings"),{
+    inited : false,
     init : function ()
     {
-        this.loadFile({
-            autopager:"autopager",
-            command:"commands"
-        });
+        if (!this.inited)
+        {
+            this.loadFile({
+                autopager:"autopager",
+                command:"commands"
+            });
+            this.inited = true;
+        }
+        return this;   
     }
     ,
     initClient : function()

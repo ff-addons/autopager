@@ -1,4 +1,3 @@
-'use strict';
 var autopagerToolbar =
 {
     getBrowserDocument : function(){
@@ -15,6 +14,8 @@ var autopagerToolbar =
     }
     ,
     addAutopagerButton : function() {
+        if (autopagerBwUtil.usermodifingToolbar)
+            return;
         var doc = this.getBrowserDocument();
         if (!doc)
             return;
@@ -42,16 +43,16 @@ var autopagerToolbar =
                     var newSet = "";
                     var child = toolbar.firstChild;
                     while (child) {
-                        if(!hasAutopagerButton && (child.id == "urlbar-container" || child.id =="nav-bar-inner") ) {
+                        newSet += child.id + ",";
+                        if(!hasAutopagerButton && (child.id == "search-container" || child.id =="home-button") ) {
                             newSet += "autopager-button,";
                             hasAutopagerButton = true;
                         }
-                        newSet += child.id + ",";
                         child = child.nextSibling;
                     }
                     newSet = newSet.substring(0, newSet.length - 1);
                     toolbar.currentSet = newSet;
-                    toolbar.setAttribute("currentset", newSet);
+                    toolbar.setAttribute("currentset", newSet);                    
                     toolboxDocument.persist(toolbar.id, "currentset");
                     try {
                         BrowserToolboxCustomizeDone(true);
@@ -62,6 +63,8 @@ var autopagerToolbar =
         }
     },
     removeAutopagerButton : function() {
+        if (autopagerBwUtil.usermodifingToolbar)
+            return;
         var doc = this.getBrowserDocument();
         if (!doc)
             return;
@@ -80,6 +83,7 @@ var autopagerToolbar =
             }
         }
 
+        autopagerToolbar.removing = true;
         if(hasAutopagerButton) {
             for (var i = 0; i < toolbox.childNodes.length; ++i) {
                 toolbar = toolbox.childNodes[i];
@@ -104,6 +108,7 @@ var autopagerToolbar =
                 }
             }
         }
+        autopagerToolbar.removing = false;
     },
 
     autopagerToobarInit : function() {

@@ -1,4 +1,3 @@
-'use strict';
 //common routers for global pages
 AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("message_handlers"),{
     autopager_get_content_status: function (request, sender, callback)
@@ -168,6 +167,7 @@ AutoPagerNS.browsercontent = AutoPagerNS.extend (AutoPagerNS.namespace("browserc
         autopagerPref.init();
         var domLoad = function(ev) {
             AutoPagerNS.browser.removeEventListener("DOMContentLoaded", domLoad, false);
+            AutoPagerNS.browser.removeEventListener("load", domLoad, false);
             try
             {
                 if (typeof autopagerMain!="undefined")
@@ -179,6 +179,14 @@ AutoPagerNS.browsercontent = AutoPagerNS.extend (AutoPagerNS.namespace("browserc
             }
         }
         AutoPagerNS.browser.addEventListener("DOMContentLoaded", domLoad, false);               
-                        
+        AutoPagerNS.browser.addEventListener("load", domLoad, false);  
+        
+        if (typeof document!="undefined")
+        {
+            if (typeof autopagerMain!="undefined")
+                autopagerMain.autopagerOnLoad(document);
+            if (typeof autopagerLite!="undefined")
+                autopagerLite.apRuleSiteOnInit(document);
+        }
     }
 })

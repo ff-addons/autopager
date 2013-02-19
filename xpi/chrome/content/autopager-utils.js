@@ -1,6 +1,5 @@
-'use strict';
 var autopagerUtils = {
-    version:"0.8.0.2",
+    version:"0.8.0.3",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))
@@ -460,7 +459,11 @@ var autopagerUtils = {
     ,
     getTopDoc : function (doc)
     {
-        return doc.defaultView? doc.defaultView.top.document : (doc.top?doc.top:doc);
+        try{
+            return doc.defaultView? doc.defaultView.top.document : (doc.top?doc.top:doc);            
+        }catch(e){
+            return doc;
+        }
     }
     ,
     findUrlInElement : function (ele)
@@ -1207,8 +1210,8 @@ delete * 24, for minutes, delete * 60 * 24
     }
     ,frameSafe : function(paging,doc)
     {
-        if (typeof autopagerBwUtil.frameSafe == "function")
-            return autopagerBwUtil.frameSafe();
+        if (typeof autopagerBwUtil.frameSafe == "function" && !autopagerBwUtil.frameSafe())
+            return false;
         return paging.site.enableJS==3 && !autopagerMain.hasTopLocationRefer(doc.documentElement.innerHTML)
                     && !doc.documentElement.getAttribute("xmlns")
     }

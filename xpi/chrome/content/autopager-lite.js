@@ -1,4 +1,3 @@
-'use strict';
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -274,9 +273,9 @@ var autopagerLite =
     },
     getMatchedRules : function(doc)
     {
-        if (doc && doc.documentElement)
+        if (doc && doc.documentElement && !doc.documentElement.hasAttribute("autopagerguid"))
         {
-            return doc.documentElement.getAttribute("autopagerMatchedRules")
+            return doc.documentElement.getAttribute("autopagerMatchedRules");
         }
         return 0;
     },

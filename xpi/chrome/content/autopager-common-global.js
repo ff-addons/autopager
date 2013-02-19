@@ -1,4 +1,3 @@
-'use strict';
 //common routers for global pages
 AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("message_handlers"),{
     autopager_reportissue: function (request, sender, callback)
@@ -69,7 +68,7 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
         AutoPagerNS.get_current_tab(function(tab) {            
             var messager = AutoPagerNS.get_messager(tab);
             if (messager)
-                AutoPagerNS.message.call_function_on_object(request.fn,autopagerUtils.clone(request.options),callback,tab);
+                AutoPagerNS.message.call_function_on_object(request.fn,autopagerUtils.clone(request.options),callback,messager);
         
         });
     }
@@ -79,7 +78,7 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
         AutoPagerNS.get_current_tab(function(tab) {            
             var messager = AutoPagerNS.get_messager(tab);
             if (messager)
-                AutoPagerNS.message.call_function_on_object("autopager_set_content_status",autopagerUtils.clone(request.options),callback,tab);
+                AutoPagerNS.message.call_function_on_object("autopager_set_content_status",autopagerUtils.clone(request.options),callback,messager);
         
             autopagerBwUtil.updateStatus(autopagerPref.loadBoolPref("enabled"),!request.options.site_disabled,request.options.discovered_rules,request.options)
         });
@@ -210,7 +209,7 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
     ,
     autopager_getstrings : function(request, sender, callback)
     {
-        var strings = AutoPagerNS.strings
+        var strings = AutoPagerNS.strings;
         callback({
             strings:strings.strings
         });

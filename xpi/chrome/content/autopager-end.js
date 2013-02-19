@@ -1,4 +1,3 @@
-'use strict';
 try{
     if (typeof AutoPagerNS["post_init"] == "function")
     {

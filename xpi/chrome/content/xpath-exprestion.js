@@ -1,4 +1,3 @@
-'use strict';
 var xpath;
 var description;
 var doc;

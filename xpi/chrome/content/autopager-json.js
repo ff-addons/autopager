@@ -1,4 +1,3 @@
-'use strict';
 var autopagerJsonSetting= {
     apOtherConfig:"http://ap.teesoft.info/autopager/default",
     apUpdates:"updates",

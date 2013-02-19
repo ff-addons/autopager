@@ -1,4 +1,3 @@
-'use strict';
 var autopagerMain = 
 {
     autopagerDebug : false,
@@ -124,8 +123,11 @@ isValidDoc : function (doc)
 
 },
 getDocForEvent : function (event){
+    
     if (event && event.target && autopagerUtils.isHTMLDocument(event.target))
+    {
         return event.target;
+    }
     var doc = event;
 //    autopagerBwUtil.consoleLog("autopagerMain doContentLoad");
     if ((doc == null || (!autopagerUtils.isHTMLDocument(doc))) && (typeof Event !="undefined" && (event instanceof Event)) )
@@ -1414,7 +1416,10 @@ getSelectorLoadFrame : function(doc,src) {
             }catch(e){}            
         }
 
-        frame.contentDocument.write("<html><head><base href='" + baseURI + "'/></head><body>autopaging</body></html>");
+        try{
+            frame.contentDocument.write("<html><head><base href='" + baseURI + "'/></head><body>autopaging</body></html>");
+        }catch(e){            
+        }
         frame.autoPagerInited = false;
         //create a empty div in target
         autopagerMain.getLastDiv(doc);
@@ -2226,7 +2231,7 @@ showAutoPagerMenu : function(menuid) {
 onEnable : function() {
     var enabled = !autopagerPref.loadBoolPref("enabled");
     autopagerPref.saveBoolPref("enabled",enabled);
-    autopagerBwUtil.updateStatus(enabled,true,0,{})
+    autopagerBwUtil.updateStatus(enabled, autopagerLite.getMatchedRules(AutoPagerNS.getContentDocument()),0,{})
     this.handleCurrentDoc();
 },
 statusClicked : function(event) {

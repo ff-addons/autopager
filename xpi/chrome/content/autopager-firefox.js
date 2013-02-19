@@ -1,4 +1,3 @@
-'use strict';
 //firefox global routers
 AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
     {
@@ -223,3 +222,10 @@ AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("messag
     }
 }
 )
+
+window.addEventListener("load", function(e) {
+    var toolbox = document.getElementById("navigator-toolbox");
+    toolbox.addEventListener("DOMNodeInserted",autopagerBwUtil.toolbarDisableMonitor,false);       
+    toolbox.addEventListener("DOMNodeRemoved",autopagerBwUtil.toolbarDisableMonitor,false);       
+}, false);
+

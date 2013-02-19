@@ -1,4 +1,3 @@
-'use strict';
 var autopagerTranslate =
 {
     translateStrings : function(doc,callback)

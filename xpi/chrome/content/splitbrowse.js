@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {
@@ -421,7 +420,10 @@ AutoPagerNS.apSplitbrowse = {
         {
             var autopagerUseSafeEvent = false
             if (listener)
+            {
                 autopagerUseSafeEvent = listener.autopagerUseSafeEvent
+                splitBrowser.docShell.allowJavascript = !!listener.site.enableJS;
+            }
             splitBrowser.docShell.allowPlugins = false;
             //            splitBrowser.docShell.allowAuth = false;
             //            splitBrowser.docShell.allowMetaRedirects = false;

@@ -1,4 +1,3 @@
-'use strict';
 //In GPL license
 var AutoPagring = function (site,doc)
 {
@@ -507,8 +506,8 @@ AutoPagring.prototype.processNextDoc = function(doc,url) {
     }
     else if (autopagerBwUtil.supportHiddenBrowser() &&  (this.enableJS || this.inSplitWindow || url==null || !this.isFullLink(url))) {
         this.inSplitWindow = true;
-        this.site.enableJS = true;
-        this.enableJS = true;
+        //this.site.enableJS = true;
+        this.enableJS = !!this.site.enableJS;
         this.processInSplitWin(doc);
     }else if (autopagerBwUtil.supportHiddenBrowser() && url!=null && this.isFullLink(url))
     {
@@ -737,8 +736,7 @@ AutoPagring.prototype.lazyLoad = function(doc)
                     return;
                 }
                 var newDoc = frame.contentDocument;
-                newDoc.documentElement.setAttribute("autopageCurrentPageLoaded","false")
-
+                
                 paging.scrollWindow(doc,newDoc);
                 paging.onStopPaging(doc);
                 try{
@@ -792,7 +790,7 @@ AutoPagring.prototype.processNextDocUsingXMLHttpRequest = function(doc,url){
             return;
         }        
         //loade the next page in a iframe if the page doesn't redirect to top
-        if (paging.frameSafe(doc))
+        if (paging.isFrameSafe(doc))
         {
             paging.loadInFrame(doc,urlStr);
             return;
@@ -829,7 +827,7 @@ AutoPagring.prototype.processNextDocUsingXMLHttpRequest = function(doc,url){
 
                             frame.autoPagerInited = false;
                             //frame.contentDocument.clear();
-                            frame.contentDocument.documentElement.autopageCurrentPageLoaded = false;
+                            frame.contentDocument.documentElement.setAttribute("autopageCurrentPageLoaded","false")
                             //alert(xmlhttp.responseText);
                             var html = xmlhttp.responseText
                             var body = autopagerMain.getHtmlInnerHTML(html,paging.enableJS||paging.inSplitWindow,url,type,paging.isLazyLoadImage());
@@ -949,12 +947,14 @@ AutoPagring.prototype.performRelatedSearch = function(options,doc,index,div) {
             autopagerRelated.getRelelatedSearchText(options,ut,function(relatedTexts){
                 options.relatedTexts = relatedTexts
                 var table = Me.createRelatedTable(doc,options,div,searchQuery,relatedTexts,index,ut.u);
-                div.parentNode.insertBefore(table,div);
+                if (table)
+                    div.parentNode.insertBefore(table,div);
             })
         }else if(typeof options.relatedTexts != "undefined")
         {
                 var table = Me.createRelatedTable(doc,options,div,options.searchQuery,options.relatedTexts,index,ut.u);
-                div.parentNode.insertBefore(table,div);
+                if (table)
+                    div.parentNode.insertBefore(table,div);
         }
     }    
 }
@@ -1195,6 +1195,8 @@ AutoPagring.prototype.removeRelatedTable = function (doc)
 }
 AutoPagring.prototype.createRelatedTable = function (doc,options,div,search,related,index,urlTemplate)
 {
+    if (!related || related.length==0)
+        return;
     var container = doc.createElement("div");
     
     container.setAttribute("class","AutoPager_Related");
@@ -1376,7 +1378,7 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
             }
 //            autopagerBwUtil.consoleLog("scrollWindow 8")
 
-            var div = this.lastBreakStart
+            var div = this.lastBreakStart;
             if (!div && insertPoint)
             {
                 //alert(nodes);
@@ -1385,7 +1387,6 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
                 div.setAttribute("id","apBreakStart" + this.autopagerPage);
                 insertPoint.parentNode.insertBefore(div,insertPoint);                
             }
-//            autopagerBwUtil.consoleLog("scrollWindow 8.1")
             var innerHTML = "<a target='_blank' href='http://autopager.teesoft.info/help.html'>" + autopagerUtils.autopagerGetString("pagebreak2") + "</a>&nbsp;&nbsp;" +
                             autopagerUtils.autopagerFormatString("pagelink",[nextPageHref,"&nbsp;&nbsp;&nbsp;" + (++this.autopagerPage) + "&nbsp;&nbsp;&nbsp;"])
                             + autopagerMain.getNavLinks(this.autopagerPage,sh,this);
@@ -1396,17 +1397,14 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
                     + autopagerUtils.autopagerFormatString("pagelink",[nextPageHref.replace(/\&/g,"&amp;"),"   " + (this.autopagerPage) + "   "])
                     ;
             }
-//            autopagerBwUtil.consoleLog("scrollWindow 8.2")
             
             var Me = this
             div.addEventListener("click",function(e) {
                 Me.onBreakClick(e);
             },false);
             //load preload xpaths, like //style for make WOT works
-//            autopagerBwUtil.consoleLog("scrollWindow 8.3")
             
             var preXPath=autopagerMain.getPreloadXPaths();
-//            autopagerBwUtil.consoleLog("scrollWindow 8.4")
             
             if (preXPath.length>0)
              {
@@ -1463,11 +1461,9 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
                     autopagerBwUtil.consoleError(e)
                 }
             }
-//            autopagerBwUtil.consoleLog("scrollWindow 15")
             div = autopagerMain.createDiv(container,"apBreakEnd" + this.autopagerPage,"display:none;");
             //div.setAttribute("id","apBreakEnd" + this.autopagerPage);
             insertPoint.parentNode.insertBefore(div,insertPoint);
-//            autopagerBwUtil.consoleLog("scrollWindow 16")
             //alert(nodes.length);
             var urlNodes = autopagerMain.findLinkInDoc(doc,this.site.linkXPath,this.enableJS||this.inSplitWindow);
             //alert(urlNodes);
@@ -1503,7 +1499,6 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
 //               autopagerBwUtil.consoleLog("scrollWindow 18")
                return true;
            }
-//           autopagerBwUtil.consoleLog("scrollWindow 19")
         }
 
     }catch(e) {
@@ -2116,11 +2111,15 @@ AutoPagring.prototype.postAfterInsert = function(node)
         var nodes = autopagerXPath.evaluate(node,".//*[@ap-lazy-src]",false);
             for(var k=0;k<nodes.length;++k) {
                 nodes[k].setAttribute("src", nodes[k].getAttribute("ap-lazy-src"));
-                if (nodes[k].getAttribute("disabled")==disabled-by-ap){
-                    nodes[k].removeAttribute("disabled")
+                if (nodes[k].getAttribute("disabled")=="disabled-by-ap"){
+                    nodes[k].removeAttribute("disabled");
                 }
             }
     }
+    this.handleLazyImages(node);    
+}
+AutoPagring.prototype.handleLazyImages = function(node)
+{
     var lazyImgSrc = this.getSiteLazyLoadAttr();
     
     if (!autopagerUtils.isBlank(lazyImgSrc))
@@ -2146,8 +2145,12 @@ AutoPagring.prototype.loadLazyImages = function(node,lazyImgSrc)
     var images = autopagerXPath.evaluate(node,".//*[@" + lazyImgSrc + "]",false);
     for(var i=0;i<images.length;++i) {
         var imgSrc = images[i].getAttribute(lazyImgSrc);
-        images[i].setAttribute("src", imgSrc);
-        images[i].setAttribute(lazyImgSrc, null);
+        if (!imgSrc || imgSrc==images[i].getAttribute("src"))
+        {
+            continue;
+        }
+        images[i].setAttribute("src", imgSrc);       
+        images[i].removeAttribute(lazyImgSrc);
         //http://member.teesoft.info/phpbb/viewtopic.php?p=10797#10797
         images[i].style.visibility = 'visible';
         //http://member.teesoft.info/phpbb/viewtopic.php?p=14249
@@ -2392,7 +2395,7 @@ AutoPagring.prototype.getSameDomainUrl = function (doc,url)
     return urlStr;
 }
 
-AutoPagring.prototype.frameSafe = function (doc)
+AutoPagring.prototype.isFrameSafe = function (doc)
 { 
     if (typeof this.frameSafe == "undefined")
         this.frameSafe = autopagerUtils.frameSafe(this,doc);

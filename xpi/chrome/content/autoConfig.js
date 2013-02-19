@@ -1,4 +1,3 @@
-'use strict';
 AutoPagerNS.UpdateSites=
     {
     updateSites: null,
@@ -220,7 +219,7 @@ AutoPagerNS.UpdateSites=
         {
             obj.triedTime ++;
             //try 2 times
-            AutoPagerNS.window.setTimeout(function(){
+            AutoPagerNS.getContentWindow().setTimeout(function(){
                 AutoPagerNS.UpdateSites.updateSiteOnline(obj,true,obj.triedTime)
             },10);
 
@@ -228,7 +227,7 @@ AutoPagerNS.UpdateSites=
         else
             if (obj.backupUrls!=null &&  obj.triedBackup < obj.backupUrls.length)
         {
-            AutoPagerNS.window.setTimeout(function(){
+            AutoPagerNS.getContentWindow().setTimeout(function(){
                 obj.triedBackup ++;
                 AutoPagerNS.UpdateSites.updateSiteOnlineBackup(obj,obj.triedBackup * -1)
             },10);

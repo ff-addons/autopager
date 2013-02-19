@@ -1,4 +1,3 @@
-'use strict';
 //fennc global routers
 AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
 {
