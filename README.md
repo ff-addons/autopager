@@ -7,4 +7,6 @@ https://addons.mozilla.org/en-US/firefox/addon/autopager
 
 ``autopager.jar`` was extracted and removed for every version import.  A ``make_jar.sh`` is provided to re-create it.
 
+"linux" ``.xpi`` s imported from addons.mozilla.org were identical to the windows and mac ``.xpi`` s.
+
 Updates to this repository are not automated, so there may be delays in importing new releases.
