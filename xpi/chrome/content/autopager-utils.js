@@ -1,6 +1,6 @@
 'use strict';
 var autopagerUtils = {
-    version:"0.8.0.6",
+    version:"0.8.0.7",
     formatVersion: 1,
     log: (typeof location!= "undefined" && location.protocol=="chrome:") ? function(message) {
         if (autopagerPref.loadBoolPref("debug"))

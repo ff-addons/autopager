@@ -4,14 +4,13 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
     <RDF:Description RDF:about="urn:mozilla:install-manifest"
                      em:name="AutoPager"
-                     em:version="0.8.0.6"
+                     em:version="0.8.0.7"
                      em:id="autopager@mozilla.org"
                      em:description="AutoPager is a Firefox/Mozilla/Chrome/Opera/Safari/Fennec extension to autoload the next page(s) when you scroll pages."
                      em:creator="Wind Li"
                      em:optionsURL="chrome://autopager/content/mini-options.xul"
                      em:homepageURL="http://www.teesoft.info/"
                      em:iconURL="chrome://autopager/skin/autopager32.png"
-                     em:updateURL="https://secure.teesoft.info/autopager/autopager-update.rdf"
                      >
         <em:contributor>skylove  at http://bbs.chinaunix.net</em:contributor>
         <em:contributor>DLSQFLY  at http://forums.mozine.cn</em:contributor>

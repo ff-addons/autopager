@@ -12,7 +12,7 @@ function AutopagerCOMP() {
 
 var autopagerHTTPListener = {
     headerName  : "X-AutoPager",
-    autopagerVersionValue : "0.8.0.6",
+    autopagerVersionValue : "0.8.0.7",
     observe: function(obj,subject, topic, data)
     {
         let os = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
@@ -409,7 +409,7 @@ var autopagerHTTPListener = {
             },
 
             onLocationChange: function(progress, request, uri) 
-            {return;
+            {
                 const nsIWebProgressListener = Components.interfaces.nsIWebProgressListener;
                 const nsIChannel = Components.interfaces.nsIChannel;
                 //if (flags & nsIWebProgressListener.STATE_IS_NETWORK) 

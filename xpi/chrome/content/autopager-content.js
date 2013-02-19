@@ -182,12 +182,12 @@ AutoPagerNS.browsercontent = AutoPagerNS.extend (AutoPagerNS.namespace("browserc
         AutoPagerNS.browser.addEventListener("DOMContentLoaded", domLoad, false);               
         AutoPagerNS.browser.addEventListener("load", domLoad, false);  
         
-        if (typeof document!="undefined")
-        {
-            if (typeof autopagerMain!="undefined")
-                autopagerMain.autopagerOnLoad(document);
-            if (typeof autopagerLite!="undefined")
-                autopagerLite.apRuleSiteOnInit(document);
-        }
+//        if (typeof document!="undefined")
+//        {
+//            if (typeof autopagerMain!="undefined")
+//                autopagerMain.autopagerOnLoad(document);
+//            if (typeof autopagerLite!="undefined")
+//                autopagerLite.apRuleSiteOnInit(document);
+//        }
     }
 })
