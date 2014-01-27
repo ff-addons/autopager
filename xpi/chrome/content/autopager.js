@@ -1,3 +1,4 @@
+'use strict';
 var autopagerMain = 
 {
     autopagerDebug : false,
@@ -2231,7 +2232,6 @@ showAutoPagerMenu : function(menuid) {
 onEnable : function() {
     var enabled = !autopagerPref.loadBoolPref("enabled");
     autopagerPref.saveBoolPref("enabled",enabled);
-    autopagerBwUtil.updateStatus(enabled, autopagerLite.getMatchedRules(AutoPagerNS.getContentDocument()),0,{})
     this.handleCurrentDoc();
 },
 statusClicked : function(event) {

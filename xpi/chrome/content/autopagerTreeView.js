@@ -1,3 +1,4 @@
+'use strict';
 function autopagerTreeView() {}
 
 autopagerTreeView.prototype = {

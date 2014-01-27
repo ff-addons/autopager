@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.strings = AutoPagerNS.extend (AutoPagerNS.namespace("strings"),{
     inited : false,
     init : function ()

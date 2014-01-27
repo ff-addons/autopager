@@ -1,3 +1,4 @@
+'use strict';
 AutoPagerNS.message = AutoPagerNS.extend (AutoPagerNS.namespace("message"),
 {
     do_call_function_on_object : function(messager,msgname,msg)

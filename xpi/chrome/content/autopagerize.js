@@ -1,3 +1,4 @@
+'use strict';
 var AutoPagerize= {
     parseInfo:function(str) {
         var lines = str.split(/\r\n|\r|\n/)

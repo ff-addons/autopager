@@ -1,3 +1,4 @@
+'use strict';
 //common routers for global pages
 AutoPagerNS.message_handlers = AutoPagerNS.extend (AutoPagerNS.namespace("message_handlers"),{
     autopager_reportissue: function (request, sender, callback)

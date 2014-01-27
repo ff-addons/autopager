@@ -1,8 +1,7 @@
+'use strict';
 AutoPagerNS.apSplitbrowse = {
     //this is come from noscript DOMUtils
     domUtils: {
-        lookupMethod: Components.utils ? Components.utils.lookupMethod : Components.lookupMethod,
-
         findBrowser: function(chrome, win) {
             var gb = chrome.getBrowser();
             var browsers;
@@ -22,8 +21,7 @@ AutoPagerNS.apSplitbrowse = {
             var ctx = doc;
             if(!ctx)
                 return null;
-            const ci = Components.interfaces;
-            const lm = this.lookupMethod;
+            var ci = Components.interfaces;
             if(!(ctx instanceof ci.nsIDOMWindow)) {
                 if(ctx instanceof ci.nsIDOMDocument) {
                     ctx = ctx.defaultView;
@@ -44,12 +42,11 @@ AutoPagerNS.apSplitbrowse = {
                 findBrowserForNode: function(ctx) {
                 if(!ctx) return null;
                 const ci = Components.interfaces;
-                const lm = this.lookupMethod;
                 if(!(ctx instanceof ci.nsIDOMWindow)) {
                 if(ctx instanceof ci.nsIDOMDocument) {
-                ctx = lm(ctx, "defaultView")();
+                ctx = ctx.defaultView;
                 } else if(ctx instanceof ci.nsIDOMNode) {
-            ctx = lm(lm(ctx, "ownerDocument")(), "defaultView")();
+            ctx = ctx.ownerDocument.defaultView;
         } else return null;
             }
             if(!ctx) return null;
@@ -134,11 +131,6 @@ AutoPagerNS.apSplitbrowse = {
     },
     autopagerPrefix : "autopager",
     hidden : true,
-    execute: function(node,method)
-    {
-        const lm = this.domUtils.lookupMethod;
-        lm(node, method)(null);
-    },
     init : function()
     {
         //document.splitBrowserCount = 0;

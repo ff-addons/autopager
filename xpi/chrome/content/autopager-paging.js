@@ -1,3 +1,4 @@
+'use strict';
 //In GPL license
 var AutoPagring = function (site,doc)
 {
@@ -912,7 +913,6 @@ AutoPagring.prototype.insertLoadingBreak = function(doc) {
                     }
                 }                
         }
-        this.lastBreakStart = div;
     }
 }
 AutoPagring.prototype.asyncRelatedSearch = function(doc,index,div) {
@@ -1378,7 +1378,7 @@ AutoPagring.prototype.doScrollWindow = function(container,doc) {
             }
 //            autopagerBwUtil.consoleLog("scrollWindow 8")
 
-            var div = this.lastBreakStart;
+            var div = container.getElementById("apBreakStart" + this.autopagerPage);
             if (!div && insertPoint)
             {
                 //alert(nodes);

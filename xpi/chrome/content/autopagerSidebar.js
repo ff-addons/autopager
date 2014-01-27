@@ -1,3 +1,4 @@
+'use strict';
 var autopagerSidebar =  
     {
     initialized: false,
@@ -940,4 +941,3 @@ autopagerSidebar.tips = new autopagerTip("AutopagerWorkshop:");
     }
 };
 autopagerUtils.log("loading window.js");
-
